@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '仪表盘 - 服务器管理与数据采集系统')
+@section('title', '仪表盘 - TMO云迁移')
 
 @section('content')
 <div class="container-fluid">
@@ -152,7 +152,7 @@
                     <h5 class="mb-0">系统信息</h5>
                 </div>
                 <div class="card-body">
-                    <p>服务器管理与数据采集系统提供了对服务器和采集组件的全面管理功能。</p>
+                    <p>TMO云迁移提供了对服务器和采集组件的全面管理功能。</p>
                     <p>您可以通过左侧菜单访问各项功能，或使用右侧的快速操作链接。</p>
                 </div>
             </div>

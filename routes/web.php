@@ -36,6 +36,7 @@ Route::middleware(['auth'])->group(function () {
     
     // 服务器分组管理
     Route::resource('server-groups', ServerGroupController::class);
+Route::delete('server-groups/batch-delete', [ServerGroupController::class, 'batchDelete'])->name('server-groups.batch-delete');
     
     // 服务器管理
     Route::resource('servers', ServerController::class);

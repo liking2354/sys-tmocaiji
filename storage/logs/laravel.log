@@ -11670,3 +11670,2187 @@ var
 wwwroot
 ","ssh_errors":["SSH_MSG_GLOBAL_REQUEST: hostkeys-00@openssh.com"]} 
 [2025-09-18 11:05:05] local.INFO: 服务器数据变更，清除缓存 {"server_id":36} 
+[2025-09-18 14:47:15] local.INFO: 进入downloadServers方法  
+[2025-09-18 14:47:15] local.INFO: 请求方法: POST  
+[2025-09-18 14:47:15] local.INFO: 请求参数: {"_token":"tr1Hvp6d0x0KK90cfuvFhgygUOTNmqr8rtSxLLmq","server_ids":["36","35","34"]}  
+[2025-09-18 14:47:15] local.INFO: 请求头: {"host":["127.0.0.1:8000"],"connection":["keep-alive"],"content-length":["107"],"cache-control":["max-age=0"],"sec-ch-ua":["\"Chromium\";v=\"140\", \"Not=A?Brand\";v=\"24\", \"Google Chrome\";v=\"140\""],"sec-ch-ua-mobile":["?0"],"sec-ch-ua-platform":["\"macOS\""],"upgrade-insecure-requests":["1"],"user-agent":["Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/140.0.0.0 Safari\/537.36"],"origin":["http:\/\/127.0.0.1:8000"],"content-type":["application\/x-www-form-urlencoded"],"accept":["text\/html,application\/xhtml+xml,application\/xml;q=0.9,image\/avif,image\/webp,image\/apng,*\/*;q=0.8,application\/signed-exchange;v=b3;q=0.7"],"sec-fetch-site":["same-origin"],"sec-fetch-mode":["navigate"],"sec-fetch-user":["?1"],"sec-fetch-dest":["document"],"referer":["http:\/\/127.0.0.1:8000\/servers?search=&group_id=9&status="],"accept-encoding":["gzip, deflate, br, zstd"],"accept-language":["zh-CN,zh;q=0.9"],"cookie":["remember_web_59ba36addc2b2f9401580f014c7f58ea4e30989d=eyJpdiI6ImVIRnhCUVJYRDA0U2dsTDBRNGV5MkE9PSIsInZhbHVlIjoiRlE2bGJKQXNlOTJZcVY5UDg3dERVWDRQZCs3aUFucVo3SFpERnJzLzFuV3BlQzNxSkxEblFhU1Zuck5IVThpWFd1UlgvSGNzNW9qRWFHSGx0VlY2Skp5Uk9KRlBnTzR6MzJxRXdDaWoyQ25TQU5nN1pQQi9qem5MVFd3S2k1Um9kZEc1bFhFVVh0YTlQOExWa0RvbTZtRVJIOFJuZHcyc0U0cjF6WUtkdTczcmFTMld4YWlKeWsrbmNPTVQ1eVZvSEhEVld5NVNLRitHVWVSRDJ6UjJxTUZzTnJUQndKcnVkeFRPUjc1TGcxND0iLCJtYWMiOiJmMzFiNWVlZDg3ZjkxYWIxYmExMzA5OGM4OWZkYTczNGY2MzQ1ZDJkNjkwMDk1NGI5OTlhZDMyNGY2OTFhMmNmIiwidGFnIjoiIn0%3D; XSRF-TOKEN=eyJpdiI6IjRKZDRuZTdVZkRMNHpPYUhvbFloK2c9PSIsInZhbHVlIjoiWFNFMWowQmNKMkF6cXFlbW1YTlpWVUlndnpqdEdlenA3TWQvYm9OcGNTajY1bEVNU3N5TG9JL0E3cE1QMkt1ODhmVmNHYWRIUldxb2xjcEFxa2M2c2NGTVlqajh5ZVVIVnUrMFRFTDlDc1dYUG1mWGc1SVRxdlhRcC93bWJqR1MiLCJtYWMiOiIwMzY3Mzc0M2U0NmNhZTNkMTcyM2I1MDMxYzM5MWI0M2QyM2M5M2E2Zjg5YzQ4ZDE5OTE1ZjRkYjNiOWZjNWUzIiwidGFnIjoiIn0%3D; servercollector_session=eyJpdiI6ImtnQS9sMWdlVkJPTGhCWVhyWmV1ZEE9PSIsInZhbHVlIjoib2gybzNxQ2ZjQjN2REd4THppSmkyUCtxVDg5c2Y4TlJrSkdURktNR2cyWXd1Q2NSakMyditYQ0xSMkttMldJSDRMRmVYZG1PR05vdnVSVjA1YVRIR3c4UHRDUkFtMGdlN1NvMVF5QkFsZXB2YmpZMkhNRGdZRHEvR05aSmFIMmkiLCJtYWMiOiI2OWJhMTY3ZmZjNjhjOTMyODQ5N2RmZTRmYzVkODlkZmQ0ZGQ5YzIwMmY1ZDA3ZWRkMWFjNDFjYzI3NjMxNzZiIiwidGFnIjoiIn0%3D"]}  
+[2025-09-18 14:47:15] local.INFO: CSRF令牌(X-CSRF-TOKEN): 不存在  
+[2025-09-18 14:47:15] local.INFO: CSRF令牌(X-XSRF-TOKEN): 不存在  
+[2025-09-18 14:47:15] local.INFO: CSRF令牌(请求体): tr1Hvp6d0x0KK90cfuvFhgygUOTNmqr8rtSxLLmq  
+[2025-09-18 14:47:15] local.INFO: Session ID: x7V5d937VL51Wa1wUfmxMR65WNt5qnAUCgmXi0Ni  
+[2025-09-18 14:47:15] local.INFO: Session中的CSRF令牌: tr1Hvp6d0x0KK90cfuvFhgygUOTNmqr8rtSxLLmq  
+[2025-09-18 14:47:16] local.INFO: 用户认证状态: 已登录  
+[2025-09-18 14:47:16] local.INFO: 登录用户: admin@example.com  
+[2025-09-18 14:47:16] local.INFO: 请求中包含_token参数: tr1Hvp6d0x0KK90cfuvFhgygUOTNmqr8rtSxLLmq  
+[2025-09-18 14:47:16] local.INFO: CSRF令牌验证成功  
+[2025-09-18 14:47:16] local.INFO: 服务器IDs: ["36","35","34"]  
+[2025-09-18 14:47:16] local.INFO: 查询选中的服务器数据  
+[2025-09-18 14:47:16] local.INFO: 找到服务器数量: 3  
+[2025-09-18 14:47:16] local.INFO: 找到采集组件数量: 6  
+[2025-09-18 14:47:16] local.INFO: 开始导出Excel文件  
+[2025-09-18 14:47:16] local.INFO: ServersExport实例创建成功  
+[2025-09-18 14:47:19] local.INFO: Excel导出成功  
+[2025-09-18 21:56:54] local.INFO: 开始执行服务器命令 {"server_id":39,"server_ip":"114.116.199.34","command":"ls -a"} 
+[2025-09-18 21:56:54] local.INFO: 尝试SSH登录 {"server_id":39,"server_ip":"114.116.199.34","port":22,"username":"liuyidong"} 
+[2025-09-18 21:56:54] local.INFO: 执行命令 {"server_id":39,"server_ip":"114.116.199.34","command":"ls -a"} 
+[2025-09-18 21:56:54] local.INFO: 命令执行完成 {"server_id":39,"server_ip":"114.116.199.34","command":"ls -a","has_output":true,"output_length":40,"raw_output":".
+..
+.bash_logout
+.bash_profile
+.bashrc
+","ssh_errors":["SSH_MSG_GLOBAL_REQUEST: hostkeys-00@openssh.com"]} 
+[2025-09-18 21:56:54] local.INFO: 服务器数据变更，清除缓存 {"server_id":39} 
+[2025-09-18 21:56:59] local.INFO: 开始执行服务器命令 {"server_id":39,"server_ip":"114.116.199.34","command":"ls /"} 
+[2025-09-18 21:56:59] local.INFO: 尝试SSH登录 {"server_id":39,"server_ip":"114.116.199.34","port":22,"username":"liuyidong"} 
+[2025-09-18 21:56:59] local.INFO: 执行命令 {"server_id":39,"server_ip":"114.116.199.34","command":"ls /"} 
+[2025-09-18 21:57:00] local.INFO: 命令执行完成 {"server_id":39,"server_ip":"114.116.199.34","command":"ls /","has_output":true,"output_length":184,"raw_output":"alidata
+bin
+boot
+CloudResetPwdAgentNew
+CloudResetPwdUpdateAgent
+CloudrResetPwdAgent
+data
+dev
+etc
+home
+lib
+lib64
+lost+found
+media
+mnt
+opt
+proc
+root
+run
+sbin
+srv
+sys
+tmp
+usr
+var
+wwwroot
+","ssh_errors":["SSH_MSG_GLOBAL_REQUEST: hostkeys-00@openssh.com"]} 
+[2025-09-18 21:57:00] local.INFO: 服务器数据变更，清除缓存 {"server_id":39} 
+[2025-09-18 21:57:31] local.INFO: 开始执行服务器命令 {"server_id":39,"server_ip":"114.116.199.34","command":"ls /alidata/"} 
+[2025-09-18 21:57:31] local.INFO: 尝试SSH登录 {"server_id":39,"server_ip":"114.116.199.34","port":22,"username":"liuyidong"} 
+[2025-09-18 21:57:32] local.INFO: 执行命令 {"server_id":39,"server_ip":"114.116.199.34","command":"ls /alidata/"} 
+[2025-09-18 21:57:32] local.INFO: 命令执行完成 {"server_id":39,"server_ip":"114.116.199.34","command":"ls /alidata/","has_output":true,"output_length":49,"raw_output":"account.log
+init
+log
+server
+website-info.log
+www
+","ssh_errors":["SSH_MSG_GLOBAL_REQUEST: hostkeys-00@openssh.com"]} 
+[2025-09-18 21:57:32] local.INFO: 服务器数据变更，清除缓存 {"server_id":39} 
+[2025-09-18 21:58:04] local.INFO: [install_success] 在服务器 114.116.199.34 (114.116.199.34) 上成功安装采集组件 系统-基础信息 (system_basic_info) {"server_id":39,"server_name":"114.116.199.34","server_ip":"114.116.199.34","collector_id":1,"collector_name":"系统-基础信息","collector_code":"system_basic_info","collector_version":"1.1.0","message":"采集组件安装成功","is_new":true,"is_updated":false,"remote_path":"/opt/collectors/system_basic_info","type":"script"} 
+[2025-09-18 21:58:13] local.INFO: [install_success] 在服务器 114.116.199.34 (114.116.199.34) 上成功安装采集组件 系统-环境变量 (system_env_vars) {"server_id":39,"server_name":"114.116.199.34","server_ip":"114.116.199.34","collector_id":2,"collector_name":"系统-环境变量","collector_code":"system_env_vars","collector_version":"1.0.0","message":"采集组件安装成功","is_new":true,"is_updated":false,"remote_path":"/opt/collectors/system_env_vars","type":"script"} 
+[2025-09-18 21:58:21] local.INFO: [install_success] 在服务器 114.116.199.34 (114.116.199.34) 上成功安装采集组件 系统-进程采集 (system_processes) {"server_id":39,"server_name":"114.116.199.34","server_ip":"114.116.199.34","collector_id":3,"collector_name":"系统-进程采集","collector_code":"system_processes","collector_version":"1.0.0","message":"采集组件安装成功","is_new":true,"is_updated":false,"remote_path":"/opt/collectors/system_processes","type":"script"} 
+[2025-09-18 21:58:30] local.INFO: [install_success] 在服务器 114.116.199.34 (114.116.199.34) 上成功安装采集组件 应用-nginx (nginx_info) {"server_id":39,"server_name":"114.116.199.34","server_ip":"114.116.199.34","collector_id":4,"collector_name":"应用-nginx","collector_code":"nginx_info","collector_version":"1.0.0","message":"采集组件安装成功","is_new":true,"is_updated":false,"remote_path":"/opt/collectors/nginx_info","type":"script"} 
+[2025-09-18 21:58:36] local.INFO: [install_success] 在服务器 114.116.199.34 (114.116.199.34) 上成功安装采集组件 系统-目录读取 (system_dir_info) {"server_id":39,"server_name":"114.116.199.34","server_ip":"114.116.199.34","collector_id":7,"collector_name":"系统-目录读取","collector_code":"system_dir_info","collector_version":"1.0.0","message":"采集组件安装成功","is_new":true,"is_updated":false,"remote_path":"/opt/collectors/php_app_info_01","type":"script"} 
+[2025-09-18 21:58:43] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":39,"server_name":"114.116.199.34","server_ip":"114.116.199.34","collector_id":1,"collector_name":"系统-基础信息","collector_code":"system_basic_info","output_length":175,"raw_output":"{\"system\":{\"os_release\":\"CentOS Linux 7 (Core)\",\"kernel\":\"3.10.0-1062.1.1.el7.x86_64\",\"cpu_model\":\"Intel(R) Xeon(R) Gold 6151 CPU @ 3.00GHz\",\"cpu_cores\":8,\"memory_gb\":15.51}}
+","output_preview":"{\"system\":{\"os_release\":\"CentOS Linux 7 (Core)\",\"kernel\":\"3.10.0-1062.1.1.el7.x86_64\",\"cpu_model\":\"Intel(R) Xeon(R) Gold 6151 CPU @ 3.00GHz\",\"cpu_cores\":8,\"memory_gb\":15.51}}
+"} 
+[2025-09-18 21:58:43] local.INFO: JSON数据采集成功 {"keys":["system"],"size":174,"formatted_size":236} 
+[2025-09-18 21:58:43] local.INFO: 采集组件执行成功 {"server_id":39,"collector_id":1,"output_length":175,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-18 21:58:45] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":39,"server_name":"114.116.199.34","server_ip":"114.116.199.34","collector_id":2,"collector_name":"系统-环境变量","collector_code":"system_env_vars","output_length":293,"raw_output":"{
+  \"path\": \"/usr/local/bin:/usr/bin\",
+  \"home\": \"/home/liuyidong\",
+  \"user\": \"liuyidong\",
+  \"shell\": \"/bin/bash\",
+  \"lang\": \"en_US.UTF-8\",
+  \"timezone\": \"CST\",
+  \"hostname\": \"dongtaibizhi-web03\",
+  \"pwd\": \"/home/liuyidong\",
+  \"total_env_vars\": \"17\",
+  \"collected_at\": \"2025-09-18 21:58:44\"
+}
+","output_preview":"{
+  \"path\": \"/usr/local/bin:/usr/bin\",
+  \"home\": \"/home/liuyidong\",
+  \"user\": \"liuyidong\",
+  \"shell\": \"/bin/bash\",
+  \"lang\": \"en_US.UTF-8\",
+  \"timezone\": \"CST\",
+  \"hostname\": \"dongtaibizhi-web03\",
+  \"pwd\": \"/home/liuyidong\",
+  \"total_env_vars\": \"17\",
+  \"collected_at\": \"2025-09-18 21:58:44\"
+}
+"} 
+[2025-09-18 21:58:45] local.INFO: JSON数据采集成功 {"keys":["path","home","user","shell","lang","timezone","hostname","pwd","total_env_vars","collected_at"],"size":292,"formatted_size":323} 
+[2025-09-18 21:58:45] local.INFO: 采集组件执行成功 {"server_id":39,"collector_id":2,"output_length":293,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-18 21:58:46] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":39,"server_name":"114.116.199.34","server_ip":"114.116.199.34","collector_id":3,"collector_name":"系统-进程采集","collector_code":"system_processes","output_length":1423,"raw_output":"{
+  \"total_processes\": 179,
+  \"running_processes\": 1,
+  \"sleeping_processes\": 179,
+  \"zombie_processes\": 0,
+  \"load_average\": \"0.18,0.16,0.14\",
+  \"memory\": {
+    \"total_mb\": 15884,
+    \"used_mb\": 773,
+    \"free_mb\": 610
+  },
+  \"cpu_cores\": 8,
+  \"top5_cpu_processes\": [
+    {\"pid\":1874,\"user\":\"root\",\"cpu_percent\":2.8,\"mem_percent\":0.2,\"command\":\"python\",\"exe_path\":\"\"},
+    {\"pid\":22943,\"user\":\"root\",\"cpu_percent\":2.0,\"mem_percent\":0.0,\"command\":\"sshd\",\"exe_path\":\"\"},
+    {\"pid\":25816,\"user\":\"www\",\"cpu_percent\":0.3,\"mem_percent\":0.1,\"command\":\"php-fpm\",\"exe_path\":\"\"},
+    {\"pid\":25665,\"user\":\"www\",\"cpu_percent\":0.2,\"mem_percent\":0.1,\"command\":\"php-fpm\",\"exe_path\":\"\"},
+    {\"pid\":25666,\"user\":\"www\",\"cpu_percent\":0.2,\"mem_percent\":0.1,\"command\":\"php-fpm\",\"exe_path\":\"\"}
+  ],
+  \"top5_mem_processes\": [
+    {\"pid\":1874,\"user\":\"root\",\"cpu_percent\":2.8,\"mem_percent\":0.2,\"command\":\"python\",\"exe_path\":\"\"},
+    {\"pid\":15701,\"user\":\"root\",\"cpu_percent\":0.0,\"mem_percent\":0.2,\"command\":\"systemd-journal\",\"exe_path\":\"\"},
+    {\"pid\":25725,\"user\":\"www\",\"cpu_percent\":0.2,\"mem_percent\":0.2,\"command\":\"php-fpm\",\"exe_path\":\"\"},
+    {\"pid\":23879,\"user\":\"www\",\"cpu_percent\":0.1,\"mem_percent\":0.2,\"command\":\"nginx\",\"exe_path\":\"\"},
+    {\"pid\":23877,\"user\":\"www\",\"cpu_percent\":0.1,\"mem_percent\":0.1,\"command\":\"nginx\",\"exe_path\":\"\"}
+  ],
+date: extra operand ‘%H:%M:%S\"’
+Try 'date --help' for more information.
+  \"collected_at\": \"\"
+}
+","output_preview":"{
+  \"total_processes\": 179,
+  \"running_processes\": 1,
+  \"sleeping_processes\": 179,
+  \"zombie_processes\": 0,
+  \"load_average\": \"0.18,0.16,0.14\",
+  \"memory\": {
+    \"total_mb\": 15884,
+    \"used_mb\": 773,
+    \"free_mb\": 610
+  },
+  \"cpu_cores\": 8,
+  \"top5_cpu_processes\": [
+    {\"pid\":1874,\"user\":\"root\",\"cpu_percent\":2.8,\"mem_percent\":0.2,\"command\":\"python\",\"exe_path\":\"\"},
+    {\"pid\":22943,\"user\":\"root\",\"cpu_percent\":2.0,\"mem_percent\":0.0,\"command\":\"sshd\",\"exe_path\":\"\"},
+    {\"pid\":25816,\"user\":\"www\",..."} 
+[2025-09-18 21:58:46] local.INFO: 原始数据采集 {"type":"raw_output","size":1422,"json_error":"Syntax error"} 
+[2025-09-18 21:58:46] local.INFO: 采集组件执行成功 {"server_id":39,"collector_id":3,"output_length":1423,"parsed_result_keys":["data_type","raw_output","parsed_at","note"],"parsed_result_type":"array"} 
+[2025-09-18 21:58:47] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":39,"server_name":"114.116.199.34","server_ip":"114.116.199.34","collector_id":4,"collector_name":"应用-nginx","collector_code":"nginx_info","output_length":1815,"raw_output":"{
+  \"nginx_conf\": \"/alidata/server/nginx/conf/nginx.conf\",
+  \"vhosts\": [
+    {
+      \"server_name\": \"bizhi.ludashi.com travel.shanhutech.cn refund.shanhutech.cn jl.shanhutech.cn fb.*\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/\",
+      \"locations\": [
+        {\"path\": \"~\", \"root\": \"\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"bizhi.shanhutech.cn fb.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/\",
+      \"locations\": [
+        {\"path\": \"~\", \"root\": \"\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"bizhi.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/\",
+      \"locations\": [
+        {\"path\": \"~\", \"root\": \"\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"bizhi.ludashi.com\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/\",
+      \"locations\": [
+        {\"path\": \"~\", \"root\": \"\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"zb-bizhi.ludashi.com\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/\",
+      \"locations\": [
+        {\"path\": \"~\", \"root\": \"\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"paint.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/\",
+      \"locations\": [
+        {\"path\": \"~\", \"root\": \"\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"beautify.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/mouse\",
+      \"locations\": [
+        {\"path\": \"/\", \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/mouse\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"niangao.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/\",
+      \"locations\": [
+        {\"path\": \"~\", \"root\": \"\", \"proxy_pass\": \"\"}
+      ]
+    }
+  ]
+}
+","output_preview":"{
+  \"nginx_conf\": \"/alidata/server/nginx/conf/nginx.conf\",
+  \"vhosts\": [
+    {
+      \"server_name\": \"bizhi.ludashi.com travel.shanhutech.cn refund.shanhutech.cn jl.shanhutech.cn fb.*\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/\",
+      \"locations\": [
+        {\"path\": \"~\", \"root\": \"\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"bizhi.shanhutech.cn fb.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/\",
+      \"locations\": [
+        {\"path\"..."} 
+[2025-09-18 21:58:47] local.INFO: JSON数据采集成功 {"keys":["nginx_conf","vhosts"],"size":1814,"formatted_size":2815} 
+[2025-09-18 21:58:47] local.INFO: 采集组件执行成功 {"server_id":39,"collector_id":4,"output_length":1815,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-18 21:58:48] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":39,"server_name":"114.116.199.34","server_ip":"114.116.199.34","collector_id":7,"collector_name":"系统-目录读取","collector_code":"system_dir_info","output_length":329,"raw_output":"{\"filesystem\":{\"path\":\"/\",\"children\":[\"//alidata\",\"//bin\",\"//boot\",\"//CloudResetPwdAgentNew\",\"//CloudResetPwdUpdateAgent\",\"//CloudrResetPwdAgent\",\"//data\",\"//dev\",\"//etc\",\"//home\",\"//lib\",\"//lib64\",\"//lost+found\",\"//media\",\"//mnt\",\"//opt\",\"//proc\",\"//root\",\"//run\",\"//sbin\",\"//srv\",\"//sys\",\"//tmp\",\"//usr\",\"//var\",\"//wwwroot\"]}}
+","output_preview":"{\"filesystem\":{\"path\":\"/\",\"children\":[\"//alidata\",\"//bin\",\"//boot\",\"//CloudResetPwdAgentNew\",\"//CloudResetPwdUpdateAgent\",\"//CloudrResetPwdAgent\",\"//data\",\"//dev\",\"//etc\",\"//home\",\"//lib\",\"//lib64\",\"//lost+found\",\"//media\",\"//mnt\",\"//opt\",\"//proc\",\"//root\",\"//run\",\"//sbin\",\"//srv\",\"//sys\",\"//tmp\",\"//usr\",\"//var\",\"//wwwroot\"]}}
+"} 
+[2025-09-18 21:58:48] local.INFO: JSON数据采集成功 {"keys":["filesystem"],"size":328,"formatted_size":760} 
+[2025-09-18 21:58:48] local.INFO: 采集组件执行成功 {"server_id":39,"collector_id":7,"output_length":329,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-18 22:00:05] local.INFO: [install_success] 在服务器 114.116.199.34 (114.116.199.34) 上成功安装采集组件 应用-配置（PHP） (php_app_info) {"server_id":39,"server_name":"114.116.199.34","server_ip":"114.116.199.34","collector_id":5,"collector_name":"应用-配置（PHP）","collector_code":"php_app_info","collector_version":"1.0.0","message":"采集组件安装成功","is_new":true,"is_updated":false,"remote_path":"/opt/collectors/php_app_info","type":"script"} 
+[2025-09-18 22:00:21] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":39,"server_name":"114.116.199.34","server_ip":"114.116.199.34","collector_id":5,"collector_name":"应用-配置（PHP）","collector_code":"php_app_info","output_length":17363,"raw_output":"[
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/console.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/env.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/console.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"basePath\": \"dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . \",
+      \"name\": \"bizhi.ludashi\",
+      \"preload\": \"array(\",
+      \"import\": \"array(\",
+      \"modules\": \"array(\",
+      \"gii\": \"array(\",
+      \"class\": \"system.gii.GiiModule\",
+      \"password\": \"398062080\",
+      \"ipFilters\": \"array(\",
+      \"components\": \"array(\",
+      \"user\": \"array(\",
+      \"allowAutoLogin\": \"true,\",
+      \"urlManager\": \"array(\",
+      \"urlFormat\": \"path\",
+      \"rules\": \"array(\",
+      \"<controller:\\\\w+>/<id:\\\\d+>\": \"<controller>/view\",
+      \"<controller:\\\\w+>/<action:\\\\w+>/<id:\\\\d+>\": \"<controller>/<action>\",
+      \"<controller:\\\\w+>/<action:\\\\w+>\": \"<controller>/<action>\",
+      \"smarty\": \"array(\",
+      \"class\": \"application.extensions.CSmarty\",
+      \"freq\": \"require(dirname(__FILE__) . \",
+      \"db\": \"require(dirname(__FILE__) . \",
+      \"dig_db\": \"require(dirname(__FILE__) . \",
+      \"static_db\": \"require(dirname(__FILE__) . \",
+      \"redis\": \"require(dirname(__FILE__) . \",
+      \"redis_dg\": \"require(dirname(__FILE__) . \",
+      \"log\": \"array(\",
+      \"class\": \"CLogRouter\",
+      \"routes\": \"array(\",
+      \"class\": \"CFileLogRoute\",
+      \"enabled\": \"true,\",
+      \"levels\": \"error, warning, info\",
+      \"logFile\": \"application.cron.log.\",
+      \"maxFileSize\": \"1024*20,//单文件大小上限, 单位: KB\",
+      \"LogPath\": \"/data/nginx/logs/bizhi.ludashi.com/app/\",
+      \"categories\": \"*\",
+      \"class\": \"CFileLogRoute\",
+      \"logFile\": \"sms.log.\",
+      \"maxFileSize\": \"1024 * 10,//单文件最大1M*10\",
+      \"LogPath\": \"/data/nginx/logs/bizhi.ludashi.com/app/\",
+      \"categories\": \"sms.*\",
+      \"params\": \"require(dirname(__FILE__) . \"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/params.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"adminEmail\": \"g-server@ludashi.com\",
+      \"cmsPath\": \"dirname(dirname(dirname(dirname(__FILE__)))) . \",
+      \"weibo\": \"array(\",
+      \"appAKey\": \"1299896795\",
+      \"appSKey\": \"914929686de1af98df4f165063f0bc88\",
+      \"callBackUrl\": \"http://preonline.shanhutech.cn/live/share/sinaWeiboCallback\",
+      \"shareDou\": \"10\",
+      \"qzone\": \"array(\",
+      \"shareDou\": \"10\",
+      \"weixin\": \"array(\",
+      \"shareDou\": \"20,\",
+      \"encry_key\": \"U1OgPVwHG3RoO9zPLFJlJUrb2o64YyvVdFoexp4i8HP\",
+      \"callback_url\": \"https://preonline.shanhutech.cn/live/pay/weixinCallback\",
+      \"svip_callback_url\": \"https://preonline.shanhutech.cn/live/vip/weixinCallback\",
+      \"smallvip_callback_url\": \"https://preonline.shanhutech.cn/live/vip/weixinCallbackSmall\",
+      \"travel_callback_url\": \"https://preonline.shanhutech.cn/live/travel/weixinCallback\",
+      \"contract_callback_url\": \"https://preonline.shanhutech.cn/live/pay/ContractCallback\",
+      \"pappay_callback_url\": \"https://preonline.shanhutech.cn/live/pay/pappayCallback\",
+      \"zhibo_callback_url\": \"https://preonline.shanhutech.cn/live/pay/weixinLiveCallback\",
+      \"app_id\": \"wx704213c76d1873e4\",
+      \"app_secret\": \"6473b2f9b9da6fdf730dfe3e8679a22b\",
+      \"plan_id\": \"136785,//回归模板\",
+      \"bird_login_callback_url\": \"https://preonline.shanhutech.cn/live/login/weixinLogin\",
+      \"bird_login_app_id\": \"wxa5adc37de90852a6\",
+      \"bird_login_app_secret\": \"0b794d0f2e66b4ee984e42dbdb6f52eb\",
+      \"niangao_login_callback_url\": \"https://preonline.shanhutech.cn/live/login/weixinLogin\",
+      \"niangao_login_app_id\": \"wx4b8e28915060614c\",
+      \"niangao_login_app_secret\": \"e8f6bb4e6f9926a250c7f8b7e3fdcdf8\",
+      \"zfb\": \"array(\",
+      \"callback_url\": \"https://preonline.shanhutech.cn/live/pay/alipayCallback\",
+      \"svip_callback_url\": \"https://preonline.shanhutech.cn/live/vip/zfbCallback\",
+      \"smallvip_callback_url\": \"https://preonline.shanhutech.cn/live/vip/zfbCallbackSmall\",
+      \"travel_callback_url\": \"https://preonline.shanhutech.cn/live/travel/alipayCallback\",
+      \"zhibo_callback_url\": \"https://preonline.shanhutech.cn/live/pay/alipayLiveCallback\",
+      \"lianxiang\": \"array(\",
+      \"callback_url\": \"https://preonline.shanhutech.cn/live/pay/lianxiangCallback\",
+      \"svip_callback_url\": \"https://preonline.shanhutech.cn/live/vip/lianxiangCallback\",
+      \"smallvip_callback_url\": \"https://preonline.shanhutech.cn/live/vip/lianxiangCallbackSmall\",
+      \"adminEmail\": \"g-server@ludashi.com\",
+      \"cmsPath\": \"dirname(dirname(dirname(dirname(__FILE__)))) . \",
+      \"weibo\": \"array(\",
+      \"appAKey\": \"1299896795\",
+      \"appSKey\": \"914929686de1af98df4f165063f0bc88\",
+      \"callBackUrl\": \"http://bizhi.shanhutech.cn/live/share/sinaWeiboCallback\",
+      \"shareDou\": \"10\",
+      \"qzone\": \"array(\",
+      \"shareDou\": \"10\",
+      \"weixin\": \"array(\",
+      \"shareDou\": \"20,\",
+      \"encry_key\": \"tel0js826iLl1CTd\",
+      \"encry_key\": \"U1OgPVwHG3RoO9zPLFJlJUrb2o64YyvVdFoexp4i8HP\",
+      \"callback_url\": \"https://bizhi.shanhutech.cn/live/pay/weixinCallback\",
+      \"svip_callback_url\": \"https://bizhi.shanhutech.cn/live/vip/weixinCallback\",
+      \"smallvip_callback_url\": \"https://bizhi.shanhutech.cn/live/vip/weixinCallbackSmall\",
+      \"travel_callback_url\": \"https://bizhi.shanhutech.cn/live/travel/weixinCallback\",
+      \"contract_callback_url\": \"https://bizhi.shanhutech.cn/live/pay/ContractCallback\",
+      \"pappay_callback_url\": \"https://bizhi.shanhutech.cn/live/pay/pappayCallback\",
+      \"zhibo_callback_url\": \"https://bizhi.shanhutech.cn/live/pay/weixinLiveCallback\",
+      \"app_id\": \"wx79714bf597d38712\",
+      \"app_secret\": \"dcab2435aea5e4ce835abe294d907fb2\",
+      \"app_id\": \"wx704213c76d1873e4\",
+      \"app_secret\": \"6473b2f9b9da6fdf730dfe3e8679a22b\",
+      \"plan_id\": \"135032,\",
+      \"bird_login_callback_url\": \"https://bizhi.shanhutech.cn/live/login/weixinLogin\",
+      \"bird_login_app_id\": \"wxa5adc37de90852a6\",
+      \"bird_login_app_secret\": \"0b794d0f2e66b4ee984e42dbdb6f52eb\",
+      \"niangao_login_callback_url\": \"https://bizhi.shanhutech.cn/live/login/weixinLogin\",
+      \"niangao_login_app_id\": \"wx4b8e28915060614c\",
+      \"niangao_login_app_secret\": \"e8f6bb4e6f9926a250c7f8b7e3fdcdf8\",
+      \"zfb\": \"array(\",
+      \"callback_url\": \"https://bizhi.shanhutech.cn/live/pay/alipayCallback\",
+      \"svip_callback_url\": \"https://bizhi.shanhutech.cn/live/vip/zfbCallback\",
+      \"smallvip_callback_url\": \"https://bizhi.shanhutech.cn/live/vip/zfbCallbackSmall\",
+      \"travel_callback_url\": \"https://bizhi.shanhutech.cn/live/travel/alipayCallback\",
+      \"zhibo_callback_url\": \"https://bizhi.shanhutech.cn/live/pay/alipayLiveCallback\",
+      \"lianxiang\": \"array(\",
+      \"callback_url\": \"https://bizhi.shanhutech.cn/live/pay/lianxiangCallback\",
+      \"svip_callback_url\": \"https://bizhi.shanhutech.cn/live/vip/lianxiangCallback\",
+      \"smallvip_callback_url\": \"https://bizhi.shanhutech.cn/live/vip/lianxiangCallbackSmall\"
+    },
+    \"dependencies\": {
+      \"api\": \"            'callBackUrl' => 'http://preonline.shanhutech.cn/live/share/sinaWeiboCallback',\"
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/dig_database.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"CDbConnection\",
+      \"connectionString\": \"mysql:host=114.116.194.188;port=33306;dbname=wap_wallpaper\",
+      \"connectionString\": \"mysql:host=afb460b644ab42c4b9f8c4617d850fc8in01.internal.cn-north-4.mysql.rds.myhuaweicloud.com;port=33306;dbname=wap_wallpaper\",
+      \"emulatePrepare\": \"true,\",
+      \"username\": \"lds_bizhi_web\",
+      \"password\": \"Ya8PyjDFpt88wtK7zpnml1X8H3INVb\",
+      \"charset\": \"utf8\"
+    },
+    \"dependencies\": {
+      \"database\": \"    //'connectionString' => \\\"mysql:host=114.116.194.188;port=33306;dbname=wap_wallpaper\\\",//外网\"
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/static_db.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"CDbConnection\",
+      \"connectionString\": \"mysql:host=192.168.1.168;port=3306;dbname=lds_bizhi\",
+      \"emulatePrepare\": \"true,\",
+      \"username\": \"wp_lds_bizhi\",
+      \"password\": \"fMN1AernUOIfG9Xb\",
+      \"charset\": \"utf8\"
+    },
+    \"dependencies\": {
+      \"database\": \"    'connectionString' => \\\"mysql:host=192.168.1.168;port=3306;dbname=lds_bizhi\\\",\"
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/redis.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"application.utils.CRedis\",
+      \"server\": \"array(\",
+      \"host\": \"{$dbHost}\",
+      \"port\": \"{$port}\",
+      \"database\": \"0,\",
+      \"timeout\": \"3,\",
+      \"password\": \"bizhiRedisOnline_TtXp7x9HwyOY\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/freq.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"application.utils.CFreqCtrl\",
+      \"configs\": \"array(\",
+      \"default\": \"array(\",
+      \"qps\": \"array(\",
+      \"60\": \"10000),\",
+      \"ip\": \"array(\",
+      \"60\": \"2000),\",
+      \"white\": \"array(\",
+      \"share_add_bdou_weibo\": \"array(//微博分享添加壁纸豆\",
+      \"qid\": \"array(\",
+      \"86401\": \"1),\",
+      \"share_add_bdou_qzone\": \"array(//QQ空间分享添加壁纸豆\",
+      \"qid\": \"array(\",
+      \"86401\": \"1),\",
+      \"share_add_bdou_weixin\": \"array( //微信分享添加壁纸豆\",
+      \"qid\": \"array(\",
+      \"86401\": \"1),\",
+      \"collection\": \"array( //用户收藏壁纸\",
+      \"qid\": \"array(\",
+      \"60\": \"50),\",
+      \"60\": \"300)\",
+      \"share_for_match_weibo\": \"array(//微博分享添加壁纸豆\",
+      \"ip\": \"array(\",
+      \"86401\": \"1),\",
+      \"share_for_match_qzone\": \"array(//QQ空间分享添加壁纸豆\",
+      \"ip\": \"array(\",
+      \"86401\": \"1),\",
+      \"share_for_match_weixin\": \"array( //微信分享添加壁纸豆\",
+      \"ip\": \"array(\",
+      \"86401\": \"1),\",
+      \"pay_for_tuiguang_alipay\": \"array( //推广支付宝下单\",
+      \"ip\": \"array(\",
+      \"3600\": \"20),\",
+      \"20\": \"1800)\",
+      \"uninstall_questionnaire\": \"array( //卸载问卷调查\",
+      \"ip\": \"array(\",
+      \"3600\": \"5)\",
+      \"comment\": \"array( //用户评论\",
+      \"qid\": \"array(\",
+      \"1800\": \"20),\",
+      \"ip\": \"array(\",
+      \"3600\": \"300),\",
+      \"3600\": \"3600)\",
+      \"comment_zan\": \"array( //用户点赞评论\",
+      \"qid\": \"array(\",
+      \"60\": \"20),\",
+      \"user_gift_code\": \"array( //礼金券兑换\",
+      \"qid\": \"array(\",
+      \"86400\": \"10),\",
+      \"ip\": \"array(\",
+      \"86400\": \"10),\",
+      \"86400\": \"86400)\",
+      \"mall_duihuan\": \"array( //商城兑换\",
+      \"qid\": \"array(\",
+      \"1\": \"1),\",
+      \"livewallpaper_buy\": \"array( //壁纸购买\",
+      \"qid\": \"array(\",
+      \"1\": \"1),\",
+      \"remove_buy_list\": \"array( //购买列表移除\",
+      \"qid\": \"array(\",
+      \"1\": \"5),\",
+      \"get_sec_phone\": \"array( //获取密保手机频次限制\",
+      \"qps\": \"array(\",
+      \"1\": \"4),\",
+      \"bind_user_phone\": \"array( //绑定手机号码\",
+      \"qid\": \"array(\",
+      \"60\": \"1 ),\",
+      \"login_count\": \"array( //登录次数\",
+      \"qid\": \"array(\",
+      \"86400\": \"10),\",
+      \"login_code_check\": \"array( //登录验证码校验\",
+      \"phone\": \"array(\",
+      \"86400\": \"2),\",
+      \"change_code_check\": \"array(\",
+      \"phone\": \"array(\",
+      \"86400\": \"2),\",
+      \"find_password\": \"array( //找回密码验证码校验\",
+      \"phone\": \"array(\",
+      \"60\": \"2),\",
+      \"vip_use\": \"array( //vip用户使用\",
+      \"qid\": \"array(\",
+      \"60\": \"2),\",
+      \"login_sms_limit\": \"array( //登录验证码限制\",
+      \"phone\": \"array(\",
+      \"86400\": \"5),\",
+      \"uninstall_sms_limit\": \"array( //卸载获取免费壁纸豆\",
+      \"phone\": \"array(\",
+      \"86400\": \"5),\",
+      \"login_sms_img_limit\": \"array( //登录验证码图片限制\",
+      \"phone\": \"array(\",
+      \"86400\": \"2),\",
+      \"third_bind\": \"array( //三方登录手机号绑定\",
+      \"phone\": \"array(\",
+      \"86400\": \"5),\",
+      \"smrz\": \"array( //实名认证\",
+      \"phone\": \"array(\",
+      \"86400\": \"5),\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/main.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"basePath\": \"dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . \",
+      \"name\": \"bizhi.ludashi\",
+      \"defaultController\": \"index\",
+      \"preload\": \"array(\",
+      \"import\": \"array(\",
+      \"modules\": \"array(\",
+      \"gii\": \"array(\",
+      \"class\": \"system.gii.GiiModule\",
+      \"password\": \"398062080\",
+      \"ipFilters\": \"array(\",
+      \"components\": \"array(\",
+      \"user\": \"array(\",
+      \"allowAutoLogin\": \"true,\",
+      \"urlManager\": \"array(\",
+      \"urlFormat\": \"path\",
+      \"showScriptName\": \"false,\",
+      \"rules\": \"array(\",
+      \"<controller:\\\\w+>/<id:\\\\d+>\": \"<controller>/view\",
+      \"<controller:\\\\w+>/<action:\\\\w+>/<id:\\\\d+>\": \"<controller>/<action>\",
+      \"<controller:\\\\w+>/<action:\\\\w+>\": \"<controller>/<action>\",
+      \"<__:.*>\": \"<__>\",
+      \"smarty\": \"array(\",
+      \"class\": \"application.extensions.CSmarty\",
+      \"freq\": \"require(dirname(__FILE__) . \",
+      \"db\": \"require(dirname(__FILE__) . \",
+      \"dig_db\": \"require(dirname(__FILE__) . \",
+      \"static_db\": \"require(dirname(__FILE__) . \",
+      \"static_wallpaper_db\": \"array(\",
+      \"class\": \"CDbConnection\",
+      \"connectionString\": \"mysql:host=10.208.255.227;port=13420;dbname=apc_wallpaper\",
+      \"emulatePrepare\": \"true,\",
+      \"username\": \"apc_wallpaper\",
+      \"password\": \"qihoo@360\",
+      \"charset\": \"utf8\",
+      \"ldsBizhi\": \"array(\",
+      \"class\": \"CDbConnection\",
+      \"connectionString\": \"mysql:host=afb460b644ab42c4b9f8c4617d850fc8in01.internal.cn-north-4.mysql.rds.myhuaweicloud.com;port=33306;dbname=bizhi_transcode\",
+      \"emulatePrepare\": \"true,\",
+      \"username\": \"lds_bizhi_web\",
+      \"password\": \"Ya8PyjDFpt88wtK7zpnml1X8H3INVb\",
+      \"charset\": \"utf8\",
+      \"bizhistat\": \"array(\",
+      \"class\": \"CDbConnection\",
+      \"connectionString\": \"mysql:host=ldsaliyundb1.mysql.rds.aliyuncs.com;dbname=bizhi_stat\",
+      \"emulatePrepare\": \"true,\",
+      \"username\": \"logstat\",
+      \"password\": \"41iAbMDKvxry8HoS\",
+      \"charset\": \"utf8\",
+      \"redis\": \"require(dirname(__FILE__) . \",
+      \"redis_share\": \"require(dirname(__FILE__) . \",
+      \"redis_dg\": \"require(dirname(__FILE__) . \",
+      \"errorHandler\": \"array(\",
+      \"errorAction\": \"index/error\",
+      \"log\": \"array(\",
+      \"class\": \"CLogRouter\",
+      \"routes\": \"array(\",
+      \"class\": \"CFileLogRoute\",
+      \"levels\": \"error, warning, info\",
+      \"logFile\": \"application.log.\",
+      \"maxFileSize\": \"1024*20,//单文件大小上限, 单位: KB\",
+      \"LogPath\": \"/data/nginx/logs/bizhi.ludashi.com/app/\",
+      \"class\": \"CFileLogRoute\",
+      \"logFile\": \"sms.log.\",
+      \"maxFileSize\": \"1024 * 10,//单文件最大1M*10\",
+      \"LogPath\": \"/data/nginx/logs/bizhi.ludashi.com/app/\",
+      \"categories\": \"sms.*\",
+      \"params\": \"require(dirname(__FILE__) . \"
+    },
+    \"dependencies\": {
+      \"database\": \"            'connectionString' => \\\"mysql:host=10.208.255.227;port=13420;dbname=apc_wallpaper\\\",\"
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/redis_dg.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"application.utils.CRedis\",
+      \"server\": \"array(\",
+      \"host\": \"redis-864acf7c-5d2f-4ef0-ac03-ac4244e98e7d.cn-north-4.dcs.myhuaweicloud.com\",
+      \"port\": \"6379,\",
+      \"database\": \"2,\",
+      \"timeout\": \"5,\",
+      \"password\": \"dOJcIdDHQ1jdzmFNsf00uD6heyTogc5l\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/redis_share.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"application.utils.CRedis\",
+      \"server\": \"array(\",
+      \"host\": \"pc-9c85756abbf04bf5-public.redis.rds.aliyuncs.com\",
+      \"port\": \"6379,\",
+      \"database\": \"6,\",
+      \"timeout\": \"2,\",
+      \"password\": \"9c85756abbf04bf5:Ludashi930\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/database.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"connectionString\": \"mysql:host={$dbHost};port={$port};dbname=lds_bizhi_web\",
+      \"emulatePrepare\": \"true,\",
+      \"username\": \"lds_bizhi_web\",
+      \"password\": \"Ya8PyjDFpt88wtK7zpnml1X8H3INVb\",
+      \"charset\": \"utf8\"
+    },
+    \"dependencies\": {
+      \"database\": \"\t'connectionString' => \\\"mysql:host={$dbHost};port={$port};dbname=lds_bizhi_web\\\",\"
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/define.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+
+    },
+    \"dependencies\": {
+      \"api\": \"define('BASE_URL_HTTP', 'http://bizhi.ludashi.com');\",
+      \"cdn\": \"define('CDN_NEW_SOURCE',       'ali');//hw or ali\"
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/main.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+
+    },
+    \"dependencies\": {
+
+    }
+  }
+]
+","output_preview":"[
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/console.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/env.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/console.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      ..."} 
+[2025-09-18 22:00:21] local.INFO: 原始数据采集 {"type":"raw_output","size":17362,"json_error":"Control character error, possibly incorrectly encoded"} 
+[2025-09-18 22:00:21] local.INFO: 采集组件执行成功 {"server_id":39,"collector_id":5,"output_length":17363,"parsed_result_keys":["data_type","raw_output","parsed_at","note"],"parsed_result_type":"array"} 
+[2025-09-18 22:06:09] local.INFO: 开始执行服务器命令 {"server_id":39,"server_ip":"114.116.199.34","command":"ls"} 
+[2025-09-18 22:06:09] local.INFO: 尝试SSH登录 {"server_id":39,"server_ip":"114.116.199.34","port":22,"username":"liuyidong"} 
+[2025-09-18 22:06:10] local.INFO: 执行命令 {"server_id":39,"server_ip":"114.116.199.34","command":"ls"} 
+[2025-09-18 22:06:10] local.INFO: 命令执行完成 {"server_id":39,"server_ip":"114.116.199.34","command":"ls","has_output":false,"output_length":0,"raw_output":"","ssh_errors":["SSH_MSG_GLOBAL_REQUEST: hostkeys-00@openssh.com"]} 
+[2025-09-18 22:06:10] local.INFO: 服务器数据变更，清除缓存 {"server_id":39} 
+[2025-09-18 22:06:13] local.INFO: 开始执行服务器命令 {"server_id":39,"server_ip":"114.116.199.34","command":"ls /"} 
+[2025-09-18 22:06:13] local.INFO: 尝试SSH登录 {"server_id":39,"server_ip":"114.116.199.34","port":22,"username":"liuyidong"} 
+[2025-09-18 22:06:14] local.INFO: 执行命令 {"server_id":39,"server_ip":"114.116.199.34","command":"ls /"} 
+[2025-09-18 22:06:14] local.INFO: 命令执行完成 {"server_id":39,"server_ip":"114.116.199.34","command":"ls /","has_output":true,"output_length":184,"raw_output":"alidata
+bin
+boot
+CloudResetPwdAgentNew
+CloudResetPwdUpdateAgent
+CloudrResetPwdAgent
+data
+dev
+etc
+home
+lib
+lib64
+lost+found
+media
+mnt
+opt
+proc
+root
+run
+sbin
+srv
+sys
+tmp
+usr
+var
+wwwroot
+","ssh_errors":["SSH_MSG_GLOBAL_REQUEST: hostkeys-00@openssh.com"]} 
+[2025-09-18 22:06:14] local.INFO: 服务器数据变更，清除缓存 {"server_id":39} 
+[2025-09-18 22:06:26] local.INFO: 开始执行服务器命令 {"server_id":39,"server_ip":"114.116.199.34","command":"ls /home"} 
+[2025-09-18 22:06:26] local.INFO: 尝试SSH登录 {"server_id":39,"server_ip":"114.116.199.34","port":22,"username":"liuyidong"} 
+[2025-09-18 22:06:26] local.INFO: 执行命令 {"server_id":39,"server_ip":"114.116.199.34","command":"ls /home"} 
+[2025-09-18 22:06:26] local.INFO: 命令执行完成 {"server_id":39,"server_ip":"114.116.199.34","command":"ls /home","has_output":true,"output_length":46,"raw_output":"duhaiping
+huqimeng
+liuqing
+liuyidong
+q
+zhulei
+","ssh_errors":["SSH_MSG_GLOBAL_REQUEST: hostkeys-00@openssh.com"]} 
+[2025-09-18 22:06:26] local.INFO: 服务器数据变更，清除缓存 {"server_id":39} 
+[2025-09-18 22:06:37] local.INFO: 开始执行服务器命令 {"server_id":39,"server_ip":"114.116.199.34","command":"pwd"} 
+[2025-09-18 22:06:37] local.INFO: 尝试SSH登录 {"server_id":39,"server_ip":"114.116.199.34","port":22,"username":"liuyidong"} 
+[2025-09-18 22:06:38] local.INFO: 执行命令 {"server_id":39,"server_ip":"114.116.199.34","command":"pwd"} 
+[2025-09-18 22:06:38] local.INFO: 命令执行完成 {"server_id":39,"server_ip":"114.116.199.34","command":"pwd","has_output":true,"output_length":16,"raw_output":"/home/liuyidong
+","ssh_errors":["SSH_MSG_GLOBAL_REQUEST: hostkeys-00@openssh.com"]} 
+[2025-09-18 22:06:38] local.INFO: 服务器数据变更，清除缓存 {"server_id":39} 
+[2025-09-18 22:06:59] local.INFO: 开始执行服务器命令 {"server_id":39,"server_ip":"114.116.199.34","command":"ls"} 
+[2025-09-18 22:06:59] local.INFO: 尝试SSH登录 {"server_id":39,"server_ip":"114.116.199.34","port":22,"username":"liuyidong"} 
+[2025-09-18 22:06:59] local.INFO: 执行命令 {"server_id":39,"server_ip":"114.116.199.34","command":"ls"} 
+[2025-09-18 22:07:00] local.INFO: 命令执行完成 {"server_id":39,"server_ip":"114.116.199.34","command":"ls","has_output":false,"output_length":0,"raw_output":"","ssh_errors":["SSH_MSG_GLOBAL_REQUEST: hostkeys-00@openssh.com"]} 
+[2025-09-18 22:07:00] local.INFO: 服务器数据变更，清除缓存 {"server_id":39} 
+[2025-09-18 22:07:38] local.INFO: 服务器数据变更，清除缓存 {"server_id":38} 
+[2025-09-18 22:07:56] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":38,"server_name":"114.116.195.72","server_ip":"114.116.195.72","collector_id":1,"collector_name":"系统-基础信息","collector_code":"system_basic_info","output_length":176,"raw_output":"{\"system\":{\"os_release\":\"CentOS Linux 7 (Core)\",\"kernel\":\"3.10.0-1062.1.1.el7.x86_64\",\"cpu_model\":\"Intel(R) Xeon(R) Gold 6266C CPU @ 3.00GHz\",\"cpu_cores\":8,\"memory_gb\":15.51}}
+","output_preview":"{\"system\":{\"os_release\":\"CentOS Linux 7 (Core)\",\"kernel\":\"3.10.0-1062.1.1.el7.x86_64\",\"cpu_model\":\"Intel(R) Xeon(R) Gold 6266C CPU @ 3.00GHz\",\"cpu_cores\":8,\"memory_gb\":15.51}}
+"} 
+[2025-09-18 22:07:56] local.INFO: JSON数据采集成功 {"keys":["system"],"size":175,"formatted_size":237} 
+[2025-09-18 22:07:56] local.INFO: 采集组件执行成功 {"server_id":38,"collector_id":1,"output_length":176,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-18 22:07:57] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":38,"server_name":"114.116.195.72","server_ip":"114.116.195.72","collector_id":2,"collector_name":"系统-环境变量","collector_code":"system_env_vars","output_length":293,"raw_output":"{
+  \"path\": \"/usr/local/bin:/usr/bin\",
+  \"home\": \"/home/liuyidong\",
+  \"user\": \"liuyidong\",
+  \"shell\": \"/bin/bash\",
+  \"lang\": \"en_US.UTF-8\",
+  \"timezone\": \"CST\",
+  \"hostname\": \"dongtaibizhi-web02\",
+  \"pwd\": \"/home/liuyidong\",
+  \"total_env_vars\": \"17\",
+  \"collected_at\": \"2025-09-18 22:07:57\"
+}
+","output_preview":"{
+  \"path\": \"/usr/local/bin:/usr/bin\",
+  \"home\": \"/home/liuyidong\",
+  \"user\": \"liuyidong\",
+  \"shell\": \"/bin/bash\",
+  \"lang\": \"en_US.UTF-8\",
+  \"timezone\": \"CST\",
+  \"hostname\": \"dongtaibizhi-web02\",
+  \"pwd\": \"/home/liuyidong\",
+  \"total_env_vars\": \"17\",
+  \"collected_at\": \"2025-09-18 22:07:57\"
+}
+"} 
+[2025-09-18 22:07:57] local.INFO: JSON数据采集成功 {"keys":["path","home","user","shell","lang","timezone","hostname","pwd","total_env_vars","collected_at"],"size":292,"formatted_size":323} 
+[2025-09-18 22:07:57] local.INFO: 采集组件执行成功 {"server_id":38,"collector_id":2,"output_length":293,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-18 22:07:58] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":38,"server_name":"114.116.195.72","server_ip":"114.116.195.72","collector_id":3,"collector_name":"系统-进程采集","collector_code":"system_processes","output_length":1420,"raw_output":"{
+  \"total_processes\": 176,
+  \"running_processes\": 1,
+  \"sleeping_processes\": 176,
+  \"zombie_processes\": 0,
+  \"load_average\": \"0.20,0.15,0.14\",
+  \"memory\": {
+    \"total_mb\": 15884,
+    \"used_mb\": 783,
+    \"free_mb\": 680
+  },
+  \"cpu_cores\": 8,
+  \"top5_cpu_processes\": [
+    {\"pid\":1573,\"user\":\"root\",\"cpu_percent\":2.2,\"mem_percent\":0.2,\"command\":\"python\",\"exe_path\":\"\"},
+    {\"pid\":15651,\"user\":\"root\",\"cpu_percent\":2.0,\"mem_percent\":0.0,\"command\":\"sshd\",\"exe_path\":\"\"},
+    {\"pid\":14832,\"user\":\"www\",\"cpu_percent\":0.3,\"mem_percent\":0.1,\"command\":\"php-fpm\",\"exe_path\":\"\"},
+    {\"pid\":14833,\"user\":\"www\",\"cpu_percent\":0.3,\"mem_percent\":0.1,\"command\":\"php-fpm\",\"exe_path\":\"\"},
+    {\"pid\":14843,\"user\":\"www\",\"cpu_percent\":0.3,\"mem_percent\":0.1,\"command\":\"php-fpm\",\"exe_path\":\"\"}
+  ],
+  \"top5_mem_processes\": [
+    {\"pid\":661,\"user\":\"root\",\"cpu_percent\":0.0,\"mem_percent\":0.5,\"command\":\"systemd-journal\",\"exe_path\":\"\"},
+    {\"pid\":1269,\"user\":\"root\",\"cpu_percent\":0.0,\"mem_percent\":0.3,\"command\":\"rsyslogd\",\"exe_path\":\"\"},
+    {\"pid\":1573,\"user\":\"root\",\"cpu_percent\":2.2,\"mem_percent\":0.2,\"command\":\"python\",\"exe_path\":\"\"},
+    {\"pid\":7048,\"user\":\"www\",\"cpu_percent\":0.1,\"mem_percent\":0.1,\"command\":\"nginx\",\"exe_path\":\"\"},
+    {\"pid\":7042,\"user\":\"www\",\"cpu_percent\":0.1,\"mem_percent\":0.1,\"command\":\"nginx\",\"exe_path\":\"\"}
+  ],
+date: extra operand ‘%H:%M:%S\"’
+Try 'date --help' for more information.
+  \"collected_at\": \"\"
+}
+","output_preview":"{
+  \"total_processes\": 176,
+  \"running_processes\": 1,
+  \"sleeping_processes\": 176,
+  \"zombie_processes\": 0,
+  \"load_average\": \"0.20,0.15,0.14\",
+  \"memory\": {
+    \"total_mb\": 15884,
+    \"used_mb\": 783,
+    \"free_mb\": 680
+  },
+  \"cpu_cores\": 8,
+  \"top5_cpu_processes\": [
+    {\"pid\":1573,\"user\":\"root\",\"cpu_percent\":2.2,\"mem_percent\":0.2,\"command\":\"python\",\"exe_path\":\"\"},
+    {\"pid\":15651,\"user\":\"root\",\"cpu_percent\":2.0,\"mem_percent\":0.0,\"command\":\"sshd\",\"exe_path\":\"\"},
+    {\"pid\":14832,\"user\":\"www\",..."} 
+[2025-09-18 22:07:58] local.INFO: 原始数据采集 {"type":"raw_output","size":1419,"json_error":"Syntax error"} 
+[2025-09-18 22:07:58] local.INFO: 采集组件执行成功 {"server_id":38,"collector_id":3,"output_length":1420,"parsed_result_keys":["data_type","raw_output","parsed_at","note"],"parsed_result_type":"array"} 
+[2025-09-18 22:08:00] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":38,"server_name":"114.116.195.72","server_ip":"114.116.195.72","collector_id":4,"collector_name":"应用-nginx","collector_code":"nginx_info","output_length":1815,"raw_output":"{
+  \"nginx_conf\": \"/alidata/server/nginx/conf/nginx.conf\",
+  \"vhosts\": [
+    {
+      \"server_name\": \"bizhi.ludashi.com travel.shanhutech.cn refund.shanhutech.cn jl.shanhutech.cn fb.*\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/\",
+      \"locations\": [
+        {\"path\": \"~\", \"root\": \"\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"bizhi.shanhutech.cn fb.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/\",
+      \"locations\": [
+        {\"path\": \"~\", \"root\": \"\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"bizhi.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/\",
+      \"locations\": [
+        {\"path\": \"~\", \"root\": \"\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"bizhi.ludashi.com\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/\",
+      \"locations\": [
+        {\"path\": \"~\", \"root\": \"\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"zb-bizhi.ludashi.com\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/\",
+      \"locations\": [
+        {\"path\": \"~\", \"root\": \"\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"paint.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/\",
+      \"locations\": [
+        {\"path\": \"~\", \"root\": \"\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"beautify.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/mouse\",
+      \"locations\": [
+        {\"path\": \"/\", \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/mouse\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"niangao.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/\",
+      \"locations\": [
+        {\"path\": \"~\", \"root\": \"\", \"proxy_pass\": \"\"}
+      ]
+    }
+  ]
+}
+","output_preview":"{
+  \"nginx_conf\": \"/alidata/server/nginx/conf/nginx.conf\",
+  \"vhosts\": [
+    {
+      \"server_name\": \"bizhi.ludashi.com travel.shanhutech.cn refund.shanhutech.cn jl.shanhutech.cn fb.*\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/\",
+      \"locations\": [
+        {\"path\": \"~\", \"root\": \"\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"bizhi.shanhutech.cn fb.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/\",
+      \"locations\": [
+        {\"path\"..."} 
+[2025-09-18 22:08:00] local.INFO: JSON数据采集成功 {"keys":["nginx_conf","vhosts"],"size":1814,"formatted_size":2815} 
+[2025-09-18 22:08:00] local.INFO: 采集组件执行成功 {"server_id":38,"collector_id":4,"output_length":1815,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-18 22:08:03] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":38,"server_name":"114.116.195.72","server_ip":"114.116.195.72","collector_id":5,"collector_name":"应用-配置（PHP）","collector_code":"php_app_info","output_length":17363,"raw_output":"[
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/console.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/env.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/console.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"basePath\": \"dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . \",
+      \"name\": \"bizhi.ludashi\",
+      \"preload\": \"array(\",
+      \"import\": \"array(\",
+      \"modules\": \"array(\",
+      \"gii\": \"array(\",
+      \"class\": \"system.gii.GiiModule\",
+      \"password\": \"398062080\",
+      \"ipFilters\": \"array(\",
+      \"components\": \"array(\",
+      \"user\": \"array(\",
+      \"allowAutoLogin\": \"true,\",
+      \"urlManager\": \"array(\",
+      \"urlFormat\": \"path\",
+      \"rules\": \"array(\",
+      \"<controller:\\\\w+>/<id:\\\\d+>\": \"<controller>/view\",
+      \"<controller:\\\\w+>/<action:\\\\w+>/<id:\\\\d+>\": \"<controller>/<action>\",
+      \"<controller:\\\\w+>/<action:\\\\w+>\": \"<controller>/<action>\",
+      \"smarty\": \"array(\",
+      \"class\": \"application.extensions.CSmarty\",
+      \"freq\": \"require(dirname(__FILE__) . \",
+      \"db\": \"require(dirname(__FILE__) . \",
+      \"dig_db\": \"require(dirname(__FILE__) . \",
+      \"static_db\": \"require(dirname(__FILE__) . \",
+      \"redis\": \"require(dirname(__FILE__) . \",
+      \"redis_dg\": \"require(dirname(__FILE__) . \",
+      \"log\": \"array(\",
+      \"class\": \"CLogRouter\",
+      \"routes\": \"array(\",
+      \"class\": \"CFileLogRoute\",
+      \"enabled\": \"true,\",
+      \"levels\": \"error, warning, info\",
+      \"logFile\": \"application.cron.log.\",
+      \"maxFileSize\": \"1024*20,//单文件大小上限, 单位: KB\",
+      \"LogPath\": \"/data/nginx/logs/bizhi.ludashi.com/app/\",
+      \"categories\": \"*\",
+      \"class\": \"CFileLogRoute\",
+      \"logFile\": \"sms.log.\",
+      \"maxFileSize\": \"1024 * 10,//单文件最大1M*10\",
+      \"LogPath\": \"/data/nginx/logs/bizhi.ludashi.com/app/\",
+      \"categories\": \"sms.*\",
+      \"params\": \"require(dirname(__FILE__) . \"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/params.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"adminEmail\": \"g-server@ludashi.com\",
+      \"cmsPath\": \"dirname(dirname(dirname(dirname(__FILE__)))) . \",
+      \"weibo\": \"array(\",
+      \"appAKey\": \"1299896795\",
+      \"appSKey\": \"914929686de1af98df4f165063f0bc88\",
+      \"callBackUrl\": \"http://preonline.shanhutech.cn/live/share/sinaWeiboCallback\",
+      \"shareDou\": \"10\",
+      \"qzone\": \"array(\",
+      \"shareDou\": \"10\",
+      \"weixin\": \"array(\",
+      \"shareDou\": \"20,\",
+      \"encry_key\": \"U1OgPVwHG3RoO9zPLFJlJUrb2o64YyvVdFoexp4i8HP\",
+      \"callback_url\": \"https://preonline.shanhutech.cn/live/pay/weixinCallback\",
+      \"svip_callback_url\": \"https://preonline.shanhutech.cn/live/vip/weixinCallback\",
+      \"smallvip_callback_url\": \"https://preonline.shanhutech.cn/live/vip/weixinCallbackSmall\",
+      \"travel_callback_url\": \"https://preonline.shanhutech.cn/live/travel/weixinCallback\",
+      \"contract_callback_url\": \"https://preonline.shanhutech.cn/live/pay/ContractCallback\",
+      \"pappay_callback_url\": \"https://preonline.shanhutech.cn/live/pay/pappayCallback\",
+      \"zhibo_callback_url\": \"https://preonline.shanhutech.cn/live/pay/weixinLiveCallback\",
+      \"app_id\": \"wx704213c76d1873e4\",
+      \"app_secret\": \"6473b2f9b9da6fdf730dfe3e8679a22b\",
+      \"plan_id\": \"136785,//回归模板\",
+      \"bird_login_callback_url\": \"https://preonline.shanhutech.cn/live/login/weixinLogin\",
+      \"bird_login_app_id\": \"wxa5adc37de90852a6\",
+      \"bird_login_app_secret\": \"0b794d0f2e66b4ee984e42dbdb6f52eb\",
+      \"niangao_login_callback_url\": \"https://preonline.shanhutech.cn/live/login/weixinLogin\",
+      \"niangao_login_app_id\": \"wx4b8e28915060614c\",
+      \"niangao_login_app_secret\": \"e8f6bb4e6f9926a250c7f8b7e3fdcdf8\",
+      \"zfb\": \"array(\",
+      \"callback_url\": \"https://preonline.shanhutech.cn/live/pay/alipayCallback\",
+      \"svip_callback_url\": \"https://preonline.shanhutech.cn/live/vip/zfbCallback\",
+      \"smallvip_callback_url\": \"https://preonline.shanhutech.cn/live/vip/zfbCallbackSmall\",
+      \"travel_callback_url\": \"https://preonline.shanhutech.cn/live/travel/alipayCallback\",
+      \"zhibo_callback_url\": \"https://preonline.shanhutech.cn/live/pay/alipayLiveCallback\",
+      \"lianxiang\": \"array(\",
+      \"callback_url\": \"https://preonline.shanhutech.cn/live/pay/lianxiangCallback\",
+      \"svip_callback_url\": \"https://preonline.shanhutech.cn/live/vip/lianxiangCallback\",
+      \"smallvip_callback_url\": \"https://preonline.shanhutech.cn/live/vip/lianxiangCallbackSmall\",
+      \"adminEmail\": \"g-server@ludashi.com\",
+      \"cmsPath\": \"dirname(dirname(dirname(dirname(__FILE__)))) . \",
+      \"weibo\": \"array(\",
+      \"appAKey\": \"1299896795\",
+      \"appSKey\": \"914929686de1af98df4f165063f0bc88\",
+      \"callBackUrl\": \"http://bizhi.shanhutech.cn/live/share/sinaWeiboCallback\",
+      \"shareDou\": \"10\",
+      \"qzone\": \"array(\",
+      \"shareDou\": \"10\",
+      \"weixin\": \"array(\",
+      \"shareDou\": \"20,\",
+      \"encry_key\": \"tel0js826iLl1CTd\",
+      \"encry_key\": \"U1OgPVwHG3RoO9zPLFJlJUrb2o64YyvVdFoexp4i8HP\",
+      \"callback_url\": \"https://bizhi.shanhutech.cn/live/pay/weixinCallback\",
+      \"svip_callback_url\": \"https://bizhi.shanhutech.cn/live/vip/weixinCallback\",
+      \"smallvip_callback_url\": \"https://bizhi.shanhutech.cn/live/vip/weixinCallbackSmall\",
+      \"travel_callback_url\": \"https://bizhi.shanhutech.cn/live/travel/weixinCallback\",
+      \"contract_callback_url\": \"https://bizhi.shanhutech.cn/live/pay/ContractCallback\",
+      \"pappay_callback_url\": \"https://bizhi.shanhutech.cn/live/pay/pappayCallback\",
+      \"zhibo_callback_url\": \"https://bizhi.shanhutech.cn/live/pay/weixinLiveCallback\",
+      \"app_id\": \"wx79714bf597d38712\",
+      \"app_secret\": \"dcab2435aea5e4ce835abe294d907fb2\",
+      \"app_id\": \"wx704213c76d1873e4\",
+      \"app_secret\": \"6473b2f9b9da6fdf730dfe3e8679a22b\",
+      \"plan_id\": \"135032,\",
+      \"bird_login_callback_url\": \"https://bizhi.shanhutech.cn/live/login/weixinLogin\",
+      \"bird_login_app_id\": \"wxa5adc37de90852a6\",
+      \"bird_login_app_secret\": \"0b794d0f2e66b4ee984e42dbdb6f52eb\",
+      \"niangao_login_callback_url\": \"https://bizhi.shanhutech.cn/live/login/weixinLogin\",
+      \"niangao_login_app_id\": \"wx4b8e28915060614c\",
+      \"niangao_login_app_secret\": \"e8f6bb4e6f9926a250c7f8b7e3fdcdf8\",
+      \"zfb\": \"array(\",
+      \"callback_url\": \"https://bizhi.shanhutech.cn/live/pay/alipayCallback\",
+      \"svip_callback_url\": \"https://bizhi.shanhutech.cn/live/vip/zfbCallback\",
+      \"smallvip_callback_url\": \"https://bizhi.shanhutech.cn/live/vip/zfbCallbackSmall\",
+      \"travel_callback_url\": \"https://bizhi.shanhutech.cn/live/travel/alipayCallback\",
+      \"zhibo_callback_url\": \"https://bizhi.shanhutech.cn/live/pay/alipayLiveCallback\",
+      \"lianxiang\": \"array(\",
+      \"callback_url\": \"https://bizhi.shanhutech.cn/live/pay/lianxiangCallback\",
+      \"svip_callback_url\": \"https://bizhi.shanhutech.cn/live/vip/lianxiangCallback\",
+      \"smallvip_callback_url\": \"https://bizhi.shanhutech.cn/live/vip/lianxiangCallbackSmall\"
+    },
+    \"dependencies\": {
+      \"api\": \"            'callBackUrl' => 'http://preonline.shanhutech.cn/live/share/sinaWeiboCallback',\"
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/dig_database.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"CDbConnection\",
+      \"connectionString\": \"mysql:host=114.116.194.188;port=33306;dbname=wap_wallpaper\",
+      \"connectionString\": \"mysql:host=afb460b644ab42c4b9f8c4617d850fc8in01.internal.cn-north-4.mysql.rds.myhuaweicloud.com;port=33306;dbname=wap_wallpaper\",
+      \"emulatePrepare\": \"true,\",
+      \"username\": \"lds_bizhi_web\",
+      \"password\": \"Ya8PyjDFpt88wtK7zpnml1X8H3INVb\",
+      \"charset\": \"utf8\"
+    },
+    \"dependencies\": {
+      \"database\": \"    //'connectionString' => \\\"mysql:host=114.116.194.188;port=33306;dbname=wap_wallpaper\\\",//外网\"
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/static_db.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"CDbConnection\",
+      \"connectionString\": \"mysql:host=192.168.1.168;port=3306;dbname=lds_bizhi\",
+      \"emulatePrepare\": \"true,\",
+      \"username\": \"wp_lds_bizhi\",
+      \"password\": \"fMN1AernUOIfG9Xb\",
+      \"charset\": \"utf8\"
+    },
+    \"dependencies\": {
+      \"database\": \"    'connectionString' => \\\"mysql:host=192.168.1.168;port=3306;dbname=lds_bizhi\\\",\"
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/redis.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"application.utils.CRedis\",
+      \"server\": \"array(\",
+      \"host\": \"{$dbHost}\",
+      \"port\": \"{$port}\",
+      \"database\": \"0,\",
+      \"timeout\": \"3,\",
+      \"password\": \"bizhiRedisOnline_TtXp7x9HwyOY\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/freq.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"application.utils.CFreqCtrl\",
+      \"configs\": \"array(\",
+      \"default\": \"array(\",
+      \"qps\": \"array(\",
+      \"60\": \"10000),\",
+      \"ip\": \"array(\",
+      \"60\": \"2000),\",
+      \"white\": \"array(\",
+      \"share_add_bdou_weibo\": \"array(//微博分享添加壁纸豆\",
+      \"qid\": \"array(\",
+      \"86401\": \"1),\",
+      \"share_add_bdou_qzone\": \"array(//QQ空间分享添加壁纸豆\",
+      \"qid\": \"array(\",
+      \"86401\": \"1),\",
+      \"share_add_bdou_weixin\": \"array( //微信分享添加壁纸豆\",
+      \"qid\": \"array(\",
+      \"86401\": \"1),\",
+      \"collection\": \"array( //用户收藏壁纸\",
+      \"qid\": \"array(\",
+      \"60\": \"50),\",
+      \"60\": \"300)\",
+      \"share_for_match_weibo\": \"array(//微博分享添加壁纸豆\",
+      \"ip\": \"array(\",
+      \"86401\": \"1),\",
+      \"share_for_match_qzone\": \"array(//QQ空间分享添加壁纸豆\",
+      \"ip\": \"array(\",
+      \"86401\": \"1),\",
+      \"share_for_match_weixin\": \"array( //微信分享添加壁纸豆\",
+      \"ip\": \"array(\",
+      \"86401\": \"1),\",
+      \"pay_for_tuiguang_alipay\": \"array( //推广支付宝下单\",
+      \"ip\": \"array(\",
+      \"3600\": \"20),\",
+      \"20\": \"1800)\",
+      \"uninstall_questionnaire\": \"array( //卸载问卷调查\",
+      \"ip\": \"array(\",
+      \"3600\": \"5)\",
+      \"comment\": \"array( //用户评论\",
+      \"qid\": \"array(\",
+      \"1800\": \"20),\",
+      \"ip\": \"array(\",
+      \"3600\": \"300),\",
+      \"3600\": \"3600)\",
+      \"comment_zan\": \"array( //用户点赞评论\",
+      \"qid\": \"array(\",
+      \"60\": \"20),\",
+      \"user_gift_code\": \"array( //礼金券兑换\",
+      \"qid\": \"array(\",
+      \"86400\": \"10),\",
+      \"ip\": \"array(\",
+      \"86400\": \"10),\",
+      \"86400\": \"86400)\",
+      \"mall_duihuan\": \"array( //商城兑换\",
+      \"qid\": \"array(\",
+      \"1\": \"1),\",
+      \"livewallpaper_buy\": \"array( //壁纸购买\",
+      \"qid\": \"array(\",
+      \"1\": \"1),\",
+      \"remove_buy_list\": \"array( //购买列表移除\",
+      \"qid\": \"array(\",
+      \"1\": \"5),\",
+      \"get_sec_phone\": \"array( //获取密保手机频次限制\",
+      \"qps\": \"array(\",
+      \"1\": \"4),\",
+      \"bind_user_phone\": \"array( //绑定手机号码\",
+      \"qid\": \"array(\",
+      \"60\": \"1 ),\",
+      \"login_count\": \"array( //登录次数\",
+      \"qid\": \"array(\",
+      \"86400\": \"10),\",
+      \"login_code_check\": \"array( //登录验证码校验\",
+      \"phone\": \"array(\",
+      \"86400\": \"2),\",
+      \"change_code_check\": \"array(\",
+      \"phone\": \"array(\",
+      \"86400\": \"2),\",
+      \"find_password\": \"array( //找回密码验证码校验\",
+      \"phone\": \"array(\",
+      \"60\": \"2),\",
+      \"vip_use\": \"array( //vip用户使用\",
+      \"qid\": \"array(\",
+      \"60\": \"2),\",
+      \"login_sms_limit\": \"array( //登录验证码限制\",
+      \"phone\": \"array(\",
+      \"86400\": \"5),\",
+      \"uninstall_sms_limit\": \"array( //卸载获取免费壁纸豆\",
+      \"phone\": \"array(\",
+      \"86400\": \"5),\",
+      \"login_sms_img_limit\": \"array( //登录验证码图片限制\",
+      \"phone\": \"array(\",
+      \"86400\": \"2),\",
+      \"third_bind\": \"array( //三方登录手机号绑定\",
+      \"phone\": \"array(\",
+      \"86400\": \"5),\",
+      \"smrz\": \"array( //实名认证\",
+      \"phone\": \"array(\",
+      \"86400\": \"5),\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/main.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"basePath\": \"dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . \",
+      \"name\": \"bizhi.ludashi\",
+      \"defaultController\": \"index\",
+      \"preload\": \"array(\",
+      \"import\": \"array(\",
+      \"modules\": \"array(\",
+      \"gii\": \"array(\",
+      \"class\": \"system.gii.GiiModule\",
+      \"password\": \"398062080\",
+      \"ipFilters\": \"array(\",
+      \"components\": \"array(\",
+      \"user\": \"array(\",
+      \"allowAutoLogin\": \"true,\",
+      \"urlManager\": \"array(\",
+      \"urlFormat\": \"path\",
+      \"showScriptName\": \"false,\",
+      \"rules\": \"array(\",
+      \"<controller:\\\\w+>/<id:\\\\d+>\": \"<controller>/view\",
+      \"<controller:\\\\w+>/<action:\\\\w+>/<id:\\\\d+>\": \"<controller>/<action>\",
+      \"<controller:\\\\w+>/<action:\\\\w+>\": \"<controller>/<action>\",
+      \"<__:.*>\": \"<__>\",
+      \"smarty\": \"array(\",
+      \"class\": \"application.extensions.CSmarty\",
+      \"freq\": \"require(dirname(__FILE__) . \",
+      \"db\": \"require(dirname(__FILE__) . \",
+      \"dig_db\": \"require(dirname(__FILE__) . \",
+      \"static_db\": \"require(dirname(__FILE__) . \",
+      \"static_wallpaper_db\": \"array(\",
+      \"class\": \"CDbConnection\",
+      \"connectionString\": \"mysql:host=10.208.255.227;port=13420;dbname=apc_wallpaper\",
+      \"emulatePrepare\": \"true,\",
+      \"username\": \"apc_wallpaper\",
+      \"password\": \"qihoo@360\",
+      \"charset\": \"utf8\",
+      \"ldsBizhi\": \"array(\",
+      \"class\": \"CDbConnection\",
+      \"connectionString\": \"mysql:host=afb460b644ab42c4b9f8c4617d850fc8in01.internal.cn-north-4.mysql.rds.myhuaweicloud.com;port=33306;dbname=bizhi_transcode\",
+      \"emulatePrepare\": \"true,\",
+      \"username\": \"lds_bizhi_web\",
+      \"password\": \"Ya8PyjDFpt88wtK7zpnml1X8H3INVb\",
+      \"charset\": \"utf8\",
+      \"bizhistat\": \"array(\",
+      \"class\": \"CDbConnection\",
+      \"connectionString\": \"mysql:host=ldsaliyundb1.mysql.rds.aliyuncs.com;dbname=bizhi_stat\",
+      \"emulatePrepare\": \"true,\",
+      \"username\": \"logstat\",
+      \"password\": \"41iAbMDKvxry8HoS\",
+      \"charset\": \"utf8\",
+      \"redis\": \"require(dirname(__FILE__) . \",
+      \"redis_share\": \"require(dirname(__FILE__) . \",
+      \"redis_dg\": \"require(dirname(__FILE__) . \",
+      \"errorHandler\": \"array(\",
+      \"errorAction\": \"index/error\",
+      \"log\": \"array(\",
+      \"class\": \"CLogRouter\",
+      \"routes\": \"array(\",
+      \"class\": \"CFileLogRoute\",
+      \"levels\": \"error, warning, info\",
+      \"logFile\": \"application.log.\",
+      \"maxFileSize\": \"1024*20,//单文件大小上限, 单位: KB\",
+      \"LogPath\": \"/data/nginx/logs/bizhi.ludashi.com/app/\",
+      \"class\": \"CFileLogRoute\",
+      \"logFile\": \"sms.log.\",
+      \"maxFileSize\": \"1024 * 10,//单文件最大1M*10\",
+      \"LogPath\": \"/data/nginx/logs/bizhi.ludashi.com/app/\",
+      \"categories\": \"sms.*\",
+      \"params\": \"require(dirname(__FILE__) . \"
+    },
+    \"dependencies\": {
+      \"database\": \"            'connectionString' => \\\"mysql:host=10.208.255.227;port=13420;dbname=apc_wallpaper\\\",\"
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/redis_dg.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"application.utils.CRedis\",
+      \"server\": \"array(\",
+      \"host\": \"redis-864acf7c-5d2f-4ef0-ac03-ac4244e98e7d.cn-north-4.dcs.myhuaweicloud.com\",
+      \"port\": \"6379,\",
+      \"database\": \"2,\",
+      \"timeout\": \"5,\",
+      \"password\": \"dOJcIdDHQ1jdzmFNsf00uD6heyTogc5l\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/redis_share.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"application.utils.CRedis\",
+      \"server\": \"array(\",
+      \"host\": \"pc-9c85756abbf04bf5-public.redis.rds.aliyuncs.com\",
+      \"port\": \"6379,\",
+      \"database\": \"6,\",
+      \"timeout\": \"2,\",
+      \"password\": \"9c85756abbf04bf5:Ludashi930\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/database.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"connectionString\": \"mysql:host={$dbHost};port={$port};dbname=lds_bizhi_web\",
+      \"emulatePrepare\": \"true,\",
+      \"username\": \"lds_bizhi_web\",
+      \"password\": \"Ya8PyjDFpt88wtK7zpnml1X8H3INVb\",
+      \"charset\": \"utf8\"
+    },
+    \"dependencies\": {
+      \"database\": \"\t'connectionString' => \\\"mysql:host={$dbHost};port={$port};dbname=lds_bizhi_web\\\",\"
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/define.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+
+    },
+    \"dependencies\": {
+      \"api\": \"define('BASE_URL_HTTP', 'http://bizhi.ludashi.com');\",
+      \"cdn\": \"define('CDN_NEW_SOURCE',       'ali');//hw or ali\"
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/main.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+
+    },
+    \"dependencies\": {
+
+    }
+  }
+]
+","output_preview":"[
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/console.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/env.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/console.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      ..."} 
+[2025-09-18 22:08:03] local.INFO: 原始数据采集 {"type":"raw_output","size":17362,"json_error":"Control character error, possibly incorrectly encoded"} 
+[2025-09-18 22:08:03] local.INFO: 采集组件执行成功 {"server_id":38,"collector_id":5,"output_length":17363,"parsed_result_keys":["data_type","raw_output","parsed_at","note"],"parsed_result_type":"array"} 
+[2025-09-18 22:08:04] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":38,"server_name":"114.116.195.72","server_ip":"114.116.195.72","collector_id":7,"collector_name":"系统-目录读取","collector_code":"system_dir_info","output_length":329,"raw_output":"{\"filesystem\":{\"path\":\"/\",\"children\":[\"//alidata\",\"//bin\",\"//boot\",\"//CloudResetPwdAgentNew\",\"//CloudResetPwdUpdateAgent\",\"//CloudrResetPwdAgent\",\"//data\",\"//dev\",\"//etc\",\"//home\",\"//lib\",\"//lib64\",\"//lost+found\",\"//media\",\"//mnt\",\"//opt\",\"//proc\",\"//root\",\"//run\",\"//sbin\",\"//srv\",\"//sys\",\"//tmp\",\"//usr\",\"//var\",\"//wwwroot\"]}}
+","output_preview":"{\"filesystem\":{\"path\":\"/\",\"children\":[\"//alidata\",\"//bin\",\"//boot\",\"//CloudResetPwdAgentNew\",\"//CloudResetPwdUpdateAgent\",\"//CloudrResetPwdAgent\",\"//data\",\"//dev\",\"//etc\",\"//home\",\"//lib\",\"//lib64\",\"//lost+found\",\"//media\",\"//mnt\",\"//opt\",\"//proc\",\"//root\",\"//run\",\"//sbin\",\"//srv\",\"//sys\",\"//tmp\",\"//usr\",\"//var\",\"//wwwroot\"]}}
+"} 
+[2025-09-18 22:08:04] local.INFO: JSON数据采集成功 {"keys":["filesystem"],"size":328,"formatted_size":760} 
+[2025-09-18 22:08:04] local.INFO: 采集组件执行成功 {"server_id":38,"collector_id":7,"output_length":329,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-18 22:09:39] local.INFO: 服务器数据变更，清除缓存 {"server_id":37} 
+[2025-09-18 22:09:46] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":37,"server_name":"119.3.173.19","server_ip":"119.3.173.19","collector_id":1,"collector_name":"系统-基础信息","collector_code":"system_basic_info","output_length":176,"raw_output":"{\"system\":{\"os_release\":\"CentOS Linux 7 (Core)\",\"kernel\":\"3.10.0-1062.1.1.el7.x86_64\",\"cpu_model\":\"Intel(R) Xeon(R) Gold 6266C CPU @ 3.00GHz\",\"cpu_cores\":8,\"memory_gb\":15.51}}
+","output_preview":"{\"system\":{\"os_release\":\"CentOS Linux 7 (Core)\",\"kernel\":\"3.10.0-1062.1.1.el7.x86_64\",\"cpu_model\":\"Intel(R) Xeon(R) Gold 6266C CPU @ 3.00GHz\",\"cpu_cores\":8,\"memory_gb\":15.51}}
+"} 
+[2025-09-18 22:09:46] local.INFO: JSON数据采集成功 {"keys":["system"],"size":175,"formatted_size":237} 
+[2025-09-18 22:09:46] local.INFO: 采集组件执行成功 {"server_id":37,"collector_id":1,"output_length":176,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-18 22:09:47] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":37,"server_name":"119.3.173.19","server_ip":"119.3.173.19","collector_id":2,"collector_name":"系统-环境变量","collector_code":"system_env_vars","output_length":293,"raw_output":"{
+  \"path\": \"/usr/local/bin:/usr/bin\",
+  \"home\": \"/home/liuyidong\",
+  \"user\": \"liuyidong\",
+  \"shell\": \"/bin/bash\",
+  \"lang\": \"en_US.UTF-8\",
+  \"timezone\": \"CST\",
+  \"hostname\": \"dongtaibizhi-web01\",
+  \"pwd\": \"/home/liuyidong\",
+  \"total_env_vars\": \"17\",
+  \"collected_at\": \"2025-09-18 22:09:47\"
+}
+","output_preview":"{
+  \"path\": \"/usr/local/bin:/usr/bin\",
+  \"home\": \"/home/liuyidong\",
+  \"user\": \"liuyidong\",
+  \"shell\": \"/bin/bash\",
+  \"lang\": \"en_US.UTF-8\",
+  \"timezone\": \"CST\",
+  \"hostname\": \"dongtaibizhi-web01\",
+  \"pwd\": \"/home/liuyidong\",
+  \"total_env_vars\": \"17\",
+  \"collected_at\": \"2025-09-18 22:09:47\"
+}
+"} 
+[2025-09-18 22:09:47] local.INFO: JSON数据采集成功 {"keys":["path","home","user","shell","lang","timezone","hostname","pwd","total_env_vars","collected_at"],"size":292,"formatted_size":323} 
+[2025-09-18 22:09:47] local.INFO: 采集组件执行成功 {"server_id":37,"collector_id":2,"output_length":293,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-18 22:09:49] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":37,"server_name":"119.3.173.19","server_ip":"119.3.173.19","collector_id":3,"collector_name":"系统-进程采集","collector_code":"system_processes","output_length":1398,"raw_output":"{
+  \"total_processes\": 186,
+  \"running_processes\": 1,
+  \"sleeping_processes\": 186,
+  \"zombie_processes\": 0,
+  \"load_average\": \"0.00,0.06,0.10\",
+  \"memory\": {
+    \"total_mb\": 15884,
+    \"used_mb\": 753,
+    \"free_mb\": 3678
+  },
+  \"cpu_cores\": 8,
+  \"top5_cpu_processes\": [
+    {\"pid\":774,\"user\":\"www\",\"cpu_percent\":0.3,\"mem_percent\":0.1,\"command\":\"php-fpm\",\"exe_path\":\"\"},
+    {\"pid\":775,\"user\":\"www\",\"cpu_percent\":0.3,\"mem_percent\":0.1,\"command\":\"php-fpm\",\"exe_path\":\"\"},
+    {\"pid\":776,\"user\":\"www\",\"cpu_percent\":0.3,\"mem_percent\":0.1,\"command\":\"php-fpm\",\"exe_path\":\"\"},
+    {\"pid\":777,\"user\":\"www\",\"cpu_percent\":0.3,\"mem_percent\":0.1,\"command\":\"php-fpm\",\"exe_path\":\"\"},
+    {\"pid\":778,\"user\":\"www\",\"cpu_percent\":0.3,\"mem_percent\":0.1,\"command\":\"php-fpm\",\"exe_path\":\"\"}
+  ],
+  \"top5_mem_processes\": [
+    {\"pid\":4194,\"user\":\"www\",\"cpu_percent\":0.1,\"mem_percent\":0.1,\"command\":\"nginx\",\"exe_path\":\"\"},
+    {\"pid\":4187,\"user\":\"www\",\"cpu_percent\":0.1,\"mem_percent\":0.1,\"command\":\"nginx\",\"exe_path\":\"\"},
+    {\"pid\":4188,\"user\":\"www\",\"cpu_percent\":0.1,\"mem_percent\":0.1,\"command\":\"nginx\",\"exe_path\":\"\"},
+    {\"pid\":4211,\"user\":\"www\",\"cpu_percent\":0.1,\"mem_percent\":0.1,\"command\":\"nginx\",\"exe_path\":\"\"},
+    {\"pid\":4195,\"user\":\"www\",\"cpu_percent\":0.1,\"mem_percent\":0.1,\"command\":\"nginx\",\"exe_path\":\"\"}
+  ],
+date: extra operand ‘%H:%M:%S\"’
+Try 'date --help' for more information.
+  \"collected_at\": \"\"
+}
+","output_preview":"{
+  \"total_processes\": 186,
+  \"running_processes\": 1,
+  \"sleeping_processes\": 186,
+  \"zombie_processes\": 0,
+  \"load_average\": \"0.00,0.06,0.10\",
+  \"memory\": {
+    \"total_mb\": 15884,
+    \"used_mb\": 753,
+    \"free_mb\": 3678
+  },
+  \"cpu_cores\": 8,
+  \"top5_cpu_processes\": [
+    {\"pid\":774,\"user\":\"www\",\"cpu_percent\":0.3,\"mem_percent\":0.1,\"command\":\"php-fpm\",\"exe_path\":\"\"},
+    {\"pid\":775,\"user\":\"www\",\"cpu_percent\":0.3,\"mem_percent\":0.1,\"command\":\"php-fpm\",\"exe_path\":\"\"},
+    {\"pid\":776,\"user\":\"www\",\"c..."} 
+[2025-09-18 22:09:49] local.INFO: 原始数据采集 {"type":"raw_output","size":1397,"json_error":"Syntax error"} 
+[2025-09-18 22:09:49] local.INFO: 采集组件执行成功 {"server_id":37,"collector_id":3,"output_length":1398,"parsed_result_keys":["data_type","raw_output","parsed_at","note"],"parsed_result_type":"array"} 
+[2025-09-18 22:09:50] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":37,"server_name":"119.3.173.19","server_ip":"119.3.173.19","collector_id":4,"collector_name":"应用-nginx","collector_code":"nginx_info","output_length":1815,"raw_output":"{
+  \"nginx_conf\": \"/alidata/server/nginx/conf/nginx.conf\",
+  \"vhosts\": [
+    {
+      \"server_name\": \"bizhi.ludashi.com travel.shanhutech.cn refund.shanhutech.cn jl.shanhutech.cn fb.*\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/\",
+      \"locations\": [
+        {\"path\": \"~\", \"root\": \"\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"bizhi.shanhutech.cn fb.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/\",
+      \"locations\": [
+        {\"path\": \"~\", \"root\": \"\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"bizhi.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/\",
+      \"locations\": [
+        {\"path\": \"~\", \"root\": \"\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"bizhi.ludashi.com\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/\",
+      \"locations\": [
+        {\"path\": \"~\", \"root\": \"\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"zb-bizhi.ludashi.com\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/\",
+      \"locations\": [
+        {\"path\": \"~\", \"root\": \"\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"paint.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/\",
+      \"locations\": [
+        {\"path\": \"~\", \"root\": \"\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"beautify.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/mouse\",
+      \"locations\": [
+        {\"path\": \"/\", \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/mouse\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"niangao.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/\",
+      \"locations\": [
+        {\"path\": \"~\", \"root\": \"\", \"proxy_pass\": \"\"}
+      ]
+    }
+  ]
+}
+","output_preview":"{
+  \"nginx_conf\": \"/alidata/server/nginx/conf/nginx.conf\",
+  \"vhosts\": [
+    {
+      \"server_name\": \"bizhi.ludashi.com travel.shanhutech.cn refund.shanhutech.cn jl.shanhutech.cn fb.*\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/\",
+      \"locations\": [
+        {\"path\": \"~\", \"root\": \"\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"bizhi.shanhutech.cn fb.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/bizhi.ludashi.com/www/\",
+      \"locations\": [
+        {\"path\"..."} 
+[2025-09-18 22:09:50] local.INFO: JSON数据采集成功 {"keys":["nginx_conf","vhosts"],"size":1814,"formatted_size":2815} 
+[2025-09-18 22:09:50] local.INFO: 采集组件执行成功 {"server_id":37,"collector_id":4,"output_length":1815,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-18 22:09:53] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":37,"server_name":"119.3.173.19","server_ip":"119.3.173.19","collector_id":5,"collector_name":"应用-配置（PHP）","collector_code":"php_app_info","output_length":17363,"raw_output":"[
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/console.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/env.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/console.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"basePath\": \"dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . \",
+      \"name\": \"bizhi.ludashi\",
+      \"preload\": \"array(\",
+      \"import\": \"array(\",
+      \"modules\": \"array(\",
+      \"gii\": \"array(\",
+      \"class\": \"system.gii.GiiModule\",
+      \"password\": \"398062080\",
+      \"ipFilters\": \"array(\",
+      \"components\": \"array(\",
+      \"user\": \"array(\",
+      \"allowAutoLogin\": \"true,\",
+      \"urlManager\": \"array(\",
+      \"urlFormat\": \"path\",
+      \"rules\": \"array(\",
+      \"<controller:\\\\w+>/<id:\\\\d+>\": \"<controller>/view\",
+      \"<controller:\\\\w+>/<action:\\\\w+>/<id:\\\\d+>\": \"<controller>/<action>\",
+      \"<controller:\\\\w+>/<action:\\\\w+>\": \"<controller>/<action>\",
+      \"smarty\": \"array(\",
+      \"class\": \"application.extensions.CSmarty\",
+      \"freq\": \"require(dirname(__FILE__) . \",
+      \"db\": \"require(dirname(__FILE__) . \",
+      \"dig_db\": \"require(dirname(__FILE__) . \",
+      \"static_db\": \"require(dirname(__FILE__) . \",
+      \"redis\": \"require(dirname(__FILE__) . \",
+      \"redis_dg\": \"require(dirname(__FILE__) . \",
+      \"log\": \"array(\",
+      \"class\": \"CLogRouter\",
+      \"routes\": \"array(\",
+      \"class\": \"CFileLogRoute\",
+      \"enabled\": \"true,\",
+      \"levels\": \"error, warning, info\",
+      \"logFile\": \"application.cron.log.\",
+      \"maxFileSize\": \"1024*20,//单文件大小上限, 单位: KB\",
+      \"LogPath\": \"/data/nginx/logs/bizhi.ludashi.com/app/\",
+      \"categories\": \"*\",
+      \"class\": \"CFileLogRoute\",
+      \"logFile\": \"sms.log.\",
+      \"maxFileSize\": \"1024 * 10,//单文件最大1M*10\",
+      \"LogPath\": \"/data/nginx/logs/bizhi.ludashi.com/app/\",
+      \"categories\": \"sms.*\",
+      \"params\": \"require(dirname(__FILE__) . \"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/params.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"adminEmail\": \"g-server@ludashi.com\",
+      \"cmsPath\": \"dirname(dirname(dirname(dirname(__FILE__)))) . \",
+      \"weibo\": \"array(\",
+      \"appAKey\": \"1299896795\",
+      \"appSKey\": \"914929686de1af98df4f165063f0bc88\",
+      \"callBackUrl\": \"http://preonline.shanhutech.cn/live/share/sinaWeiboCallback\",
+      \"shareDou\": \"10\",
+      \"qzone\": \"array(\",
+      \"shareDou\": \"10\",
+      \"weixin\": \"array(\",
+      \"shareDou\": \"20,\",
+      \"encry_key\": \"U1OgPVwHG3RoO9zPLFJlJUrb2o64YyvVdFoexp4i8HP\",
+      \"callback_url\": \"https://preonline.shanhutech.cn/live/pay/weixinCallback\",
+      \"svip_callback_url\": \"https://preonline.shanhutech.cn/live/vip/weixinCallback\",
+      \"smallvip_callback_url\": \"https://preonline.shanhutech.cn/live/vip/weixinCallbackSmall\",
+      \"travel_callback_url\": \"https://preonline.shanhutech.cn/live/travel/weixinCallback\",
+      \"contract_callback_url\": \"https://preonline.shanhutech.cn/live/pay/ContractCallback\",
+      \"pappay_callback_url\": \"https://preonline.shanhutech.cn/live/pay/pappayCallback\",
+      \"zhibo_callback_url\": \"https://preonline.shanhutech.cn/live/pay/weixinLiveCallback\",
+      \"app_id\": \"wx704213c76d1873e4\",
+      \"app_secret\": \"6473b2f9b9da6fdf730dfe3e8679a22b\",
+      \"plan_id\": \"136785,//回归模板\",
+      \"bird_login_callback_url\": \"https://preonline.shanhutech.cn/live/login/weixinLogin\",
+      \"bird_login_app_id\": \"wxa5adc37de90852a6\",
+      \"bird_login_app_secret\": \"0b794d0f2e66b4ee984e42dbdb6f52eb\",
+      \"niangao_login_callback_url\": \"https://preonline.shanhutech.cn/live/login/weixinLogin\",
+      \"niangao_login_app_id\": \"wx4b8e28915060614c\",
+      \"niangao_login_app_secret\": \"e8f6bb4e6f9926a250c7f8b7e3fdcdf8\",
+      \"zfb\": \"array(\",
+      \"callback_url\": \"https://preonline.shanhutech.cn/live/pay/alipayCallback\",
+      \"svip_callback_url\": \"https://preonline.shanhutech.cn/live/vip/zfbCallback\",
+      \"smallvip_callback_url\": \"https://preonline.shanhutech.cn/live/vip/zfbCallbackSmall\",
+      \"travel_callback_url\": \"https://preonline.shanhutech.cn/live/travel/alipayCallback\",
+      \"zhibo_callback_url\": \"https://preonline.shanhutech.cn/live/pay/alipayLiveCallback\",
+      \"lianxiang\": \"array(\",
+      \"callback_url\": \"https://preonline.shanhutech.cn/live/pay/lianxiangCallback\",
+      \"svip_callback_url\": \"https://preonline.shanhutech.cn/live/vip/lianxiangCallback\",
+      \"smallvip_callback_url\": \"https://preonline.shanhutech.cn/live/vip/lianxiangCallbackSmall\",
+      \"adminEmail\": \"g-server@ludashi.com\",
+      \"cmsPath\": \"dirname(dirname(dirname(dirname(__FILE__)))) . \",
+      \"weibo\": \"array(\",
+      \"appAKey\": \"1299896795\",
+      \"appSKey\": \"914929686de1af98df4f165063f0bc88\",
+      \"callBackUrl\": \"http://bizhi.shanhutech.cn/live/share/sinaWeiboCallback\",
+      \"shareDou\": \"10\",
+      \"qzone\": \"array(\",
+      \"shareDou\": \"10\",
+      \"weixin\": \"array(\",
+      \"shareDou\": \"20,\",
+      \"encry_key\": \"tel0js826iLl1CTd\",
+      \"encry_key\": \"U1OgPVwHG3RoO9zPLFJlJUrb2o64YyvVdFoexp4i8HP\",
+      \"callback_url\": \"https://bizhi.shanhutech.cn/live/pay/weixinCallback\",
+      \"svip_callback_url\": \"https://bizhi.shanhutech.cn/live/vip/weixinCallback\",
+      \"smallvip_callback_url\": \"https://bizhi.shanhutech.cn/live/vip/weixinCallbackSmall\",
+      \"travel_callback_url\": \"https://bizhi.shanhutech.cn/live/travel/weixinCallback\",
+      \"contract_callback_url\": \"https://bizhi.shanhutech.cn/live/pay/ContractCallback\",
+      \"pappay_callback_url\": \"https://bizhi.shanhutech.cn/live/pay/pappayCallback\",
+      \"zhibo_callback_url\": \"https://bizhi.shanhutech.cn/live/pay/weixinLiveCallback\",
+      \"app_id\": \"wx79714bf597d38712\",
+      \"app_secret\": \"dcab2435aea5e4ce835abe294d907fb2\",
+      \"app_id\": \"wx704213c76d1873e4\",
+      \"app_secret\": \"6473b2f9b9da6fdf730dfe3e8679a22b\",
+      \"plan_id\": \"135032,\",
+      \"bird_login_callback_url\": \"https://bizhi.shanhutech.cn/live/login/weixinLogin\",
+      \"bird_login_app_id\": \"wxa5adc37de90852a6\",
+      \"bird_login_app_secret\": \"0b794d0f2e66b4ee984e42dbdb6f52eb\",
+      \"niangao_login_callback_url\": \"https://bizhi.shanhutech.cn/live/login/weixinLogin\",
+      \"niangao_login_app_id\": \"wx4b8e28915060614c\",
+      \"niangao_login_app_secret\": \"e8f6bb4e6f9926a250c7f8b7e3fdcdf8\",
+      \"zfb\": \"array(\",
+      \"callback_url\": \"https://bizhi.shanhutech.cn/live/pay/alipayCallback\",
+      \"svip_callback_url\": \"https://bizhi.shanhutech.cn/live/vip/zfbCallback\",
+      \"smallvip_callback_url\": \"https://bizhi.shanhutech.cn/live/vip/zfbCallbackSmall\",
+      \"travel_callback_url\": \"https://bizhi.shanhutech.cn/live/travel/alipayCallback\",
+      \"zhibo_callback_url\": \"https://bizhi.shanhutech.cn/live/pay/alipayLiveCallback\",
+      \"lianxiang\": \"array(\",
+      \"callback_url\": \"https://bizhi.shanhutech.cn/live/pay/lianxiangCallback\",
+      \"svip_callback_url\": \"https://bizhi.shanhutech.cn/live/vip/lianxiangCallback\",
+      \"smallvip_callback_url\": \"https://bizhi.shanhutech.cn/live/vip/lianxiangCallbackSmall\"
+    },
+    \"dependencies\": {
+      \"api\": \"            'callBackUrl' => 'http://preonline.shanhutech.cn/live/share/sinaWeiboCallback',\"
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/dig_database.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"CDbConnection\",
+      \"connectionString\": \"mysql:host=114.116.194.188;port=33306;dbname=wap_wallpaper\",
+      \"connectionString\": \"mysql:host=afb460b644ab42c4b9f8c4617d850fc8in01.internal.cn-north-4.mysql.rds.myhuaweicloud.com;port=33306;dbname=wap_wallpaper\",
+      \"emulatePrepare\": \"true,\",
+      \"username\": \"lds_bizhi_web\",
+      \"password\": \"Ya8PyjDFpt88wtK7zpnml1X8H3INVb\",
+      \"charset\": \"utf8\"
+    },
+    \"dependencies\": {
+      \"database\": \"    //'connectionString' => \\\"mysql:host=114.116.194.188;port=33306;dbname=wap_wallpaper\\\",//外网\"
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/static_db.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"CDbConnection\",
+      \"connectionString\": \"mysql:host=192.168.1.168;port=3306;dbname=lds_bizhi\",
+      \"emulatePrepare\": \"true,\",
+      \"username\": \"wp_lds_bizhi\",
+      \"password\": \"fMN1AernUOIfG9Xb\",
+      \"charset\": \"utf8\"
+    },
+    \"dependencies\": {
+      \"database\": \"    'connectionString' => \\\"mysql:host=192.168.1.168;port=3306;dbname=lds_bizhi\\\",\"
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/redis.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"application.utils.CRedis\",
+      \"server\": \"array(\",
+      \"host\": \"{$dbHost}\",
+      \"port\": \"{$port}\",
+      \"database\": \"0,\",
+      \"timeout\": \"3,\",
+      \"password\": \"bizhiRedisOnline_TtXp7x9HwyOY\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/freq.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"application.utils.CFreqCtrl\",
+      \"configs\": \"array(\",
+      \"default\": \"array(\",
+      \"qps\": \"array(\",
+      \"60\": \"10000),\",
+      \"ip\": \"array(\",
+      \"60\": \"2000),\",
+      \"white\": \"array(\",
+      \"share_add_bdou_weibo\": \"array(//微博分享添加壁纸豆\",
+      \"qid\": \"array(\",
+      \"86401\": \"1),\",
+      \"share_add_bdou_qzone\": \"array(//QQ空间分享添加壁纸豆\",
+      \"qid\": \"array(\",
+      \"86401\": \"1),\",
+      \"share_add_bdou_weixin\": \"array( //微信分享添加壁纸豆\",
+      \"qid\": \"array(\",
+      \"86401\": \"1),\",
+      \"collection\": \"array( //用户收藏壁纸\",
+      \"qid\": \"array(\",
+      \"60\": \"50),\",
+      \"60\": \"300)\",
+      \"share_for_match_weibo\": \"array(//微博分享添加壁纸豆\",
+      \"ip\": \"array(\",
+      \"86401\": \"1),\",
+      \"share_for_match_qzone\": \"array(//QQ空间分享添加壁纸豆\",
+      \"ip\": \"array(\",
+      \"86401\": \"1),\",
+      \"share_for_match_weixin\": \"array( //微信分享添加壁纸豆\",
+      \"ip\": \"array(\",
+      \"86401\": \"1),\",
+      \"pay_for_tuiguang_alipay\": \"array( //推广支付宝下单\",
+      \"ip\": \"array(\",
+      \"3600\": \"20),\",
+      \"20\": \"1800)\",
+      \"uninstall_questionnaire\": \"array( //卸载问卷调查\",
+      \"ip\": \"array(\",
+      \"3600\": \"5)\",
+      \"comment\": \"array( //用户评论\",
+      \"qid\": \"array(\",
+      \"1800\": \"20),\",
+      \"ip\": \"array(\",
+      \"3600\": \"300),\",
+      \"3600\": \"3600)\",
+      \"comment_zan\": \"array( //用户点赞评论\",
+      \"qid\": \"array(\",
+      \"60\": \"20),\",
+      \"user_gift_code\": \"array( //礼金券兑换\",
+      \"qid\": \"array(\",
+      \"86400\": \"10),\",
+      \"ip\": \"array(\",
+      \"86400\": \"10),\",
+      \"86400\": \"86400)\",
+      \"mall_duihuan\": \"array( //商城兑换\",
+      \"qid\": \"array(\",
+      \"1\": \"1),\",
+      \"livewallpaper_buy\": \"array( //壁纸购买\",
+      \"qid\": \"array(\",
+      \"1\": \"1),\",
+      \"remove_buy_list\": \"array( //购买列表移除\",
+      \"qid\": \"array(\",
+      \"1\": \"5),\",
+      \"get_sec_phone\": \"array( //获取密保手机频次限制\",
+      \"qps\": \"array(\",
+      \"1\": \"4),\",
+      \"bind_user_phone\": \"array( //绑定手机号码\",
+      \"qid\": \"array(\",
+      \"60\": \"1 ),\",
+      \"login_count\": \"array( //登录次数\",
+      \"qid\": \"array(\",
+      \"86400\": \"10),\",
+      \"login_code_check\": \"array( //登录验证码校验\",
+      \"phone\": \"array(\",
+      \"86400\": \"2),\",
+      \"change_code_check\": \"array(\",
+      \"phone\": \"array(\",
+      \"86400\": \"2),\",
+      \"find_password\": \"array( //找回密码验证码校验\",
+      \"phone\": \"array(\",
+      \"60\": \"2),\",
+      \"vip_use\": \"array( //vip用户使用\",
+      \"qid\": \"array(\",
+      \"60\": \"2),\",
+      \"login_sms_limit\": \"array( //登录验证码限制\",
+      \"phone\": \"array(\",
+      \"86400\": \"5),\",
+      \"uninstall_sms_limit\": \"array( //卸载获取免费壁纸豆\",
+      \"phone\": \"array(\",
+      \"86400\": \"5),\",
+      \"login_sms_img_limit\": \"array( //登录验证码图片限制\",
+      \"phone\": \"array(\",
+      \"86400\": \"2),\",
+      \"third_bind\": \"array( //三方登录手机号绑定\",
+      \"phone\": \"array(\",
+      \"86400\": \"5),\",
+      \"smrz\": \"array( //实名认证\",
+      \"phone\": \"array(\",
+      \"86400\": \"5),\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/main.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"basePath\": \"dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . \",
+      \"name\": \"bizhi.ludashi\",
+      \"defaultController\": \"index\",
+      \"preload\": \"array(\",
+      \"import\": \"array(\",
+      \"modules\": \"array(\",
+      \"gii\": \"array(\",
+      \"class\": \"system.gii.GiiModule\",
+      \"password\": \"398062080\",
+      \"ipFilters\": \"array(\",
+      \"components\": \"array(\",
+      \"user\": \"array(\",
+      \"allowAutoLogin\": \"true,\",
+      \"urlManager\": \"array(\",
+      \"urlFormat\": \"path\",
+      \"showScriptName\": \"false,\",
+      \"rules\": \"array(\",
+      \"<controller:\\\\w+>/<id:\\\\d+>\": \"<controller>/view\",
+      \"<controller:\\\\w+>/<action:\\\\w+>/<id:\\\\d+>\": \"<controller>/<action>\",
+      \"<controller:\\\\w+>/<action:\\\\w+>\": \"<controller>/<action>\",
+      \"<__:.*>\": \"<__>\",
+      \"smarty\": \"array(\",
+      \"class\": \"application.extensions.CSmarty\",
+      \"freq\": \"require(dirname(__FILE__) . \",
+      \"db\": \"require(dirname(__FILE__) . \",
+      \"dig_db\": \"require(dirname(__FILE__) . \",
+      \"static_db\": \"require(dirname(__FILE__) . \",
+      \"static_wallpaper_db\": \"array(\",
+      \"class\": \"CDbConnection\",
+      \"connectionString\": \"mysql:host=10.208.255.227;port=13420;dbname=apc_wallpaper\",
+      \"emulatePrepare\": \"true,\",
+      \"username\": \"apc_wallpaper\",
+      \"password\": \"qihoo@360\",
+      \"charset\": \"utf8\",
+      \"ldsBizhi\": \"array(\",
+      \"class\": \"CDbConnection\",
+      \"connectionString\": \"mysql:host=afb460b644ab42c4b9f8c4617d850fc8in01.internal.cn-north-4.mysql.rds.myhuaweicloud.com;port=33306;dbname=bizhi_transcode\",
+      \"emulatePrepare\": \"true,\",
+      \"username\": \"lds_bizhi_web\",
+      \"password\": \"Ya8PyjDFpt88wtK7zpnml1X8H3INVb\",
+      \"charset\": \"utf8\",
+      \"bizhistat\": \"array(\",
+      \"class\": \"CDbConnection\",
+      \"connectionString\": \"mysql:host=ldsaliyundb1.mysql.rds.aliyuncs.com;dbname=bizhi_stat\",
+      \"emulatePrepare\": \"true,\",
+      \"username\": \"logstat\",
+      \"password\": \"41iAbMDKvxry8HoS\",
+      \"charset\": \"utf8\",
+      \"redis\": \"require(dirname(__FILE__) . \",
+      \"redis_share\": \"require(dirname(__FILE__) . \",
+      \"redis_dg\": \"require(dirname(__FILE__) . \",
+      \"errorHandler\": \"array(\",
+      \"errorAction\": \"index/error\",
+      \"log\": \"array(\",
+      \"class\": \"CLogRouter\",
+      \"routes\": \"array(\",
+      \"class\": \"CFileLogRoute\",
+      \"levels\": \"error, warning, info\",
+      \"logFile\": \"application.log.\",
+      \"maxFileSize\": \"1024*20,//单文件大小上限, 单位: KB\",
+      \"LogPath\": \"/data/nginx/logs/bizhi.ludashi.com/app/\",
+      \"class\": \"CFileLogRoute\",
+      \"logFile\": \"sms.log.\",
+      \"maxFileSize\": \"1024 * 10,//单文件最大1M*10\",
+      \"LogPath\": \"/data/nginx/logs/bizhi.ludashi.com/app/\",
+      \"categories\": \"sms.*\",
+      \"params\": \"require(dirname(__FILE__) . \"
+    },
+    \"dependencies\": {
+      \"database\": \"            'connectionString' => \\\"mysql:host=10.208.255.227;port=13420;dbname=apc_wallpaper\\\",\"
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/redis_dg.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"application.utils.CRedis\",
+      \"server\": \"array(\",
+      \"host\": \"redis-864acf7c-5d2f-4ef0-ac03-ac4244e98e7d.cn-north-4.dcs.myhuaweicloud.com\",
+      \"port\": \"6379,\",
+      \"database\": \"2,\",
+      \"timeout\": \"5,\",
+      \"password\": \"dOJcIdDHQ1jdzmFNsf00uD6heyTogc5l\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/redis_share.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"application.utils.CRedis\",
+      \"server\": \"array(\",
+      \"host\": \"pc-9c85756abbf04bf5-public.redis.rds.aliyuncs.com\",
+      \"port\": \"6379,\",
+      \"database\": \"6,\",
+      \"timeout\": \"2,\",
+      \"password\": \"9c85756abbf04bf5:Ludashi930\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/database.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"connectionString\": \"mysql:host={$dbHost};port={$port};dbname=lds_bizhi_web\",
+      \"emulatePrepare\": \"true,\",
+      \"username\": \"lds_bizhi_web\",
+      \"password\": \"Ya8PyjDFpt88wtK7zpnml1X8H3INVb\",
+      \"charset\": \"utf8\"
+    },
+    \"dependencies\": {
+      \"database\": \"\t'connectionString' => \\\"mysql:host={$dbHost};port={$port};dbname=lds_bizhi_web\\\",\"
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/define.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+
+    },
+    \"dependencies\": {
+      \"api\": \"define('BASE_URL_HTTP', 'http://bizhi.ludashi.com');\",
+      \"cdn\": \"define('CDN_NEW_SOURCE',       'ali');//hw or ali\"
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/main.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+
+    },
+    \"dependencies\": {
+
+    }
+  }
+]
+","output_preview":"[
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/console.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/env.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/bizhi.ludashi.com/protected/config/online/console.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      ..."} 
+[2025-09-18 22:09:53] local.INFO: 原始数据采集 {"type":"raw_output","size":17362,"json_error":"Control character error, possibly incorrectly encoded"} 
+[2025-09-18 22:09:53] local.INFO: 采集组件执行成功 {"server_id":37,"collector_id":5,"output_length":17363,"parsed_result_keys":["data_type","raw_output","parsed_at","note"],"parsed_result_type":"array"} 
+[2025-09-18 22:09:54] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":37,"server_name":"119.3.173.19","server_ip":"119.3.173.19","collector_id":7,"collector_name":"系统-目录读取","collector_code":"system_dir_info","output_length":329,"raw_output":"{\"filesystem\":{\"path\":\"/\",\"children\":[\"//alidata\",\"//bin\",\"//boot\",\"//CloudResetPwdAgentNew\",\"//CloudResetPwdUpdateAgent\",\"//CloudrResetPwdAgent\",\"//data\",\"//dev\",\"//etc\",\"//home\",\"//lib\",\"//lib64\",\"//lost+found\",\"//media\",\"//mnt\",\"//opt\",\"//proc\",\"//root\",\"//run\",\"//sbin\",\"//srv\",\"//sys\",\"//tmp\",\"//usr\",\"//var\",\"//wwwroot\"]}}
+","output_preview":"{\"filesystem\":{\"path\":\"/\",\"children\":[\"//alidata\",\"//bin\",\"//boot\",\"//CloudResetPwdAgentNew\",\"//CloudResetPwdUpdateAgent\",\"//CloudrResetPwdAgent\",\"//data\",\"//dev\",\"//etc\",\"//home\",\"//lib\",\"//lib64\",\"//lost+found\",\"//media\",\"//mnt\",\"//opt\",\"//proc\",\"//root\",\"//run\",\"//sbin\",\"//srv\",\"//sys\",\"//tmp\",\"//usr\",\"//var\",\"//wwwroot\"]}}
+"} 
+[2025-09-18 22:09:54] local.INFO: JSON数据采集成功 {"keys":["filesystem"],"size":328,"formatted_size":760} 
+[2025-09-18 22:09:54] local.INFO: 采集组件执行成功 {"server_id":37,"collector_id":7,"output_length":329,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 

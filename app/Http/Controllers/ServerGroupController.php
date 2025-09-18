@@ -11,11 +11,19 @@ class ServerGroupController extends Controller
     /**
      * 显示服务器分组列表
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $groups = ServerGroup::withCount('servers')->paginate(15);
+        $query = ServerGroup::withCount('servers');
+        
+        // 按名称查询
+        if ($request->has('name') && !empty($request->input('name'))) {
+            $query->where('name', 'like', '%' . $request->input('name') . '%');
+        }
+        
+        $groups = $query->paginate(15)->appends($request->except('page'));
         
         return view('server-groups.index', compact('groups'));
     }
@@ -129,5 +137,49 @@ class ServerGroupController extends Controller
         
         return redirect()->route('server-groups.index')
             ->with('success', '服务器分组删除成功！');
+    }
+
+    /**
+     * 批量删除服务器分组
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function batchDelete(Request $request)
+    {
+        if (!$request->has('group_ids') || empty($request->group_ids)) {
+            return redirect()->route('server-groups.index')
+                ->with('error', '未选择任何分组');
+        }
+
+        $groupIds = $request->group_ids;
+        $cannotDeleteGroups = [];
+        $deletedCount = 0;
+
+        foreach ($groupIds as $groupId) {
+            $group = ServerGroup::find($groupId);
+            
+            if (!$group) {
+                continue;
+            }
+
+            // 检查是否有关联的服务器
+            if ($group->servers()->count() > 0) {
+                $cannotDeleteGroups[] = $group->name;
+                continue;
+            }
+
+            $group->delete();
+            $deletedCount++;
+        }
+
+        if (count($cannotDeleteGroups) > 0) {
+            $message = "成功删除 {$deletedCount} 个分组，但以下分组因有关联服务器无法删除：" . implode(', ', $cannotDeleteGroups);
+            return redirect()->route('server-groups.index')
+                ->with('warning', $message);
+        }
+
+        return redirect()->route('server-groups.index')
+            ->with('success', "成功删除 {$deletedCount} 个分组");
     }
 }
