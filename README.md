@@ -71,8 +71,8 @@
 1. 克隆代码库
 
 ```bash
-git clone https://github.com/yourusername/server-collector.git
-cd server-collector
+git clone https://github.com/liking2354/sys-tmocaiji.git
+cd sys-tmocaiji
 ```
 
 2. 安装PHP依赖
@@ -127,7 +127,7 @@ php artisan serve
 打开浏览器访问 http://localhost:8000
 
 默认管理员账号：admin
-默认密码：password
+默认密码：admini123
 
 ## 使用说明
 

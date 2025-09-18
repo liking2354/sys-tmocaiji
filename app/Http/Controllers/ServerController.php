@@ -666,6 +666,72 @@ class ServerController extends Controller
     }
     
     /**
+     * 获取服务器系统信息
+     *
+     * @param  Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getSystemInfo(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'ip' => 'required|ip',
+            'port' => 'required|integer|between:1,65535',
+            'username' => 'required|string|max:50',
+            'password' => 'required|string|max:255',
+            'server_id' => 'nullable|integer|exists:servers,id',
+        ]);
+        
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => '验证参数错误',
+                'errors' => $validator->errors(),
+            ]);
+        }
+        
+        // 创建SSH连接
+        $ssh = new \phpseclib3\Net\SSH2($request->input('ip'), $request->input('port'));
+        if (!$ssh->login($request->input('username'), $request->input('password'))) {
+            return response()->json([
+                'success' => false,
+                'message' => '无法连接到服务器',
+            ]);
+        }
+        
+        // 获取操作系统信息
+        $osInfo = trim($ssh->exec('cat /etc/os-release | grep PRETTY_NAME | cut -d= -f2 | tr -d \'"\''));
+        
+        // 获取内核版本
+        $kernelInfo = trim($ssh->exec('uname -r'));
+        
+        // 获取运行时间
+        $uptimeInfo = trim($ssh->exec('uptime -p'));
+        
+        // 获取CPU使用率
+        $cpuInfo = trim($ssh->exec("top -bn1 | grep 'Cpu(s)' | awk '{print $2 + $4}'"));
+        
+        // 获取内存使用情况
+        $memoryCommand = "free -m | awk 'NR==2{printf \"%s/%sMB (%.2f%%)\", $3,$2,$3*100/$2 }'";
+        $memoryInfo = trim($ssh->exec($memoryCommand));
+        
+        // 获取磁盘使用情况
+        $diskCommand = "df -h | awk '\$NF==\"/\"{printf \"%d/%dGB (%s)\", $3,$2,$5}'";
+        $diskInfo = trim($ssh->exec($diskCommand));
+        
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'os_info' => $osInfo ?: '未知',
+                'kernel_info' => $kernelInfo ?: '未知',
+                'uptime_info' => $uptimeInfo ?: '未知',
+                'cpu_info' => $cpuInfo ? $cpuInfo . '%' : '未知',
+                'memory_info' => $memoryInfo ?: '未知',
+                'disk_info' => $diskInfo ?: '未知',
+            ]
+        ]);
+    }
+    
+    /**
      * 验证SSH连接
      *
      * @param  string  $ip

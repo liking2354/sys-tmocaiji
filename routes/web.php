@@ -42,10 +42,13 @@ Route::delete('server-groups/batch-delete', [ServerGroupController::class, 'batc
     Route::resource('servers', ServerController::class);
     Route::post('servers/import', [ServerController::class, 'import'])->name('servers.import');
     Route::post('servers/verify', [ServerController::class, 'verifyConnection'])->name('servers.verify');
+    Route::post('servers/system-info', [ServerController::class, 'getSystemInfo'])->name('servers.system-info');
     Route::post('servers/export', [ServerController::class, 'export'])->name('servers.export');
     Route::post('servers/export-selected', [ServerController::class, 'exportSelected'])->name('servers.export-selected');
     Route::get('servers/{server}/console', [ServerController::class, 'console'])->name('servers.console');
     Route::post('servers/{server}/execute', [ServerController::class, 'executeCommand'])->name('servers.execute');
+    Route::get('servers/{server}/check', [ServerController::class, 'checkStatus'])->name('servers.check');
+    Route::post('servers/batch-check', [ServerController::class, 'batchCheckStatus'])->name('servers.batch-check');
     
     // 服务器与采集组件关联
     Route::post('servers/{server}/collectors/{collector}/install', [ServerController::class, 'installCollector'])->name('servers.collectors.install');

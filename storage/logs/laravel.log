@@ -13854,3 +13854,13 @@ Try 'date --help' for more information.
 "} 
 [2025-09-18 22:09:54] local.INFO: JSON数据采集成功 {"keys":["filesystem"],"size":328,"formatted_size":760} 
 [2025-09-18 22:09:54] local.INFO: 采集组件执行成功 {"server_id":37,"collector_id":7,"output_length":329,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-18 22:19:00] local.INFO: 服务器数据变更，清除缓存 {"server_id":38} 
+[2025-09-18 22:19:00] local.INFO: 服务器状态已更新为在线 {"server_id":38,"server_name":"114.116.195.72","ip":"114.116.195.72","updated_at":"2025-09-18 22:19:00"} 
+[2025-09-18 22:19:13] local.INFO: 服务器数据变更，清除缓存 {"server_id":37} 
+[2025-09-18 22:19:13] local.INFO: 服务器状态已更新为在线 {"server_id":37,"server_name":"119.3.173.19","ip":"119.3.173.19","updated_at":"2025-09-18 22:19:13"} 
+[2025-09-18 22:25:52] local.INFO: 服务器数据变更，清除缓存 {"server_id":39} 
+[2025-09-18 22:25:52] local.INFO: 服务器状态已更新为在线 {"server_id":39,"server_name":"114.116.199.34","ip":"114.116.199.34","updated_at":"2025-09-18 22:25:52"} 
+[2025-09-18 22:36:21] local.INFO: 服务器数据变更，清除缓存 {"server_id":39} 
+[2025-09-18 22:36:21] local.INFO: 服务器状态已更新为在线 {"server_id":39,"server_name":"114.116.199.34","ip":"114.116.199.34","updated_at":"2025-09-18 22:36:21"} 
+[2025-09-18 22:42:56] local.INFO: 服务器数据变更，清除缓存 {"server_id":39} 
+[2025-09-18 22:42:56] local.INFO: 服务器状态已更新为在线 {"server_id":39,"server_name":"114.116.199.34","ip":"114.116.199.34","updated_at":"2025-09-18 22:42:56"} 

@@ -278,8 +278,65 @@ function getArrayPreview($array, $maxItems = 3) {
         </div>
     </div>
     
+    <!-- 系统信息 -->
+    <div class="card mt-4">
+        <div class="card-header bg-primary text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">系统信息</h5>
+                <div>
+                    <button type="button" class="btn btn-info btn-sm" id="toggleSystemInfoBtn">
+                        <i class="fas fa-chevron-down"></i> 展开详情
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="system-info-prompt" class="alert alert-info">
+                <i class="fas fa-info-circle"></i> 点击"测试连接"按钮获取服务器系统信息
+            </div>
+            <div id="system-info" class="collapse">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>基本信息</h6>
+                        <table class="table table-sm">
+                            <tr>
+                                <th>操作系统</th>
+                                <td id="os-info">-</td>
+                            </tr>
+                            <tr>
+                                <th>内核版本</th>
+                                <td id="kernel-info">-</td>
+                            </tr>
+                            <tr>
+                                <th>运行时间</th>
+                                <td id="uptime-info">-</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>资源使用</h6>
+                        <table class="table table-sm">
+                            <tr>
+                                <th>CPU使用率</th>
+                                <td id="cpu-info">-</td>
+                            </tr>
+                            <tr>
+                                <th>内存使用</th>
+                                <td id="memory-info">-</td>
+                            </tr>
+                            <tr>
+                                <th>磁盘使用</th>
+                                <td id="disk-info">-</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- 第二层：采集组件信息（选项卡） -->
-    <div class="card">
+    <div class="card mt-4">
         <div class="card-header bg-primary text-white">
             <div class="d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">采集信息</h5>
@@ -532,55 +589,7 @@ function getArrayPreview($array, $maxItems = 3) {
         </div>
     </div>
     
-    <!-- 服务器系统信息 -->
-    <div class="card mt-4">
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">系统信息</h5>
-        </div>
-        <div class="card-body">
-            <div class="alert alert-info">
-                <i class="fas fa-info-circle"></i> 点击"测试连接"按钮获取服务器系统信息
-            </div>
-            <div id="system-info" class="d-none">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h6>基本信息</h6>
-                        <table class="table table-sm">
-                            <tr>
-                                <th>操作系统</th>
-                                <td id="os-info">-</td>
-                            </tr>
-                            <tr>
-                                <th>内核版本</th>
-                                <td id="kernel-info">-</td>
-                            </tr>
-                            <tr>
-                                <th>运行时间</th>
-                                <td id="uptime-info">-</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="col-md-6">
-                        <h6>资源使用</h6>
-                        <table class="table table-sm">
-                            <tr>
-                                <th>CPU使用率</th>
-                                <td id="cpu-info">-</td>
-                            </tr>
-                            <tr>
-                                <th>内存使用</th>
-                                <td id="memory-info">-</td>
-                            </tr>
-                            <tr>
-                                <th>磁盘使用</th>
-                                <td id="disk-info">-</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
 </div>
 
 <!-- 安装采集组件模态框 -->
@@ -685,6 +694,28 @@ function getArrayPreview($array, $maxItems = 3) {
 <?php $__env->startSection('scripts'); ?>
 <script>
     $(document).ready(function() {
+        // 系统信息展开/收起按钮点击事件
+        $('#toggleSystemInfoBtn').click(function() {
+            var systemInfo = $('#system-info');
+            var btn = $(this);
+            
+            // 检查是否已经有数据
+            var hasData = $('#os-info').text() !== '-';
+            
+            if (!hasData) {
+                alert('请先点击"测试连接"按钮获取系统信息');
+                return;
+            }
+            
+            if (systemInfo.hasClass('show')) {
+                systemInfo.removeClass('show');
+                btn.html('<i class="fas fa-chevron-down"></i> 展开详情');
+            } else {
+                systemInfo.addClass('show');
+                btn.html('<i class="fas fa-chevron-up"></i> 收起详情');
+            }
+        });
+        
         // 测试连接按钮点击事件
         $('#testConnectionBtn').click(function() {
             // 显示加载状态
@@ -718,6 +749,9 @@ function getArrayPreview($array, $maxItems = 3) {
                         } else {
                             alert('连接成功！');
                         }
+                        
+                        // 连接成功后获取系统信息
+                        getSystemInfo();
                     } else {
                         alert('连接失败：' + response.message);
                     }
@@ -755,6 +789,43 @@ function getArrayPreview($array, $maxItems = 3) {
                            String(now.getSeconds()).padStart(2, '0');
             
             $('.last-check-time').text(timeString);
+        }
+        
+        // 获取系统信息的函数
+        function getSystemInfo() {
+            $.ajax({
+                url: '<?php echo e(route("servers.system-info")); ?>',
+                type: 'POST',
+                data: {
+                    _token: '<?php echo e(csrf_token()); ?>',
+                    ip: '<?php echo e($server->ip); ?>',
+                    port: '<?php echo e($server->port); ?>',
+                    username: '<?php echo e($server->username); ?>',
+                    password: '<?php echo e($server->password); ?>',
+                    server_id: '<?php echo e($server->id); ?>'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // 显示系统信息区域并展开
+                        $('#system-info').addClass('show');
+                        // 更新展开按钮图标和文字
+                        $('#toggleSystemInfoBtn').html('<i class="fas fa-chevron-up"></i> 收起详情');
+                        
+                        // 填充系统信息
+                        $('#os-info').text(response.data.os_info);
+                        $('#kernel-info').text(response.data.kernel_info);
+                        $('#uptime-info').text(response.data.uptime_info);
+                        $('#cpu-info').text(response.data.cpu_info);
+                        $('#memory-info').text(response.data.memory_info);
+                        $('#disk-info').text(response.data.disk_info);
+                    } else {
+                        console.error('获取系统信息失败:', response.message);
+                    }
+                },
+                error: function(xhr) {
+                    console.error('请求系统信息失败:', xhr.responseText);
+                }
+            });
         }
         
         // 执行所有采集组件
