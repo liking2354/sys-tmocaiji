@@ -46,3 +46,6 @@ Route::middleware('auth')->group(function () {
     // 采集历史API
     Route::get('collection-history/{collectionHistory}/result', [CollectionHistoryController::class, 'getResult'])->name('api.collection-history.result');
 });
+
+// 不需要认证的采集历史API
+Route::get('public/collection-history/{collectionHistory}/result', [CollectionHistoryController::class, 'getResult'])->name('api.public.collection-history.result');

@@ -19,7 +19,10 @@ class DataController extends Controller
         // 获取所有服务器分组
         $serverGroups = ServerGroup::with('servers')->get();
         
-        return view('data.cleanup', compact('serverGroups'));
+        // 获取所有采集组件
+        $collectors = Collector::all();
+        
+        return view('data.cleanup', compact('serverGroups', 'collectors'));
     }
 
     /**

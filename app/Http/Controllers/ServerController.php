@@ -573,11 +573,7 @@ class ServerController extends Controller
                 'last_check_time' => now(),
             ]);
             
-            // 确保输出不为空
-            if (empty($output)) {
-                $output = '命令执行成功，无输出';
-            }
-            
+            // 即使输出为空也直接返回原始输出
             return response()->json([
                 'success' => true,
                 'output' => $output,

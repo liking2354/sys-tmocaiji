@@ -219,37 +219,49 @@ class CollectionTaskController extends Controller
     /**
      * 查看任务详情
      *
-     * @param CollectionTask $task
+     * @param int $id 任务ID
      * @return \Illuminate\Http\Response
      */
-    public function show(CollectionTask $task)
+    public function show($id)
     {
-        $task->load(['taskDetails.server', 'taskDetails.collector', 'creator']);
-        
-        // 按服务器分组任务详情
-        $detailsByServer = $task->taskDetails->groupBy('server_id');
-        
-        // 统计信息
-        $stats = [
-            'total' => $task->taskDetails->count(),
-            'pending' => $task->taskDetails->where('status', 0)->count(),
-            'running' => $task->taskDetails->where('status', 1)->count(),
-            'completed' => $task->taskDetails->where('status', 2)->count(),
-            'failed' => $task->taskDetails->where('status', 3)->count()
-        ];
-        
-        // 如果是AJAX请求，只返回任务详情数据
-        if (request()->ajax()) {
-            return response()->json([
-                'success' => true,
-                'data' => [
-                    'detailsByServer' => $detailsByServer,
-                    'stats' => $stats
-                ]
-            ]);
+        try {
+            $task = CollectionTask::findOrFail($id);
+            $task->load(['taskDetails.server', 'taskDetails.collector', 'creator']);
+            
+            // 按服务器分组任务详情
+            $detailsByServer = $task->taskDetails->groupBy('server_id');
+            
+            // 统计信息
+            $stats = [
+                'total' => $task->taskDetails->count(),
+                'pending' => $task->taskDetails->where('status', 0)->count(),
+                'running' => $task->taskDetails->where('status', 1)->count(),
+                'completed' => $task->taskDetails->where('status', 2)->count(),
+                'failed' => $task->taskDetails->where('status', 3)->count()
+            ];
+            
+            // 如果是AJAX请求，只返回任务详情数据
+            if (request()->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'data' => [
+                        'detailsByServer' => $detailsByServer,
+                        'stats' => $stats
+                    ]
+                ]);
+            }
+            
+            return view('collection-tasks.show', compact('task', 'detailsByServer', 'stats'));
+        } catch (\Exception $e) {
+            if (request()->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => '任务不存在或已被删除'
+                ], 404);
+            }
+            return redirect()->route('collection-tasks.index')
+                ->with('error', '任务不存在或已被删除');
         }
-        
-        return view('collection-tasks.show', compact('task', 'detailsByServer', 'stats'));
     }
 
     /**
@@ -325,17 +337,88 @@ class CollectionTaskController extends Controller
      * @param CollectionTask $task
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CollectionTask $task)
+    public function destroy($id)
     {
-        if ($task->isRunning()) {
-            return redirect()->back()
-                ->with('error', '正在执行的任务不能删除');
+        try {
+            $task = \App\Models\CollectionTask::findOrFail($id);
+            
+            if ($task->isRunning()) {
+                return redirect()->back()
+                    ->with('error', '正在执行的任务不能删除');
+            }
+
+            $task->delete();
+
+            return redirect()->route('collection-tasks.index')
+                ->with('success', '任务已成功删除');
+        } catch (\Exception $e) {
+            return redirect()->route('collection-tasks.index')
+                ->with('error', '删除任务失败：' . $e->getMessage());
         }
-
-        $task->delete();
-
-        return redirect()->route('collection-tasks.index')
-            ->with('success', '任务已成功删除');
+    }
+    
+    /**
+     * 手动触发批量任务执行
+     *
+     * @param int $id 任务ID
+     * @return \Illuminate\Http\Response
+     */
+    public function triggerBatchTask($id)
+    {
+        try {
+            $task = \App\Models\CollectionTask::findOrFail($id);
+            
+            // 检查是否为批量任务且未执行
+            if ($task->type === 'single' || $task->status !== 0) {
+                return response()->json([
+                    'success' => false,
+                    'message' => '只能触发未执行的批量任务'
+                ]);
+            }
+            
+            // 更新任务状态为进行中
+            $task->status = 1;
+            $task->started_at = now();
+            $task->save();
+            
+            // 获取该批量任务下的所有子任务
+            $taskDetails = $task->taskDetails;
+            
+            // 更新所有子任务状态为进行中
+            foreach ($taskDetails as $detail) {
+                if ($detail->status === 0) { // 只处理未开始的子任务
+                    $detail->status = 1; // 设置为进行中
+                    $detail->started_at = now();
+                    $detail->save();
+                }
+            }
+            
+            // 直接执行批量任务执行逻辑（不使用队列）
+            $job = new \App\Jobs\ExecuteBatchCollectionJob($task->id);
+            $job->handle($task->id);
+            
+            // 如果是AJAX请求，返回JSON响应
+            if (request()->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => '批量任务已触发，所有子任务开始执行'
+                ]);
+            }
+            
+            // 否则重定向到任务详情页
+            return redirect()->route('collection-tasks.show', $task->id)
+                ->with('success', '批量任务已手动触发，所有子任务开始执行');
+        } catch (\Exception $e) {
+            if (request()->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => '触发任务失败：' . $e->getMessage()
+                ]);
+            }
+            
+            return redirect()->route('collection-tasks.index')
+                ->with('error', '触发任务失败：' . $e->getMessage());
+        }
     }
 
     /**

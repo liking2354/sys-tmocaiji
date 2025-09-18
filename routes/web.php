@@ -64,6 +64,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('collection-tasks/batch/execute', [CollectionTaskController::class, 'executeBatch'])->name('collection-tasks.batch.execute');
     Route::post('collection-tasks/{task}/retry', [CollectionTaskController::class, 'retryFailed'])->name('collection-tasks.retry');
     Route::post('collection-tasks/{task}/cancel', [CollectionTaskController::class, 'cancel'])->name('collection-tasks.cancel');
+    Route::post('collection-tasks/{id}/trigger-batch', [CollectionTaskController::class, 'triggerBatchTask'])->name('collection-tasks.trigger-batch');
     Route::get('collection-tasks/{task}/progress', [CollectionTaskController::class, 'getProgress'])->name('collection-tasks.progress');
     Route::get('task-details/{detail}/result', [CollectionTaskController::class, 'getTaskDetailResult'])->name('task-details.result');
     

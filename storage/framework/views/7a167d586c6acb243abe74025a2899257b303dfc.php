@@ -1,13 +1,11 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', '服务器管理 - 服务器管理与数据采集系统'); ?>
 
-@section('title', '服务器管理 - 服务器管理与数据采集系统')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>服务器管理</h1>
         <div>
-            <a href="{{ route('servers.create') }}" class="btn btn-primary">
+            <a href="<?php echo e(route('servers.create')); ?>" class="btn btn-primary">
                 <i class="fas fa-plus"></i> 添加服务器
             </a>
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#importModal">
@@ -25,26 +23,26 @@
     <!-- 搜索和筛选 -->
     <div class="card mb-4">
         <div class="card-body">
-            <form action="{{ route('servers.index') }}" method="GET" class="form-row align-items-center">
+            <form action="<?php echo e(route('servers.index')); ?>" method="GET" class="form-row align-items-center">
                 <div class="col-md-3 mb-2">
                     <label for="search">搜索</label>
-                    <input type="text" class="form-control" id="search" name="search" placeholder="服务器名称或IP" value="{{ request('search') }}">
+                    <input type="text" class="form-control" id="search" name="search" placeholder="服务器名称或IP" value="<?php echo e(request('search')); ?>">
                 </div>
                 <div class="col-md-3 mb-2">
                     <label for="group_id">服务器分组</label>
                     <select class="form-control" id="group_id" name="group_id">
                         <option value="">所有分组</option>
-                        @foreach ($groups as $group)
-                            <option value="{{ $group->id }}" {{ request('group_id') == $group->id ? 'selected' : '' }}>{{ $group->name }}</option>
-                        @endforeach
+                        <?php $__currentLoopData = $groups; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $group): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($group->id); ?>" <?php echo e(request('group_id') == $group->id ? 'selected' : ''); ?>><?php echo e($group->name); ?></option>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </select>
                 </div>
                 <div class="col-md-2 mb-2">
                     <label for="status">服务器状态</label>
                     <select class="form-control" id="status" name="status">
                         <option value="">全部状态</option>
-                        <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>在线</option>
-                        <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>离线</option>
+                        <option value="1" <?php echo e(request('status') == '1' ? 'selected' : ''); ?>>在线</option>
+                        <option value="0" <?php echo e(request('status') == '0' ? 'selected' : ''); ?>>离线</option>
                     </select>
                 </div>
                 <div class="col-md-2 mb-2 align-self-end">
@@ -53,7 +51,7 @@
                     </button>
                 </div>
                 <div class="col-md-2 mb-2 align-self-end">
-                    <a href="{{ route('servers.index') }}" class="btn btn-secondary btn-block">
+                    <a href="<?php echo e(route('servers.index')); ?>" class="btn btn-secondary btn-block">
                         <i class="fas fa-sync"></i> 重置
                     </a>
                 </div>
@@ -64,8 +62,8 @@
     <!-- 服务器列表 -->
     <div class="card">
         <div class="card-body">
-            <form id="exportForm" action="{{ route('servers.export') }}" method="POST">
-                @csrf
+            <form id="exportForm" action="<?php echo e(route('servers.export')); ?>" method="POST">
+                <?php echo csrf_field(); ?>
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
@@ -87,38 +85,38 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($servers as $server)
+                            <?php $__empty_1 = true; $__currentLoopData = $servers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $server): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                 <tr>
                                     <td>
                                         <div class="form-check">
-                                            <input class="form-check-input server-checkbox" type="checkbox" name="server_ids[]" value="{{ $server->id }}">
+                                            <input class="form-check-input server-checkbox" type="checkbox" name="server_ids[]" value="<?php echo e($server->id); ?>">
                                         </div>
                                     </td>
-                                    <td>{{ $server->id }}</td>
-                                    <td>{{ $server->name }}</td>
-                                    <td>{{ $server->group->name ?? '无分组' }}</td>
-                                    <td>{{ $server->ip }}</td>
-                                    <td>{{ $server->port }}</td>
+                                    <td><?php echo e($server->id); ?></td>
+                                    <td><?php echo e($server->name); ?></td>
+                                    <td><?php echo e($server->group->name ?? '无分组'); ?></td>
+                                    <td><?php echo e($server->ip); ?></td>
+                                    <td><?php echo e($server->port); ?></td>
                                     <td>
-                                        @if ($server->status == 1)
+                                        <?php if($server->status == 1): ?>
                                             <span class="badge badge-success">在线</span>
-                                        @else
+                                        <?php else: ?>
                                             <span class="badge badge-danger">离线</span>
-                                        @endif
+                                        <?php endif; ?>
                                     </td>
-                                    <td>{{ $server->last_check_time ? $server->last_check_time->format('Y-m-d H:i') : '未检查' }}</td>
-                                    <td>{{ $server->lastCollectionTime ? $server->lastCollectionTime->format('Y-m-d H:i') : '未采集' }}</td>
+                                    <td><?php echo e($server->last_check_time ? $server->last_check_time->format('Y-m-d H:i') : '未检查'); ?></td>
+                                    <td><?php echo e($server->lastCollectionTime ? $server->lastCollectionTime->format('Y-m-d H:i') : '未采集'); ?></td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <a href="{{ route('servers.show', $server) }}" class="btn btn-sm btn-info">
+                                            <a href="<?php echo e(route('servers.show', $server)); ?>" class="btn btn-sm btn-info">
                                                 <i class="fas fa-eye"></i> 查看
                                             </a>
-                                            <a href="{{ route('servers.edit', $server) }}" class="btn btn-sm btn-warning">
+                                            <a href="<?php echo e(route('servers.edit', $server)); ?>" class="btn btn-sm btn-warning">
                                                 <i class="fas fa-edit"></i> 编辑
                                             </a>
-                                            <form action="{{ route('servers.destroy', $server) }}" method="POST" class="d-inline" onsubmit="return confirm('确定要删除该服务器吗？')">
-                                                @csrf
-                                                @method('DELETE')
+                                            <form action="<?php echo e(route('servers.destroy', $server)); ?>" method="POST" class="d-inline" onsubmit="return confirm('确定要删除该服务器吗？')">
+                                                <?php echo csrf_field(); ?>
+                                                <?php echo method_field('DELETE'); ?>
                                                 <button type="submit" class="btn btn-sm btn-danger">
                                                     <i class="fas fa-trash"></i> 删除
                                                 </button>
@@ -126,18 +124,19 @@
                                         </div>
                                     </td>
                                 </tr>
-                            @empty
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                 <tr>
                                     <td colspan="10" class="text-center py-3">暂无服务器</td>
                                 </tr>
-                            @endforelse
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
             </form>
             
             <div class="d-flex justify-content-center mt-3">
-                {{ $servers->links() }}
+                <?php echo e($servers->links()); ?>
+
             </div>
         </div>
     </div>
@@ -153,8 +152,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('servers.import') }}" method="POST" enctype="multipart/form-data">
-                @csrf
+            <form action="<?php echo e(route('servers.import')); ?>" method="POST" enctype="multipart/form-data">
+                <?php echo csrf_field(); ?>
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="file">选择Excel文件</label>
@@ -193,8 +192,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="batchCollectionForm" action="{{ route('collection-tasks.batch.execute') }}" method="POST">
-                @csrf
+            <form id="batchCollectionForm" action="<?php echo e(route('collection-tasks.batch.execute')); ?>" method="POST">
+                <?php echo csrf_field(); ?>
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="task_name">任务名称</label>
@@ -233,9 +232,9 @@
     </div>
 </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('scripts')
+<?php $__env->startSection('scripts'); ?>
 <script>
     $(document).ready(function() {
         // 全选/取消全选
@@ -275,14 +274,14 @@
             
             // 创建临时表单（推荐方案）
             var tempForm = $('<form>', {
-                action: '{{ route("servers.download") }}',
+                action: '<?php echo e(route("servers.download")); ?>',
                 method: 'POST',
                 style: 'display: none;',
                 target: '_blank' // 在新窗口打开下载，避免影响当前页面
             });
             
             // 添加CSRF令牌
-            tempForm.append('<input type="hidden" name="_token" value="{{ csrf_token() }}">');
+            tempForm.append('<input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>">');
             
             // 添加服务器ID
             serverIds.forEach(function(serverId) {
@@ -349,10 +348,10 @@
             $('#submitBatchCollection').prop('disabled', true);
             
             $.ajax({
-                url: '{{ route("api.servers.common-collectors") }}',
+                url: '<?php echo e(route("api.servers.common-collectors")); ?>',
                 type: 'POST',
                 headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
                     'Accept': 'application/json'
                 },
                 data: {
@@ -409,7 +408,7 @@
                 url: $(this).attr('action'),
                 type: 'POST',
                 headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
                     'Accept': 'application/json',
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
@@ -419,7 +418,7 @@
                         $('#batchCollectionModal').modal('hide');
                         alert('批量采集任务创建成功！正在后台执行...');
                         // 跳转到任务详情页面
-                        window.location.href = '{{ route("collection-tasks.show", ":id") }}'.replace(':id', response.data.id);
+                        window.location.href = '<?php echo e(route("collection-tasks.show", ":id")); ?>'.replace(':id', response.data.id);
                     } else {
                         alert('创建失败：' + response.message);
                         btn.html(originalText).prop('disabled', false);
@@ -442,4 +441,5 @@
         updateButtonStates();
     });
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/tanli/Documents/php-code/sys-tmocaiji/resources/views/servers/index.blade.php ENDPATH**/ ?>

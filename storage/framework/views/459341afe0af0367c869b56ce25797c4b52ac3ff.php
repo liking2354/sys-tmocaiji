@@ -1,13 +1,11 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', $server->name . ' - 服务器控制台'); ?>
 
-@section('title', $server->name . ' - 服务器控制台')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>服务器控制台 - {{ $server->name }}</h1>
+        <h1>服务器控制台 - <?php echo e($server->name); ?></h1>
         <div>
-            <a href="{{ route('servers.show', $server) }}" class="btn btn-secondary">
+            <a href="<?php echo e(route('servers.show', $server)); ?>" class="btn btn-secondary">
                 <i class="fas fa-arrow-left"></i> 返回服务器详情
             </a>
         </div>
@@ -16,22 +14,22 @@
     <div class="card">
         <div class="card-header bg-dark text-white">
             <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0"><i class="fas fa-terminal"></i> {{ $server->username }} {{ $server->ip }}</h5>
-                <span class="badge badge-light">SSH端口: {{ $server->port }}</span>
+                <h5 class="mb-0"><i class="fas fa-terminal"></i> <?php echo e($server->username); ?> <?php echo e($server->ip); ?></h5>
+                <span class="badge badge-light">SSH端口: <?php echo e($server->port); ?></span>
             </div>
         </div>
         <div class="card-body bg-dark text-white">
             <div id="terminal-output" class="mb-3" style="height: 400px; overflow-y: auto; font-family: monospace; white-space: pre-wrap; background-color: #000; color: #fff; padding: 10px; border-radius: 5px;">
                 <!-- 终端输出将显示在这里 -->
-                <div class="text-success">连接到服务器 {{ $server->ip }} ({{ $server->name }})...</div>
-                <div class="text-success">用户: {{ $server->username }}</div>
+                <div class="text-success">连接到服务器 <?php echo e($server->ip); ?> (<?php echo e($server->name); ?>)...</div>
+                <div class="text-success">用户: <?php echo e($server->username); ?></div>
                 <div class="text-success">输入命令并按回车执行</div>
                 <div class="text-muted">提示: 输入 'exit' 可以关闭会话</div>
             </div>
             
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <span class="input-group-text bg-dark text-light border-0">{{ $server->username }} {{ $server->ip }} :~$</span>
+                    <span class="input-group-text bg-dark text-light border-0"><?php echo e($server->username); ?> <?php echo e($server->ip); ?> :~$</span>
                 </div>
                 <input type="text" id="command-input" class="form-control bg-dark text-light border-secondary" placeholder="输入命令...">
                 <div class="input-group-append">
@@ -43,16 +41,16 @@
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('scripts')
+<?php $__env->startSection('scripts'); ?>
 <script>
     $(document).ready(function() {
         const terminalOutput = $('#terminal-output');
         const commandInput = $('#command-input');
         const executeBtn = $('#execute-btn');
-        const serverUsername = "{{ $server->username }}";
-        const serverIp = "{{ $server->ip }}";
+        const serverUsername = "<?php echo e($server->username); ?>";
+        const serverIp = "<?php echo e($server->ip); ?>";
         
         // 命令历史记录
         const commandHistory = [];
@@ -107,7 +105,7 @@
             if (command.toLowerCase() === 'exit') {
                 addOutput('关闭会话...');
                 setTimeout(function() {
-                    window.location.href = '{{ route("servers.show", $server) }}';
+                    window.location.href = '<?php echo e(route("servers.show", $server)); ?>';
                 }, 1000);
                 return;
             }
@@ -118,10 +116,10 @@
             
             // 发送AJAX请求执行命令
             $.ajax({
-                url: '{{ route("servers.execute", $server) }}',
+                url: '<?php echo e(route("servers.execute", $server)); ?>',
                 type: 'POST',
                 data: {
-                    _token: '{{ csrf_token() }}',
+                    _token: '<?php echo e(csrf_token()); ?>',
                     command: command
                 },
                 success: function(response) {
@@ -195,4 +193,5 @@
         commandInput.focus();
     });
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/tanli/Documents/php-code/sys-tmocaiji/resources/views/servers/console.blade.php ENDPATH**/ ?>

@@ -1,12 +1,10 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', '数据清理 - 服务器管理与数据采集系统'); ?>
 
-@section('title', '数据清理 - 服务器管理与数据采集系统')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>数据清理</h1>
-        <a href="{{ route('dashboard') }}" class="btn btn-secondary">
+        <a href="<?php echo e(route('dashboard')); ?>" class="btn btn-secondary">
             <i class="fas fa-arrow-left"></i> 返回仪表盘
         </a>
     </div>
@@ -24,7 +22,7 @@
                         <div class="col-md-3">
                             <div class="card mb-3 border-primary shadow-sm">
                                 <div class="card-body text-center py-4">
-                                    <div class="display-4 text-primary mb-2">{{ App\Models\Server::count() }}</div>
+                                    <div class="display-4 text-primary mb-2"><?php echo e(App\Models\Server::count()); ?></div>
                                     <p class="mb-0 text-muted"><i class="fas fa-server mr-1"></i>服务器总数</p>
                                 </div>
                             </div>
@@ -32,7 +30,7 @@
                         <div class="col-md-3">
                             <div class="card mb-3 border-success shadow-sm">
                                 <div class="card-body text-center py-4">
-                                    <div class="display-4 text-success mb-2">{{ App\Models\Collector::count() }}</div>
+                                    <div class="display-4 text-success mb-2"><?php echo e(App\Models\Collector::count()); ?></div>
                                     <p class="mb-0 text-muted"><i class="fas fa-puzzle-piece mr-1"></i>采集组件总数</p>
                                 </div>
                             </div>
@@ -65,8 +63,8 @@
                     </button>
                 </div>
                 <div class="card-body collapse show" id="cleanupConditions">
-                    <form action="{{ route('data.cleanup') }}" method="POST" id="cleanupForm">
-                        @csrf
+                    <form action="<?php echo e(route('data.cleanup')); ?>" method="POST" id="cleanupForm">
+                        <?php echo csrf_field(); ?>
                         
                         <div class="row">
                             <div class="col-md-6">
@@ -83,45 +81,53 @@
                                             <span class="badge badge-primary server-count">0 已选择</span>
                                         </div>
                                         <div class="card-body p-2" style="max-height: 200px; overflow-y: auto;">
-                                            @foreach ($serverGroups as $group)
-                                                <div class="mb-2 server-group" data-group-id="{{ $group->id }}">
+                                            <?php $__currentLoopData = $serverGroups; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $group): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <div class="mb-2 server-group" data-group-id="<?php echo e($group->id); ?>">
                                                     <h6 class="d-flex justify-content-between align-items-center">
-                                                        <span>{{ $group->name ?? '无分组' }} ({{ $group->servers->count() }})</span>
-                                                        <button type="button" class="btn btn-sm btn-outline-secondary toggle-group-servers" data-group-id="{{ $group->id }}">
+                                                        <span><?php echo e($group->name ?? '无分组'); ?> (<?php echo e($group->servers->count()); ?>)</span>
+                                                        <button type="button" class="btn btn-sm btn-outline-secondary toggle-group-servers" data-group-id="<?php echo e($group->id); ?>">
                                                             <i class="fas fa-chevron-down"></i>
                                                         </button>
                                                     </h6>
-                                                    <div class="row group-servers-container" id="group-servers-{{ $group->id }}" style="display: {{ $loop->first ? 'flex' : 'none' }};">
-                                                        @if($group->servers->count() > 0)
-                                                            @foreach($group->servers as $server)
+                                                    <div class="row group-servers-container" id="group-servers-<?php echo e($group->id); ?>" style="display: <?php echo e($loop->first ? 'flex' : 'none'); ?>;">
+                                                        <?php if($group->servers->count() > 0): ?>
+                                                            <?php $__currentLoopData = $group->servers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $server): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                                 <div class="col-md-6">
                                                                     <div class="form-check">
-                                                                        <input class="form-check-input server-checkbox" type="checkbox" id="server_{{ $server->id }}" name="server_ids[]" value="{{ $server->id }}">
-                                                                        <label class="form-check-label" for="server_{{ $server->id }}">
-                                                                            {{ $server->name }}
-                                                                            <small class="text-muted">({{ $server->ip }})</small>
-                                                                            @if($server->status == 1)
+                                                                        <input class="form-check-input server-checkbox" type="checkbox" id="server_<?php echo e($server->id); ?>" name="server_ids[]" value="<?php echo e($server->id); ?>">
+                                                                        <label class="form-check-label" for="server_<?php echo e($server->id); ?>">
+                                                                            <?php echo e($server->name); ?>
+
+                                                                            <small class="text-muted">(<?php echo e($server->ip); ?>)</small>
+                                                                            <?php if($server->status == 1): ?>
                                                                                 <span class="badge badge-success">在线</span>
-                                                                            @else
+                                                                            <?php else: ?>
                                                                                 <span class="badge badge-danger">离线</span>
-                                                                            @endif
+                                                                            <?php endif; ?>
                                                                         </label>
                                                                     </div>
                                                                 </div>
-                                                            @endforeach
-                                                        @else
+                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                        <?php else: ?>
                                                             <div class="col-12 text-center">
                                                                 <span class="text-muted">该分组下没有服务器</span>
                                                             </div>
-                                                        @endif
+                                                        <?php endif; ?>
                                                     </div>
                                                 </div>
-                                            @endforeach
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </div>
                                     </div>
-                                    @error('server_ids')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
+                                    <?php $__errorArgs = ['server_ids'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="text-danger"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
                             </div>
                             
@@ -140,27 +146,35 @@
                                         </div>
                                         <div class="card-body p-2" style="max-height: 200px; overflow-y: auto;">
                                             <div class="row" id="collectors-container">
-                                                @foreach($collectors as $collector)
+                                                <?php $__currentLoopData = $collectors; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $collector): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                     <div class="col-md-6">
                                                         <div class="form-check">
-                                                            <input class="form-check-input collector-checkbox" type="checkbox" id="collector_{{ $collector->id }}" name="collector_ids[]" value="{{ $collector->id }}">
-                                                            <label class="form-check-label" for="collector_{{ $collector->id }}">
-                                                                {{ $collector->name }}
-                                                                @if($collector->status == 1)
+                                                            <input class="form-check-input collector-checkbox" type="checkbox" id="collector_<?php echo e($collector->id); ?>" name="collector_ids[]" value="<?php echo e($collector->id); ?>">
+                                                            <label class="form-check-label" for="collector_<?php echo e($collector->id); ?>">
+                                                                <?php echo e($collector->name); ?>
+
+                                                                <?php if($collector->status == 1): ?>
                                                                     <span class="badge badge-success">启用</span>
-                                                                @else
+                                                                <?php else: ?>
                                                                     <span class="badge badge-secondary">禁用</span>
-                                                                @endif
+                                                                <?php endif; ?>
                                                             </label>
                                                         </div>
                                                     </div>
-                                                @endforeach
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             </div>
                                         </div>
                                     </div>
-                                    @error('collector_ids')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
+                                    <?php $__errorArgs = ['collector_ids'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <div class="text-danger"><?php echo e($message); ?></div>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
                             </div>
                         </div>
@@ -179,11 +193,25 @@
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                                                             </div>
-                                                            <input type="date" class="form-control @error('start_date') is-invalid @enderror" id="start_date" name="start_date" value="{{ old('start_date') }}">
+                                                            <input type="date" class="form-control <?php $__errorArgs = ['start_date'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" id="start_date" name="start_date" value="<?php echo e(old('start_date')); ?>">
                                                         </div>
-                                                        @error('start_date')
-                                                            <div class="invalid-feedback">{{ $message }}</div>
-                                                        @enderror
+                                                        <?php $__errorArgs = ['start_date'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -193,11 +221,25 @@
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                                                             </div>
-                                                            <input type="date" class="form-control @error('end_date') is-invalid @enderror" id="end_date" name="end_date" value="{{ old('end_date') }}">
+                                                            <input type="date" class="form-control <?php $__errorArgs = ['end_date'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" id="end_date" name="end_date" value="<?php echo e(old('end_date')); ?>">
                                                         </div>
-                                                        @error('end_date')
-                                                            <div class="invalid-feedback">{{ $message }}</div>
-                                                        @enderror
+                                                        <?php $__errorArgs = ['end_date'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                            <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -254,9 +296,9 @@
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('scripts')
+<?php $__env->startSection('scripts'); ?>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
 <script>
     $(document).ready(function() {
@@ -407,4 +449,5 @@
         });
     });
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/tanli/Documents/php-code/sys-tmocaiji/resources/views/data/cleanup.blade.php ENDPATH**/ ?>

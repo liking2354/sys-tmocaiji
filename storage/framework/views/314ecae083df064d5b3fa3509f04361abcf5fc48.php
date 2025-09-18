@@ -5,9 +5,12 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>采集任务管理</h1>
         <div>
-            <a href="<?php echo e(route('servers.index')); ?>" class="btn btn-primary">
+            <a href="<?php echo e(route('servers.index')); ?>" class="btn btn-primary mr-2">
                 <i class="fas fa-plus"></i> 去服务器页面创建批量任务
             </a>
+            <button type="button" class="btn btn-success" id="batchExecuteBtn">
+                <i class="fas fa-play"></i> 立即执行批量任务
+            </button>
         </div>
     </div>
     <script>
@@ -157,9 +160,14 @@
                                         <a href="<?php echo e(route('collection-tasks.show', $task)); ?>" class="btn btn-sm btn-info">
                                             <i class="fas fa-eye"></i> 查看
                                         </a>
-                                        <?php if($task->canRetry()): ?>
+                                        <?php if($task->status === 2 && $task->error_count > 0): ?>
                                             <button type="button" class="btn btn-sm btn-warning" onclick="retryTask('<?php echo e($task->id); ?>')">
                                                 <i class="fas fa-redo"></i> 重试
+                                            </button>
+                                        <?php endif; ?>
+                                        <?php if($task->status === 0 && $task->type !== 'single'): ?>
+                                            <button type="button" class="btn btn-sm btn-primary" onclick="triggerBatchTask('<?php echo e($task->id); ?>')">
+                                                <i class="fas fa-play"></i> 执行
                                             </button>
                                         <?php endif; ?>
                                         <?php if($task->isRunning()): ?>
@@ -254,6 +262,100 @@ $(document).ready(function() {
             });
         }
     };
+    
+    // 手动触发批量任务
+    window.triggerBatchTask = function(taskId) {
+        if (confirm("确定要手动触发执行此批量任务吗？")) {
+            $.ajax({
+                url: "<?php echo e(route('collection-tasks.trigger-batch', ':id')); ?>".replace(":id", taskId),
+                type: "POST",
+                data: {
+                    _token: "<?php echo e(csrf_token()); ?>"
+                },
+                success: function(response) {
+                    if (response.success) {
+                        alert("批量任务已开始执行！");
+                        location.reload();
+                    } else {
+                        alert("触发失败：" + response.message);
+                    }
+                },
+                error: function(xhr) {
+                    alert("请求失败：" + (xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : xhr.responseText));
+                }
+            });
+        }
+    };
+    
+    // 立即执行批量任务按钮点击事件
+    $(document).ready(function() {
+        $("#batchExecuteBtn").click(function() {
+            // 获取所有未执行的批量任务
+            var pendingBatchTasks = [];
+            $(".task-row").each(function() {
+                var taskId = $(this).data("task-id");
+                var taskType = $(this).data("task-type");
+                var taskStatus = $(this).data("task-status");
+                
+                if (taskType !== 'single' && taskStatus === 0) {
+                    pendingBatchTasks.push({
+                        id: taskId,
+                        name: $(this).data("task-name")
+                    });
+                }
+            });
+            
+            if (pendingBatchTasks.length === 0) {
+                alert("没有找到可执行的批量任务！");
+                return;
+            }
+            
+            // 显示任务选择对话框
+            var taskOptions = "";
+            pendingBatchTasks.forEach(function(task) {
+                taskOptions += '<option value="' + task.id + '">' + task.name + '</option>';
+            });
+            
+            var selectDialog = '<div class="modal fade" id="selectTaskModal" tabindex="-1" role="dialog">' +
+                '<div class="modal-dialog" role="document">' +
+                '<div class="modal-content">' +
+                '<div class="modal-header">' +
+                '<h5 class="modal-title">选择要执行的批量任务</h5>' +
+                '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+                '<span aria-hidden="true">&times;</span>' +
+                '</button>' +
+                '</div>' +
+                '<div class="modal-body">' +
+                '<select class="form-control" id="taskSelect">' +
+                taskOptions +
+                '</select>' +
+                '</div>' +
+                '<div class="modal-footer">' +
+                '<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>' +
+                '<button type="button" class="btn btn-primary" id="confirmExecuteBtn">确认执行</button>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+            
+            $("body").append(selectDialog);
+            $("#selectTaskModal").modal("show");
+            
+            // 确认执行按钮点击事件
+            $("#confirmExecuteBtn").click(function() {
+                var selectedTaskId = $("#taskSelect").val();
+                if (selectedTaskId) {
+                    $("#selectTaskModal").modal("hide");
+                    triggerBatchTask(selectedTaskId);
+                }
+            });
+            
+            // 模态框关闭后移除
+            $("#selectTaskModal").on("hidden.bs.modal", function() {
+                $(this).remove();
+            });
+        });
+    });
 });
 </script>
 <?php $__env->stopSection(); ?>
