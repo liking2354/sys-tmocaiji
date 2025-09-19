@@ -113,37 +113,6 @@
         </div>
     </div>
     
-    <!-- 图表展示区域 -->
-    <div class="row mb-4">
-        <!-- 服务器状态图表 -->
-        <div class="col-lg-6 mb-4">
-            <div class="card shadow">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">服务器状态分布</h6>
-                </div>
-                <div class="card-body">
-                    <div class="chart-container" style="position: relative; height:250px;">
-                        <canvas id="serverStatusChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- 采集数据趋势图表 -->
-        <div class="col-lg-6 mb-4">
-            <div class="card shadow">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">近期采集数据趋势</h6>
-                </div>
-                <div class="card-body">
-                    <div class="chart-container" style="position: relative; height:250px;">
-                        <canvas id="dataCollectionChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
     <!-- 系统信息 -->
     <div class="row">
         <div class="col-md-8">

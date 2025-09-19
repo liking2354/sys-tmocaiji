@@ -64,7 +64,6 @@
     <!-- 服务器列表 -->
     <div class="card">
         <div class="card-body">
-            <form id="exportForm" action="{{ route('servers.export') }}" method="POST">
                 @csrf
                 <div class="table-responsive">
                     <table class="table table-hover">
@@ -134,7 +133,6 @@
                         </tbody>
                     </table>
                 </div>
-            </form>
             
             <div class="d-flex justify-content-center mt-3">
                 {{ $servers->links() }}

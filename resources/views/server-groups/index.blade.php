@@ -40,7 +40,7 @@
             <form id="batch-form" action="{{ route('server-groups.batch-delete') }}" method="POST">
                 @csrf
                 @method('DELETE')
-                
+            </form>   
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
@@ -97,7 +97,6 @@
                     </tbody>
                 </table>
             </div>
-            </form>
             
             <div class="d-flex justify-content-center mt-3">
                 {{ $groups->links() }}
