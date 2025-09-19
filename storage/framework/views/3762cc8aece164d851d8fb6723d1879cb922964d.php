@@ -38,7 +38,7 @@
             <form id="batch-form" action="<?php echo e(route('server-groups.batch-delete')); ?>" method="POST">
                 <?php echo csrf_field(); ?>
                 <?php echo method_field('DELETE'); ?>
-                
+            </form>   
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
@@ -95,7 +95,6 @@
                     </tbody>
                 </table>
             </div>
-            </form>
             
             <div class="d-flex justify-content-center mt-3">
                 <?php echo e($groups->links()); ?>

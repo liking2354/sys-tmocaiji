@@ -53,7 +53,7 @@
 
 ## 技术栈
 
-- **后端框架**：Laravel 8.x
+- **后端框架**：Laravel 9.x
 - **前端框架**：Bootstrap 4.x
 - **数据库**：MySQL
 - **SSH连接**：phpseclib3
@@ -61,7 +61,7 @@
 
 ## 系统要求
 
-- PHP >= 7.4
+- PHP >= 8.0
 - MySQL >= 5.7
 - Composer
 - Node.js & NPM (用于前端资源编译)
