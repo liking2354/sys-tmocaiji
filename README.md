@@ -61,7 +61,7 @@
 
 ## 系统要求
 
-- PHP >= 8.0
+- PHP >= 8.3
 - MySQL >= 5.7
 - Composer
 - Node.js & NPM (用于前端资源编译)
