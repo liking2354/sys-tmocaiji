@@ -71,6 +71,7 @@ Route::delete('server-groups/batch-delete', [ServerGroupController::class, 'batc
     Route::post('collection-tasks/{id}/trigger-batch', [CollectionTaskController::class, 'triggerBatchTask'])->name('collection-tasks.trigger-batch');
     Route::get('collection-tasks/{task}/progress', [CollectionTaskController::class, 'getProgress'])->name('collection-tasks.progress');
     Route::get('task-details/{detail}/result', [CollectionTaskController::class, 'getTaskDetailResult'])->name('task-details.result');
+    Route::post('collection-tasks/batch-destroy', [CollectionTaskController::class, 'batchDestroy'])->name('collection-tasks.batch-destroy');
     
     // 采集组件管理
     Route::resource('collectors', CollectorController::class);

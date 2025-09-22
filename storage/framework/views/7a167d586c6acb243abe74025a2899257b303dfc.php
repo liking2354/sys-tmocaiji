@@ -298,6 +298,7 @@
         
         // 批量采集按钮点击事件
         $('#batchCollectionBtn').click(function() {
+            // 获取选中的服务器ID
             var checkedBoxes = $('.server-checkbox:checked');
             if (checkedBoxes.length > 0) {
                 var serverIds = [];
@@ -330,6 +331,8 @@
                 $('#task_name').val(defaultName);
                 
                 $('#batchCollectionModal').modal('show');
+            } else {
+                toastr.warning('请先选择要执行采集的服务器');
             }
         });
         
@@ -377,7 +380,56 @@
                             $('#submitBatchCollection').prop('disabled', checkedCollectors === 0);
                         });
                     } else {
-                        $('#collectorsList').html('<div class="alert alert-warning">所选服务器没有共同的采集组件</div>');
+                        // 没有共同采集组件时，显示所有可用采集组件供统一选择
+                        $('#collectorsList').html('<div class="alert alert-warning mb-3">所选服务器没有共同的采集组件，您可以在下方选择采集组件进行批量关联</div>');
+                        
+                        // 加载所有采集组件
+                        $.ajax({
+                            url: '<?php echo e(route("api.collectors.all")); ?>',
+                            type: 'GET',
+                            headers: {
+                                'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
+                                'Accept': 'application/json'
+                            },
+                            success: function(response) {
+                                if (response.success && response.data.length > 0) {
+                                    var html = '<div class="form-group">';
+                                    html += '<div class="custom-control custom-checkbox mb-2">';
+                                    html += '<input type="checkbox" class="custom-control-input" id="linkCollectors" name="link_collectors" checked>';
+                                    html += '<label class="custom-control-label" for="linkCollectors">将选择的采集组件关联到未安装该组件的服务器</label>';
+                                    html += '</div>';
+                                    html += '</div>';
+                                    
+                                    html += '<div class="form-group">';
+                                    html += '<label>可用采集组件：</label>';
+                                    response.data.forEach(function(collector) {
+                                        html += '<div class="form-check">';
+                                        html += '<input class="form-check-input collector-checkbox" type="checkbox" name="collector_ids[]" value="' + collector.id + '" id="collector_' + collector.id + '">';
+                                        html += '<label class="form-check-label" for="collector_' + collector.id + '">';
+                                        html += collector.name + ' (' + collector.code + ')';
+                                        if (collector.description) {
+                                            html += '<br><small class="text-muted">' + collector.description + '</small>';
+                                        }
+                                        html += '</label>';
+                                        html += '</div>';
+                                    });
+                                    html += '</div>';
+                                    
+                                    $('#collectorsList').append(html);
+                                    
+                                    // 监听采集组件选择变化
+                                    $('.collector-checkbox').change(function() {
+                                        var checkedCollectors = $('.collector-checkbox:checked').length;
+                                        $('#submitBatchCollection').prop('disabled', checkedCollectors === 0);
+                                    });
+                                } else {
+                                    $('#collectorsList').append('<div class="alert alert-danger">没有可用的采集组件</div>');
+                                }
+                            },
+                            error: function(xhr) {
+                                $('#collectorsList').append('<div class="alert alert-danger">加载采集组件失败：' + xhr.responseText + '</div>');
+                            }
+                        });
                     }
                 },
                 error: function(xhr) {
@@ -399,40 +451,87 @@
             var formData = $(this).serialize();
             var btn = $('#submitBatchCollection');
             var originalText = btn.html();
+            var serverIds = $('#selected_server_ids').val().split(',');
             
             btn.html('<i class="fas fa-spinner fa-spin"></i> 创建中...').prop('disabled', true);
             
-            $.ajax({
-                url: $(this).attr('action'),
-                type: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                data: formData,
-                success: function(response) {
-                    if (response.success) {
-                        $('#batchCollectionModal').modal('hide');
-                        alert('批量采集任务创建成功！正在后台执行...');
-                        // 跳转到任务详情页面
-                        window.location.href = '<?php echo e(route("collection-tasks.show", ":id")); ?>'.replace(':id', response.data.id);
-                    } else {
-                        alert('创建失败：' + response.message);
+            // 检查是否需要关联采集组件
+            var linkCollectors = $('#linkCollectors').is(':checked');
+            
+            if (linkCollectors) {
+                // 先关联采集组件，再开始采集
+                var collectorIds = [];
+                $('.collector-checkbox:checked').each(function() {
+                    collectorIds.push($(this).val());
+                });
+                
+                $.ajax({
+                    url: '<?php echo e(route("api.servers.batch-associate-collectors")); ?>',
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
+                        'Accept': 'application/json'
+                    },
+                    data: {
+                        server_ids: serverIds,
+                        collector_ids: collectorIds
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // 关联成功后开始采集
+                            startBatchCollection();
+                        } else {
+                            alert('关联采集组件失败：' + response.message);
+                            btn.html(originalText).prop('disabled', false);
+                        }
+                    },
+                    error: function(xhr) {
+                        var errorMsg = '关联采集组件失败';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMsg = xhr.responseJSON.message;
+                        }
+                        alert(errorMsg);
                         btn.html(originalText).prop('disabled', false);
                     }
-                },
-                error: function(xhr) {
-                    var errorMessage = '请求失败';
-                    if (xhr.responseJSON) {
-                        errorMessage = xhr.responseJSON.message || xhr.responseJSON.error || errorMessage;
-                    } else if (xhr.responseText) {
-                        errorMessage = xhr.responseText;
+                });
+            } else {
+                // 直接开始采集
+                startBatchCollection();
+            }
+            
+            function startBatchCollection() {
+                $.ajax({
+                    url: $('#batchCollectionForm').attr('action'),
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    data: formData,
+                    success: function(response) {
+                        if (response.success) {
+                            $('#batchCollectionModal').modal('hide');
+                            alert('批量采集任务创建成功！正在后台执行...');
+                            // 跳转到任务详情页面
+                            window.location.href = '<?php echo e(route("collection-tasks.show", ":id")); ?>'.replace(':id', response.data.id);
+                        } else {
+                            alert('创建失败：' + response.message);
+                            btn.html(originalText).prop('disabled', false);
+                        }
+                    },
+                    error: function(xhr) {
+                        var errorMessage = '请求失败';
+                        if (xhr.responseJSON) {
+                            errorMessage = xhr.responseJSON.message || xhr.responseJSON.error || errorMessage;
+                        } else if (xhr.responseText) {
+                            errorMessage = xhr.responseText;
+                        }
+                        alert(errorMessage);
+                        btn.html(originalText).prop('disabled', false);
                     }
-                    alert(errorMessage);
-                    btn.html(originalText).prop('disabled', false);
-                }
-            });
+                });
+            }
         });
         
         // 初始化按钮状态

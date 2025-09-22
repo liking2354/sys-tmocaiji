@@ -52,4 +52,36 @@ class CollectorController extends Controller
         
         return response()->json($collectors);
     }
+    
+    /**
+     * 获取所有可用的采集组件（不分页）
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAllCollectors()
+    {
+        // 从缓存获取数据，采集组件数据变动较少，可以缓存更长时间
+        $collectors = Cache::remember('collectors:all:active', 86400, function () {
+            Log::info('从数据库获取所有可用采集组件数据');
+            
+            return Collector::where('status', 1)
+                ->orderBy('name')
+                ->get()
+                ->map(function ($collector) {
+                    return [
+                        'id' => $collector->id,
+                        'name' => $collector->name,
+                        'code' => $collector->code,
+                        'description' => $collector->description,
+                        'type' => $collector->type
+                    ];
+                })
+                ->toArray();
+        });
+        
+        return response()->json([
+            'success' => true,
+            'data' => $collectors
+        ]);
+    }
 }

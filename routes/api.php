@@ -25,11 +25,13 @@ Route::post('login', function() {
 // 不需要认证的API路由
 // 采集组件API
 Route::get('collectors', [CollectorController::class, 'index']);
+Route::get('collectors/all', [CollectorController::class, 'getAllCollectors'])->name('api.collectors.all');
 Route::get('collectors/{collector}', [CollectorController::class, 'show']);
 
 // 服务器API（不需要认证的部分）
 Route::get('servers', [ServerController::class, 'index']);
 Route::post('servers/common-collectors', [ServerController::class, 'getCommonCollectors'])->name('api.servers.common-collectors');
+Route::post('servers/batch-associate-collectors', [ServerController::class, 'batchAssociateCollectors'])->name('api.servers.batch-associate-collectors');
 
 // 公共API路由
 

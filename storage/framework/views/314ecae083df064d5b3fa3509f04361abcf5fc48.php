@@ -8,8 +8,11 @@
             <a href="<?php echo e(route('servers.index')); ?>" class="btn btn-primary mr-2">
                 <i class="fas fa-plus"></i> 去服务器页面创建批量任务
             </a>
-            <button type="button" class="btn btn-success" id="batchExecuteBtn">
+            <button type="button" class="btn btn-success mr-2" id="batchExecuteBtn">
                 <i class="fas fa-play"></i> 立即执行批量任务
+            </button>
+            <button type="button" class="btn btn-danger" id="batchDeleteBtn" disabled>
+                <i class="fas fa-trash"></i> 批量删除
             </button>
         </div>
     </div>
@@ -76,6 +79,12 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
+                            <th>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="selectAllTasks">
+                                    <label class="custom-control-label" for="selectAllTasks"></label>
+                                </div>
+                            </th>
                             <th>ID</th>
                             <th>任务名称</th>
                             <th>类型</th>
@@ -90,6 +99,12 @@
                     <tbody>
                         <?php $__empty_1 = true; $__currentLoopData = $tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                             <tr>
+                                <td>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input task-checkbox" id="task_<?php echo e($task->id); ?>" value="<?php echo e($task->id); ?>" <?php echo e($task->isRunning() ? 'disabled' : ''); ?>>
+                                        <label class="custom-control-label" for="task_<?php echo e($task->id); ?>"></label>
+                                    </div>
+                                </td>
                                 <td><?php echo e($task->id); ?></td>
                                 <td>
                                     <a href="<?php echo e(route('collection-tasks.show', $task)); ?>" class="text-decoration-none">
@@ -189,7 +204,7 @@
                             </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                             <tr>
-                                <td colspan="9" class="text-center py-3">暂无采集任务</td>
+                                <td colspan="10" class="text-center py-3">暂无采集任务</td>
                             </tr>
                         <?php endif; ?>
                     </tbody>
@@ -207,116 +222,173 @@
 
 <?php $__env->startSection('scripts'); ?>
 <script>
-$(document).ready(function() {
-    // 自动刷新进行中的任务
-    setInterval(function() {
-        if ($('.badge-warning').length > 0) {
-            location.reload();
-        }
-    }, 5000); // 每5秒刷新一次
-    
-    // 重试任务
-    window.retryTask = function(taskId) {
-        if (confirm("确定要重试失败的任务吗？")) {
-            $.ajax({
-                url: "<?php echo e(route('collection-tasks.retry', ':id')); ?>".replace(":id", taskId),
-                type: "POST",
-                data: {
-                    _token: "<?php echo e(csrf_token()); ?>"
-                },
-                success: function(response) {
-                    if (response.success) {
-                        alert("任务重试已启动！");
-                        location.reload();
-                    } else {
-                        alert("重试失败：" + response.message);
-                    }
-                },
-                error: function(xhr) {
-                    alert("请求失败：" + (xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : xhr.responseText));
-                }
-            });
-        }
-    };
-    
-    // 取消任务
-    window.cancelTask = function(taskId) {
-        if (confirm("确定要取消正在执行的任务吗？")) {
-            $.ajax({
-                url: "<?php echo e(route('collection-tasks.cancel', ':id')); ?>".replace(":id", taskId),
-                type: "POST",
-                data: {
-                    _token: "<?php echo e(csrf_token()); ?>"
-                },
-                success: function(response) {
-                    if (response.success) {
-                        alert("任务已取消！");
-                        location.reload();
-                    } else {
-                        alert("取消失败：" + response.message);
-                    }
-                },
-                error: function(xhr) {
-                    alert("请求失败：" + (xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : xhr.responseText));
-                }
-            });
-        }
-    };
-    
-    // 手动触发批量任务
-    window.triggerBatchTask = function(taskId) {
-        if (confirm("确定要手动触发执行此批量任务吗？")) {
-            $.ajax({
-                url: "<?php echo e(route('collection-tasks.trigger-batch', ':id')); ?>".replace(":id", taskId),
-                type: "POST",
-                data: {
-                    _token: "<?php echo e(csrf_token()); ?>"
-                },
-                success: function(response) {
-                    if (response.success) {
-                        alert("批量任务已开始执行！");
-                        location.reload();
-                    } else {
-                        alert("触发失败：" + response.message);
-                    }
-                },
-                error: function(xhr) {
-                    alert("请求失败：" + (xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : xhr.responseText));
-                }
-            });
-        }
-    };
-    
-    // 立即执行批量任务按钮点击事件
     $(document).ready(function() {
-        $("#batchExecuteBtn").click(function() {
+        // 自动刷新进行中的任务
+        setInterval(function() {
+            if ($('.badge-warning').length > 0) {
+                location.reload();
+            }
+        }, 5000); // 每5秒刷新一次
+        
+        // 全选/取消全选
+        $('#selectAllTasks').change(function() {
+            $('.task-checkbox:not(:disabled)').prop('checked', $(this).prop('checked'));
+            updateBatchDeleteButton();
+        });
+        
+        // 单个复选框变化时更新按钮状态
+        $('.task-checkbox').change(function() {
+            updateBatchDeleteButton();
+        });
+        
+        // 更新批量删除按钮状态
+        function updateBatchDeleteButton() {
+            var selectedCount = $('.task-checkbox:checked').length;
+            $('#batchDeleteBtn').prop('disabled', selectedCount === 0);
+        }
+        
+        // 批量删除按钮点击事件
+        $('#batchDeleteBtn').click(function() {
+            var selectedIds = [];
+            $('.task-checkbox:checked').each(function() {
+                selectedIds.push($(this).val());
+            });
+            
+            if (selectedIds.length === 0) {
+                toastr.warning('请先选择要删除的任务');
+                return;
+            }
+            
+            if (confirm('确定要删除选中的 ' + selectedIds.length + ' 个任务吗？此操作不可恢复！')) {
+                $.ajax({
+                    url: '<?php echo e(route("collection-tasks.batch-destroy")); ?>',
+                    type: 'POST',
+                    data: {
+                        _token: '<?php echo e(csrf_token()); ?>',
+                        task_ids: selectedIds
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            toastr.success(response.message);
+                            // 刷新页面
+                            window.location.reload();
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    },
+                    error: function(xhr) {
+                        var errorMsg = '批量删除失败';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMsg = xhr.responseJSON.message;
+                        }
+                        toastr.error(errorMsg);
+                    }
+                });
+            }
+        });
+        
+        // 重试任务
+        window.retryTask = function(taskId) {
+            if (confirm("确定要重试失败的任务吗？")) {
+                $.ajax({
+                    url: "<?php echo e(route('collection-tasks.retry', ':id')); ?>".replace(":id", taskId),
+                    type: "POST",
+                    data: {
+                        _token: "<?php echo e(csrf_token()); ?>"
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            toastr.success("任务重试已启动！");
+                            location.reload();
+                        } else {
+                            toastr.error("重试失败：" + response.message);
+                        }
+                    },
+                    error: function(xhr) {
+                        toastr.error("请求失败：" + (xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : xhr.responseText));
+                    }
+                });
+            }
+        };
+        
+        // 取消任务
+        window.cancelTask = function(taskId) {
+            if (confirm("确定要取消正在执行的任务吗？")) {
+                $.ajax({
+                    url: "<?php echo e(route('collection-tasks.cancel', ':id')); ?>".replace(":id", taskId),
+                    type: "POST",
+                    data: {
+                        _token: "<?php echo e(csrf_token()); ?>"
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            toastr.success("任务已取消！");
+                            location.reload();
+                        } else {
+                            toastr.error("取消失败：" + response.message);
+                        }
+                    },
+                    error: function(xhr) {
+                        toastr.error("请求失败：" + (xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : xhr.responseText));
+                    }
+                });
+            }
+        };
+        
+        // 手动触发批量任务
+        window.triggerBatchTask = function(taskId) {
+            if (confirm("确定要手动触发执行此批量任务吗？")) {
+                $.ajax({
+                    url: "<?php echo e(route('collection-tasks.trigger-batch', ':id')); ?>".replace(":id", taskId),
+                    type: "POST",
+                    data: {
+                        _token: "<?php echo e(csrf_token()); ?>"
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            toastr.success("批量任务已开始执行！");
+                            location.reload();
+                        } else {
+                            toastr.error("触发失败：" + response.message);
+                        }
+                    },
+                    error: function(xhr) {
+                        toastr.error("请求失败：" + (xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : xhr.responseText));
+                    }
+                });
+            }
+        };
+        
+        // 立即执行批量任务按钮点击事件
+        $('#batchExecuteBtn').click(function() {
             // 获取所有未执行的批量任务
             var pendingBatchTasks = [];
-            $(".task-row").each(function() {
-                var taskId = $(this).data("task-id");
-                var taskType = $(this).data("task-type");
-                var taskStatus = $(this).data("task-status");
+            $('.task-checkbox').each(function() {
+                var taskId = $(this).val();
+                var taskType = $(this).closest('tr').find('td:nth-child(4) .badge').text().trim();
+                var taskStatus = $(this).closest('tr').find('td:nth-child(5) .badge').text().trim();
                 
-                if (taskType !== 'single' && taskStatus === 0) {
+                if (taskType === '批量服务器' && taskStatus === '未开始') {
                     pendingBatchTasks.push({
                         id: taskId,
-                        name: $(this).data("task-name")
+                        name: $(this).closest('tr').find('td:nth-child(3) a').text().trim()
                     });
                 }
             });
             
             if (pendingBatchTasks.length === 0) {
-                alert("没有找到可执行的批量任务！");
+                toastr.warning('没有可执行的未开始批量任务');
                 return;
             }
             
-            // 显示任务选择对话框
-            var taskOptions = "";
+            // 构建选择列表
+            var taskOptions = '';
             pendingBatchTasks.forEach(function(task) {
-                taskOptions += '<option value="' + task.id + '">' + task.name + '</option>';
+                taskOptions += '<option value="' + task.id + '">' + task.name + ' (ID: ' + task.id + ')</option>';
             });
             
-            var selectDialog = '<div class="modal fade" id="selectTaskModal" tabindex="-1" role="dialog">' +
+            // 显示选择对话框
+            var selectDialog = $('<div class="modal fade" tabindex="-1" role="dialog">' +
                 '<div class="modal-dialog" role="document">' +
                 '<div class="modal-content">' +
                 '<div class="modal-header">' +
@@ -326,9 +398,12 @@ $(document).ready(function() {
                 '</button>' +
                 '</div>' +
                 '<div class="modal-body">' +
+                '<div class="form-group">' +
+                '<label for="taskSelect">选择任务：</label>' +
                 '<select class="form-control" id="taskSelect">' +
                 taskOptions +
                 '</select>' +
+                '</div>' +
                 '</div>' +
                 '<div class="modal-footer">' +
                 '<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>' +
@@ -336,27 +411,47 @@ $(document).ready(function() {
                 '</div>' +
                 '</div>' +
                 '</div>' +
-                '</div>';
+                '</div>');
             
-            $("body").append(selectDialog);
-            $("#selectTaskModal").modal("show");
+            $('body').append(selectDialog);
+            selectDialog.modal('show');
             
             // 确认执行按钮点击事件
-            $("#confirmExecuteBtn").click(function() {
-                var selectedTaskId = $("#taskSelect").val();
-                if (selectedTaskId) {
-                    $("#selectTaskModal").modal("hide");
-                    triggerBatchTask(selectedTaskId);
-                }
+            $('#confirmExecuteBtn').click(function() {
+                var taskId = $('#taskSelect').val();
+                
+                $.ajax({
+                    url: '<?php echo e(url("collection-tasks")); ?>/' + taskId + '/trigger',
+                    type: 'POST',
+                    data: {
+                        _token: '<?php echo e(csrf_token()); ?>'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            toastr.success(response.message);
+                            selectDialog.modal('hide');
+                            // 刷新页面
+                            window.location.reload();
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    },
+                    error: function(xhr) {
+                        var errorMsg = '触发任务失败';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMsg = xhr.responseJSON.message;
+                        }
+                        toastr.error(errorMsg);
+                    }
+                });
             });
             
-            // 模态框关闭后移除
-            $("#selectTaskModal").on("hidden.bs.modal", function() {
+            // 模态框关闭时移除
+            selectDialog.on('hidden.bs.modal', function() {
                 $(this).remove();
             });
         });
     });
-});
 </script>
 <?php $__env->stopSection(); ?>
 

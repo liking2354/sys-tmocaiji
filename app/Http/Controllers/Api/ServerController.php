@@ -87,13 +87,67 @@ class ServerController extends Controller
             ], 422);
         }
 
-        $serverIds = $request->input('server_ids', []);
+        $serverIds = $request->input('server_ids');
         $collectors = $this->collectionService->getCommonCollectors($serverIds);
 
         return response()->json([
             'success' => true,
             'data' => $collectors
         ]);
+    }
+    
+    /**
+     * 批量关联采集组件到服务器
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function batchAssociateCollectors(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'server_ids' => 'required|array|min:1',
+            'server_ids.*' => 'exists:servers,id',
+            'collector_ids' => 'required|array|min:1',
+            'collector_ids.*' => 'exists:collectors,id'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => '参数验证失败',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $serverIds = $request->input('server_ids');
+        $collectorIds = $request->input('collector_ids');
+        
+        try {
+            // 获取所有服务器
+            $servers = Server::whereIn('id', $serverIds)->get();
+            
+            // 为每个服务器关联采集组件
+            foreach ($servers as $server) {
+                // 获取服务器当前的采集组件ID
+                $currentCollectorIds = $server->collectors()->pluck('collectors.id')->toArray();
+                
+                // 合并现有的和新的采集组件ID，避免重复
+                $newCollectorIds = array_unique(array_merge($currentCollectorIds, $collectorIds));
+                
+                // 同步采集组件关联
+                $server->collectors()->sync($newCollectorIds);
+            }
+            
+            return response()->json([
+                'success' => true,
+                'message' => '批量关联采集组件成功'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => '批量关联采集组件失败: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     /**

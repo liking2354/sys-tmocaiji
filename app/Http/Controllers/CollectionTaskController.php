@@ -358,6 +358,54 @@ class CollectionTaskController extends Controller
     }
     
     /**
+     * 批量删除任务
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function batchDestroy(Request $request)
+    {
+        $request->validate([
+            'task_ids' => 'required|array',
+            'task_ids.*' => 'integer|exists:collection_tasks,id',
+        ]);
+        
+        $taskIds = $request->input('task_ids');
+        $runningTasks = [];
+        $deletedCount = 0;
+        
+        foreach ($taskIds as $taskId) {
+            $task = CollectionTask::find($taskId);
+            
+            if (!$task) {
+                continue;
+            }
+            
+            // 检查任务是否正在运行
+            if ($task->isRunning()) {
+                $runningTasks[] = $task->id;
+                continue;
+            }
+            
+            // 删除任务
+            $task->delete();
+            $deletedCount++;
+        }
+        
+        $response = [
+            'success' => true,
+            'message' => "成功删除 {$deletedCount} 个任务"
+        ];
+        
+        if (count($runningTasks) > 0) {
+            $response['message'] .= "，但有 " . count($runningTasks) . " 个正在运行的任务无法删除";
+            $response['running_tasks'] = $runningTasks;
+        }
+        
+        return response()->json($response);
+    }
+    
+    /**
      * 手动触发批量任务执行
      *
      * @param int $id 任务ID
