@@ -51,6 +51,41 @@ class User extends Authenticatable
     }
     
     /**
+     * 用户拥有的角色
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+    
+    /**
+     * 检查用户是否拥有指定角色
+     *
+     * @param string $role
+     * @return bool
+     */
+    public function hasRole($role)
+    {
+        return $this->roles->contains('slug', $role);
+    }
+    
+    /**
+     * 检查用户是否拥有指定权限
+     *
+     * @param string $permission
+     * @return bool
+     */
+    public function hasPermission($permission)
+    {
+        foreach ($this->roles as $role) {
+            if ($role->permissions->contains('slug', $permission)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
      * 获取用户的操作日志
      */
     public function operationLogs()

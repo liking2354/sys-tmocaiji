@@ -60,7 +60,7 @@
         
         .sidebar-toggle {
             position: absolute;
-            top: 10px;
+            top: 50px;
             right: 10px;
             cursor: pointer;
             background-color: var(--primary-color);
@@ -72,15 +72,21 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
+            z-index: 1010;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
         
         .main-content {
             transition: all 0.3s ease;
             margin-left: 250px;
+            width: calc(100% - 250px);
+            max-width: 100%;
         }
         
         .main-content-expanded {
             margin-left: 30px;
+            width: calc(100% - 30px);
+            max-width: 100%;
         }
         
         .sidebar .nav-link {
@@ -100,6 +106,53 @@
         .sidebar .nav-link.active {
             color: white;
             background-color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        /* 子菜单样式 */
+        .sidebar-submenu {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background-color: rgba(0, 0, 0, 0.03);
+            border-left: 3px solid var(--primary-color);
+            margin-left: 10px;
+            margin-right: 10px;
+            border-radius: 0 0 5px 5px;
+        }
+        
+        .sidebar-submenu .nav-link {
+            padding-left: 30px;
+            font-size: 0.9em;
+            margin: 2px 0;
+            border-radius: 0;
+        }
+        
+        .sidebar-submenu .nav-link:hover {
+            background-color: rgba(52, 152, 219, 0.15);
+            transform: translateX(3px);
+        }
+        
+        .sidebar-submenu .nav-link.active {
+            background-color: rgba(52, 152, 219, 0.25);
+            color: var(--primary-color);
+            font-weight: 500;
+            border-right: 2px solid var(--primary-color);
+        }
+        
+        .sidebar-submenu-toggle {
+            cursor: pointer;
+        }
+        
+        .sidebar-submenu-toggle .fa-chevron-down {
+            transition: transform 0.3s ease;
+        }
+        
+        .sidebar-submenu-toggle.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         
@@ -236,6 +289,7 @@
                                 <i class="fas fa-tasks mr-2"></i> 采集任务
                             </a>
                         </li>
+                        
                         <li class="nav-item">
                             <a class="nav-link <?php echo e(request()->routeIs('collection-history.*') ? 'active' : ''); ?>" href="<?php echo e(route('collection-history.index')); ?>">
                                 <i class="fas fa-history mr-2"></i> 采集历史
@@ -246,9 +300,34 @@
                                 <i class="fas fa-broom mr-2"></i> 数据清理
                             </a>
                         </li>
+                        
+                        <!-- 系统管理菜单 -->
+                        <li class="nav-item">
+                            <a class="nav-link sidebar-submenu-toggle <?php echo e(request()->routeIs('admin.*') ? 'active' : ''); ?>" href="javascript:void(0);">
+                                <i class="fas fa-cogs mr-2"></i> 系统管理
+                                <i class="fas fa-chevron-down float-right mt-1"></i>
+                            </a>
+                            <ul class="sidebar-submenu" style="display: <?php echo e(request()->routeIs('admin.*') ? 'block' : 'none'); ?>;">
+                                <li class="nav-item">
+                                    <a class="nav-link pl-4 <?php echo e(request()->routeIs('admin.users.*') ? 'active' : ''); ?>" href="<?php echo e(route('admin.users.index')); ?>">
+                                        <i class="fas fa-users mr-2"></i> 用户管理
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link pl-4 <?php echo e(request()->routeIs('admin.roles.*') ? 'active' : ''); ?>" href="<?php echo e(route('admin.roles.index')); ?>">
+                                        <i class="fas fa-user-tag mr-2"></i> 角色管理
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link pl-4 <?php echo e(request()->routeIs('admin.permissions.*') ? 'active' : ''); ?>" href="<?php echo e(route('admin.permissions.index')); ?>">
+                                        <i class="fas fa-key mr-2"></i> 权限管理
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
-                <main class="col-md-10 main-content" id="main-content">
+                <main class="main-content" id="main-content">
                     <?php if(session('success')): ?>
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                             <?php echo e(session('success')); ?>
@@ -281,11 +360,10 @@
 
     <!-- Scripts -->
     <script src="<?php echo e(asset('assets/js/jquery.min.js')); ?>"></script>
-    <script src="<?php echo e(asset('assets/js/popper.min.js')); ?>"></script>
-    <script src="<?php echo e(asset('assets/js/bootstrap.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/js/bootstrap.bundle.min.js')); ?>"></script>
     <script>
         $(document).ready(function() {
-            // 侧边栏展开/隐藏功能
+            // 侧边栏展开/收起功能
             $('#sidebar-toggle').click(function() {
                 $('#sidebar').toggleClass('sidebar-collapsed');
                 $('#main-content').toggleClass('main-content-expanded');
@@ -300,6 +378,25 @@
                 // 保存状态到本地存储
                 localStorage.setItem('sidebar-collapsed', $('#sidebar').hasClass('sidebar-collapsed'));
             });
+            
+            // 子菜单展开/收起功能
+            $('.sidebar-submenu-toggle').click(function() {
+                $(this).toggleClass('collapsed');
+                $(this).next('.sidebar-submenu').slideToggle(300);
+                
+                if ($(this).hasClass('collapsed')) {
+                    $(this).find('.fa-chevron-down').css('transform', 'rotate(-90deg)');
+                } else {
+                    $(this).find('.fa-chevron-down').css('transform', 'rotate(0deg)');
+                }
+            });
+            
+            // 如果当前页面不在admin路由下，默认收起系统管理子菜单
+            if (!window.location.pathname.includes('/admin/')) {
+                $('.sidebar-submenu-toggle').addClass('collapsed');
+                $('.sidebar-submenu-toggle').next('.sidebar-submenu').hide();
+                $('.sidebar-submenu-toggle').find('.fa-chevron-down').css('transform', 'rotate(-90deg)');
+            }
             
             // 页面加载时恢复侧边栏状态
             if (localStorage.getItem('sidebar-collapsed') === 'true') {

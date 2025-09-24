@@ -82,4 +82,16 @@ Route::delete('server-groups/batch-delete', [ServerGroupController::class, 'batc
     // 数据清理
     Route::get('data/cleanup', [DataController::class, 'showCleanupForm'])->name('data.cleanup.form');
     Route::post('data/cleanup', [DataController::class, 'cleanup'])->name('data.cleanup');
+    
+    // 用户管理
+    Route::prefix('admin')->name('admin.')->group(function () {
+        // 用户管理
+        Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
+        
+        // 角色管理
+        Route::resource('roles', \App\Http\Controllers\Admin\RoleController::class);
+        
+        // 权限管理
+        Route::resource('permissions', \App\Http\Controllers\Admin\PermissionController::class);
+    });
 });
