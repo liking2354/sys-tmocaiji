@@ -75,7 +75,9 @@ php artisan storage:link
 
 # 设置存储目录权限
 echo "正在设置存储目录权限..."
-chmod -R 775 "$TARGET_DIR/storage"
+chmod -R 755 "$TARGET_DIR/."
+chmod -R 777 "$TARGET_DIR/storage"
+chown -R www:www  "$TARGET_DIR/."
 chmod -R 775 "$TARGET_DIR/bootstrap/cache"
 
 # 如果需要，可以在这里添加数据库迁移命令

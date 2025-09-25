@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         CollectorUpdateCommand::class,
         Commands\QueueWorkCommand::class,
+        Commands\ResetStuckTasksCommand::class,
     ];
 
     /**
@@ -35,6 +36,11 @@ class Kernel extends ConsoleKernel
         $schedule->command('collector:update')
             ->weeklyOn(0, '03:00')
             ->appendOutputTo(storage_path('logs/collector-update.log'));
+            
+        // 每小时重置卡住的任务（超过2小时的任务）
+        $schedule->command('tasks:reset-stuck --hours=2')
+            ->hourly()
+            ->appendOutputTo(storage_path('logs/tasks-reset.log'));
             
         // 每10分钟监控任务状态，处理超时和失败的任务
         // $schedule->command('tasks:monitor --retry --timeout')

@@ -11,7 +11,8 @@ scripts/
 ├── maintenance/        # 维护相关脚本
 │   ├── schedule_tasks.sh # 定时任务设置脚本
 │   ├── update.sh       # 完整更新脚本
-│   └── quick_update.sh # 快速更新脚本
+│   ├── quick_update.sh # 快速更新脚本
+│   └── diagnose_tasks.sh # 任务状态诊断脚本
 ├── utils/             # 工具脚本目录（预留）
 └── README.md          # 本说明文件
 ```
@@ -100,6 +101,26 @@ scripts/
 - 清除Laravel缓存
 - 设置基本文件权限
 - 适合频繁的小更新
+
+#### diagnose_tasks.sh
+任务状态诊断脚本，用于检查和修复卡住的采集任务。
+
+**使用方法：**
+```bash
+# 自动检测项目路径
+./scripts/maintenance/diagnose_tasks.sh
+
+# 指定项目路径
+./scripts/maintenance/diagnose_tasks.sh /path/to/project
+```
+
+**功能特性：**
+- 检查定时任务配置状态
+- 检查Laravel调度配置
+- 识别卡住的主任务和任务详情
+- 查看任务重置日志
+- 提供手动重置选项
+- 给出详细的解决建议
 
 ## 使用注意事项
 
