@@ -135,6 +135,39 @@ php artisan serve
 默认管理员账号：admin
 默认密码：admini123
 
+## 脚本使用
+
+项目包含以下脚本，已按标准目录结构组织：
+
+### 部署脚本
+```bash
+# 部署到默认目录
+./scripts/deployment/deploy.sh
+
+# 部署到指定目录
+./scripts/deployment/deploy.sh /path/to/target
+```
+
+### 定时任务设置
+```bash
+# 自动检测项目路径
+./scripts/maintenance/schedule_tasks.sh
+
+# 指定项目路径
+./scripts/maintenance/schedule_tasks.sh /path/to/project
+```
+
+### 项目更新
+```bash
+# 完整更新（推荐用于生产环境）
+./scripts/maintenance/update.sh
+
+# 快速更新（适合开发环境）
+./scripts/maintenance/quick_update.sh
+```
+
+详细说明请参考 [scripts/README.md](scripts/README.md)
+
 ## 使用说明
 
 1. **服务器分组管理**
