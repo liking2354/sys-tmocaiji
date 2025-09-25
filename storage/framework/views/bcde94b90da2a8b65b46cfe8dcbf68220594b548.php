@@ -153,6 +153,8 @@
         .sidebar-submenu-toggle.collapsed .fa-chevron-down {
             transform: rotate(-90deg);
         }
+        
+        .card {
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         
@@ -321,6 +323,11 @@
                                 <li class="nav-item">
                                     <a class="nav-link pl-4 <?php echo e(request()->routeIs('admin.permissions.*') ? 'active' : ''); ?>" href="<?php echo e(route('admin.permissions.index')); ?>">
                                         <i class="fas fa-key mr-2"></i> 权限管理
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link pl-4 <?php echo e(request()->routeIs('admin.operation-logs.*') ? 'active' : ''); ?>" href="<?php echo e(route('admin.operation-logs.index')); ?>">
+                                        <i class="fas fa-list-alt mr-2"></i> 操作日志
                                     </a>
                                 </li>
                             </ul>

@@ -30678,3 +30678,27 @@ Try 'date --help' for more information.
 #61 /Users/tanli/Documents/php-code/sys-tmocaiji/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php(16): require_once('/Users/tanli/Do...')
 #62 {main}
 "} 
+[2025-09-25 22:57:25] local.ERROR: There are no commands defined in the "diagnose" namespace. {"exception":"[object] (Symfony\\Component\\Console\\Exception\\NamespaceNotFoundException(code: 0): There are no commands defined in the \"diagnose\" namespace. at /Users/tanli/Documents/php-code/sys-tmocaiji/vendor/symfony/console/Application.php:669)
+[stacktrace]
+#0 /Users/tanli/Documents/php-code/sys-tmocaiji/vendor/symfony/console/Application.php(720): Symfony\\Component\\Console\\Application->findNamespace('diagnose')
+#1 /Users/tanli/Documents/php-code/sys-tmocaiji/vendor/symfony/console/Application.php(266): Symfony\\Component\\Console\\Application->find('diagnose:tasks')
+#2 /Users/tanli/Documents/php-code/sys-tmocaiji/vendor/symfony/console/Application.php(175): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#3 /Users/tanli/Documents/php-code/sys-tmocaiji/vendor/laravel/framework/src/Illuminate/Console/Application.php(102): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 /Users/tanli/Documents/php-code/sys-tmocaiji/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(155): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#5 /Users/tanli/Documents/php-code/sys-tmocaiji/artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#6 {main}
+"} 
+[2025-09-25 22:57:48] local.ERROR: There are no commands defined in the "diagnose" namespace. {"exception":"[object] (Symfony\\Component\\Console\\Exception\\NamespaceNotFoundException(code: 0): There are no commands defined in the \"diagnose\" namespace. at /Users/tanli/Documents/php-code/sys-tmocaiji/vendor/symfony/console/Application.php:669)
+[stacktrace]
+#0 /Users/tanli/Documents/php-code/sys-tmocaiji/vendor/symfony/console/Application.php(720): Symfony\\Component\\Console\\Application->findNamespace('diagnose')
+#1 /Users/tanli/Documents/php-code/sys-tmocaiji/vendor/symfony/console/Application.php(266): Symfony\\Component\\Console\\Application->find('diagnose:tasks')
+#2 /Users/tanli/Documents/php-code/sys-tmocaiji/vendor/symfony/console/Application.php(175): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#3 /Users/tanli/Documents/php-code/sys-tmocaiji/vendor/laravel/framework/src/Illuminate/Console/Application.php(102): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 /Users/tanli/Documents/php-code/sys-tmocaiji/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(155): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#5 /Users/tanli/Documents/php-code/sys-tmocaiji/artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#6 {main}
+"} 
+[2025-09-25 23:22:43] local.ERROR: Declaration of Illuminate\Database\PDO\Concerns\ConnectsToDatabase::connect(array $params, $username = null, $password = null, array $driverOptions = []) must be compatible with Doctrine\DBAL\Driver::connect(array $params): Doctrine\DBAL\Driver\Connection {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Declaration of Illuminate\\Database\\PDO\\Concerns\\ConnectsToDatabase::connect(array $params, $username = null, $password = null, array $driverOptions = []) must be compatible with Doctrine\\DBAL\\Driver::connect(array $params): Doctrine\\DBAL\\Driver\\Connection at /Users/tanli/Documents/php-code/sys-tmocaiji/vendor/laravel/framework/src/Illuminate/Database/PDO/Concerns/ConnectsToDatabase.php:22)
+[stacktrace]
+#0 {main}
+"} 

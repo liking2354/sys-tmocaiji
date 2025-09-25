@@ -93,5 +93,12 @@ Route::delete('server-groups/batch-delete', [ServerGroupController::class, 'batc
         
         // 权限管理
         Route::resource('permissions', \App\Http\Controllers\Admin\PermissionController::class);
+        
+        // 操作日志管理
+        Route::resource('operation-logs', \App\Http\Controllers\Admin\OperationLogController::class)->only(['index', 'show']);
+        Route::post('operation-logs/batch-delete', [\App\Http\Controllers\Admin\OperationLogController::class, 'batchDelete'])->name('operation-logs.batch-delete');
+        Route::post('operation-logs/cleanup', [\App\Http\Controllers\Admin\OperationLogController::class, 'cleanup'])->name('operation-logs.cleanup');
+        Route::get('operation-logs/export', [\App\Http\Controllers\Admin\OperationLogController::class, 'export'])->name('operation-logs.export');
+        Route::get('operation-logs/chart-data', [\App\Http\Controllers\Admin\OperationLogController::class, 'chartData'])->name('operation-logs.chart-data');
     });
 });
