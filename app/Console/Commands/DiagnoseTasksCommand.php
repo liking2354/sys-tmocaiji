@@ -33,7 +33,7 @@ class DiagnoseTasksCommand extends Command
         $hourThreshold = $this->option('hours');
         
         $this->info("=== 任务状态诊断报告 ===");
-        $this->info("检查超过 {$hourThreshold} 小时的卡住任务...");
+        $this->info("检查超过 " . $hourThreshold . " 小时的卡住任务...");
         $this->newLine();
 
         // 检查数据库连接
@@ -52,7 +52,7 @@ class DiagnoseTasksCommand extends Command
             ->get(['id', 'name', 'status', 'started_at', 'total_servers', 'completed_servers', 'failed_servers']);
 
         if ($stuckTasks->count() > 0) {
-            $this->warn("发现 {$stuckTasks->count()} 个卡住的主任务:");
+            $this->warn("发现 " . $stuckTasks->count() . " 个卡住的主任务:");
             
             $headers = ['ID', '任务名称', '开始时间', '进度', '状态'];
             $rows = [];
@@ -61,12 +61,15 @@ class DiagnoseTasksCommand extends Command
                 $progress = $task->total_servers > 0 
                     ? round(($task->completed_servers + $task->failed_servers) / $task->total_servers * 100, 1) . '%'
                     : '0%';
+                
+                $completedCount = $task->completed_servers + $task->failed_servers;
+                $progressText = '(' . $completedCount . '/' . $task->total_servers . ') ' . $progress;
                     
                 $rows[] = [
                     $task->id,
                     $task->name,
                     $task->started_at->format('Y-m-d H:i:s'),
-                    "({$task->completed_servers + $task->failed_servers}/{$task->total_servers}) {$progress}",
+                    $progressText,
                     '进行中'
                 ];
             }
@@ -86,17 +89,17 @@ class DiagnoseTasksCommand extends Command
             ->get(['id', 'task_id', 'server_id', 'status', 'started_at']);
 
         if ($stuckDetails->count() > 0) {
-            $this->warn("发现 {$stuckDetails->count()} 个卡住的任务详情:");
+            $this->warn("发现 " . $stuckDetails->count() . " 个卡住的任务详情:");
             
             $headers = ['详情ID', '任务ID', '任务名称', '服务器', '开始时间'];
             $rows = [];
             
             foreach ($stuckDetails as $detail) {
                 $serverInfo = $detail->server 
-                    ? "{$detail->server->name} ({$detail->server->ip})"
-                    : "服务器ID: {$detail->server_id}";
+                    ? $detail->server->name . " (" . $detail->server->ip . ")"
+                    : "服务器ID: " . $detail->server_id;
                     
-                $taskName = $detail->task ? $detail->task->name : "任务ID: {$detail->task_id}";
+                $taskName = $detail->task ? $detail->task->name : "任务ID: " . $detail->task_id;
                 
                 $rows[] = [
                     $detail->id,
@@ -122,10 +125,10 @@ class DiagnoseTasksCommand extends Command
         $completedTasks = CollectionTask::where('status', 2)->count();
         $failedTasks = CollectionTask::where('status', 3)->count();
         
-        $this->info("总任务数: {$totalTasks}");
-        $this->info("进行中: {$runningTasks}");
-        $this->info("已完成: {$completedTasks}");
-        $this->info("失败: {$failedTasks}");
+        $this->info("总任务数: " . $totalTasks);
+        $this->info("进行中: " . $runningTasks);
+        $this->info("已完成: " . $completedTasks);
+        $this->info("失败: " . $failedTasks);
 
         $this->newLine();
 
@@ -140,7 +143,7 @@ class DiagnoseTasksCommand extends Command
             $statusMap = [0 => '未开始', 1 => '进行中', 2 => '已完成', 3 => '失败'];
             foreach ($recentTasks as $stat) {
                 $statusText = $statusMap[$stat->status] ?? '未知';
-                $this->info("{$statusText}: {$stat->count} 个");
+                $this->info($statusText . ": " . $stat->count . " 个");
             }
         } else {
             $this->info("最近24小时内没有任务执行");
