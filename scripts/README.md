@@ -7,7 +7,8 @@
 ```
 scripts/
 ├── deployment/          # 部署相关脚本
-│   └── deploy.sh       # 项目部署脚本
+│   ├── deploy.sh       # 项目部署脚本
+│   └── init_production.sh # 生产环境初始化脚本
 ├── maintenance/        # 维护相关脚本
 │   ├── schedule_tasks.sh # 定时任务设置脚本
 │   ├── update.sh       # 完整更新脚本
@@ -40,6 +41,26 @@ scripts/
 - 安装Composer依赖
 - 清除Laravel缓存
 - 创建存储链接
+
+#### init_production.sh
+生产环境初始化脚本，用于将现有项目配置为Git管理或全新部署。
+
+**使用方法：**
+```bash
+# 使用默认目录
+./scripts/deployment/init_production.sh
+
+# 指定目标目录
+./scripts/deployment/init_production.sh /path/to/target
+```
+
+**功能特性：**
+- 智能检测现有项目状态
+- 支持备份现有文件后重新克隆
+- 支持将现有目录转换为Git仓库
+- 自动配置远程仓库地址
+- 完整的项目初始化流程
+- 自动设置权限和依赖安装
 
 ### 维护脚本 (maintenance/)
 
