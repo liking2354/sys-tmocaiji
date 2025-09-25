@@ -1,177 +1,167 @@
 <?php $__env->startSection('content'); ?>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span><i class="fas fa-list-alt"></i> 操作日志管理</span>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-success btn-sm" onclick="exportLogs()">
-                                <i class="fas fa-download"></i> 导出日志
-                            </button>
-                            <button type="button" class="btn btn-warning btn-sm" onclick="showCleanupModal()">
-                                <i class="fas fa-broom"></i> 清理日志
-                            </button>
-                            <button type="button" class="btn btn-danger btn-sm" onclick="batchDelete()">
-                                <i class="fas fa-trash"></i> 批量删除
-                            </button>
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3 mb-0">操作日志管理</h1>
+                <div>
+                    <button type="button" class="btn btn-success" onclick="showExportModal()">
+                        <i class="fas fa-download"></i> 导出日志
+                    </button>
+                    <button type="button" class="btn btn-warning" onclick="showCleanupModal()">
+                        <i class="fas fa-trash-alt"></i> 清理日志
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick="batchDelete()" id="batchDeleteBtn" style="display: none;">
+                        <i class="fas fa-trash"></i> 批量删除
+                    </button>
+                </div>
+            </div>
+
+            <!-- 统计卡片 -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h4><?php echo e(number_format($stats['total'])); ?></h4>
+                                    <p class="mb-0">总记录数</p>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-list fa-2x"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div class="col-md-3">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h4><?php echo e(number_format($stats['today'])); ?></h4>
+                                    <p class="mb-0">今日记录</p>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-calendar-day fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-info text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h4><?php echo e(number_format($stats['this_week'])); ?></h4>
+                                    <p class="mb-0">本周记录</p>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-calendar-week fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-warning text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h4><?php echo e(number_format($stats['this_month'])); ?></h4>
+                                    <p class="mb-0">本月记录</p>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-calendar-alt fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+            <!-- 搜索过滤表单 -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-search"></i> 搜索过滤
+                        <button class="btn btn-sm btn-outline-secondary float-right" type="button" data-toggle="collapse" data-target="#searchForm" aria-expanded="<?php echo e(request()->hasAny(['start_date', 'end_date', 'action', 'user_id', 'ip', 'content']) ? 'true' : 'false'); ?>" aria-controls="searchForm" id="searchToggleBtn">
+                            <i class="fas fa-chevron-<?php echo e(request()->hasAny(['start_date', 'end_date', 'action', 'user_id', 'ip', 'content']) ? 'up' : 'down'); ?>" id="searchToggleIcon"></i>
+                        </button>
+                    </h6>
+                </div>
+                <div class="collapse <?php echo e(request()->hasAny(['start_date', 'end_date', 'action', 'user_id', 'ip', 'content']) ? 'show' : ''); ?>" id="searchForm">
+                    <div class="card-body">
+                        <form method="GET" action="<?php echo e(route('admin.operation-logs.index')); ?>">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="start_date" class="form-label">开始日期</label>
+                                    <input type="date" class="form-control" id="start_date" name="start_date" value="<?php echo e(request('start_date')); ?>">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="end_date" class="form-label">结束日期</label>
+                                    <input type="date" class="form-control" id="end_date" name="end_date" value="<?php echo e(request('end_date')); ?>">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="action" class="form-label">操作类型</label>
+                                    <select class="form-control" id="action" name="action">
+                                        <option value="">全部</option>
+                                        <?php $__currentLoopData = $actions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $action): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($action); ?>" <?php echo e(request('action') == $action ? 'selected' : ''); ?>>
+                                                <?php echo e($action); ?>
+
+                                            </option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="user_id" class="form-label">用户</label>
+                                    <select class="form-control" id="user_id" name="user_id">
+                                        <option value="">全部用户</option>
+                                        <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($user->id); ?>" <?php echo e(request('user_id') == $user->id ? 'selected' : ''); ?>>
+                                                <?php echo e($user->username); ?>
+
+                                            </option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-4">
+                                    <label for="ip" class="form-label">IP地址</label>
+                                    <input type="text" class="form-control" id="ip" name="ip" value="<?php echo e(request('ip')); ?>" placeholder="输入IP地址">
+                                </div>
+                                <div class="col-md-5">
+                                    <label for="content" class="form-label">操作内容</label>
+                                    <input type="text" class="form-control" id="content" name="content" value="<?php echo e(request('content')); ?>" placeholder="搜索操作内容">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">&nbsp;</label>
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-search"></i> 搜索
+                                        </button>
+                                        <a href="<?php echo e(route('admin.operation-logs.index')); ?>" class="btn btn-secondary">
+                                            <i class="fas fa-undo"></i> 重置
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 日志列表 -->
+            <div class="card">
                 <div class="card-body">
-                    <?php if(session('success')): ?>
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <?php echo e(session('success')); ?>
-
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        </div>
-                    <?php endif; ?>
-
-                    <!-- 统计信息 -->
-                    <div class="row mb-4">
-                        <div class="col-md-3">
-                            <div class="card bg-primary text-white">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between">
-                                        <div>
-                                            <h4><?php echo e(number_format($stats['total'])); ?></h4>
-                                            <p class="mb-0">总记录数</p>
-                                        </div>
-                                        <div class="align-self-center">
-                                            <i class="fas fa-database fa-2x"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card bg-success text-white">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between">
-                                        <div>
-                                            <h4><?php echo e(number_format($stats['today'])); ?></h4>
-                                            <p class="mb-0">今日记录</p>
-                                        </div>
-                                        <div class="align-self-center">
-                                            <i class="fas fa-calendar-day fa-2x"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card bg-info text-white">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between">
-                                        <div>
-                                            <h4><?php echo e(number_format($stats['this_week'])); ?></h4>
-                                            <p class="mb-0">本周记录</p>
-                                        </div>
-                                        <div class="align-self-center">
-                                            <i class="fas fa-calendar-week fa-2x"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card bg-warning text-white">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between">
-                                        <div>
-                                            <h4><?php echo e(number_format($stats['this_month'])); ?></h4>
-                                            <p class="mb-0">本月记录</p>
-                                        </div>
-                                        <div class="align-self-center">
-                                            <i class="fas fa-calendar-alt fa-2x"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 搜索过滤表单 -->
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h6 class="mb-0">
-                                <i class="fas fa-search"></i> 搜索过滤
-                                <button class="btn btn-sm btn-outline-secondary float-end" type="button" data-bs-toggle="collapse" data-bs-target="#searchForm">
-                                    <i class="fas fa-chevron-down"></i>
-                                </button>
-                            </h6>
-                        </div>
-                        <div class="collapse" id="searchForm">
-                            <div class="card-body">
-                                <form method="GET" action="<?php echo e(route('admin.operation-logs.index')); ?>">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <label for="start_date" class="form-label">开始日期</label>
-                                            <input type="date" class="form-control" id="start_date" name="start_date" value="<?php echo e(request('start_date')); ?>">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label for="end_date" class="form-label">结束日期</label>
-                                            <input type="date" class="form-control" id="end_date" name="end_date" value="<?php echo e(request('end_date')); ?>">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label for="action" class="form-label">操作类型</label>
-                                            <select class="form-select" id="action" name="action">
-                                                <option value="">全部</option>
-                                                <?php $__currentLoopData = $actions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $action): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                    <option value="<?php echo e($action); ?>" <?php echo e(request('action') == $action ? 'selected' : ''); ?>>
-                                                        <?php echo e($action); ?>
-
-                                                    </option>
-                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label for="user_id" class="form-label">用户</label>
-                                            <select class="form-select" id="user_id" name="user_id">
-                                                <option value="">全部用户</option>
-                                                <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                    <option value="<?php echo e($user->id); ?>" <?php echo e(request('user_id') == $user->id ? 'selected' : ''); ?>>
-                                                        <?php echo e($user->username); ?>
-
-                                                    </option>
-                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col-md-4">
-                                            <label for="ip" class="form-label">IP地址</label>
-                                            <input type="text" class="form-control" id="ip" name="ip" value="<?php echo e(request('ip')); ?>" placeholder="输入IP地址">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="content" class="form-label">操作内容</label>
-                                            <input type="text" class="form-control" id="content" name="content" value="<?php echo e(request('content')); ?>" placeholder="搜索操作内容">
-                                        </div>
-                                        <div class="col-md-2">
-                                            <label class="form-label">&nbsp;</label>
-                                            <div class="d-grid gap-2">
-                                                <button type="submit" class="btn btn-primary">
-                                                    <i class="fas fa-search"></i> 搜索
-                                                </button>
-                                                <a href="<?php echo e(route('admin.operation-logs.index')); ?>" class="btn btn-secondary">
-                                                    <i class="fas fa-undo"></i> 重置
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 日志列表 -->
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover">
                             <thead class="table-dark">
                                 <tr>
-                                    <th width="50">
+                                    <th width="50" class="text-center">
                                         <input type="checkbox" id="selectAll" class="form-check-input">
                                     </th>
                                     <th width="80">ID</th>
@@ -186,41 +176,29 @@
                             <tbody>
                                 <?php $__empty_1 = true; $__currentLoopData = $logs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $log): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                     <tr>
-                                        <td>
+                                        <td class="text-center">
                                             <input type="checkbox" class="form-check-input log-checkbox" value="<?php echo e($log->id); ?>">
                                         </td>
                                         <td><?php echo e($log->id); ?></td>
+                                        <td><?php echo e($log->username); ?></td>
                                         <td>
-                                            <?php if($log->user): ?>
-                                                <span class="badge bg-info"><?php echo e($log->user->username); ?></span>
-                                            <?php else: ?>
-                                                <span class="badge bg-secondary">已删除用户</span>
-                                            <?php endif; ?>
-                                        </td>
-                                        <td>
-                                            <span class="badge bg-<?php echo e($log->action_color); ?>"><?php echo e($log->action_text); ?></span>
-                                        </td>
-                                        <td>
-                                            <div class="text-truncate" style="max-width: 300px;" title="<?php echo e($log->content); ?>">
-                                                <?php echo e($log->content); ?>
+                                            <span class="badge badge-<?php echo e($log->action_color); ?>">
+                                                <?php echo e($log->action_text); ?>
 
-                                            </div>
+                                            </span>
                                         </td>
+                                        <td><?php echo e(Str::limit($log->content, 50)); ?></td>
+                                        <td><?php echo e($log->ip); ?></td>
+                                        <td><?php echo e($log->created_at->format('Y-m-d H:i:s')); ?></td>
                                         <td>
-                                            <code><?php echo e($log->ip); ?></code>
-                                        </td>
-                                        <td>
-                                            <small><?php echo e($log->created_at->format('Y-m-d H:i:s')); ?></small>
-                                        </td>
-                                        <td>
-                                            <a href="<?php echo e(route('admin.operation-logs.show', $log->id)); ?>" class="btn btn-sm btn-outline-info" title="查看详情">
+                                            <a href="<?php echo e(route('admin.operation-logs.show', $log)); ?>" class="btn btn-sm btn-info">
                                                 <i class="fas fa-eye"></i>
                                             </a>
                                         </td>
                                     </tr>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                     <tr>
-                                        <td colspan="8" class="text-center text-muted py-4">
+                                        <td colspan="8" class="text-center text-muted">
                                             <i class="fas fa-inbox fa-3x mb-3"></i>
                                             <p>暂无日志记录</p>
                                         </td>
@@ -231,9 +209,14 @@
                     </div>
 
                     <!-- 分页 -->
-                    <div class="d-flex justify-content-center">
-                        <?php echo e($logs->links()); ?>
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div>
+                            显示第 <?php echo e($logs->firstItem() ?? 0); ?> 到 <?php echo e($logs->lastItem() ?? 0); ?> 条，共 <?php echo e($logs->total()); ?> 条记录
+                        </div>
+                        <div>
+                            <?php echo e($logs->links()); ?>
 
+                        </div>
                     </div>
                 </div>
             </div>
@@ -241,139 +224,246 @@
     </div>
 </div>
 
-<!-- 清理日志模态框 -->
-<div class="modal fade" id="cleanupModal" tabindex="-1">
-    <div class="modal-dialog">
+<!-- 导出日志模态框 -->
+<div class="modal fade" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">清理操作日志</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <h5 class="modal-title" id="exportModalLabel">导出操作日志</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
-                <form id="cleanupForm">
-                    <div class="mb-3">
-                        <label for="cleanup_days" class="form-label">清理天数前的日志</label>
-                        <input type="number" class="form-control" id="cleanup_days" name="days" min="1" max="365" value="30" required>
-                        <div class="form-text">将删除指定天数前的所有操作日志，此操作不可恢复</div>
+                <form id="exportForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="export_start_date" class="form-label">开始日期</label>
+                            <input type="date" class="form-control" id="export_start_date" name="start_date" value="<?php echo e(now()->subDays(30)->format('Y-m-d')); ?>">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="export_end_date" class="form-label">结束日期</label>
+                            <input type="date" class="form-control" id="export_end_date" name="end_date" value="<?php echo e(now()->format('Y-m-d')); ?>">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <label for="export_action" class="form-label">操作类型</label>
+                            <select class="form-control" id="export_action" name="action">
+                                <option value="">全部</option>
+                                <?php $__currentLoopData = $actions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $action): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($action); ?>"><?php echo e($action); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="export_user_id" class="form-label">用户</label>
+                            <select class="form-control" id="export_user_id" name="user_id">
+                                <option value="">全部用户</option>
+                                <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($user->id); ?>"><?php echo e($user->username); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <label for="export_content" class="form-label">操作内容</label>
+                            <input type="text" class="form-control" id="export_content" name="content" placeholder="搜索操作内容（可选）">
+                        </div>
+                    </div>
+                    <div class="alert alert-info mt-3">
+                        <i class="fas fa-info-circle"></i>
+                        默认导出最近30天的日志记录。您可以调整上述条件来筛选要导出的数据。
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-warning" onclick="confirmCleanup()">确认清理</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-success" onclick="confirmExport()">
+                    <i class="fas fa-download"></i> 确认导出
+                </button>
             </div>
         </div>
     </div>
 </div>
 
+<!-- 清理日志模态框 -->
+<div class="modal fade" id="cleanupModal" tabindex="-1" role="dialog" aria-labelledby="cleanupModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cleanupModalLabel">清理历史日志</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="cleanupForm">
+                    <div class="form-group">
+                        <label for="cleanup_days">清理多少天前的日志</label>
+                        <select class="form-control" id="cleanup_days" name="days">
+                            <option value="30">30天前</option>
+                            <option value="60">60天前</option>
+                            <option value="90" selected>90天前</option>
+                            <option value="180">180天前</option>
+                            <option value="365">365天前</option>
+                        </select>
+                    </div>
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <strong>警告：</strong>此操作将永久删除指定时间之前的所有日志记录，无法恢复！
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-danger" onclick="confirmCleanup()">
+                    <i class="fas fa-trash-alt"></i> 确认清理
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('scripts'); ?>
 <script>
-// 全选/取消全选
-document.getElementById('selectAll').addEventListener('change', function() {
-    const checkboxes = document.querySelectorAll('.log-checkbox');
-    checkboxes.forEach(checkbox => {
-        checkbox.checked = this.checked;
+$(document).ready(function() {
+    // 搜索表单折叠控制
+    $('#searchToggleBtn').on('click', function() {
+        var icon = $('#searchToggleIcon');
+        var isExpanded = $('#searchForm').hasClass('show');
+        
+        if (isExpanded) {
+            icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+        } else {
+            icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+        }
+    });
+
+    // 全选/取消全选
+    $('#selectAll').on('change', function() {
+        var isChecked = $(this).is(':checked');
+        $('.log-checkbox').prop('checked', isChecked);
+        toggleBatchDeleteBtn();
+    });
+
+    // 单个复选框变化
+    $('.log-checkbox').on('change', function() {
+        var totalCheckboxes = $('.log-checkbox').length;
+        var checkedCheckboxes = $('.log-checkbox:checked').length;
+        
+        $('#selectAll').prop('checked', totalCheckboxes === checkedCheckboxes);
+        toggleBatchDeleteBtn();
+    });
+
+    // 模态框焦点管理
+    $('.modal').on('hide.bs.modal', function () {
+        $(this).find(':focus').blur();
+    });
+
+    $('.modal').on('shown.bs.modal', function () {
+        $(this).find('input, select, textarea, button').filter(':visible').first().focus();
     });
 });
 
-// 导出日志
-function exportLogs() {
-    const params = new URLSearchParams(window.location.search);
-    params.set('export', '1');
-    window.location.href = '<?php echo e(route("admin.operation-logs.export")); ?>?' + params.toString();
+// 切换批量删除按钮显示
+function toggleBatchDeleteBtn() {
+    var checkedCount = $('.log-checkbox:checked').length;
+    if (checkedCount > 0) {
+        $('#batchDeleteBtn').show();
+    } else {
+        $('#batchDeleteBtn').hide();
+    }
+}
+
+// 显示导出模态框
+function showExportModal() {
+    $('#exportModal').modal('show');
+}
+
+// 确认导出
+function confirmExport() {
+    var formData = $('#exportForm').serialize();
+    $('#exportModal').find(':focus').blur();
+    $('#exportModal').modal('hide');
+    
+    // 构建导出URL
+    var exportUrl = '<?php echo e(route("admin.operation-logs.export")); ?>?' + formData;
+    window.location.href = exportUrl;
 }
 
 // 显示清理模态框
 function showCleanupModal() {
-    new bootstrap.Modal(document.getElementById('cleanupModal')).show();
+    $('#cleanupModal').modal('show');
 }
 
 // 确认清理
 function confirmCleanup() {
-    const days = document.getElementById('cleanup_days').value;
-    if (!days || days < 1) {
-        alert('请输入有效的天数');
-        return;
-    }
-
-    if (!confirm(`确定要清理 ${days} 天前的所有操作日志吗？此操作不可恢复！`)) {
-        return;
-    }
-
-    fetch('<?php echo e(route("admin.operation-logs.cleanup")); ?>', {
+    var days = $('#cleanup_days').val();
+    
+    $.ajax({
+        url: '<?php echo e(route("admin.operation-logs.cleanup")); ?>',
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        data: {
+            days: days,
+            _token: '<?php echo e(csrf_token()); ?>'
         },
-        body: JSON.stringify({ days: parseInt(days) })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert(data.message);
-            location.reload();
-        } else {
-            alert('清理失败：' + (data.message || '未知错误'));
+        success: function(response) {
+            $('#cleanupModal').find(':focus').blur();
+            $('#cleanupModal').modal('hide');
+            
+            if (response.success) {
+                alert('清理成功：' + response.message);
+                location.reload();
+            } else {
+                alert('清理失败：' + response.message);
+            }
+        },
+        error: function(xhr) {
+            $('#cleanupModal').find(':focus').blur();
+            $('#cleanupModal').modal('hide');
+            alert('清理失败，请稍后重试');
         }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('清理失败，请稍后重试');
     });
-
-    bootstrap.Modal.getInstance(document.getElementById('cleanupModal')).hide();
 }
 
 // 批量删除
 function batchDelete() {
-    const checkedBoxes = document.querySelectorAll('.log-checkbox:checked');
-    if (checkedBoxes.length === 0) {
+    var selectedIds = $('.log-checkbox:checked').map(function() {
+        return $(this).val();
+    }).get();
+    
+    if (selectedIds.length === 0) {
         alert('请选择要删除的日志记录');
         return;
     }
-
-    if (!confirm(`确定要删除选中的 ${checkedBoxes.length} 条日志记录吗？此操作不可恢复！`)) {
+    
+    if (!confirm('确定要删除选中的 ' + selectedIds.length + ' 条日志记录吗？此操作无法撤销！')) {
         return;
     }
-
-    const ids = Array.from(checkedBoxes).map(cb => cb.value);
-
-    fetch('<?php echo e(route("admin.operation-logs.batch-delete")); ?>', {
+    
+    $.ajax({
+        url: '<?php echo e(route("admin.operation-logs.batch-delete")); ?>',
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        data: {
+            ids: selectedIds,
+            _token: '<?php echo e(csrf_token()); ?>'
         },
-        body: JSON.stringify({ ids: ids })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert(data.message);
-            location.reload();
-        } else {
-            alert('删除失败：' + (data.message || '未知错误'));
+        success: function(response) {
+            if (response.success) {
+                alert('删除成功：' + response.message);
+                location.reload();
+            } else {
+                alert('删除失败：' + response.message);
+            }
+        },
+        error: function(xhr) {
+            alert('删除失败，请稍后重试');
         }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('删除失败，请稍后重试');
     });
 }
-
-// 自动展开搜索表单（如果有搜索参数）
-document.addEventListener('DOMContentLoaded', function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const hasSearchParams = ['start_date', 'end_date', 'action', 'user_id', 'ip', 'content'].some(param => urlParams.has(param));
-    
-    if (hasSearchParams) {
-        const searchForm = document.getElementById('searchForm');
-        new bootstrap.Collapse(searchForm, { show: true });
-    }
-});
 </script>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/tanli/Documents/php-code/sys-tmocaiji/resources/views/admin/operation-logs/index.blade.php ENDPATH**/ ?>

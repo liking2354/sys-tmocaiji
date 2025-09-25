@@ -270,36 +270,45 @@
                                 <i class="fas fa-tachometer-alt mr-2"></i> 仪表盘
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('server-groups.*') ? 'active' : '' }}" href="{{ route('server-groups.index') }}">
-                                <i class="fas fa-layer-group mr-2"></i> 服务器分组
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('servers.*') ? 'active' : '' }}" href="{{ route('servers.index') }}">
-                                <i class="fas fa-server mr-2"></i> 服务器管理
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('collectors.*') ? 'active' : '' }}" href="{{ route('collectors.index') }}">
-                                <i class="fas fa-plug mr-2"></i> 采集组件
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('collection-tasks.*') ? 'active' : '' }}" href="{{ route('collection-tasks.index') }}">
-                                <i class="fas fa-tasks mr-2"></i> 采集任务
-                            </a>
-                        </li>
                         
+                        <!-- 系统采集菜单 -->
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('collection-history.*') ? 'active' : '' }}" href="{{ route('collection-history.index') }}">
-                                <i class="fas fa-history mr-2"></i> 采集历史
+                            <a class="nav-link sidebar-submenu-toggle {{ request()->routeIs(['server-groups.*', 'servers.*', 'collectors.*', 'collection-tasks.*', 'collection-history.*', 'data.cleanup.*']) ? 'active' : '' }}" href="javascript:void(0);">
+                                <i class="fas fa-cloud-download-alt mr-2"></i> 系统采集
+                                <i class="fas fa-chevron-up float-right mt-1"></i>
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('data.cleanup.*') ? 'active' : '' }}" href="{{ route('data.cleanup.form') }}">
-                                <i class="fas fa-broom mr-2"></i> 数据清理
-                            </a>
+                            <ul class="sidebar-submenu" style="display: block;">
+                                <li class="nav-item">
+                                    <a class="nav-link pl-4 {{ request()->routeIs('server-groups.*') ? 'active' : '' }}" href="{{ route('server-groups.index') }}">
+                                        <i class="fas fa-layer-group mr-2"></i> 服务器分组
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link pl-4 {{ request()->routeIs('servers.*') ? 'active' : '' }}" href="{{ route('servers.index') }}">
+                                        <i class="fas fa-server mr-2"></i> 服务器管理
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link pl-4 {{ request()->routeIs('collectors.*') ? 'active' : '' }}" href="{{ route('collectors.index') }}">
+                                        <i class="fas fa-plug mr-2"></i> 采集组件
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link pl-4 {{ request()->routeIs('collection-tasks.*') ? 'active' : '' }}" href="{{ route('collection-tasks.index') }}">
+                                        <i class="fas fa-tasks mr-2"></i> 采集任务
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link pl-4 {{ request()->routeIs('collection-history.*') ? 'active' : '' }}" href="{{ route('collection-history.index') }}">
+                                        <i class="fas fa-history mr-2"></i> 采集历史
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link pl-4 {{ request()->routeIs('data.cleanup.*') ? 'active' : '' }}" href="{{ route('data.cleanup.form') }}">
+                                        <i class="fas fa-broom mr-2"></i> 数据清理
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                         
                         <!-- 系统管理菜单 -->
@@ -383,24 +392,47 @@
                 localStorage.setItem('sidebar-collapsed', $('#sidebar').hasClass('sidebar-collapsed'));
             });
             
-            // 子菜单展开/收起功能
-            $('.sidebar-submenu-toggle').click(function() {
-                $(this).toggleClass('collapsed');
-                $(this).next('.sidebar-submenu').slideToggle(300);
+            // 菜单初始化逻辑（必须在点击事件之前执行）
+            $('.sidebar-submenu-toggle').each(function() {
+                var $this = $(this);
+                var $submenu = $this.next('.sidebar-submenu');
+                var $icon = $this.find('.fas.float-right');
                 
-                if ($(this).hasClass('collapsed')) {
-                    $(this).find('.fa-chevron-down').css('transform', 'rotate(-90deg)');
-                } else {
-                    $(this).find('.fa-chevron-down').css('transform', 'rotate(0deg)');
+                // 系统采集菜单默认展开
+                if ($this.text().trim().includes('系统采集')) {
+                    $this.removeClass('collapsed');
+                    $submenu.show();
+                    $icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+                }
+                // 系统管理菜单根据当前路由决定是否展开
+                else if ($this.text().trim().includes('系统管理')) {
+                    if (window.location.pathname.includes('/admin/')) {
+                        $this.removeClass('collapsed');
+                        $submenu.show();
+                        $icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+                    } else {
+                        $this.addClass('collapsed');
+                        $submenu.hide();
+                        $icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+                    }
                 }
             });
             
-            // 如果当前页面不在admin路由下，默认收起系统管理子菜单
-            if (!window.location.pathname.includes('/admin/')) {
-                $('.sidebar-submenu-toggle').addClass('collapsed');
-                $('.sidebar-submenu-toggle').next('.sidebar-submenu').hide();
-                $('.sidebar-submenu-toggle').find('.fa-chevron-down').css('transform', 'rotate(-90deg)');
-            }
+            // 子菜单展开/收起功能
+            $('.sidebar-submenu-toggle').click(function() {
+                var $this = $(this);
+                var $submenu = $this.next('.sidebar-submenu');
+                var $icon = $this.find('.fas.float-right');
+                
+                $this.toggleClass('collapsed');
+                $submenu.slideToggle(300);
+                
+                if ($this.hasClass('collapsed')) {
+                    $icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+                } else {
+                    $icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+                }
+            });
             
             // 页面加载时恢复侧边栏状态
             if (localStorage.getItem('sidebar-collapsed') === 'true') {
