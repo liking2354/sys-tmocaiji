@@ -44,7 +44,6 @@ class ResetStuckTasksCommand extends Command
                 
                 $task->update([
                     'status' => 3, // 状态3表示失败
-                    'error_message' => "任务执行超时，系统自动标记为失败（超过{$hourThreshold}小时）",
                     'completed_at' => now()
                 ]);
                 
