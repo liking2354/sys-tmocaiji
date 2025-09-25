@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         CollectorUpdateCommand::class,
         Commands\QueueWorkCommand::class,
         Commands\ResetStuckTasksCommand::class,
+        Commands\DiagnoseTasksCommand::class,
     ];
 
     /**

@@ -13,7 +13,8 @@ scripts/
 │   ├── schedule_tasks.sh # 定时任务设置脚本
 │   ├── update.sh       # 完整更新脚本
 │   ├── quick_update.sh # 快速更新脚本
-│   └── diagnose_tasks.sh # 任务状态诊断脚本
+│   ├── diagnose_tasks.sh # 任务状态诊断脚本
+│   └── quick_diagnose.sh # 快速诊断脚本
 ├── utils/             # 工具脚本目录（预留）
 └── README.md          # 本说明文件
 ```
@@ -142,6 +143,24 @@ scripts/
 - 查看任务重置日志
 - 提供手动重置选项
 - 给出详细的解决建议
+
+#### quick_diagnose.sh
+快速任务诊断脚本，简化版的任务状态检查工具。
+
+**使用方法：**
+```bash
+# 自动检测项目路径
+./scripts/maintenance/quick_diagnose.sh
+
+# 指定项目路径
+./scripts/maintenance/quick_diagnose.sh /path/to/project
+```
+
+**功能特性：**
+- 快速执行任务状态检查
+- 使用专门的artisan命令进行诊断
+- 简洁的输出和操作
+- 适合日常快速检查
 
 ## 使用注意事项
 
