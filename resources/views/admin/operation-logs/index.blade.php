@@ -278,7 +278,8 @@ document.getElementById('selectAll').addEventListener('change', function() {
 // 导出日志
 function exportLogs() {
     const params = new URLSearchParams(window.location.search);
-    params.set('export', '1');
+    // 移除分页参数，因为导出时不需要分页
+    params.delete('page');
     window.location.href = '{{ route("admin.operation-logs.export") }}?' + params.toString();
 }
 
