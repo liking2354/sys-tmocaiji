@@ -163,7 +163,10 @@ echo -e "${BLUE}正在设置文件权限...${NC}"
 
 # 检测Web服务器用户
 WEB_USER=""
-if id "www-data" &>/dev/null; then
+if id "www" &>/dev/null; then
+    WEB_USER="www"
+    echo -e "${BLUE}检测到宝塔面板用户: ${GREEN}www${NC}"
+elif id "www-data" &>/dev/null; then
     WEB_USER="www-data"
 elif id "nginx" &>/dev/null; then
     WEB_USER="nginx"

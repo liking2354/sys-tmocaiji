@@ -30,16 +30,18 @@ fi
 cd "$PROJECT_PATH"
 
 # 检测Web服务器用户
-WEB_USER="www-data"
-if ! id "$WEB_USER" &>/dev/null; then
-    if id "nginx" &>/dev/null; then
-        WEB_USER="nginx"
-    elif id "apache" &>/dev/null; then
-        WEB_USER="apache"
-    else
-        echo -e "${RED}错误: 未找到Web服务器用户${NC}"
-        exit 1
-    fi
+WEB_USER=""
+if id "www" &>/dev/null; then
+    WEB_USER="www"
+elif id "www-data" &>/dev/null; then
+    WEB_USER="www-data"
+elif id "nginx" &>/dev/null; then
+    WEB_USER="nginx"
+elif id "apache" &>/dev/null; then
+    WEB_USER="apache"
+else
+    echo -e "${RED}错误: 未找到Web服务器用户${NC}"
+    exit 1
 fi
 
 echo -e "${BLUE}使用Web服务器用户: ${GREEN}$WEB_USER${NC}"

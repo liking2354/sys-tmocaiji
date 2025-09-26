@@ -39,13 +39,15 @@ if [ ! -d ".git" ]; then
 fi
 
 # 检测Web服务器用户
-WEB_USER="www-data"
-if ! id "$WEB_USER" &>/dev/null; then
-    if id "nginx" &>/dev/null; then
-        WEB_USER="nginx"
-    elif id "apache" &>/dev/null; then
-        WEB_USER="apache"
-    fi
+WEB_USER=""
+if id "www" &>/dev/null; then
+    WEB_USER="www"
+elif id "www-data" &>/dev/null; then
+    WEB_USER="www-data"
+elif id "nginx" &>/dev/null; then
+    WEB_USER="nginx"
+elif id "apache" &>/dev/null; then
+    WEB_USER="apache"
 fi
 
 echo -e "${BLUE}Web服务器用户: ${GREEN}$WEB_USER${NC}"

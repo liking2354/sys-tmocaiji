@@ -64,12 +64,43 @@ sudo mkdir -p storage/logs
 sudo touch storage/logs/laravel.log
 sudo chmod 775 storage/logs
 sudo chmod 664 storage/logs/laravel.log
-sudo chown -R www-data:www-data storage/logs
+# 宝塔面板环境
+sudo chown -R www:www storage/logs
+# 或者其他环境
+# sudo chown -R www-data:www-data storage/logs
 ```
 
 #### 方案3：使用完整权限修复脚本
 ```bash
 sudo ./scripts/maintenance/fix_permissions.sh /www/wwwroot/tmocaiji
+```
+
+## 宝塔面板环境特别说明
+
+### 宝塔面板用户
+宝塔面板默认使用 `www` 用户运行Web服务，所有脚本已优先检测此用户。
+
+### 宝塔面板推荐操作流程
+```bash
+# 1. 进入项目目录
+cd /www/wwwroot/tmocaiji
+
+# 2. 快速更新（推荐）
+sudo ./scripts/maintenance/quick_update.sh
+
+# 3. 或者只修复权限问题
+sudo ./scripts/maintenance/quick_fix_logs.sh
+```
+
+### 宝塔面板手动权限设置
+```bash
+# 设置目录权限
+sudo chown -R www:www storage bootstrap/cache
+sudo chmod -R 775 storage bootstrap/cache
+
+# 设置日志文件权限
+sudo chmod 664 storage/logs/laravel.log
+sudo chown www:www storage/logs/laravel.log
 ```
 
 ## 自动化部署建议
@@ -97,7 +128,11 @@ sudo ./scripts/maintenance/quick_fix_logs.sh
 ## 注意事项
 
 1. **权限问题**：所有涉及文件权限的操作都需要 sudo 权限
-2. **Web服务器用户**：脚本会自动检测 www-data、nginx、apache 用户
+2. **Web服务器用户**：脚本会自动检测以下用户（按优先级排序）：
+   - `www` (宝塔面板)
+   - `www-data` (Ubuntu/Debian)
+   - `nginx` (Nginx)
+   - `apache` (Apache)
 3. **备份**：update.sh 会自动创建备份，quick_update.sh 不会
 4. **生产环境**：建议使用 quick_update.sh 进行快速更新
 5. **权限验证**：更新后建议访问应用检查日志功能是否正常
