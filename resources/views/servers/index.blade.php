@@ -16,6 +16,9 @@
             <button type="button" class="btn btn-warning" id="batchCollectionBtn" disabled>
                 <i class="fas fa-play"></i> 批量采集
             </button>
+            <button type="button" class="btn btn-info" id="batchModifyComponentsBtn" disabled>
+                <i class="fas fa-cogs"></i> 批量修改组件
+            </button>
             <button type="button" class="btn btn-success" id="downloadBtn" disabled>
                 <i class="fas fa-download"></i> 直接下载
             </button>
@@ -181,6 +184,72 @@
     </div>
 </div>
 
+<!-- 批量修改组件模态框 -->
+<div class="modal fade" id="batchModifyComponentsModal" tabindex="-1" role="dialog" aria-labelledby="batchModifyComponentsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="batchModifyComponentsModalLabel">批量修改组件</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="batchModifyComponentsForm" action="{{ route('servers.batch-modify-components') }}" method="POST">
+                    @csrf
+                    <input type="hidden" id="selected_server_ids_modify" name="server_ids" value="">
+                    
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i>
+                        已选择 <span id="selectedServerCountModify">0</span> 个服务器，请选择要关联的采集组件：
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>操作类型：</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="operation_type" id="operationReplace" value="replace" checked>
+                            <label class="form-check-label" for="operationReplace">
+                                <strong>替换</strong> - 清除现有关联，只保留选中的组件
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="operation_type" id="operationAdd" value="add">
+                            <label class="form-check-label" for="operationAdd">
+                                <strong>添加</strong> - 在现有关联基础上添加选中的组件
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="operation_type" id="operationRemove" value="remove">
+                            <label class="form-check-label" for="operationRemove">
+                                <strong>移除</strong> - 从现有关联中移除选中的组件
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>采集组件：</label>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="selectAllComponents">
+                            <label class="form-check-label" for="selectAllComponents">
+                                <strong>全选/取消全选</strong>
+                            </label>
+                        </div>
+                        <div class="row" id="componentsContainer">
+                            <!-- 采集组件列表将通过AJAX加载 -->
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="submitBatchModifyComponents">
+                    <i class="fas fa-save"></i> 确认修改
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- 批量采集模态框 -->
 <div class="modal fade" id="batchCollectionModal" tabindex="-1" role="dialog" aria-labelledby="batchCollectionModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -252,6 +321,7 @@
             var checkedCount = $('.server-checkbox:checked').length;
             $('#downloadBtn').prop('disabled', checkedCount === 0);
             $('#batchCollectionBtn').prop('disabled', checkedCount === 0);
+            $('#batchModifyComponentsBtn').prop('disabled', checkedCount === 0);
             
             // 更新全选框状态
             var allChecked = checkedCount === $('.server-checkbox').length;
@@ -337,12 +407,133 @@
             }
         });
         
-        // 更新按钮状态
-        function updateButtonStates() {
-            var checkedCount = $('.server-checkbox:checked').length;
-            $('#downloadBtn').prop('disabled', checkedCount === 0);
-            $('#batchCollectionBtn').prop('disabled', checkedCount === 0);
+        // 批量修改组件按钮点击事件
+        $('#batchModifyComponentsBtn').click(function() {
+            var checkedBoxes = $('.server-checkbox:checked');
+            if (checkedBoxes.length > 0) {
+                var serverIds = [];
+                checkedBoxes.each(function() {
+                    serverIds.push($(this).val());
+                });
+                
+                $('#selectedServerCountModify').text(serverIds.length);
+                $('#selected_server_ids_modify').val(serverIds.join(','));
+                
+                // 加载所有采集组件
+                loadAllComponents();
+                
+                $('#batchModifyComponentsModal').modal('show');
+            } else {
+                alert('请先选择要修改组件的服务器');
+            }
+        });
+        
+        // 加载所有采集组件
+        function loadAllComponents() {
+            $('#componentsContainer').html('<div class="col-12"><div class="text-muted"><i class="fas fa-spinner fa-spin"></i> 正在加载采集组件...</div></div>');
+            
+            $.ajax({
+                url: '{{ route("api.collectors.all") }}',
+                type: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                success: function(response) {
+                    if (response.success && response.data.length > 0) {
+                        var html = '';
+                        response.data.forEach(function(collector) {
+                            html += '<div class="col-md-6 mb-2">';
+                            html += '<div class="form-check">';
+                            html += '<input class="form-check-input component-checkbox" type="checkbox" name="collector_ids[]" value="' + collector.id + '" id="component_' + collector.id + '">';
+                            html += '<label class="form-check-label" for="component_' + collector.id + '">';
+                            html += '<strong>' + collector.name + '</strong> (' + collector.code + ')';
+                            if (collector.description) {
+                                html += '<br><small class="text-muted">' + collector.description + '</small>';
+                            }
+                            html += '</label>';
+                            html += '</div>';
+                            html += '</div>';
+                        });
+                        $('#componentsContainer').html(html);
+                        
+                        // 监听组件选择变化
+                        $('.component-checkbox').change(function() {
+                            updateSelectAllComponents();
+                        });
+                        
+                        // 全选/取消全选功能
+                        $('#selectAllComponents').change(function() {
+                            $('.component-checkbox').prop('checked', $(this).prop('checked'));
+                        });
+                        
+                    } else {
+                        $('#componentsContainer').html('<div class="col-12"><div class="alert alert-warning">没有可用的采集组件</div></div>');
+                    }
+                },
+                error: function(xhr) {
+                    $('#componentsContainer').html('<div class="col-12"><div class="alert alert-danger">加载采集组件失败：' + xhr.responseText + '</div></div>');
+                }
+            });
         }
+        
+        // 更新全选组件复选框状态
+        function updateSelectAllComponents() {
+            var totalComponents = $('.component-checkbox').length;
+            var checkedComponents = $('.component-checkbox:checked').length;
+            $('#selectAllComponents').prop('checked', totalComponents > 0 && checkedComponents === totalComponents);
+        }
+        
+        // 批量修改组件表单提交
+        $('#submitBatchModifyComponents').click(function() {
+            var checkedComponents = $('.component-checkbox:checked').length;
+            var operationType = $('input[name="operation_type"]:checked').val();
+            
+            if (operationType !== 'remove' && checkedComponents === 0) {
+                alert('请至少选择一个采集组件');
+                return;
+            }
+            
+            if (operationType === 'remove' && checkedComponents === 0) {
+                alert('移除操作需要选择要移除的组件');
+                return;
+            }
+            
+            var btn = $(this);
+            var originalText = btn.html();
+            btn.html('<i class="fas fa-spinner fa-spin"></i> 处理中...').prop('disabled', true);
+            
+            var formData = $('#batchModifyComponentsForm').serialize();
+            
+            $.ajax({
+                url: $('#batchModifyComponentsForm').attr('action'),
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        $('#batchModifyComponentsModal').modal('hide');
+                        alert('批量修改组件成功！' + response.message);
+                        // 可选：刷新页面或更新显示
+                        location.reload();
+                    } else {
+                        alert('修改失败：' + response.message);
+                    }
+                    btn.html(originalText).prop('disabled', false);
+                },
+                error: function(xhr) {
+                    var errorMessage = '请求失败';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMessage = xhr.responseJSON.message;
+                    }
+                    alert('修改失败：' + errorMessage);
+                    btn.html(originalText).prop('disabled', false);
+                }
+            });
+        });
         
         // 加载共同的采集组件
         function loadCommonCollectors(serverIds) {

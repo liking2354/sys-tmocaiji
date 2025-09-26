@@ -32352,3 +32352,269 @@ Try 'date --help' for more information.
 [2025-09-26 16:50:59] local.INFO: 采集组件执行成功 {"server_id":78,"collector_id":7,"output_length":329,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
 [2025-09-26 16:50:59] local.INFO: 任务详情执行成功 {"task_id":34,"detail_id":569,"execution_time":1.328} 
 [2025-09-26 16:50:59] local.INFO: 任务最终状态更新 {"task_id":34,"final_status":2,"total":6,"completed":6,"failed":0} 
+[2025-09-26 21:34:35] local.INFO: 从数据库获取所有可用采集组件数据  
+[2025-09-26 21:35:08] local.INFO: 批量修改服务器组件关联 {"operation_type":"replace","server_count":3,"collector_count":2,"success_count":3,"errors":[]} 
+[2025-09-26 21:35:28] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":36,"server_name":"114.116.202.26","server_ip":"114.116.202.26","collector_id":11,"collector_name":"扫描 DB_HOST / $dbHost","collector_code":"PHP_DB_HOST","output_length":1945,"raw_output":"[
+  {
+    \"file\": \"/wwwroot/applications/wp.didapaper.com/protected/config/online/ht_redis.php\",
+    \"db_host\": \"$dbHost = \\\"192.168.1.166\\\"\"
+  },
+  {
+    \"file\": \"/wwwroot/applications/wp.didapaper.com/protected/config/online/lovepet_redis.php\",
+    \"db_host\": \"$dbHost = \\\"192.168.1.166\\\"\"
+  },
+  {
+    \"file\": \"/wwwroot/applications/wp.didapaper.com/protected/config/online/pet_redis.php\",
+    \"db_host\": \"$dbHost = \\\"192.168.1.166\\\"\"
+  },
+  {
+    \"file\": \"/wwwroot/applications/wp.didapaper.com/protected/config/online/lovecpan_redis.php\",
+    \"db_host\": \"$dbHost = \\\"192.168.1.166\\\"\"
+  },
+  {
+    \"file\": \"/wwwroot/applications/wp.didapaper.com/protected/config/online/mouse_redis.php\",
+    \"db_host\": \"$dbHost = \\\"192.168.1.166\\\"\"
+  },
+  {
+    \"file\": \"/wwwroot/applications/wp.didapaper.com/protected/config/online/love_redis.php\",
+    \"db_host\": \"$dbHost = \\\"192.168.1.166\\\"\"
+  },
+  {
+    \"file\": \"/wwwroot/applications/wp.didapaper.com/protected/config/online/lovecpan_database.php\",
+    \"db_host\": \"$dbHost = \\\"192.168.1.251\\\"\"
+  },
+  {
+    \"file\": \"/wwwroot/applications/wp.didapaper.com/protected/config/online/mouse_database.php\",
+    \"db_host\": \"$dbHost = \\\"192.168.1.251\\\"\"
+  },
+  {
+    \"file\": \"/wwwroot/applications/wp.didapaper.com/protected/config/online/love_database.php\",
+    \"db_host\": \"$dbHost = \\\"192.168.1.251\\\"\"
+  },
+  {
+    \"file\": \"/wwwroot/applications/wp.didapaper.com/protected/config/online/pet_database.php\",
+    \"db_host\": \"$dbHost = \\\"192.168.1.251\\\"\"
+  },
+  {
+    \"file\": \"/wwwroot/applications/wp.didapaper.com/protected/config/online/lovepet_database.php\",
+    \"db_host\": \"$dbHost = \\\"192.168.1.251\\\"\"
+  },
+  {
+    \"file\": \"/wwwroot/applications/wp.didapaper.com/protected/config/online/ht_database.php\",
+    \"db_host\": \"$dbHost = \\\"192.168.1.251\\\"\"
+  },
+  {
+    \"file\": \"/wwwroot/applications/wp.didapaper.com/protected/config/online/live_database.php\",
+    \"db_host\": \"$dbHost = \\\"192.168.1.251\\\"\"
+  }
+]
+","output_preview":"[
+  {
+    \"file\": \"/wwwroot/applications/wp.didapaper.com/protected/config/online/ht_redis.php\",
+    \"db_host\": \"$dbHost = \\\"192.168.1.166\\\"\"
+  },
+  {
+    \"file\": \"/wwwroot/applications/wp.didapaper.com/protected/config/online/lovepet_redis.php\",
+    \"db_host\": \"$dbHost = \\\"192.168.1.166\\\"\"
+  },
+  {
+    \"file\": \"/wwwroot/applications/wp.didapaper.com/protected/config/online/pet_redis.php\",
+    \"db_host\": \"$dbHost = \\\"192.168.1.166\\\"\"
+  },
+  {
+    \"file\": \"/wwwroot/applications/wp.didapaper.com/p..."} 
+[2025-09-26 21:35:28] local.INFO: JSON数据采集成功 {"keys":[0,1,2,3,4,5,6,7,8,9,10,11,12],"size":1944,"formatted_size":2191} 
+[2025-09-26 21:35:28] local.INFO: 采集组件执行成功 {"server_id":36,"collector_id":11,"output_length":1945,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-26 21:35:29] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":36,"server_name":"114.116.202.26","server_ip":"114.116.202.26","collector_id":12,"collector_name":"MySQL 配置采集脚本","collector_code":"PHP_MySQL","output_length":3688,"raw_output":"[
+  {
+    \"file\": \"/wwwroot/applications/wp.didapaper.com/protected/config/online/lovecpan_database.php\",
+    \"mysql_config\": [
+      {
+        \"host\": \"{$dbHost}\",
+        \"host_type\": \"domain\",
+        \"port\": \"3306\",
+        \"user\": \"\",
+        \"password\": \"\",
+        \"dbname\": \"love_cpan\\\",\"
+      }
+    ]
+  },
+  {
+    \"file\": \"/wwwroot/applications/wp.didapaper.com/protected/config/online/mouse_database.php\",
+    \"mysql_config\": [
+      {
+        \"host\": \"{$dbHost}\",
+        \"host_type\": \"domain\",
+        \"port\": \"3306\",
+        \"user\": \"\",
+        \"password\": \"\",
+        \"dbname\": \"mouse\\\",\"
+      }
+    ]
+  },
+  {
+    \"file\": \"/wwwroot/applications/wp.didapaper.com/protected/config/online/love_database.php\",
+    \"mysql_config\": [
+      {
+        \"host\": \"{$dbHost}\",
+        \"host_type\": \"domain\",
+        \"port\": \"3306\",
+        \"user\": \"\",
+        \"password\": \"\",
+        \"dbname\": \"love_wallpaper\\\",\"
+      }
+    ]
+  },
+  {
+    \"file\": \"/wwwroot/applications/wp.didapaper.com/protected/config/online/pet_database.php\",
+    \"mysql_config\": [
+      {
+        \"host\": \"{$dbHost}\",
+        \"host_type\": \"domain\",
+        \"port\": \"3306\",
+        \"user\": \"\",
+        \"password\": \"\",
+        \"dbname\": \"pet\\\",\"
+      }
+    ]
+  },
+  {
+    \"file\": \"/wwwroot/applications/wp.didapaper.com/protected/config/online/lovepet_database.php\",
+    \"mysql_config\": [
+      {
+        \"host\": \"{$dbHost}\",
+        \"host_type\": \"domain\",
+        \"port\": \"3306\",
+        \"user\": \"\",
+        \"password\": \"\",
+        \"dbname\": \"love_pet\\\",\"
+      }
+    ]
+  },
+  {
+    \"file\": \"/wwwroot/applications/wp.didapaper.com/protected/config/online/ht_database.php\",
+    \"mysql_config\": [
+      {
+        \"host\": \"{$dbHost}\",
+        \"host_type\": \"domain\",
+        \"port\": \"3306\",
+        \"user\": \"\",
+        \"password\": \"\",
+        \"dbname\": \"ht_wallpaper\\\",\"
+      }
+    ]
+  },
+  {
+    \"file\": \"/wwwroot/applications/wp.didapaper.com/protected/config/online/database.php\",
+    \"mysql_config\": [
+      {
+        \"host\": \"cc426afcfed146de943db9b274c599e3in01.internal.cn-north-4.mysql.rds.myhuaweicloud.com\",
+        \"host_type\": \"domain\",
+        \"port\": \"3306\",
+        \"user\": \"\",
+        \"password\": \"\",
+        \"dbname\": \"lds_bizhi\\\",\"
+      },
+      {
+        \"host\": \"192.168.1.168\",
+        \"host_type\": \"ip\",
+        \"port\": \"3306\",
+        \"user\": \"\",
+        \"password\": \"\",
+        \"dbname\": \"lds_bizhi\\\",\"
+      }
+    ]
+  },
+  {
+    \"file\": \"/wwwroot/applications/wp.didapaper.com/protected/config/online/live_database.php\",
+    \"mysql_config\": [
+      {
+        \"host\": \"{$dbHost}\",
+        \"host_type\": \"domain\",
+        \"port\": \"3306\",
+        \"user\": \"\",
+        \"password\": \"\",
+        \"dbname\": \"lds_bizhi_web\\\",\"
+      }
+    ]
+  },
+  {
+    \"file\": \"/wwwroot/applications/wp.birdpaper.com.cn/protected/config/online/database.php\",
+    \"mysql_config\": [
+      {
+        \"host\": \"cc426afcfed146de943db9b274c599e3in01.internal.cn-north-4.mysql.rds.myhuaweicloud.com\",
+        \"host_type\": \"domain\",
+        \"port\": \"3306\",
+        \"user\": \"\",
+        \"password\": \"\",
+        \"dbname\": \"lds_bizhi\\\",\"
+      },
+      {
+        \"host\": \"192.168.1.168\",
+        \"host_type\": \"ip\",
+        \"port\": \"3306\",
+        \"user\": \"\",
+        \"password\": \"\",
+        \"dbname\": \"lds_bizhi\\\",\"
+      },
+      {
+        \"host\": \"192.168.1.7\",
+        \"host_type\": \"ip\",
+        \"port\": \"3306\",
+        \"user\": \"\",
+        \"password\": \"\",
+        \"dbname\": \"lds_bizhi', //华为云内网ip\"
+      },
+      {
+        \"host\": \"49.4.28.248\",
+        \"host_type\": \"ip\",
+        \"port\": \"3306\",
+        \"user\": \"\",
+        \"password\": \"\",
+        \"dbname\": \"lds_bizhi', //华为云公网ip\"
+      }
+    ]
+  }
+]
+","output_preview":"[
+  {
+    \"file\": \"/wwwroot/applications/wp.didapaper.com/protected/config/online/lovecpan_database.php\",
+    \"mysql_config\": [
+      {
+        \"host\": \"{$dbHost}\",
+        \"host_type\": \"domain\",
+        \"port\": \"3306\",
+        \"user\": \"\",
+        \"password\": \"\",
+        \"dbname\": \"love_cpan\\\",\"
+      }
+    ]
+  },
+  {
+    \"file\": \"/wwwroot/applications/wp.didapaper.com/protected/config/online/mouse_database.php\",
+    \"mysql_config\": [
+      {
+        \"host\": \"{$dbHost}\",
+        \"host_type\": \"do..."} 
+[2025-09-26 21:35:29] local.INFO: JSON数据采集成功 {"keys":[0,1,2,3,4,5,6,7,8],"size":3687,"formatted_size":4678} 
+[2025-09-26 21:35:29] local.INFO: 采集组件执行成功 {"server_id":36,"collector_id":12,"output_length":3688,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-26 21:37:31] local.INFO: 进入downloadServers方法  
+[2025-09-26 21:37:31] local.INFO: 请求方法: POST  
+[2025-09-26 21:37:31] local.INFO: 请求参数: {"_token":"ZCWRz5eIWgNN1ZjWTg7yRWqEr3kYv9EMGUmxoUXw","server_ids":["36","35","34"]}  
+[2025-09-26 21:37:31] local.INFO: 请求头: {"host":["127.0.0.1:8000"],"connection":["keep-alive"],"content-length":["107"],"cache-control":["max-age=0"],"sec-ch-ua":["\"Chromium\";v=\"140\", \"Not=A?Brand\";v=\"24\", \"Google Chrome\";v=\"140\""],"sec-ch-ua-mobile":["?0"],"sec-ch-ua-platform":["\"macOS\""],"upgrade-insecure-requests":["1"],"user-agent":["Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/140.0.0.0 Safari\/537.36"],"origin":["http:\/\/127.0.0.1:8000"],"content-type":["application\/x-www-form-urlencoded"],"accept":["text\/html,application\/xhtml+xml,application\/xml;q=0.9,image\/avif,image\/webp,image\/apng,*\/*;q=0.8,application\/signed-exchange;v=b3;q=0.7"],"sec-fetch-site":["same-origin"],"sec-fetch-mode":["navigate"],"sec-fetch-user":["?1"],"sec-fetch-dest":["document"],"referer":["http:\/\/127.0.0.1:8000\/servers?search=&group_id=9&status="],"accept-encoding":["gzip, deflate, br, zstd"],"accept-language":["zh-CN,zh;q=0.9"],"cookie":["XSRF-TOKEN=eyJpdiI6ImpDRUxQK3J1TmFDb1JFNk9vUGZzbVE9PSIsInZhbHVlIjoiTGJrVmk3M093SktsOEpJRUNJZGtuK1JaK3FHUVZkRlJ1T2xENlFLTzVvQUgrYmlNU0loYmErU2tCVjhWWjllVkpya2Z1b0p3S29HOXIvUG5vUmh0ZXNDTFM3MUtkcUhMRWdrMlpyMTVuN1RHVWtkVTNqTkNUM2puMXhnNDExd2siLCJtYWMiOiIxNjk3YjkwNjA3YjYyYmUwZTQ3ODA3OGU5YjQ2ZTMxZGIwOGNmN2Q3MzdmZjYyY2U4NjNkMWYyMTA4ZmVhOTE3IiwidGFnIjoiIn0%3D; servercollector_session=eyJpdiI6Imd3VE1OSEE3REZlOXdkdFRDbDBhdFE9PSIsInZhbHVlIjoiRDZhd2Jqd1Z5TnlJc2tzeStvU1pmckR3VVA1VThrRVNsbWI4YmVOT0Rad3lKK3pkZ0h1VHJMeXVldUw4MDB0MGQ4MDFQV3c5N2JlWEpZRFBvQzNiaysrZjIyTmZwaTBqK1M5YjJwTVZkcmJaaVBRcU41UFRLMDJ0REtnamFteWoiLCJtYWMiOiI4ZjJiNTkxYTRlY2QxMTc1OTMzYTdjYzIzMzFlMjg1NzcyYWI2YzIxNDA3NjkxZWZlN2I3YWIwNmM3NTlmMDEwIiwidGFnIjoiIn0%3D"]}  
+[2025-09-26 21:37:31] local.INFO: CSRF令牌(X-CSRF-TOKEN): 不存在  
+[2025-09-26 21:37:31] local.INFO: CSRF令牌(X-XSRF-TOKEN): 不存在  
+[2025-09-26 21:37:31] local.INFO: CSRF令牌(请求体): ZCWRz5eIWgNN1ZjWTg7yRWqEr3kYv9EMGUmxoUXw  
+[2025-09-26 21:37:31] local.INFO: Session ID: tlYZtBuXX0r42KeaUfBk2x5t9RjSzjnT2MMlGfD3  
+[2025-09-26 21:37:31] local.INFO: Session中的CSRF令牌: ZCWRz5eIWgNN1ZjWTg7yRWqEr3kYv9EMGUmxoUXw  
+[2025-09-26 21:37:31] local.INFO: 用户认证状态: 已登录  
+[2025-09-26 21:37:31] local.INFO: 登录用户: admin@example.com  
+[2025-09-26 21:37:31] local.INFO: 请求中包含_token参数: ZCWRz5eIWgNN1ZjWTg7yRWqEr3kYv9EMGUmxoUXw  
+[2025-09-26 21:37:31] local.INFO: CSRF令牌验证成功  
+[2025-09-26 21:37:31] local.INFO: 服务器IDs: ["36","35","34"]  
+[2025-09-26 21:37:31] local.INFO: 查询选中的服务器数据  
+[2025-09-26 21:37:31] local.INFO: 找到服务器数量: 3  
+[2025-09-26 21:37:31] local.INFO: 找到采集组件数量: 2  
+[2025-09-26 21:37:31] local.INFO: 开始导出Excel文件  
+[2025-09-26 21:37:31] local.INFO: ServersExport实例创建成功  
+[2025-09-26 21:37:32] local.INFO: Excel导出成功  

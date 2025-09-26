@@ -419,4 +419,32 @@ class CollectorController extends Controller
             }
         }
     }
+
+    /**
+     * 获取所有采集组件（API接口）
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAllCollectors()
+    {
+        try {
+            $collectors = Collector::select('id', 'name', 'code', 'description', 'version')
+                ->orderBy('name')
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'data' => $collectors
+            ]);
+        } catch (\Exception $e) {
+            Log::error('获取所有采集组件失败', [
+                'error' => $e->getMessage()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => '获取采集组件失败：' . $e->getMessage()
+            ], 500);
+        }
+    }
 }

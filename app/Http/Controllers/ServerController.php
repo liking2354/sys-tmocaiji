@@ -991,4 +991,127 @@ class ServerController extends Controller
         return redirect()->route('collection-tasks.batch.create')
             ->with('server_ids', $serverIds);
     }
+
+    /**
+     * 批量修改服务器组件关联
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function batchModifyComponents(Request $request)
+    {
+        $request->validate([
+            'server_ids' => 'required|string',
+            'operation_type' => 'required|in:replace,add,remove',
+            'collector_ids' => 'array',
+            'collector_ids.*' => 'exists:collectors,id'
+        ]);
+
+        try {
+            $serverIds = explode(',', $request->server_ids);
+            $collectorIds = $request->collector_ids ?? [];
+            $operationType = $request->operation_type;
+
+            // 验证服务器是否存在
+            $servers = Server::whereIn('id', $serverIds)->get();
+            if ($servers->count() !== count($serverIds)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => '部分服务器不存在'
+                ], 400);
+            }
+
+            // 验证采集组件是否存在
+            if (!empty($collectorIds)) {
+                $collectors = Collector::whereIn('id', $collectorIds)->get();
+                if ($collectors->count() !== count($collectorIds)) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => '部分采集组件不存在'
+                    ], 400);
+                }
+            }
+
+            DB::beginTransaction();
+
+            $successCount = 0;
+            $errorMessages = [];
+
+            foreach ($servers as $server) {
+                try {
+                    switch ($operationType) {
+                        case 'replace':
+                            // 替换：先清除所有关联，再添加新的关联
+                            $server->collectors()->detach();
+                            if (!empty($collectorIds)) {
+                                $server->collectors()->attach($collectorIds);
+                            }
+                            break;
+
+                        case 'add':
+                            // 添加：在现有关联基础上添加新的关联
+                            if (!empty($collectorIds)) {
+                                $server->collectors()->syncWithoutDetaching($collectorIds);
+                            }
+                            break;
+
+                        case 'remove':
+                            // 移除：从现有关联中移除指定的关联
+                            if (!empty($collectorIds)) {
+                                $server->collectors()->detach($collectorIds);
+                            }
+                            break;
+                    }
+                    $successCount++;
+                } catch (Exception $e) {
+                    $errorMessages[] = "服务器 {$server->name} 操作失败：" . $e->getMessage();
+                }
+            }
+
+            DB::commit();
+
+            // 记录操作日志
+            $operationText = [
+                'replace' => '替换',
+                'add' => '添加',
+                'remove' => '移除'
+            ];
+
+            Log::info('批量修改服务器组件关联', [
+                'operation_type' => $operationType,
+                'server_count' => count($serverIds),
+                'collector_count' => count($collectorIds),
+                'success_count' => $successCount,
+                'errors' => $errorMessages
+            ]);
+
+            $message = "成功{$operationText[$operationType]}了 {$successCount} 个服务器的组件关联";
+            if (!empty($errorMessages)) {
+                $message .= "，但有 " . count($errorMessages) . " 个服务器操作失败";
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => $message,
+                'data' => [
+                    'success_count' => $successCount,
+                    'error_count' => count($errorMessages),
+                    'errors' => $errorMessages
+                ]
+            ]);
+
+        } catch (Exception $e) {
+            DB::rollBack();
+            
+            Log::error('批量修改服务器组件关联失败', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => '批量修改失败：' . $e->getMessage()
+            ], 500);
+        }
+    }
 }

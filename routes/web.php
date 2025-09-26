@@ -50,6 +50,7 @@ Route::delete('server-groups/batch-delete', [ServerGroupController::class, 'batc
     Route::post('servers/{server}/execute', [ServerController::class, 'executeCommand'])->name('servers.execute');
     Route::get('servers/{server}/check', [ServerController::class, 'checkStatus'])->name('servers.check');
     Route::post('servers/batch-check', [ServerController::class, 'batchCheckStatus'])->name('servers.batch-check');
+    Route::post('servers/batch-modify-components', [ServerController::class, 'batchModifyComponents'])->name('servers.batch-modify-components');
     
     // 服务器与采集组件关联
     Route::post('servers/{server}/collectors/{collector}/install', [ServerController::class, 'installCollector'])->name('servers.collectors.install');
