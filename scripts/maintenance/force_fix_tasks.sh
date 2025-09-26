@@ -118,8 +118,8 @@ echo '检查孤立的任务详情...' . PHP_EOL;
 \$orphanedDetails = TaskDetail::where('status', 2)
     ->whereNotExists(function(\$query) {
         \$query->select(\DB::raw(1))
-              ->from('collection_histories')
-              ->whereRaw('collection_histories.task_detail_id = task_details.id');
+              ->from('collection_history')
+              ->whereRaw('collection_history.task_detail_id = task_details.id');
     })
     ->with(['task', 'server', 'collector'])
     ->get();
