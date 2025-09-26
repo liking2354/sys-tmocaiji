@@ -14,11 +14,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        CollectorUpdateCommand::class,
-        Commands\QueueWorkCommand::class,
-        Commands\ResetStuckTasksCommand::class,
-        Commands\DiagnoseTasksCommand::class,
-        Commands\FixTaskStatusCommand::class,
+        CollectorUpdateCommand::class
     ];
 
     /**

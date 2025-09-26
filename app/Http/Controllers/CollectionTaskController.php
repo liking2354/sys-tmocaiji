@@ -342,7 +342,7 @@ class CollectionTaskController extends Controller
                 ]);
             }
             
-            return view('collection-tasks.show', compact('task', 'detailsByServer', 'stats'));
+            return view('collection-tasks.show-enhanced', compact('task', 'detailsByServer', 'stats'));
         } catch (\Exception $e) {
             if (request()->ajax()) {
                 return response()->json([

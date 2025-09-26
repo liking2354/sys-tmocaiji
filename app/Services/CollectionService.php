@@ -170,8 +170,8 @@ class CollectionService
                 }
             }
 
-            // 异步执行任务（使用队列）
-            dispatch(new \App\Jobs\ExecuteBatchCollectionJob($task->id));
+            // 使用新的任务执行服务（同步执行）
+            app(\App\Services\TaskExecutionService::class)->executeTask($task->id);
 
             return [
                 'success' => true,
@@ -436,8 +436,8 @@ class CollectionService
             'completed_servers' => $task->completed_servers
         ]);
 
-        // 异步执行重试任务
-        dispatch(new \App\Jobs\ExecuteBatchCollectionJob($task->id));
+        // 使用新的任务执行服务执行重试任务
+        app(\App\Services\TaskExecutionService::class)->executeTask($task->id);
 
         return [
             'success' => true,
