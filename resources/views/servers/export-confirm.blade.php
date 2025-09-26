@@ -116,6 +116,37 @@
                             </div>
                         </div>
                         
+                        <!-- 格式选择 -->
+                        <div class="row mt-4">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header bg-light">
+                                        <h5 class="mb-0">选择导出格式</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="formatXlsx" name="format" value="xlsx" checked>
+                                                <label class="custom-control-label" for="formatXlsx">
+                                                    <i class="fas fa-file-excel text-success"></i> Excel (.xlsx)
+                                                </label>
+                                            </div>
+                                            <div class="custom-control custom-radio custom-control-inline">
+                                                <input type="radio" class="custom-control-input" id="formatCsv" name="format" value="csv">
+                                                <label class="custom-control-label" for="formatCsv">
+                                                    <i class="fas fa-file-csv text-info"></i> CSV (.csv)
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <small class="text-muted">
+                                            <i class="fas fa-info-circle"></i> 
+                                            Excel格式支持更好的格式化和样式，CSV格式更适合数据处理和导入其他系统。
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <div class="row mt-4">
                             <div class="col-md-12 text-center">
                                 <button type="submit" id="exportBtn" class="btn btn-primary">

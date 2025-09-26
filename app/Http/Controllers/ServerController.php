@@ -334,7 +334,26 @@ class ServerController extends Controller
     public function export(Request $request)
     {
         $serverIds = $request->input('server_ids', []);
-        return Excel::download(new ServersExport($serverIds), '服务器列表.xlsx');
+        $format = $request->input('format', 'xlsx');
+        
+        // 根据格式设置文件名和扩展名
+        $fileExtension = $format === 'csv' ? 'csv' : 'xlsx';
+        $fileName = '服务器列表.' . $fileExtension;
+        
+        // 根据格式选择导出方式
+        if ($format === 'csv') {
+            return Excel::download(
+                new ServersExport($serverIds),
+                $fileName,
+                \Maatwebsite\Excel\Excel::CSV,
+                [
+                    'Content-Type' => 'text/csv; charset=UTF-8',
+                    'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
+                ]
+            );
+        } else {
+            return Excel::download(new ServersExport($serverIds), $fileName);
+        }
     }
     
     /**
@@ -404,17 +423,39 @@ class ServerController extends Controller
         }
         \Illuminate\Support\Facades\Log::info('找到采集组件数量: ' . count($collectorIds));
         
+        // 获取下载格式，默认为xlsx
+        $format = $request->input('format', 'xlsx');
+        \Illuminate\Support\Facades\Log::info('下载格式: ' . $format);
+        
         // 使用ServersExport类导出数据
         try {
-            \Illuminate\Support\Facades\Log::info('开始导出Excel文件');
+            \Illuminate\Support\Facades\Log::info('开始导出文件，格式: ' . $format);
             $export = new \App\Exports\ServersExport($serverIds, array_values($collectorIds));
             \Illuminate\Support\Facades\Log::info('ServersExport实例创建成功');
             
-            $result = \Maatwebsite\Excel\Facades\Excel::download(
-                $export,
-                '服务器采集数据_' . count($serverIds) . '台_' . date('Ymd_His') . '.xlsx'
-            );
-            \Illuminate\Support\Facades\Log::info('Excel导出成功');
+            // 根据格式设置文件名和扩展名
+            $fileExtension = $format === 'csv' ? 'csv' : 'xlsx';
+            $fileName = '服务器采集数据_' . count($serverIds) . '台_' . date('Ymd_His') . '.' . $fileExtension;
+            
+            // 根据格式选择导出方式
+            if ($format === 'csv') {
+                $result = \Maatwebsite\Excel\Facades\Excel::download(
+                    $export,
+                    $fileName,
+                    \Maatwebsite\Excel\Excel::CSV,
+                    [
+                        'Content-Type' => 'text/csv; charset=UTF-8',
+                        'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
+                    ]
+                );
+            } else {
+                $result = \Maatwebsite\Excel\Facades\Excel::download(
+                    $export,
+                    $fileName
+                );
+            }
+            
+            \Illuminate\Support\Facades\Log::info('文件导出成功，格式: ' . $format);
             return $result;
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('下载服务器数据失败: ' . $e->getMessage());
@@ -434,13 +475,31 @@ class ServerController extends Controller
     {
         $serverIds = $request->input('server_ids', []);
         $collectorIds = $request->input('collector_ids', []);
+        $format = $request->input('format', 'xlsx');
         
         if (empty($serverIds)) {
             return redirect()->route('servers.index')
                 ->with('error', '请至少选择一台服务器');
         }
         
-        return Excel::download(new ServersExport($serverIds, $collectorIds), '服务器采集数据.xlsx');
+        // 根据格式设置文件名和扩展名
+        $fileExtension = $format === 'csv' ? 'csv' : 'xlsx';
+        $fileName = '服务器采集数据.' . $fileExtension;
+        
+        // 根据格式选择导出方式
+        if ($format === 'csv') {
+            return Excel::download(
+                new ServersExport($serverIds, $collectorIds),
+                $fileName,
+                \Maatwebsite\Excel\Excel::CSV,
+                [
+                    'Content-Type' => 'text/csv; charset=UTF-8',
+                    'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
+                ]
+            );
+        } else {
+            return Excel::download(new ServersExport($serverIds, $collectorIds), $fileName);
+        }
     }
     
     /**
