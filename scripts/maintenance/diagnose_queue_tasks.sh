@@ -22,7 +22,12 @@ grep "QUEUE_CONNECTION" .env
 
 echo ""
 echo "2. 检查Redis连接"
-php artisan tinker --execute="
+php -r "
+require 'vendor/autoload.php';
+\$app = require_once 'bootstrap/app.php';
+\$kernel = \$app->make(Illuminate\Contracts\Console\Kernel::class);
+\$kernel->bootstrap();
+
 try {
     \$redis = app('redis');
     \$redis->ping();
@@ -34,7 +39,7 @@ try {
 
 echo ""
 echo "3. 检查队列中的任务"
-php artisan queue:size
+echo "当前队列驱动: $(grep QUEUE_CONNECTION .env | cut -d'=' -f2)"
 
 echo ""
 echo "4. 检查失败的队列任务"
@@ -42,7 +47,12 @@ php artisan queue:failed
 
 echo ""
 echo "5. 检查任务状态统计"
-php artisan tinker --execute="
+php -r "
+require 'vendor/autoload.php';
+\$app = require_once 'bootstrap/app.php';
+\$kernel = \$app->make(Illuminate\Contracts\Console\Kernel::class);
+\$kernel->bootstrap();
+
 \$tasks = \App\Models\CollectionTask::selectRaw('
     status,
     COUNT(*) as count,
@@ -58,7 +68,12 @@ foreach (\$tasks as \$task) {
 
 echo ""
 echo "6. 检查任务详情状态"
-php artisan tinker --execute="
+php -r "
+require 'vendor/autoload.php';
+\$app = require_once 'bootstrap/app.php';
+\$kernel = \$app->make(Illuminate\Contracts\Console\Kernel::class);
+\$kernel->bootstrap();
+
 \$details = \App\Models\TaskDetail::selectRaw('
     status,
     COUNT(*) as count,
@@ -74,7 +89,12 @@ foreach (\$details as \$detail) {
 
 echo ""
 echo "7. 检查最近的采集历史"
-php artisan tinker --execute="
+php -r "
+require 'vendor/autoload.php';
+\$app = require_once 'bootstrap/app.php';
+\$kernel = \$app->make(Illuminate\Contracts\Console\Kernel::class);
+\$kernel->bootstrap();
+
 \$histories = \App\Models\CollectionHistory::orderBy('created_at', 'desc')->limit(5)->get();
 echo '最近5条采集历史:' . PHP_EOL;
 foreach (\$histories as \$history) {

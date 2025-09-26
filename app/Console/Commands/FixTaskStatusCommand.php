@@ -124,7 +124,7 @@ class FixTaskStatusCommand extends Command
         $this->info('检查孤立的任务详情...');
         
         $orphanedDetails = TaskDetail::where('status', 2)
-            ->whereDoesntHave('collectionHistories')
+            ->whereDoesntHave('collectionHistory')
             ->with(['task', 'server', 'collector'])
             ->get();
         

@@ -29,7 +29,12 @@ php artisan queue:size
 
 echo ""
 echo "3. 检查Redis连接"
-php artisan tinker --execute="
+php -r "
+require 'vendor/autoload.php';
+\$app = require_once 'bootstrap/app.php';
+\$kernel = \$app->make(Illuminate\Contracts\Console\Kernel::class);
+\$kernel->bootstrap();
+
 try {
     \$redis = app('redis');
     \$redis->ping();
@@ -92,7 +97,12 @@ case $choice in
         
         echo ""
         echo "步骤3: 检查队列连接"
-        php artisan tinker --execute="
+        php -r "
+        require 'vendor/autoload.php';
+        \$app = require_once 'bootstrap/app.php';
+        \$kernel = \$app->make(Illuminate\Contracts\Console\Kernel::class);
+        \$kernel->bootstrap();
+        
         try {
             \$redis = app('redis');
             \$redis->ping();

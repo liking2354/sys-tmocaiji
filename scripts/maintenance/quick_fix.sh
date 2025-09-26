@@ -37,7 +37,12 @@ echo "-----------------------------------------------------"
 
 # 检查Redis连接
 echo "检查Redis连接..."
-REDIS_CHECK=$(php artisan tinker --execute="
+REDIS_CHECK=$(php -r "
+require 'vendor/autoload.php';
+\$app = require_once 'bootstrap/app.php';
+\$kernel = \$app->make(Illuminate\Contracts\Console\Kernel::class);
+\$kernel->bootstrap();
+
 try {
     app('redis')->ping();
     echo 'OK';
@@ -89,7 +94,12 @@ echo "-----------------------------------------------------"
 
 # 检查任务状态统计
 echo "当前任务状态统计:"
-php artisan tinker --execute="
+php -r "
+require 'vendor/autoload.php';
+\$app = require_once 'bootstrap/app.php';
+\$kernel = \$app->make(Illuminate\Contracts\Console\Kernel::class);
+\$kernel->bootstrap();
+
 \$tasks = \App\Models\CollectionTask::selectRaw('
     status,
     COUNT(*) as count
@@ -105,10 +115,9 @@ echo ""
 
 # 检查队列状态
 echo "当前队列状态:"
-QUEUE_SIZE=$(php artisan queue:size 2>/dev/null || echo "无法获取队列大小")
-echo "  队列大小: $QUEUE_SIZE"
+echo "  队列驱动: $(grep QUEUE_CONNECTION .env | cut -d'=' -f2)"
 
-FAILED_JOBS=$(php artisan queue:failed --format=json 2>/dev/null | wc -l || echo "0")
+FAILED_JOBS=$(php artisan queue:failed 2>/dev/null | grep -c "No failed jobs" && echo "0" || php artisan queue:failed 2>/dev/null | wc -l)
 echo "  失败任务: $FAILED_JOBS 个"
 
 echo ""
