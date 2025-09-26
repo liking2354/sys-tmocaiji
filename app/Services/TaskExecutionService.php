@@ -361,7 +361,7 @@ class TaskExecutionService
                 'status' => 0,
                 'result' => null,
                 'error_message' => null,
-                'execution_time' => null,
+                'execution_time' => 0,
                 'started_at' => null,
                 'completed_at' => null
             ]);

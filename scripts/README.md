@@ -10,11 +10,7 @@ scripts/
 │   ├── deploy.sh       # 项目部署脚本
 │   └── init_production.sh # 生产环境初始化脚本
 ├── maintenance/        # 维护相关脚本
-│   ├── schedule_tasks.sh # 定时任务设置脚本
 │   ├── update.sh       # 完整更新脚本
-│   ├── quick_update.sh # 快速更新脚本
-│   ├── diagnose_tasks.sh # 任务状态诊断脚本
-│   └── quick_diagnose.sh # 快速诊断脚本
 ├── utils/             # 工具脚本目录（预留）
 └── README.md          # 本说明文件
 ```
@@ -65,24 +61,6 @@ scripts/
 
 ### 维护脚本 (maintenance/)
 
-#### schedule_tasks.sh
-定时任务设置脚本，用于配置系统的定时任务。
-
-**使用方法：**
-```bash
-# 自动检测项目路径
-./scripts/maintenance/schedule_tasks.sh
-
-# 指定项目路径
-./scripts/maintenance/schedule_tasks.sh /path/to/project
-```
-
-**功能特性：**
-- 自动检测项目路径
-- 设置Laravel调度任务（每分钟执行）
-- 设置任务状态重置（每小时执行）
-- 避免重复添加相同任务
-
 #### update.sh
 完整的项目更新脚本，从Git仓库拉取最新代码并执行完整的更新流程。
 
@@ -104,63 +82,6 @@ scripts/
 - 重启队列工作进程
 - 设置正确的文件权限
 - 彩色输出和详细日志
-
-#### quick_update.sh
-快速更新脚本，执行基本的代码更新操作。
-
-**使用方法：**
-```bash
-# 自动检测项目路径
-./scripts/maintenance/quick_update.sh
-
-# 指定项目路径
-./scripts/maintenance/quick_update.sh /path/to/project
-```
-
-**功能特性：**
-- 快速拉取最新代码
-- 更新Composer依赖
-- 清除Laravel缓存
-- 设置基本文件权限
-- 适合频繁的小更新
-
-#### diagnose_tasks.sh
-任务状态诊断脚本，用于检查和修复卡住的采集任务。
-
-**使用方法：**
-```bash
-# 自动检测项目路径
-./scripts/maintenance/diagnose_tasks.sh
-
-# 指定项目路径
-./scripts/maintenance/diagnose_tasks.sh /path/to/project
-```
-
-**功能特性：**
-- 检查定时任务配置状态
-- 检查Laravel调度配置
-- 识别卡住的主任务和任务详情
-- 查看任务重置日志
-- 提供手动重置选项
-- 给出详细的解决建议
-
-#### quick_diagnose.sh
-快速任务诊断脚本，简化版的任务状态检查工具。
-
-**使用方法：**
-```bash
-# 自动检测项目路径
-./scripts/maintenance/quick_diagnose.sh
-
-# 指定项目路径
-./scripts/maintenance/quick_diagnose.sh /path/to/project
-```
-
-**功能特性：**
-- 快速执行任务状态检查
-- 使用专门的artisan命令进行诊断
-- 简洁的输出和操作
-- 适合日常快速检查
 
 ## 使用注意事项
 
@@ -184,16 +105,10 @@ scripts/
   - 支持数据库迁移
   - 详细的更新日志和确认提示
 
-- **快速更新 (quick_update.sh)**: 适用于日常开发、小版本更新
-  - 快速执行基本更新操作
-  - 无备份机制，适合开发环境
-  - 简洁的输出信息
-
 ### 更新流程建议
 
-1. **开发环境**: 使用 `quick_update.sh` 进行日常更新
-2. **测试环境**: 使用 `update.sh` 进行完整测试
-3. **生产环境**: 使用 `update.sh` 并仔细检查每个步骤
+1. **测试环境**: 使用 `update.sh` 进行完整测试
+2. **生产环境**: 使用 `update.sh` 并仔细检查每个步骤
 
 ## 维护记录
 

@@ -14,16 +14,29 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>采集任务详情</h1>
         <div>
-            <?php if($task->canRetry()): ?>
-                <button type="button" class="btn btn-warning" onclick="retryTask('<?php echo e($task->id); ?>')">
-                    <i class="fas fa-redo"></i> 重试失败任务
+            <!-- 任务控制按钮 -->
+            <?php if($task->status == 0): ?>
+                <button type="button" class="btn btn-success" onclick="executeTask('<?php echo e($task->id); ?>')">
+                    <i class="fas fa-play"></i> 开始执行
                 </button>
             <?php endif; ?>
-            <?php if($task->isRunning()): ?>
+            
+            <?php if($task->status == 1): ?>
                 <button type="button" class="btn btn-danger" onclick="cancelTask('<?php echo e($task->id); ?>')">
                     <i class="fas fa-stop"></i> 取消任务
                 </button>
             <?php endif; ?>
+            
+            <?php if(in_array($task->status, [2, 3])): ?>
+                <button type="button" class="btn btn-warning" onclick="resetTask('<?php echo e($task->id); ?>')">
+                    <i class="fas fa-redo"></i> 重置任务
+                </button>
+            <?php endif; ?>
+            
+            <button type="button" class="btn btn-info" onclick="refreshTaskStatus()">
+                <i class="fas fa-sync"></i> 刷新状态
+            </button>
+            
             <a href="<?php echo e(route('collection-tasks.index')); ?>" class="btn btn-secondary">
                 <i class="fas fa-arrow-left"></i> 返回任务列表
             </a>
@@ -33,7 +46,10 @@
     <!-- 任务基本信息 -->
     <div class="card mb-4">
         <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">任务基本信息</h5>
+            <h5 class="mb-0">
+                <i class="fas fa-info-circle"></i> 任务基本信息
+                <span class="float-right" id="lastUpdateTime">最后更新: <?php echo e(now()->format('H:i:s')); ?></span>
+            </h5>
         </div>
         <div class="card-body">
             <div class="row">
@@ -62,24 +78,8 @@
                         </tr>
                         <tr>
                             <th>任务状态:</th>
-                            <td>
-                                <?php switch($task->status):
-                                    case (0): ?>
-                                        <span class="badge badge-secondary"><?php echo e($task->statusText); ?></span>
-                                        <?php break; ?>
-                                    <?php case (1): ?>
-                                        <span class="badge badge-warning">
-                                            <i class="fas fa-spinner fa-spin"></i> <?php echo e($task->statusText); ?>
-
-                                        </span>
-                                        <?php break; ?>
-                                    <?php case (2): ?>
-                                        <span class="badge badge-success"><?php echo e($task->statusText); ?></span>
-                                        <?php break; ?>
-                                    <?php case (3): ?>
-                                        <span class="badge badge-danger"><?php echo e($task->statusText); ?></span>
-                                        <?php break; ?>
-                                <?php endswitch; ?>
+                            <td id="taskStatusDisplay">
+                                <?php echo $__env->make('collection-tasks.partials.status-badge', ['status' => $task->status, 'statusText' => $task->statusText], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                             </td>
                         </tr>
                     </table>
@@ -96,15 +96,15 @@
                         </tr>
                         <tr>
                             <th>开始时间:</th>
-                            <td><?php echo e($task->started_at ? $task->started_at->format('Y-m-d H:i:s') : '未开始'); ?></td>
+                            <td id="startedAtDisplay"><?php echo e($task->started_at ? $task->started_at->format('Y-m-d H:i:s') : '未开始'); ?></td>
                         </tr>
                         <tr>
                             <th>完成时间:</th>
-                            <td><?php echo e($task->completed_at ? $task->completed_at->format('Y-m-d H:i:s') : '未完成'); ?></td>
+                            <td id="completedAtDisplay"><?php echo e($task->completed_at ? $task->completed_at->format('Y-m-d H:i:s') : '未完成'); ?></td>
                         </tr>
                         <tr>
                             <th>执行时长:</th>
-                            <td>
+                            <td id="durationDisplay">
                                 <?php if($task->started_at && $task->completed_at): ?>
                                     <?php echo e($task->started_at->diffForHumans($task->completed_at, true)); ?>
 
@@ -122,48 +122,85 @@
         </div>
     </div>
     
-    <!-- 任务进度 -->
-    <?php if($task->total_servers > 0): ?>
+    <!-- 实时任务进度 -->
     <div class="card mb-4">
         <div class="card-header bg-info text-white">
-            <h5 class="mb-0">任务进度</h5>
+            <h5 class="mb-0">
+                <i class="fas fa-chart-line"></i> 实时任务进度
+                <span class="float-right">
+                    <small id="progressUpdateTime">更新时间: <?php echo e(now()->format('H:i:s')); ?></small>
+                </span>
+            </h5>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-8">
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function() {
-                            document.querySelector('.task-progress-bar').style.width = '<?php echo e($task->progress); ?>%';
-                        });
-                    </script>
                     <div class="progress mb-3" style="height: 30px;">
-                        <div class="progress-bar <?php echo e($task->progress >= 100 ? 'bg-success' : ($task->failed_servers > 0 ? 'bg-warning' : 'bg-info')); ?> task-progress-bar" role="progressbar" aria-valuenow="<?php echo e($task->progress); ?>" aria-valuemin="0" aria-valuemax="100">
-                            <?php echo e(number_format($task->progress, 1)); ?>%
+                        <div class="progress-bar bg-info" id="taskProgressBar" role="progressbar" 
+                             style="width: <?php echo e($task->progress); ?>%" 
+                             aria-valuenow="<?php echo e($task->progress); ?>" 
+                             aria-valuemin="0" 
+                             aria-valuemax="100">
+                            <span id="progressText"><?php echo e(number_format($task->progress, 1)); ?>%</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 执行日志 -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="mb-0">
+                                <i class="fas fa-list"></i> 执行日志
+                                <button class="btn btn-sm btn-outline-secondary float-right" onclick="clearExecutionLog()">
+                                    <i class="fas fa-trash"></i> 清空
+                                </button>
+                            </h6>
+                        </div>
+                        <div class="card-body p-2">
+                            <div id="executionLog" style="height: 200px; overflow-y: auto; background: #f8f9fa; padding: 10px; font-family: monospace; font-size: 12px;">
+                                <div class="text-muted">等待任务执行...</div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="row text-center">
-                        <div class="col-4">
-                            <div class="card bg-light">
+                    <!-- 统计卡片 -->
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <div class="card bg-light text-center">
                                 <div class="card-body py-2">
-                                    <h5 class="text-primary mb-0" id="totalCount"><?php echo e($task->total_servers); ?></h5>
+                                    <h4 class="text-primary mb-0" id="totalCount"><?php echo e($stats['total'] ?? 0); ?></h4>
                                     <small class="text-muted">总计</small>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-4">
-                            <div class="card bg-light">
+                        <div class="col-6 mb-3">
+                            <div class="card bg-light text-center">
                                 <div class="card-body py-2">
-                                    <h5 class="text-success mb-0" id="completedCount"><?php echo e($task->completed_servers); ?></h5>
+                                    <h4 class="text-secondary mb-0" id="pendingCount"><?php echo e($stats['pending'] ?? 0); ?></h4>
+                                    <small class="text-muted">未开始</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <div class="card bg-light text-center">
+                                <div class="card-body py-2">
+                                    <h4 class="text-warning mb-0" id="runningCount"><?php echo e($stats['running'] ?? 0); ?></h4>
+                                    <small class="text-muted">进行中</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <div class="card bg-light text-center">
+                                <div class="card-body py-2">
+                                    <h4 class="text-success mb-0" id="completedCount"><?php echo e($stats['completed'] ?? 0); ?></h4>
                                     <small class="text-muted">已完成</small>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-4">
-                            <div class="card bg-light">
+                        <div class="col-12">
+                            <div class="card bg-light text-center">
                                 <div class="card-body py-2">
-                                    <h5 class="text-danger mb-0" id="failedCount"><?php echo e($task->failed_servers); ?></h5>
+                                    <h4 class="text-danger mb-0" id="failedCount"><?php echo e($stats['failed'] ?? 0); ?></h4>
                                     <small class="text-muted">失败</small>
                                 </div>
                             </div>
@@ -173,13 +210,14 @@
             </div>
         </div>
     </div>
-    <?php endif; ?>
     
     <!-- 任务详情列表 -->
     <div class="card">
         <div class="card-header bg-success text-white">
             <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">执行详情</h5>
+                <h5 class="mb-0">
+                    <i class="fas fa-list-alt"></i> 执行详情
+                </h5>
                 <div>
                     <select id="statusFilter" class="form-control form-control-sm" style="width: auto; display: inline-block;">
                         <option value="">所有状态</option>
@@ -196,7 +234,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-hover" id="detailsTable">
+                <table class="table table-hover table-sm" id="detailsTable">
                     <thead>
                         <tr>
                             <th>服务器</th>
@@ -208,9 +246,9 @@
                             <th>操作</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="detailsTableBody">
                         <?php $__empty_1 = true; $__currentLoopData = $detailsByServer->flatten()->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $detail): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                            <tr data-status="<?php echo e($detail->status); ?>">
+                            <tr data-status="<?php echo e($detail->status); ?>" data-detail-id="<?php echo e($detail->id); ?>">
                                 <td>
                                     <strong><?php echo e($detail->server->name); ?></strong><br>
                                     <small class="text-muted"><?php echo e($detail->server->ip); ?></small>
@@ -222,28 +260,12 @@
                                     </span><br>
                                     <small class="text-muted"><?php echo e($detail->collector->code); ?></small>
                                 </td>
-                                <td>
-                                    <?php switch($detail->status):
-                                        case (0): ?>
-                                            <span class="badge badge-secondary"><?php echo e($detail->statusText); ?></span>
-                                            <?php break; ?>
-                                        <?php case (1): ?>
-                                            <span class="badge badge-warning">
-                                                <i class="fas fa-spinner fa-spin"></i> <?php echo e($detail->statusText); ?>
-
-                                            </span>
-                                            <?php break; ?>
-                                        <?php case (2): ?>
-                                            <span class="badge badge-success"><?php echo e($detail->statusText); ?></span>
-                                            <?php break; ?>
-                                        <?php case (3): ?>
-                                            <span class="badge badge-danger"><?php echo e($detail->statusText); ?></span>
-                                            <?php break; ?>
-                                    <?php endswitch; ?>
+                                <td class="status-cell">
+                                    <?php echo $__env->make('collection-tasks.partials.status-badge', ['status' => $detail->status, 'statusText' => $detail->statusText], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                                 </td>
-                                <td><?php echo e($detail->execution_time > 0 ? number_format($detail->execution_time, 3) : '-'); ?></td>
-                                <td><?php echo e($detail->started_at ? $detail->started_at->format('H:i:s') : '-'); ?></td>
-                                <td><?php echo e($detail->completed_at ? $detail->completed_at->format('H:i:s') : '-'); ?></td>
+                                <td class="execution-time"><?php echo e($detail->execution_time > 0 ? number_format($detail->execution_time, 3) : '-'); ?></td>
+                                <td class="started-at"><?php echo e($detail->started_at ? $detail->started_at->format('H:i:s') : '-'); ?></td>
+                                <td class="completed-at"><?php echo e($detail->completed_at ? $detail->completed_at->format('H:i:s') : '-'); ?></td>
                                 <td>
                                     <?php if($detail->hasResult()): ?>
                                         <button type="button" class="btn btn-sm btn-info" onclick="viewResult('<?php echo e($detail->id); ?>')">
@@ -304,7 +326,9 @@
                 </button>
             </div>
             <div class="modal-body">
-                <pre id="errorContent" class="bg-light p-3" style="white-space: pre-wrap;"></pre>
+                <div id="errorContent">
+                    <pre class="bg-light p-3" style="white-space: pre-wrap;"></pre>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
@@ -312,294 +336,370 @@
         </div>
     </div>
 </div>
+<?php endif; ?>
+
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('scripts'); ?>
 <script>
+let taskId = <?php echo e($task->id ?? 0); ?>;
+let statusUpdateInterval;
+let isExecuting = false;
+
 $(document).ready(function() {
-    // 自动刷新进行中的任务
-    var taskIsRunning = "<?php echo e($task->isRunning() ? 'true' : 'false'); ?>" === "true";
-    if (taskIsRunning) {
-        window.refreshInterval = setInterval(function() {
-            refreshDetails();
-        }, 3000); // 每3秒刷新一次
-    }
-    
-    // 状态筛选
-    $("#statusFilter").change(function() {
-        var status = $(this).val();
-        if (status === "") {
-            $("#detailsTable tbody tr").show();
-        } else {
-            $("#detailsTable tbody tr").hide();
-            $("#detailsTable tbody tr[data-status=" + status + "]").show();
-        }
+    // 初始化状态筛选
+    $('#statusFilter').on('change', function() {
+        filterDetailsByStatus($(this).val());
     });
-});
-</script>
-
-<script>
-// 刷新详情
-function refreshDetails() {
-    var taskId = "<?php echo e($task->id); ?>";
-    if (taskId) {
-        $.ajax({
-            url: "<?php echo e(route('collection-tasks.progress', ['task' => $task->id ?? 0])); ?>",
-            type: "GET",
-            success: function(response) {
-                if (response.success) {
-                    // 更新进度条和统计信息
-                    updateProgressInfo(response.data);
-                    
-                    // 获取最新的任务详情数据
-                    $.ajax({
-                        url: "<?php echo e(route('collection-tasks.show', $task->id)); ?>",
-                        type: "GET",
-                        headers: {
-                            "X-Requested-With": "XMLHttpRequest"
-                        },
-                        dataType: "json",
-                        success: function(response) {
-                            if (response.success) {
-                                // 更新表格内容
-                                updateDetailsTable(response.data.detailsByServer);
-                            } else {
-                                console.error("获取任务详情失败");
-                            }
-                            
-                            // 如果任务已完成，停止自动刷新
-                            if (response.data.status === 2 || response.data.status === 3) {
-                                clearInterval(window.refreshInterval);
-                            }
-                        },
-                        error: function(xhr) {
-                            console.error("获取任务详情失败：", xhr.responseText);
-                        }
-                    });
-                }
-            },
-            error: function(xhr) {
-                console.error("刷新失败：", xhr.responseText);
-            }
-        });
-    } else {
-        console.error("任务ID不存在，无法刷新");
-    }
-}
-
-// 更新任务详情表格
-function updateDetailsTable(detailsByServer) {
-    var tbody = $("#detailsTable tbody");
-    tbody.empty();
     
-    // 检查是否有数据
-    if (!detailsByServer || Object.keys(detailsByServer).length === 0) {
-        tbody.html('<tr><td colspan="5" class="text-center">暂无数据</td></tr>');
+    // 如果任务正在执行，启动实时更新
+    let taskStatus = <?php echo e($task->status ?? 0); ?>;
+    if (taskStatus == 1) {
+        startStatusUpdates();
+    }
+});
+
+// 执行任务
+function executeTask(taskId) {
+    if (isExecuting) {
+        showAlert('任务正在执行中，请稍候...', 'warning');
         return;
     }
     
-    // 遍历服务器和任务详情
-    Object.keys(detailsByServer).forEach(function(serverId) {
-        var details = detailsByServer[serverId];
-        if (Array.isArray(details) && details.length > 0) {
-            details.forEach(function(detail) {
-                var statusClass = '';
-                var statusText = '';
-                
-                switch(detail.status) {
-                    case 0:
-                        statusClass = 'badge-secondary';
-                        statusText = '未开始';
-                        break;
-                    case 1:
-                        statusClass = 'badge-warning';
-                        statusText = '<i class="fas fa-spinner fa-spin"></i> 进行中';
-                        break;
-                    case 2:
-                        statusClass = 'badge-success';
-                        statusText = '已完成';
-                        break;
-                    case 3:
-                        statusClass = 'badge-danger';
-                        statusText = '失败';
-                        break;
-                }
-                
-                var row = '<tr data-status="' + detail.status + '">' +
-                    '<td>' + (detail.server ? detail.server.name : '未知服务器') + '</td>' +
-                    '<td>' + (detail.collector ? detail.collector.name : '未知组件') + '</td>' +
-                    '<td><span class="badge ' + statusClass + '">' + statusText + '</span></td>' +
-                    '<td>' + (detail.created_at ? detail.created_at : '-') + '</td>' +
-                    '<td>';
-                
-                if (detail.status === 2) {
-                    row += '<button type="button" class="btn btn-sm btn-info" onclick="viewResult(' + detail.id + ')">查看结果</button>';
-                } else if (detail.status === 3) {
-                    row += '<button type="button" class="btn btn-sm btn-danger" onclick="viewError(' + detail.id + ', \'' + (detail.error_message ? detail.error_message.replace(/'/g, "\\'") : '无错误信息') + '\')">' +
-                        '查看错误</button>';
-                } else {
-                    row += '-';
-                }
-                
-                row += '</td></tr>';
-                tbody.append(row);
-            });
+    if (!confirm('确定要开始执行这个任务吗？')) {
+        return;
+    }
+    
+    isExecuting = true;
+    showAlert('正在启动任务执行...', 'info');
+    addExecutionLog('开始执行任务 ID: ' + taskId);
+    
+    $.ajax({
+        url: '/task-execution/execute/' + taskId,
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response) {
+            if (response.success) {
+                showAlert(response.message, 'success');
+                addExecutionLog('任务启动成功: ' + response.message);
+                startStatusUpdates();
+            } else {
+                showAlert(response.message, 'error');
+                addExecutionLog('任务启动失败: ' + response.message);
+                isExecuting = false;
+            }
+        },
+        error: function(xhr) {
+            let message = '执行失败';
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+                message = xhr.responseJSON.message;
+            }
+            showAlert(message, 'error');
+            addExecutionLog('任务执行错误: ' + message);
+            isExecuting = false;
         }
     });
+}
+
+// 取消任务
+function cancelTask(taskId) {
+    if (!confirm('确定要取消这个正在执行的任务吗？')) {
+        return;
+    }
     
-    // 应用当前的状态筛选
-    var currentFilter = $("#statusFilter").val();
-    if (currentFilter !== "") {
-        $("#detailsTable tbody tr").hide();
-        $("#detailsTable tbody tr[data-status=" + currentFilter + "]").show();
+    $.ajax({
+        url: '/task-execution/cancel/' + taskId,
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response) {
+            if (response.success) {
+                showAlert(response.message, 'success');
+                addExecutionLog('任务已取消: ' + response.message);
+                stopStatusUpdates();
+                refreshTaskStatus();
+            } else {
+                showAlert(response.message, 'error');
+            }
+        },
+        error: function(xhr) {
+            let message = '取消失败';
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+                message = xhr.responseJSON.message;
+            }
+            showAlert(message, 'error');
+        }
+    });
+}
+
+// 重置任务
+function resetTask(taskId) {
+    if (!confirm('确定要重置这个任务吗？重置后任务状态将回到未开始状态。')) {
+        return;
+    }
+    
+    $.ajax({
+        url: '/task-execution/reset/' + taskId,
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response) {
+            if (response.success) {
+                showAlert(response.message, 'success');
+                addExecutionLog('任务已重置: ' + response.message);
+                refreshTaskStatus();
+                location.reload(); // 重新加载页面以更新所有状态
+            } else {
+                showAlert(response.message, 'error');
+            }
+        },
+        error: function(xhr) {
+            let message = '重置失败';
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+                message = xhr.responseJSON.message;
+            }
+            showAlert(message, 'error');
+        }
+    });
+}
+
+// 开始状态更新
+function startStatusUpdates() {
+    if (statusUpdateInterval) {
+        clearInterval(statusUpdateInterval);
+    }
+    
+    statusUpdateInterval = setInterval(function() {
+        refreshTaskStatus();
+    }, 3000); // 每3秒更新一次
+    
+    addExecutionLog('开始实时状态更新 (每3秒)');
+}
+
+// 停止状态更新
+function stopStatusUpdates() {
+    if (statusUpdateInterval) {
+        clearInterval(statusUpdateInterval);
+        statusUpdateInterval = null;
+        addExecutionLog('停止实时状态更新');
     }
 }
 
-// 更新进度信息
-function updateProgressInfo(data) {
+// 刷新任务状态
+function refreshTaskStatus() {
+    $.ajax({
+        url: '/task-execution/status/' + taskId,
+        method: 'GET',
+        success: function(response) {
+            if (response.success) {
+                updateTaskDisplay(response.data);
+                
+                // 如果任务完成，停止更新
+                if (response.data.status != 1) {
+                    stopStatusUpdates();
+                    isExecuting = false;
+                    addExecutionLog('任务执行完成，状态: ' + response.data.status_text);
+                    
+                    // 延迟刷新页面，让用户看到完成提示
+                    addExecutionLog('正在刷新页面以显示最终结果...');
+                    setTimeout(function() {
+                        location.reload();
+                    }, 3000);
+                }
+            }
+        },
+        error: function(xhr) {
+            console.error('获取任务状态失败:', xhr);
+        }
+    });
+}
+
+// 更新任务显示
+function updateTaskDisplay(taskData) {
+    // 更新状态显示
+    let statusBadge = getStatusBadge(taskData.status, taskData.status_text);
+    $('#taskStatusDisplay').html(statusBadge);
+    
+    // 更新时间显示
+    $('#startedAtDisplay').text(taskData.started_at || '未开始');
+    $('#completedAtDisplay').text(taskData.completed_at || '未完成');
+    $('#lastUpdateTime').text('最后更新: ' + new Date().toLocaleTimeString());
+    $('#progressUpdateTime').text('更新时间: ' + new Date().toLocaleTimeString());
+    
     // 更新进度条
-    $(".progress-bar").css("width", data.progress + "%").attr("aria-valuenow", data.progress);
-    $(".progress-bar").text(data.progress + "%");
+    $('#taskProgressBar').css('width', taskData.progress + '%');
+    $('#progressText').text(taskData.progress.toFixed(1) + '%');
     
-    // 更新统计卡片
-    $("#totalCount").text(data.total);
-    $("#completedCount").text(data.completed);
-    $("#failedCount").text(data.failed);
+    // 更新统计数据
+    $('#totalCount').text(taskData.total);
+    $('#pendingCount').text(taskData.pending);
+    $('#runningCount').text(taskData.running);
+    $('#completedCount').text(taskData.completed);
+    $('#failedCount').text(taskData.failed);
     
-    // 更新任务状态
-    var statusText = "";
-    var statusClass = "";
+    // 更新进度条颜色
+    let progressBar = $('#taskProgressBar');
+    progressBar.removeClass('bg-info bg-success bg-warning bg-danger');
+    if (taskData.status == 1) {
+        progressBar.addClass('bg-info');
+    } else if (taskData.status == 2) {
+        progressBar.addClass('bg-success');
+    } else if (taskData.status == 3) {
+        progressBar.addClass('bg-danger');
+    } else {
+        progressBar.addClass('bg-secondary');
+    }
+}
+
+// 获取状态徽章HTML
+function getStatusBadge(status, statusText) {
+    let badgeClass = 'badge-secondary';
+    let icon = '';
     
-    switch(data.status) {
+    switch(status) {
         case 0:
-            statusText = "未开始";
-            statusClass = "badge-secondary";
+            badgeClass = 'badge-secondary';
             break;
         case 1:
-            statusText = "进行中";
-            statusClass = "badge-warning";
+            badgeClass = 'badge-warning';
+            icon = '<i class="fas fa-spinner fa-spin"></i> ';
             break;
         case 2:
-            statusText = "已完成";
-            statusClass = "badge-success";
+            badgeClass = 'badge-success';
             break;
         case 3:
-            statusText = "失败";
-            statusClass = "badge-danger";
+            badgeClass = 'badge-danger';
             break;
     }
     
-    // 更新状态显示
-    var statusBadge = '<span class="badge ' + statusClass + '">';
-    if (data.status === 1) {
-        statusBadge += '<i class="fas fa-spinner fa-spin"></i> ';
-    }
-    statusBadge += statusText + '</span>';
+    return '<span class="badge ' + badgeClass + '">' + icon + statusText + '</span>';
+}
+
+// 添加执行日志
+function addExecutionLog(message) {
+    let timestamp = new Date().toLocaleTimeString();
+    let logEntry = '[' + timestamp + '] ' + message;
     
-    $("td:contains('任务状态')").next().html(statusBadge);
+    let logContainer = $('#executionLog');
+    let currentLog = logContainer.html();
+    
+    if (currentLog.includes('等待任务执行...')) {
+        logContainer.html('<div>' + logEntry + '</div>');
+    } else {
+        logContainer.append('<div>' + logEntry + '</div>');
+    }
+    
+    // 滚动到底部
+    logContainer.scrollTop(logContainer[0].scrollHeight);
+}
+
+// 清空执行日志
+function clearExecutionLog() {
+    $('#executionLog').html('<div class="text-muted">日志已清空</div>');
+}
+
+// 按状态筛选详情
+function filterDetailsByStatus(status) {
+    let rows = $('#detailsTable tbody tr');
+    
+    if (status === '') {
+        rows.show();
+    } else {
+        rows.each(function() {
+            let rowStatus = $(this).data('status');
+            if (rowStatus == status) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
+}
+
+// 刷新详情
+function refreshDetails() {
+    showAlert('正在刷新详情...', 'info');
+    location.reload();
 }
 
 // 查看结果
 function viewResult(detailId) {
-    $("#resultModal").modal("show");
-    $("#resultContent").html("<div class=\"text-center\"><i class=\"fas fa-spinner fa-spin\"></i> 加载中...</div>");
+    $('#resultModal').modal('show');
+    $('#resultContent').html('<div class="text-center"><i class="fas fa-spinner fa-spin"></i> 加载中...</div>');
     
-    var resultUrl = "<?php echo e(route('task-details.result', ':id')); ?>";
     $.ajax({
-        url: resultUrl.replace(":id", detailId),
-        type: "GET",
+        url: '/task-details/' + detailId + '/result',
+        method: 'GET',
         success: function(response) {
             if (response.success) {
-                var content = "";
-                if (typeof response.data.result === "object") {
-                    content = "<pre class=\"json-formatter\">" + JSON.stringify(response.data.result, null, 2) + "</pre>";
-                } else {
-                    content = "<pre class=\"bg-light p-3\">" + response.data.result + "</pre>";
-                }
-                $("#resultContent").html(content);
+                let content = '<div class="mb-3">';
+                content += '<h6>服务器: ' + response.data.server_name + '</h6>';
+                content += '<h6>采集组件: ' + response.data.collector_name + '</h6>';
+                content += '<h6>执行时间: ' + response.data.execution_time + ' 秒</h6>';
+                content += '</div>';
+                content += '<pre class="bg-light p-3" style="max-height: 400px; overflow-y: auto;">';
+                content += JSON.stringify(response.data.result, null, 2);
+                content += '</pre>';
+                $('#resultContent').html(content);
             } else {
-                $("#resultContent").html("<div class=\"alert alert-danger\">加载失败：" + response.message + "</div>");
+                $('#resultContent').html('<div class="alert alert-danger">' + response.message + '</div>');
             }
         },
-        error: function(xhr) {
-            $("#resultContent").html("<div class=\"alert alert-danger\">请求失败：" + xhr.responseText + "</div>");
+        error: function() {
+            $('#resultContent').html('<div class="alert alert-danger">加载结果失败</div>');
         }
     });
 }
 
 // 查看错误
 function viewError(detailId, errorMessage) {
-    $("#errorModal").modal("show");
-    $("#errorContent").text(errorMessage);
+    $('#errorModal').modal('show');
+    $('#errorContent pre').text(errorMessage);
 }
 
-// 重试任务
-function retryTask(taskId) {
-    if (confirm("确定要重试失败的任务吗？")) {
-        var retryUrl = "<?php echo e(route('collection-tasks.retry', ':id')); ?>";
-        var csrfToken = "<?php echo e(csrf_token()); ?>";
-        $.ajax({
-            url: retryUrl.replace(":id", taskId),
-            type: "POST",
-            data: {
-                _token: csrfToken
-            },
-            success: function(response) {
-                if (response.success) {
-                    alert("任务重试已启动！");
-                    location.reload();
-                } else {
-                    alert("重试失败：" + response.message);
-                }
-            },
-            error: function(xhr) {
-                alert("请求失败：" + (xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : xhr.responseText));
-            }
-        });
+// 显示提示信息
+function showAlert(message, type) {
+    let alertClass = 'alert-info';
+    switch(type) {
+        case 'success':
+            alertClass = 'alert-success';
+            break;
+        case 'error':
+        case 'danger':
+            alertClass = 'alert-danger';
+            break;
+        case 'warning':
+            alertClass = 'alert-warning';
+            break;
     }
+    
+    let alertHtml = '<div class="alert ' + alertClass + ' alert-dismissible fade show" role="alert">';
+    alertHtml += message;
+    alertHtml += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
+    alertHtml += '<span aria-hidden="true">&times;</span>';
+    alertHtml += '</button>';
+    alertHtml += '</div>';
+    
+    // 移除现有的提示
+    $('.alert').remove();
+    
+    // 添加新提示到页面顶部
+    $('.container-fluid').prepend(alertHtml);
+    
+    // 3秒后自动消失
+    setTimeout(function() {
+        $('.alert').fadeOut();
+    }, 3000);
 }
 
-// 取消任务
-function cancelTask(taskId) {
-    if (confirm("确定要取消正在执行的任务吗？")) {
-        var cancelUrl = "<?php echo e(route('collection-tasks.cancel', ':id')); ?>";
-        var csrfToken = "<?php echo e(csrf_token()); ?>";
-        $.ajax({
-            url: cancelUrl.replace(":id", taskId),
-            type: "POST",
-            data: {
-                _token: csrfToken
-            },
-            success: function(response) {
-                if (response.success) {
-                    alert("任务已取消！");
-                    location.reload();
-                } else {
-                    alert("取消失败：" + response.message);
-                }
-            },
-            error: function(xhr) {
-                alert("请求失败：" + (xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : xhr.responseText));
-            }
-        });
-    }
-}
+// 页面卸载时清理定时器
+$(window).on('beforeunload', function() {
+    stopStatusUpdates();
+});
 </script>
-
-<style>
-.json-formatter {
-    background-color: #f8f9fa;
-    border: 1px solid #eee;
-    border-radius: 4px;
-    padding: 15px;
-    max-height: 500px;
-    overflow-y: auto;
-    white-space: pre-wrap;
-    font-family: monospace;
-    font-size: 13px;
-}
-</style>
 <?php $__env->stopSection(); ?>
-<?php endif; ?>
-
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/tanli/Documents/php-code/sys-tmocaiji/resources/views/collection-tasks/show.blade.php ENDPATH**/ ?>

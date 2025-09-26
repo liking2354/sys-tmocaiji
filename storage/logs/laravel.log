@@ -30746,3 +30746,1609 @@ Try 'date --help' for more information.
 #17 /Users/tanli/Documents/php-code/sys-tmocaiji/artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
 #18 {main}
 "} 
+[2025-09-26 15:11:06] local.ERROR: Too few arguments to function App\Http\Controllers\CollectionTaskController::__construct(), 0 passed in /Users/tanli/Documents/php-code/sys-tmocaiji/scripts/maintenance/test_task_show.php on line 28 and exactly 2 expected {"exception":"[object] (ArgumentCountError(code: 0): Too few arguments to function App\\Http\\Controllers\\CollectionTaskController::__construct(), 0 passed in /Users/tanli/Documents/php-code/sys-tmocaiji/scripts/maintenance/test_task_show.php on line 28 and exactly 2 expected at /Users/tanli/Documents/php-code/sys-tmocaiji/app/Http/Controllers/CollectionTaskController.php:38)
+[stacktrace]
+#0 /Users/tanli/Documents/php-code/sys-tmocaiji/scripts/maintenance/test_task_show.php(28): App\\Http\\Controllers\\CollectionTaskController->__construct()
+#1 {main}
+"} 
+[2025-09-26 16:36:28] local.INFO: 批量采集任务创建成功 {"task_id":34,"task_name":"批量采集任务_20250926_1636","server_count":1,"collector_count":6,"total_details":6} 
+[2025-09-26 16:40:52] local.INFO: 开始执行批量采集任务 {"task_id":"33","task_name":"批量采集任务_20250926_1628"} 
+[2025-09-26 16:40:52] local.INFO: 开始执行任务详情 {"task_id":33,"detail_id":558,"server_name":"122.9.15.110","collector_name":"系统-基础信息"} 
+[2025-09-26 16:40:52] local.INFO: 任务进度更新 {"task_id":33,"total":6,"completed":0,"running":1,"progress":0.0} 
+[2025-09-26 16:40:54] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":78,"server_name":"122.9.15.110","server_ip":"122.9.15.110","collector_id":1,"collector_name":"系统-基础信息","collector_code":"system_basic_info","output_length":174,"raw_output":"{\"system\":{\"os_release\":\"CentOS Linux 7 (Core)\",\"kernel\":\"3.10.0-1062.1.1.el7.x86_64\",\"cpu_model\":\"Intel(R) Xeon(R) Gold 6161 CPU @ 2.20GHz\",\"cpu_cores\":1,\"memory_gb\":1.79}}
+","output_preview":"{\"system\":{\"os_release\":\"CentOS Linux 7 (Core)\",\"kernel\":\"3.10.0-1062.1.1.el7.x86_64\",\"cpu_model\":\"Intel(R) Xeon(R) Gold 6161 CPU @ 2.20GHz\",\"cpu_cores\":1,\"memory_gb\":1.79}}
+"} 
+[2025-09-26 16:40:54] local.INFO: JSON数据采集成功 {"keys":["system"],"size":173,"formatted_size":235} 
+[2025-09-26 16:40:54] local.INFO: 采集组件执行成功 {"server_id":78,"collector_id":1,"output_length":174,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-26 16:40:54] local.INFO: 任务详情执行成功 {"task_id":33,"detail_id":558,"execution_time":1.452} 
+[2025-09-26 16:40:54] local.INFO: 开始执行任务详情 {"task_id":33,"detail_id":559,"server_name":"122.9.15.110","collector_name":"系统-环境变量"} 
+[2025-09-26 16:40:54] local.INFO: 任务进度更新 {"task_id":33,"total":6,"completed":1,"running":1,"progress":16.67} 
+[2025-09-26 16:40:56] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":78,"server_name":"122.9.15.110","server_ip":"122.9.15.110","collector_id":2,"collector_name":"系统-环境变量","collector_code":"system_env_vars","output_length":285,"raw_output":"{
+  \"path\": \"/usr/local/bin:/usr/bin\",
+  \"home\": \"/home/liuyidong\",
+  \"user\": \"liuyidong\",
+  \"shell\": \"/bin/bash\",
+  \"lang\": \"en_US.UTF-8\",
+  \"timezone\": \"CST\",
+  \"hostname\": \"young-0002\",
+  \"pwd\": \"/home/liuyidong\",
+  \"total_env_vars\": \"17\",
+  \"collected_at\": \"2025-09-26 16:40:56\"
+}
+","output_preview":"{
+  \"path\": \"/usr/local/bin:/usr/bin\",
+  \"home\": \"/home/liuyidong\",
+  \"user\": \"liuyidong\",
+  \"shell\": \"/bin/bash\",
+  \"lang\": \"en_US.UTF-8\",
+  \"timezone\": \"CST\",
+  \"hostname\": \"young-0002\",
+  \"pwd\": \"/home/liuyidong\",
+  \"total_env_vars\": \"17\",
+  \"collected_at\": \"2025-09-26 16:40:56\"
+}
+"} 
+[2025-09-26 16:40:56] local.INFO: JSON数据采集成功 {"keys":["path","home","user","shell","lang","timezone","hostname","pwd","total_env_vars","collected_at"],"size":284,"formatted_size":315} 
+[2025-09-26 16:40:56] local.INFO: 采集组件执行成功 {"server_id":78,"collector_id":2,"output_length":285,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-26 16:40:56] local.INFO: 任务详情执行成功 {"task_id":33,"detail_id":559,"execution_time":1.362} 
+[2025-09-26 16:40:56] local.INFO: 开始执行任务详情 {"task_id":33,"detail_id":560,"server_name":"122.9.15.110","collector_name":"系统-进程采集"} 
+[2025-09-26 16:40:56] local.INFO: 任务进度更新 {"task_id":33,"total":6,"completed":2,"running":1,"progress":33.33} 
+[2025-09-26 16:40:58] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":78,"server_name":"122.9.15.110","server_ip":"122.9.15.110","collector_id":3,"collector_name":"系统-进程采集","collector_code":"system_processes","output_length":1403,"raw_output":"{
+  \"total_processes\": 117,
+  \"running_processes\": 4,
+  \"sleeping_processes\": 114,
+  \"zombie_processes\": 0,
+  \"load_average\": \"0.10,0.07,0.05\",
+  \"memory\": {
+    \"total_mb\": 1837,
+    \"used_mb\": 466,
+    \"free_mb\": 309
+  },
+  \"cpu_cores\": 1,
+  \"top5_cpu_processes\": [
+    {\"pid\":21091,\"user\":\"root\",\"cpu_percent\":2.0,\"mem_percent\":0.3,\"command\":\"sshd\",\"exe_path\":\"\"},
+    {\"pid\":1144,\"user\":\"root\",\"cpu_percent\":1.8,\"mem_percent\":1.5,\"command\":\"python\",\"exe_path\":\"\"},
+    {\"pid\":23340,\"user\":\"www\",\"cpu_percent\":0.1,\"mem_percent\":1.5,\"command\":\"nginx\",\"exe_path\":\"\"},
+    {\"pid\":1,\"user\":\"root\",\"cpu_percent\":0.0,\"mem_percent\":0.1,\"command\":\"systemd\",\"exe_path\":\"\"},
+    {\"pid\":2,\"user\":\"root\",\"cpu_percent\":0.0,\"mem_percent\":0.0,\"command\":\"kthreadd\",\"exe_path\":\"\"}
+  ],
+  \"top5_mem_processes\": [
+    {\"pid\":1190,\"user\":\"root\",\"cpu_percent\":0.0,\"mem_percent\":3.5,\"command\":\"java\",\"exe_path\":\"\"},
+    {\"pid\":1144,\"user\":\"root\",\"cpu_percent\":1.8,\"mem_percent\":1.5,\"command\":\"python\",\"exe_path\":\"\"},
+    {\"pid\":23340,\"user\":\"www\",\"cpu_percent\":0.1,\"mem_percent\":1.5,\"command\":\"nginx\",\"exe_path\":\"\"},
+    {\"pid\":31802,\"user\":\"www\",\"cpu_percent\":0.0,\"mem_percent\":1.3,\"command\":\"php-fpm\",\"exe_path\":\"\"},
+    {\"pid\":745,\"user\":\"www\",\"cpu_percent\":0.0,\"mem_percent\":1.3,\"command\":\"php-fpm\",\"exe_path\":\"\"}
+  ],
+date: extra operand ‘%H:%M:%S\"’
+Try 'date --help' for more information.
+  \"collected_at\": \"\"
+}
+","output_preview":"{
+  \"total_processes\": 117,
+  \"running_processes\": 4,
+  \"sleeping_processes\": 114,
+  \"zombie_processes\": 0,
+  \"load_average\": \"0.10,0.07,0.05\",
+  \"memory\": {
+    \"total_mb\": 1837,
+    \"used_mb\": 466,
+    \"free_mb\": 309
+  },
+  \"cpu_cores\": 1,
+  \"top5_cpu_processes\": [
+    {\"pid\":21091,\"user\":\"root\",\"cpu_percent\":2.0,\"mem_percent\":0.3,\"command\":\"sshd\",\"exe_path\":\"\"},
+    {\"pid\":1144,\"user\":\"root\",\"cpu_percent\":1.8,\"mem_percent\":1.5,\"command\":\"python\",\"exe_path\":\"\"},
+    {\"pid\":23340,\"user\":\"www\",\"..."} 
+[2025-09-26 16:40:58] local.INFO: 原始数据采集 {"type":"raw_output","size":1402,"json_error":"Syntax error"} 
+[2025-09-26 16:40:58] local.INFO: 采集组件执行成功 {"server_id":78,"collector_id":3,"output_length":1403,"parsed_result_keys":["data_type","raw_output","parsed_at","note"],"parsed_result_type":"array"} 
+[2025-09-26 16:40:58] local.INFO: 任务详情执行成功 {"task_id":33,"detail_id":560,"execution_time":1.419} 
+[2025-09-26 16:40:58] local.INFO: 开始执行任务详情 {"task_id":33,"detail_id":561,"server_name":"122.9.15.110","collector_name":"应用-nginx"} 
+[2025-09-26 16:40:58] local.INFO: 任务进度更新 {"task_id":33,"total":6,"completed":3,"running":1,"progress":50.0} 
+[2025-09-26 16:41:00] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":78,"server_name":"122.9.15.110","server_ip":"122.9.15.110","collector_id":4,"collector_name":"应用-nginx","collector_code":"nginx_info","output_length":1015,"raw_output":"{
+  \"nginx_conf\": \"/alidata/server/nginx/conf/nginx.conf\",
+  \"vhosts\": [
+    {
+      \"server_name\": \"www.uyoungdiy.com young.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/\",
+      \"locations\": [
+      ]
+    },
+    {
+      \"server_name\": \"front.uyoungdiy.com young-front.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/dist\",
+      \"locations\": [
+        {\"path\": \"/\", \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/dist\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"wap.uyoungdiy.com\",
+      \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/wap\",
+      \"locations\": [
+        {\"path\": \"/\", \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/wap\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"pc.uyoungdiy.com\",
+      \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/pc\",
+      \"locations\": [
+        {\"path\": \"/\", \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/pc\", \"proxy_pass\": \"\"}
+      ]
+    }
+  ]
+}
+","output_preview":"{
+  \"nginx_conf\": \"/alidata/server/nginx/conf/nginx.conf\",
+  \"vhosts\": [
+    {
+      \"server_name\": \"www.uyoungdiy.com young.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/\",
+      \"locations\": [
+      ]
+    },
+    {
+      \"server_name\": \"front.uyoungdiy.com young-front.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/dist\",
+      \"locations\": [
+        {\"path\": \"/\", \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/dist\", \"proxy_pass\": \"\"..."} 
+[2025-09-26 16:41:00] local.INFO: JSON数据采集成功 {"keys":["nginx_conf","vhosts"],"size":1014,"formatted_size":1436} 
+[2025-09-26 16:41:00] local.INFO: 采集组件执行成功 {"server_id":78,"collector_id":4,"output_length":1015,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-26 16:41:00] local.INFO: 任务详情执行成功 {"task_id":33,"detail_id":561,"execution_time":1.372} 
+[2025-09-26 16:41:00] local.INFO: 开始执行任务详情 {"task_id":33,"detail_id":562,"server_name":"122.9.15.110","collector_name":"应用-配置（PHP）"} 
+[2025-09-26 16:41:00] local.INFO: 任务进度更新 {"task_id":33,"total":6,"completed":4,"running":1,"progress":66.67} 
+[2025-09-26 16:41:03] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":78,"server_name":"122.9.15.110","server_ip":"122.9.15.110","collector_id":5,"collector_name":"应用-配置（PHP）","collector_code":"php_app_info","output_length":9829,"raw_output":"[
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/console.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"id\": \"basic-console\",
+      \"basePath\": \"dirname(__DIR__),\",
+      \"bootstrap\": \"[\",
+      \"controllerNamespace\": \"app\\\\commands\",
+      \"aliases\": \"[\",
+      \"@bower\": \"@vendor/bower-asset\",
+      \"@npm\": \"@vendor/npm-asset\",
+      \"@tests\": \"@app/tests\",
+      \"components\": \"[\",
+      \"cache\": \"[\",
+      \"class\": \"yii\\\\caching\\\\FileCache\",
+      \"log\": \"[\",
+      \"targets\": \"[\",
+      \"class\": \"yii\\\\log\\\\FileTarget\",
+      \"levels\": \"[\",
+      \"db\": \"$db,\",
+      \"params\": \"$params,\",
+      \"controllerMap\": \"[\",
+      \"fixture\": \"[ // Fixture generation command line.\",
+      \"class\": \"yii\\\\faker\\\\FixtureController\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/env.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/web.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"id\": \"basic\",
+      \"basePath\": \"dirname(__DIR__),\",
+      \"bootstrap\": \"[\",
+      \"aliases\": \"[\",
+      \"@bower\": \"@vendor/bower-asset\",
+      \"@npm\": \"@vendor/npm-asset\",
+      \"@yii/redis\": \"@vendor/yii2-redis\",
+      \"vendorPath\": \"/wwwroot/yii2/vendor\",
+      \"defaultRoute\": \"index/index\",
+      \"components\": \"[\",
+      \"aliaop\": \"$aliaop,\",
+      \"wechat\": \"[\",
+      \"class\": \"jianyan\\\\easywechat\\\\Wechat\",
+      \"request\": \"[\",
+      \"cookieValidationKey\": \"asdfsdfsdf123123\",
+      \"cache\": \"[\",
+      \"class\": \"yii\\\\caching\\\\FileCache\",
+      \"user\": \"[\",
+      \"identityClass\": \"app\\\\models\\\\User\",
+      \"enableAutoLogin\": \"false,\",
+      \"enableSession\": \"false,\",
+      \"errorHandler\": \"[\",
+      \"errorAction\": \"index/error\",
+      \"mailer\": \"[\",
+      \"class\": \"yii\\\\swiftmailer\\\\Mailer\",
+      \"useFileTransport\": \"true,\",
+      \"log\": \"[\",
+      \"traceLevel\": \"YII_DEBUG ? 3 : 0,\",
+      \"targets\": \"[\",
+      \"class\": \"yii\\\\log\\\\FileTarget\",
+      \"levels\": \"[\",
+      \"logFile\": \"/data/log/applications/young.log\",
+      \"db\": \"$db,\",
+      \"redis\": \"$redis,\",
+      \"redis_bizhi_app\": \"$bzappredis,\",
+      \"urlManager\": \"[\",
+      \"enablePrettyUrl\": \"true,\",
+      \"showScriptName\": \"false,\",
+      \"rules\": \"[\",
+      \"<controller:\\\\w+>/<action:\\\\w+>/<id:\\\\d+>\": \"<controller>/<action>\",
+      \"<controller:\\\\w+>/<action:\\\\w+>\": \"<controller>/<action>\",
+      \"session\": \"[\",
+      \"name\": \"advanced-frontend\",
+      \"class\": \"yii\\\\redis\\\\Session\",
+      \"cookieParams\": \"[\",
+      \"lifetime\": \"3600,\",
+      \"nfreq\": \"$nfreq,\",
+      \"cache\": \"[\",
+      \"class\": \"yii\\\\redis\\\\Cache\",
+      \"params\": \"$params,\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/online/redis_bizhi_app.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"yii\\\\redis\\\\Connection\",
+      \"hostname\": \"redis-e69e26b5-1598-4c17-aa13-9078c000b0e4.dcs.huaweicloud.com\",
+      \"port\": \"6379,\",
+      \"database\": \"0,\",
+      \"password\": \"vcDJ7AemWDQ3fyQd\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/online/params.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"wechatOpenPlatformConfig\": \"[\",
+      \"app_id\": \"wxbef85269a271de90\",
+      \"secret\": \"185913e3bc440ed5fa4894075b07acf8\",
+      \"token\": \"开放平台第三方平台 Token\",
+      \"aes_key\": \"开放平台第三方平台 AES Key\",
+      \"wechatPaymentConfig\": \"[\",
+      \"app_id\": \"wxdb94ecf33bc26ff5\",
+      \"mch_id\": \"1573416291\",
+      \"key\": \"LDSLDSLDSLDSLDSLDSLDSLDSLDS12345\",
+      \"cert_path\": \"path/to/your/cert.pem\",
+      \"key_path\": \"path/to/your/key\",
+      \"notify_url\": \"http://www.uyoungdiy.com/paycallback/wechat\",
+      \"wechatGzhPaymentConfig\": \"[\",
+      \"app_id\": \"wx704213c76d1873e4\",
+      \"mch_id\": \"1573416291\",
+      \"key\": \"LDSLDSLDSLDSLDSLDSLDSLDSLDS12345\",
+      \"cert_path\": \"path/to/your/cert.pem\",
+      \"key_path\": \"path/to/your/key\",
+      \"notify_url\": \"http://www.uyoungdiy.com/paycallback/wechat\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/online/db.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"yii\\\\db\\\\Connection\",
+      \"dsn\": \"mysql:host=7c029eeb4657427aad7f589016c04b2bin01.internal.cn-north-4.mysql.rds.myhuaweicloud.com;port=3306;dbname=young\",
+      \"username\": \"young\",
+      \"password\": \"PbYmiqrGQ9Lwflmj\",
+      \"charset\": \"utf8\",
+      \"enableSchemaCache\": \"true,\",
+      \"schemaCacheDuration\": \"60,\",
+      \"schemaCache\": \"cache\"
+    },
+    \"dependencies\": {
+      \"database\": \"    'dsn' => 'mysql:host=7c029eeb4657427aad7f589016c04b2bin01.internal.cn-north-4.mysql.rds.myhuaweicloud.com;port=3306;dbname=young',\"
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/online/redis.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"yii\\\\redis\\\\Connection\",
+      \"hostname\": \"redis-5918692-diy-01.dcs.huaweicloud.com\",
+      \"port\": \"6379,\",
+      \"database\": \"4,\",
+      \"password\": \"diy_online_eZcZQes5kPAPBWXP\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/online/nfreq.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"app\\\\utils\\\\CFreqCtrl\",
+      \"configs\": \"array(\",
+      \"captcha\": \"array(\",
+      \"ip\": \"array(\",
+      \"freq\": \"30), //120s 30次\",
+      \"phone\": \"array( //限制手机号\",
+      \"freq\": \"3), //频率限制: 60秒1次\",
+      \"600\": \"3600), //惩罚措施: 60秒内1次后惩罚50秒，需要使用runV2\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/online/aliaop.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"app\\\\utils\\\\aliaop\\\\AopClient\",
+      \"configs\": \"array(\",
+      \"appId\": \"2021002110607596\",
+      \"rsaPrivateKey\": \"MIIEpQIBAAKCAQEA7rpVBtOeum10fU9gq53b1eIEN7r2yoat2Wku2pPn3LaZ4JYS1KpjC8eMtolB3+qsJmY98eXFQRWo4IYE96s0rE06GCdeOrSwUXFvWsU5HjPaD1GwuBK/j8RG30GVIvnZneXXNmvAeKf9a1qqcumT2Fj9GgbgingcQKm6CAVIqBpWCBlMbSqRh7CFSZUIw2RkyuSPRIwT9zNIucn2E8j1UsQy3zyY/ok0zNgaLt3LkEq+QZdPZ1IZ+DFNaicdNGC3rB4xI1aOpFiCh/D/aZejQxhGKDCHAltp0BGxFq4lj3Eq8Ur0a1es0WHSkg2EVMGS9oUle0EYuLPYGmrH+Uym/wIDAQABAoIBAQDiF263jGxju437r9WqM1MkeW3tKhDZNjwoD8nkEPgivH13iipDZytu2IqXxd6xpptrsqEwG6B5R34tRkAmH+s+09UVUxOXHdFvELOZj/fMducqYv+vFXJ/QjCs+Hu6KE7FkAwG6n3ax57msXOEaVswJvduUt0NxztasmQRfI+XQ6W5agq/DjsgR6AmJfZOzLfeHqHFWwrseRrpaO6UFdhjOnngqcQBlXiOOzQbGSwL1TvFjIULxQJow0nVy5i9Gknhb0AEiyBZ7xMdccumzfzB0G2eBRo1QBy08RByElV35wLaasHb9XutnUO4urYvuGO0AurCkStfjC6oiumvly/hAoGBAPjHC/AXpyUMERRudDpiRwodq2wHxVHFR8WzZGETvpxCcdf/pMFl5xaSXhp7eWzLY1+zRnyBtn6EcJwtSeGpRuQmocxyeG4KkqGqeBv1ejDEGjvcsK9agafERqj6xS4IUnLkdu8NxlNDECijReZ6BrzN1rtJhzfn4c4pgRKCZS0rAoGBAPWomEYB9pqiUNvjTW505lryBrQfidz5Kqb/MBQ2Wabp3pVtsTJnclB/ySnLU1CToqgb8zx7rpZlfcxwRCMKeD+qzL/PdWTl7iVQNljvAItkdWflCQ486tNMdUToaH+k1Lr7GkjyXcMQiLqN9ZFwF6gpJiEvL4i/CZQgKCUL/kt9AoGBAJQS5agia/pBFGl01PlrRZ1fy4ihl3D0W6PxAu5FMk8PvXMzVn1GiiWFOT3KAJwg8yUjL/Erw9PKQLy0uCT4/JkP5X4rJENbR6uyK4t4sSIVlwfKc9/rnwCccvJhULv1eB2qnp/rMwCcCiImDJUCTMBURFt1iGZePqjXS1wZAN/BAoGAeNVQ8T6N+knU1BPeRnKhzCI4QekxesvkuvfSwl5pgryOi5nFCzHu/MGeRTyJ4px76Yy1/A4qNjf9xM2D9mhz9X0h8UcuS0798MSftub4sZfcWBpEdghoyT5WgGqA3ChLqx1QNIlirUw4tOqW287zE/gJlVEMZIrzPzUCChb4IlECgYEAp352KZTJUz6YMtKf3boOZHuA/Mw8MUqwmz/n+5g/8n7BJyDZkIqJwLzGLTOd6XFLWQydnpMPJA/lgZFByPq69eeu5PWOojAq7MIbN3kDtt8WZJ+o/ytm8o1W8UvqgloPo/pppDgbSeVyThgf+xQbw9QC/EDArmCvc0lBeYHHokk=\",
+      \"alipayrsaPublicKey\": \"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgcxKESKuD67XpvbHDviZubZAWNB3aM/i8yyo2KnK9jae1pySHO7/SpEaW1UQiBTt6BhFhGWO3+K0VZ0/ViZaZKhT3v3U2sYnARkVBNKn2BwlRVw45aKGyohXtLV1gWHkfHMpivSZvKYQK6OAM3MDcKFETgVVsmP3zHtyTqSVlildPl1BBRo+vGT3DCTQnXYQ2/ePGDNPDOL57Y4D/NghZ2e0fYnJpy2YMIDeJuQz3V5YJ5A72Fph9hDhLapVLFcAFMfBitOp1LoZwpmvYio7WDvjLWahL5XpKFL6/yZoPE/1vIbHtZMGGweeq+LsLFEObWyruSig9GayCx9zizbDkwIDAQAB\",
+      \"notifyUrl\": \"http://www.uyoungdiy.com/paycallback/zfb\"
+    },
+    \"dependencies\": {
+      \"api\": \"        'notifyUrl' => 'http://www.uyoungdiy.com/paycallback/zfb'\",
+      \"cdn\": \"        'rsaPrivateKey' => 'MIIEpQIBAAKCAQEA7rpVBtOeum10fU9gq53b1eIEN7r2yoat2Wku2pPn3LaZ4JYS1KpjC8eMtolB3+qsJmY98eXFQRWo4IYE96s0rE06GCdeOrSwUXFvWsU5HjPaD1GwuBK/j8RG30GVIvnZneXXNmvAeKf9a1qqcumT2Fj9GgbgingcQKm6CAVIqBpWCBlMbSqRh7CFSZUIw2RkyuSPRIwT9zNIucn2E8j1UsQy3zyY/ok0zNgaLt3LkEq+QZdPZ1IZ+DFNaicdNGC3rB4xI1aOpFiCh/D/aZejQxhGKDCHAltp0BGxFq4lj3Eq8Ur0a1es0WHSkg2EVMGS9oUle0EYuLPYGmrH+Uym/wIDAQABAoIBAQDiF263jGxju437r9WqM1MkeW3tKhDZNjwoD8nkEPgivH13iipDZytu2IqXxd6xpptrsqEwG6B5R34tRkAmH+s+09UVUxOXHdFvELOZj/fMducqYv+vFXJ/QjCs+Hu6KE7FkAwG6n3ax57msXOEaVswJvduUt0NxztasmQRfI+XQ6W5agq/DjsgR6AmJfZOzLfeHqHFWwrseRrpaO6UFdhjOnngqcQBlXiOOzQbGSwL1TvFjIULxQJow0nVy5i9Gknhb0AEiyBZ7xMdccumzfzB0G2eBRo1QBy08RByElV35wLaasHb9XutnUO4urYvuGO0AurCkStfjC6oiumvly/hAoGBAPjHC/AXpyUMERRudDpiRwodq2wHxVHFR8WzZGETvpxCcdf/pMFl5xaSXhp7eWzLY1+zRnyBtn6EcJwtSeGpRuQmocxyeG4KkqGqeBv1ejDEGjvcsK9agafERqj6xS4IUnLkdu8NxlNDECijReZ6BrzN1rtJhzfn4c4pgRKCZS0rAoGBAPWomEYB9pqiUNvjTW505lryBrQfidz5Kqb/MBQ2Wabp3pVtsTJnclB/ySnLU1CToqgb8zx7rpZlfcxwRCMKeD+qzL/PdWTl7iVQNljvAItkdWflCQ486tNMdUToaH+k1Lr7GkjyXcMQiLqN9ZFwF6gpJiEvL4i/CZQgKCUL/kt9AoGBAJQS5agia/pBFGl01PlrRZ1fy4ihl3D0W6PxAu5FMk8PvXMzVn1GiiWFOT3KAJwg8yUjL/Erw9PKQLy0uCT4/JkP5X4rJENbR6uyK4t4sSIVlwfKc9/rnwCccvJhULv1eB2qnp/rMwCcCiImDJUCTMBURFt1iGZePqjXS1wZAN/BAoGAeNVQ8T6N+knU1BPeRnKhzCI4QekxesvkuvfSwl5pgryOi5nFCzHu/MGeRTyJ4px76Yy1/A4qNjf9xM2D9mhz9X0h8UcuS0798MSftub4sZfcWBpEdghoyT5WgGqA3ChLqx1QNIlirUw4tOqW287zE/gJlVEMZIrzPzUCChb4IlECgYEAp352KZTJUz6YMtKf3boOZHuA/Mw8MUqwmz/n+5g/8n7BJyDZkIqJwLzGLTOd6XFLWQydnpMPJA/lgZFByPq69eeu5PWOojAq7MIbN3kDtt8WZJ+o/ytm8o1W8UvqgloPo/pppDgbSeVyThgf+xQbw9QC/EDArmCvc0lBeYHHokk=',\"
+    }
+  }
+]
+","output_preview":"[
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/console.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"id\": \"basic-console\",
+      \"basePath\": \"dirname(__DIR__),\",
+      \"bootstrap\": \"[\",
+      \"controllerNamespace\": \"app\\\\commands\",
+      \"aliases\": \"[\",
+      \"@bower\": \"@vendor/bower-asset\",
+      \"@npm\": \"@vendor/npm-asset\",
+      \"@tests\": \"@app/tests\",
+      \"components\": \"[\",
+      \"cache\": \"[\",
+      \"class\": \"yii\\\\caching\\\\FileCache\",
+      \"log\": \"[\",
+    ..."} 
+[2025-09-26 16:41:03] local.INFO: JSON数据采集成功 {"keys":[0,1,2,3,4,5,6,7,8],"size":9828,"formatted_size":10115} 
+[2025-09-26 16:41:03] local.INFO: 采集组件执行成功 {"server_id":78,"collector_id":5,"output_length":9829,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-26 16:41:04] local.INFO: 任务详情执行成功 {"task_id":33,"detail_id":562,"execution_time":2.997} 
+[2025-09-26 16:41:04] local.INFO: 开始执行任务详情 {"task_id":33,"detail_id":563,"server_name":"122.9.15.110","collector_name":"系统-目录读取"} 
+[2025-09-26 16:41:04] local.INFO: 任务进度更新 {"task_id":33,"total":6,"completed":5,"running":1,"progress":83.33} 
+[2025-09-26 16:41:05] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":78,"server_name":"122.9.15.110","server_ip":"122.9.15.110","collector_id":7,"collector_name":"系统-目录读取","collector_code":"system_dir_info","output_length":329,"raw_output":"{\"filesystem\":{\"path\":\"/\",\"children\":[\"//alidata\",\"//bin\",\"//boot\",\"//CloudResetPwdAgentNew\",\"//CloudResetPwdUpdateAgent\",\"//CloudrResetPwdAgent\",\"//data\",\"//dev\",\"//etc\",\"//home\",\"//lib\",\"//lib64\",\"//lost+found\",\"//media\",\"//mnt\",\"//opt\",\"//proc\",\"//root\",\"//run\",\"//sbin\",\"//srv\",\"//sys\",\"//tmp\",\"//usr\",\"//var\",\"//wwwroot\"]}}
+","output_preview":"{\"filesystem\":{\"path\":\"/\",\"children\":[\"//alidata\",\"//bin\",\"//boot\",\"//CloudResetPwdAgentNew\",\"//CloudResetPwdUpdateAgent\",\"//CloudrResetPwdAgent\",\"//data\",\"//dev\",\"//etc\",\"//home\",\"//lib\",\"//lib64\",\"//lost+found\",\"//media\",\"//mnt\",\"//opt\",\"//proc\",\"//root\",\"//run\",\"//sbin\",\"//srv\",\"//sys\",\"//tmp\",\"//usr\",\"//var\",\"//wwwroot\"]}}
+"} 
+[2025-09-26 16:41:05] local.INFO: JSON数据采集成功 {"keys":["filesystem"],"size":328,"formatted_size":760} 
+[2025-09-26 16:41:05] local.INFO: 采集组件执行成功 {"server_id":78,"collector_id":7,"output_length":329,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-26 16:41:06] local.INFO: 任务详情执行成功 {"task_id":33,"detail_id":563,"execution_time":1.382} 
+[2025-09-26 16:41:06] local.INFO: 任务最终状态更新 {"task_id":33,"final_status":2,"total":6,"completed":6,"failed":0} 
+[2025-09-26 16:41:29] local.INFO: 开始执行批量采集任务 {"task_id":"34","task_name":"批量采集任务_20250926_1636"} 
+[2025-09-26 16:41:29] local.INFO: 开始执行任务详情 {"task_id":34,"detail_id":564,"server_name":"122.9.15.110","collector_name":"系统-基础信息"} 
+[2025-09-26 16:41:30] local.INFO: 任务进度更新 {"task_id":34,"total":6,"completed":0,"running":1,"progress":0.0} 
+[2025-09-26 16:41:31] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":78,"server_name":"122.9.15.110","server_ip":"122.9.15.110","collector_id":1,"collector_name":"系统-基础信息","collector_code":"system_basic_info","output_length":174,"raw_output":"{\"system\":{\"os_release\":\"CentOS Linux 7 (Core)\",\"kernel\":\"3.10.0-1062.1.1.el7.x86_64\",\"cpu_model\":\"Intel(R) Xeon(R) Gold 6161 CPU @ 2.20GHz\",\"cpu_cores\":1,\"memory_gb\":1.79}}
+","output_preview":"{\"system\":{\"os_release\":\"CentOS Linux 7 (Core)\",\"kernel\":\"3.10.0-1062.1.1.el7.x86_64\",\"cpu_model\":\"Intel(R) Xeon(R) Gold 6161 CPU @ 2.20GHz\",\"cpu_cores\":1,\"memory_gb\":1.79}}
+"} 
+[2025-09-26 16:41:31] local.INFO: JSON数据采集成功 {"keys":["system"],"size":173,"formatted_size":235} 
+[2025-09-26 16:41:31] local.INFO: 采集组件执行成功 {"server_id":78,"collector_id":1,"output_length":174,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-26 16:41:31] local.INFO: 任务详情执行成功 {"task_id":34,"detail_id":564,"execution_time":1.262} 
+[2025-09-26 16:41:31] local.INFO: 开始执行任务详情 {"task_id":34,"detail_id":565,"server_name":"122.9.15.110","collector_name":"系统-环境变量"} 
+[2025-09-26 16:41:31] local.INFO: 任务进度更新 {"task_id":34,"total":6,"completed":1,"running":1,"progress":16.67} 
+[2025-09-26 16:41:33] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":78,"server_name":"122.9.15.110","server_ip":"122.9.15.110","collector_id":2,"collector_name":"系统-环境变量","collector_code":"system_env_vars","output_length":285,"raw_output":"{
+  \"path\": \"/usr/local/bin:/usr/bin\",
+  \"home\": \"/home/liuyidong\",
+  \"user\": \"liuyidong\",
+  \"shell\": \"/bin/bash\",
+  \"lang\": \"en_US.UTF-8\",
+  \"timezone\": \"CST\",
+  \"hostname\": \"young-0002\",
+  \"pwd\": \"/home/liuyidong\",
+  \"total_env_vars\": \"17\",
+  \"collected_at\": \"2025-09-26 16:41:33\"
+}
+","output_preview":"{
+  \"path\": \"/usr/local/bin:/usr/bin\",
+  \"home\": \"/home/liuyidong\",
+  \"user\": \"liuyidong\",
+  \"shell\": \"/bin/bash\",
+  \"lang\": \"en_US.UTF-8\",
+  \"timezone\": \"CST\",
+  \"hostname\": \"young-0002\",
+  \"pwd\": \"/home/liuyidong\",
+  \"total_env_vars\": \"17\",
+  \"collected_at\": \"2025-09-26 16:41:33\"
+}
+"} 
+[2025-09-26 16:41:33] local.INFO: JSON数据采集成功 {"keys":["path","home","user","shell","lang","timezone","hostname","pwd","total_env_vars","collected_at"],"size":284,"formatted_size":315} 
+[2025-09-26 16:41:33] local.INFO: 采集组件执行成功 {"server_id":78,"collector_id":2,"output_length":285,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-26 16:41:33] local.INFO: 任务详情执行成功 {"task_id":34,"detail_id":565,"execution_time":1.305} 
+[2025-09-26 16:41:33] local.INFO: 开始执行任务详情 {"task_id":34,"detail_id":566,"server_name":"122.9.15.110","collector_name":"系统-进程采集"} 
+[2025-09-26 16:41:34] local.INFO: 任务进度更新 {"task_id":34,"total":6,"completed":2,"running":1,"progress":33.33} 
+[2025-09-26 16:41:35] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":78,"server_name":"122.9.15.110","server_ip":"122.9.15.110","collector_id":3,"collector_name":"系统-进程采集","collector_code":"system_processes","output_length":1403,"raw_output":"{
+  \"total_processes\": 121,
+  \"running_processes\": 4,
+  \"sleeping_processes\": 118,
+  \"zombie_processes\": 0,
+  \"load_average\": \"0.05,0.06,0.05\",
+  \"memory\": {
+    \"total_mb\": 1837,
+    \"used_mb\": 467,
+    \"free_mb\": 298
+  },
+  \"cpu_cores\": 1,
+  \"top5_cpu_processes\": [
+    {\"pid\":23636,\"user\":\"root\",\"cpu_percent\":3.0,\"mem_percent\":0.3,\"command\":\"sshd\",\"exe_path\":\"\"},
+    {\"pid\":1144,\"user\":\"root\",\"cpu_percent\":1.8,\"mem_percent\":1.5,\"command\":\"python\",\"exe_path\":\"\"},
+    {\"pid\":23340,\"user\":\"www\",\"cpu_percent\":0.1,\"mem_percent\":1.5,\"command\":\"nginx\",\"exe_path\":\"\"},
+    {\"pid\":1,\"user\":\"root\",\"cpu_percent\":0.0,\"mem_percent\":0.1,\"command\":\"systemd\",\"exe_path\":\"\"},
+    {\"pid\":2,\"user\":\"root\",\"cpu_percent\":0.0,\"mem_percent\":0.0,\"command\":\"kthreadd\",\"exe_path\":\"\"}
+  ],
+  \"top5_mem_processes\": [
+    {\"pid\":1190,\"user\":\"root\",\"cpu_percent\":0.0,\"mem_percent\":3.5,\"command\":\"java\",\"exe_path\":\"\"},
+    {\"pid\":1144,\"user\":\"root\",\"cpu_percent\":1.8,\"mem_percent\":1.5,\"command\":\"python\",\"exe_path\":\"\"},
+    {\"pid\":23340,\"user\":\"www\",\"cpu_percent\":0.1,\"mem_percent\":1.5,\"command\":\"nginx\",\"exe_path\":\"\"},
+    {\"pid\":31802,\"user\":\"www\",\"cpu_percent\":0.0,\"mem_percent\":1.3,\"command\":\"php-fpm\",\"exe_path\":\"\"},
+    {\"pid\":745,\"user\":\"www\",\"cpu_percent\":0.0,\"mem_percent\":1.3,\"command\":\"php-fpm\",\"exe_path\":\"\"}
+  ],
+date: extra operand ‘%H:%M:%S\"’
+Try 'date --help' for more information.
+  \"collected_at\": \"\"
+}
+","output_preview":"{
+  \"total_processes\": 121,
+  \"running_processes\": 4,
+  \"sleeping_processes\": 118,
+  \"zombie_processes\": 0,
+  \"load_average\": \"0.05,0.06,0.05\",
+  \"memory\": {
+    \"total_mb\": 1837,
+    \"used_mb\": 467,
+    \"free_mb\": 298
+  },
+  \"cpu_cores\": 1,
+  \"top5_cpu_processes\": [
+    {\"pid\":23636,\"user\":\"root\",\"cpu_percent\":3.0,\"mem_percent\":0.3,\"command\":\"sshd\",\"exe_path\":\"\"},
+    {\"pid\":1144,\"user\":\"root\",\"cpu_percent\":1.8,\"mem_percent\":1.5,\"command\":\"python\",\"exe_path\":\"\"},
+    {\"pid\":23340,\"user\":\"www\",\"..."} 
+[2025-09-26 16:41:35] local.INFO: 原始数据采集 {"type":"raw_output","size":1402,"json_error":"Syntax error"} 
+[2025-09-26 16:41:35] local.INFO: 采集组件执行成功 {"server_id":78,"collector_id":3,"output_length":1403,"parsed_result_keys":["data_type","raw_output","parsed_at","note"],"parsed_result_type":"array"} 
+[2025-09-26 16:41:35] local.INFO: 任务详情执行成功 {"task_id":34,"detail_id":566,"execution_time":1.35} 
+[2025-09-26 16:41:35] local.INFO: 开始执行任务详情 {"task_id":34,"detail_id":567,"server_name":"122.9.15.110","collector_name":"应用-nginx"} 
+[2025-09-26 16:41:35] local.INFO: 任务进度更新 {"task_id":34,"total":6,"completed":3,"running":1,"progress":50.0} 
+[2025-09-26 16:41:37] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":78,"server_name":"122.9.15.110","server_ip":"122.9.15.110","collector_id":4,"collector_name":"应用-nginx","collector_code":"nginx_info","output_length":1015,"raw_output":"{
+  \"nginx_conf\": \"/alidata/server/nginx/conf/nginx.conf\",
+  \"vhosts\": [
+    {
+      \"server_name\": \"www.uyoungdiy.com young.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/\",
+      \"locations\": [
+      ]
+    },
+    {
+      \"server_name\": \"front.uyoungdiy.com young-front.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/dist\",
+      \"locations\": [
+        {\"path\": \"/\", \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/dist\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"wap.uyoungdiy.com\",
+      \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/wap\",
+      \"locations\": [
+        {\"path\": \"/\", \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/wap\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"pc.uyoungdiy.com\",
+      \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/pc\",
+      \"locations\": [
+        {\"path\": \"/\", \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/pc\", \"proxy_pass\": \"\"}
+      ]
+    }
+  ]
+}
+","output_preview":"{
+  \"nginx_conf\": \"/alidata/server/nginx/conf/nginx.conf\",
+  \"vhosts\": [
+    {
+      \"server_name\": \"www.uyoungdiy.com young.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/\",
+      \"locations\": [
+      ]
+    },
+    {
+      \"server_name\": \"front.uyoungdiy.com young-front.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/dist\",
+      \"locations\": [
+        {\"path\": \"/\", \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/dist\", \"proxy_pass\": \"\"..."} 
+[2025-09-26 16:41:37] local.INFO: JSON数据采集成功 {"keys":["nginx_conf","vhosts"],"size":1014,"formatted_size":1436} 
+[2025-09-26 16:41:37] local.INFO: 采集组件执行成功 {"server_id":78,"collector_id":4,"output_length":1015,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-26 16:41:37] local.INFO: 任务详情执行成功 {"task_id":34,"detail_id":567,"execution_time":1.349} 
+[2025-09-26 16:41:37] local.INFO: 开始执行任务详情 {"task_id":34,"detail_id":568,"server_name":"122.9.15.110","collector_name":"应用-配置（PHP）"} 
+[2025-09-26 16:41:37] local.INFO: 任务进度更新 {"task_id":34,"total":6,"completed":4,"running":1,"progress":66.67} 
+[2025-09-26 16:41:40] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":78,"server_name":"122.9.15.110","server_ip":"122.9.15.110","collector_id":5,"collector_name":"应用-配置（PHP）","collector_code":"php_app_info","output_length":9829,"raw_output":"[
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/console.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"id\": \"basic-console\",
+      \"basePath\": \"dirname(__DIR__),\",
+      \"bootstrap\": \"[\",
+      \"controllerNamespace\": \"app\\\\commands\",
+      \"aliases\": \"[\",
+      \"@bower\": \"@vendor/bower-asset\",
+      \"@npm\": \"@vendor/npm-asset\",
+      \"@tests\": \"@app/tests\",
+      \"components\": \"[\",
+      \"cache\": \"[\",
+      \"class\": \"yii\\\\caching\\\\FileCache\",
+      \"log\": \"[\",
+      \"targets\": \"[\",
+      \"class\": \"yii\\\\log\\\\FileTarget\",
+      \"levels\": \"[\",
+      \"db\": \"$db,\",
+      \"params\": \"$params,\",
+      \"controllerMap\": \"[\",
+      \"fixture\": \"[ // Fixture generation command line.\",
+      \"class\": \"yii\\\\faker\\\\FixtureController\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/env.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/web.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"id\": \"basic\",
+      \"basePath\": \"dirname(__DIR__),\",
+      \"bootstrap\": \"[\",
+      \"aliases\": \"[\",
+      \"@bower\": \"@vendor/bower-asset\",
+      \"@npm\": \"@vendor/npm-asset\",
+      \"@yii/redis\": \"@vendor/yii2-redis\",
+      \"vendorPath\": \"/wwwroot/yii2/vendor\",
+      \"defaultRoute\": \"index/index\",
+      \"components\": \"[\",
+      \"aliaop\": \"$aliaop,\",
+      \"wechat\": \"[\",
+      \"class\": \"jianyan\\\\easywechat\\\\Wechat\",
+      \"request\": \"[\",
+      \"cookieValidationKey\": \"asdfsdfsdf123123\",
+      \"cache\": \"[\",
+      \"class\": \"yii\\\\caching\\\\FileCache\",
+      \"user\": \"[\",
+      \"identityClass\": \"app\\\\models\\\\User\",
+      \"enableAutoLogin\": \"false,\",
+      \"enableSession\": \"false,\",
+      \"errorHandler\": \"[\",
+      \"errorAction\": \"index/error\",
+      \"mailer\": \"[\",
+      \"class\": \"yii\\\\swiftmailer\\\\Mailer\",
+      \"useFileTransport\": \"true,\",
+      \"log\": \"[\",
+      \"traceLevel\": \"YII_DEBUG ? 3 : 0,\",
+      \"targets\": \"[\",
+      \"class\": \"yii\\\\log\\\\FileTarget\",
+      \"levels\": \"[\",
+      \"logFile\": \"/data/log/applications/young.log\",
+      \"db\": \"$db,\",
+      \"redis\": \"$redis,\",
+      \"redis_bizhi_app\": \"$bzappredis,\",
+      \"urlManager\": \"[\",
+      \"enablePrettyUrl\": \"true,\",
+      \"showScriptName\": \"false,\",
+      \"rules\": \"[\",
+      \"<controller:\\\\w+>/<action:\\\\w+>/<id:\\\\d+>\": \"<controller>/<action>\",
+      \"<controller:\\\\w+>/<action:\\\\w+>\": \"<controller>/<action>\",
+      \"session\": \"[\",
+      \"name\": \"advanced-frontend\",
+      \"class\": \"yii\\\\redis\\\\Session\",
+      \"cookieParams\": \"[\",
+      \"lifetime\": \"3600,\",
+      \"nfreq\": \"$nfreq,\",
+      \"cache\": \"[\",
+      \"class\": \"yii\\\\redis\\\\Cache\",
+      \"params\": \"$params,\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/online/redis_bizhi_app.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"yii\\\\redis\\\\Connection\",
+      \"hostname\": \"redis-e69e26b5-1598-4c17-aa13-9078c000b0e4.dcs.huaweicloud.com\",
+      \"port\": \"6379,\",
+      \"database\": \"0,\",
+      \"password\": \"vcDJ7AemWDQ3fyQd\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/online/params.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"wechatOpenPlatformConfig\": \"[\",
+      \"app_id\": \"wxbef85269a271de90\",
+      \"secret\": \"185913e3bc440ed5fa4894075b07acf8\",
+      \"token\": \"开放平台第三方平台 Token\",
+      \"aes_key\": \"开放平台第三方平台 AES Key\",
+      \"wechatPaymentConfig\": \"[\",
+      \"app_id\": \"wxdb94ecf33bc26ff5\",
+      \"mch_id\": \"1573416291\",
+      \"key\": \"LDSLDSLDSLDSLDSLDSLDSLDSLDS12345\",
+      \"cert_path\": \"path/to/your/cert.pem\",
+      \"key_path\": \"path/to/your/key\",
+      \"notify_url\": \"http://www.uyoungdiy.com/paycallback/wechat\",
+      \"wechatGzhPaymentConfig\": \"[\",
+      \"app_id\": \"wx704213c76d1873e4\",
+      \"mch_id\": \"1573416291\",
+      \"key\": \"LDSLDSLDSLDSLDSLDSLDSLDSLDS12345\",
+      \"cert_path\": \"path/to/your/cert.pem\",
+      \"key_path\": \"path/to/your/key\",
+      \"notify_url\": \"http://www.uyoungdiy.com/paycallback/wechat\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/online/db.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"yii\\\\db\\\\Connection\",
+      \"dsn\": \"mysql:host=7c029eeb4657427aad7f589016c04b2bin01.internal.cn-north-4.mysql.rds.myhuaweicloud.com;port=3306;dbname=young\",
+      \"username\": \"young\",
+      \"password\": \"PbYmiqrGQ9Lwflmj\",
+      \"charset\": \"utf8\",
+      \"enableSchemaCache\": \"true,\",
+      \"schemaCacheDuration\": \"60,\",
+      \"schemaCache\": \"cache\"
+    },
+    \"dependencies\": {
+      \"database\": \"    'dsn' => 'mysql:host=7c029eeb4657427aad7f589016c04b2bin01.internal.cn-north-4.mysql.rds.myhuaweicloud.com;port=3306;dbname=young',\"
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/online/redis.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"yii\\\\redis\\\\Connection\",
+      \"hostname\": \"redis-5918692-diy-01.dcs.huaweicloud.com\",
+      \"port\": \"6379,\",
+      \"database\": \"4,\",
+      \"password\": \"diy_online_eZcZQes5kPAPBWXP\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/online/nfreq.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"app\\\\utils\\\\CFreqCtrl\",
+      \"configs\": \"array(\",
+      \"captcha\": \"array(\",
+      \"ip\": \"array(\",
+      \"freq\": \"30), //120s 30次\",
+      \"phone\": \"array( //限制手机号\",
+      \"freq\": \"3), //频率限制: 60秒1次\",
+      \"600\": \"3600), //惩罚措施: 60秒内1次后惩罚50秒，需要使用runV2\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/online/aliaop.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"app\\\\utils\\\\aliaop\\\\AopClient\",
+      \"configs\": \"array(\",
+      \"appId\": \"2021002110607596\",
+      \"rsaPrivateKey\": \"MIIEpQIBAAKCAQEA7rpVBtOeum10fU9gq53b1eIEN7r2yoat2Wku2pPn3LaZ4JYS1KpjC8eMtolB3+qsJmY98eXFQRWo4IYE96s0rE06GCdeOrSwUXFvWsU5HjPaD1GwuBK/j8RG30GVIvnZneXXNmvAeKf9a1qqcumT2Fj9GgbgingcQKm6CAVIqBpWCBlMbSqRh7CFSZUIw2RkyuSPRIwT9zNIucn2E8j1UsQy3zyY/ok0zNgaLt3LkEq+QZdPZ1IZ+DFNaicdNGC3rB4xI1aOpFiCh/D/aZejQxhGKDCHAltp0BGxFq4lj3Eq8Ur0a1es0WHSkg2EVMGS9oUle0EYuLPYGmrH+Uym/wIDAQABAoIBAQDiF263jGxju437r9WqM1MkeW3tKhDZNjwoD8nkEPgivH13iipDZytu2IqXxd6xpptrsqEwG6B5R34tRkAmH+s+09UVUxOXHdFvELOZj/fMducqYv+vFXJ/QjCs+Hu6KE7FkAwG6n3ax57msXOEaVswJvduUt0NxztasmQRfI+XQ6W5agq/DjsgR6AmJfZOzLfeHqHFWwrseRrpaO6UFdhjOnngqcQBlXiOOzQbGSwL1TvFjIULxQJow0nVy5i9Gknhb0AEiyBZ7xMdccumzfzB0G2eBRo1QBy08RByElV35wLaasHb9XutnUO4urYvuGO0AurCkStfjC6oiumvly/hAoGBAPjHC/AXpyUMERRudDpiRwodq2wHxVHFR8WzZGETvpxCcdf/pMFl5xaSXhp7eWzLY1+zRnyBtn6EcJwtSeGpRuQmocxyeG4KkqGqeBv1ejDEGjvcsK9agafERqj6xS4IUnLkdu8NxlNDECijReZ6BrzN1rtJhzfn4c4pgRKCZS0rAoGBAPWomEYB9pqiUNvjTW505lryBrQfidz5Kqb/MBQ2Wabp3pVtsTJnclB/ySnLU1CToqgb8zx7rpZlfcxwRCMKeD+qzL/PdWTl7iVQNljvAItkdWflCQ486tNMdUToaH+k1Lr7GkjyXcMQiLqN9ZFwF6gpJiEvL4i/CZQgKCUL/kt9AoGBAJQS5agia/pBFGl01PlrRZ1fy4ihl3D0W6PxAu5FMk8PvXMzVn1GiiWFOT3KAJwg8yUjL/Erw9PKQLy0uCT4/JkP5X4rJENbR6uyK4t4sSIVlwfKc9/rnwCccvJhULv1eB2qnp/rMwCcCiImDJUCTMBURFt1iGZePqjXS1wZAN/BAoGAeNVQ8T6N+knU1BPeRnKhzCI4QekxesvkuvfSwl5pgryOi5nFCzHu/MGeRTyJ4px76Yy1/A4qNjf9xM2D9mhz9X0h8UcuS0798MSftub4sZfcWBpEdghoyT5WgGqA3ChLqx1QNIlirUw4tOqW287zE/gJlVEMZIrzPzUCChb4IlECgYEAp352KZTJUz6YMtKf3boOZHuA/Mw8MUqwmz/n+5g/8n7BJyDZkIqJwLzGLTOd6XFLWQydnpMPJA/lgZFByPq69eeu5PWOojAq7MIbN3kDtt8WZJ+o/ytm8o1W8UvqgloPo/pppDgbSeVyThgf+xQbw9QC/EDArmCvc0lBeYHHokk=\",
+      \"alipayrsaPublicKey\": \"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgcxKESKuD67XpvbHDviZubZAWNB3aM/i8yyo2KnK9jae1pySHO7/SpEaW1UQiBTt6BhFhGWO3+K0VZ0/ViZaZKhT3v3U2sYnARkVBNKn2BwlRVw45aKGyohXtLV1gWHkfHMpivSZvKYQK6OAM3MDcKFETgVVsmP3zHtyTqSVlildPl1BBRo+vGT3DCTQnXYQ2/ePGDNPDOL57Y4D/NghZ2e0fYnJpy2YMIDeJuQz3V5YJ5A72Fph9hDhLapVLFcAFMfBitOp1LoZwpmvYio7WDvjLWahL5XpKFL6/yZoPE/1vIbHtZMGGweeq+LsLFEObWyruSig9GayCx9zizbDkwIDAQAB\",
+      \"notifyUrl\": \"http://www.uyoungdiy.com/paycallback/zfb\"
+    },
+    \"dependencies\": {
+      \"api\": \"        'notifyUrl' => 'http://www.uyoungdiy.com/paycallback/zfb'\",
+      \"cdn\": \"        'rsaPrivateKey' => 'MIIEpQIBAAKCAQEA7rpVBtOeum10fU9gq53b1eIEN7r2yoat2Wku2pPn3LaZ4JYS1KpjC8eMtolB3+qsJmY98eXFQRWo4IYE96s0rE06GCdeOrSwUXFvWsU5HjPaD1GwuBK/j8RG30GVIvnZneXXNmvAeKf9a1qqcumT2Fj9GgbgingcQKm6CAVIqBpWCBlMbSqRh7CFSZUIw2RkyuSPRIwT9zNIucn2E8j1UsQy3zyY/ok0zNgaLt3LkEq+QZdPZ1IZ+DFNaicdNGC3rB4xI1aOpFiCh/D/aZejQxhGKDCHAltp0BGxFq4lj3Eq8Ur0a1es0WHSkg2EVMGS9oUle0EYuLPYGmrH+Uym/wIDAQABAoIBAQDiF263jGxju437r9WqM1MkeW3tKhDZNjwoD8nkEPgivH13iipDZytu2IqXxd6xpptrsqEwG6B5R34tRkAmH+s+09UVUxOXHdFvELOZj/fMducqYv+vFXJ/QjCs+Hu6KE7FkAwG6n3ax57msXOEaVswJvduUt0NxztasmQRfI+XQ6W5agq/DjsgR6AmJfZOzLfeHqHFWwrseRrpaO6UFdhjOnngqcQBlXiOOzQbGSwL1TvFjIULxQJow0nVy5i9Gknhb0AEiyBZ7xMdccumzfzB0G2eBRo1QBy08RByElV35wLaasHb9XutnUO4urYvuGO0AurCkStfjC6oiumvly/hAoGBAPjHC/AXpyUMERRudDpiRwodq2wHxVHFR8WzZGETvpxCcdf/pMFl5xaSXhp7eWzLY1+zRnyBtn6EcJwtSeGpRuQmocxyeG4KkqGqeBv1ejDEGjvcsK9agafERqj6xS4IUnLkdu8NxlNDECijReZ6BrzN1rtJhzfn4c4pgRKCZS0rAoGBAPWomEYB9pqiUNvjTW505lryBrQfidz5Kqb/MBQ2Wabp3pVtsTJnclB/ySnLU1CToqgb8zx7rpZlfcxwRCMKeD+qzL/PdWTl7iVQNljvAItkdWflCQ486tNMdUToaH+k1Lr7GkjyXcMQiLqN9ZFwF6gpJiEvL4i/CZQgKCUL/kt9AoGBAJQS5agia/pBFGl01PlrRZ1fy4ihl3D0W6PxAu5FMk8PvXMzVn1GiiWFOT3KAJwg8yUjL/Erw9PKQLy0uCT4/JkP5X4rJENbR6uyK4t4sSIVlwfKc9/rnwCccvJhULv1eB2qnp/rMwCcCiImDJUCTMBURFt1iGZePqjXS1wZAN/BAoGAeNVQ8T6N+knU1BPeRnKhzCI4QekxesvkuvfSwl5pgryOi5nFCzHu/MGeRTyJ4px76Yy1/A4qNjf9xM2D9mhz9X0h8UcuS0798MSftub4sZfcWBpEdghoyT5WgGqA3ChLqx1QNIlirUw4tOqW287zE/gJlVEMZIrzPzUCChb4IlECgYEAp352KZTJUz6YMtKf3boOZHuA/Mw8MUqwmz/n+5g/8n7BJyDZkIqJwLzGLTOd6XFLWQydnpMPJA/lgZFByPq69eeu5PWOojAq7MIbN3kDtt8WZJ+o/ytm8o1W8UvqgloPo/pppDgbSeVyThgf+xQbw9QC/EDArmCvc0lBeYHHokk=',\"
+    }
+  }
+]
+","output_preview":"[
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/console.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"id\": \"basic-console\",
+      \"basePath\": \"dirname(__DIR__),\",
+      \"bootstrap\": \"[\",
+      \"controllerNamespace\": \"app\\\\commands\",
+      \"aliases\": \"[\",
+      \"@bower\": \"@vendor/bower-asset\",
+      \"@npm\": \"@vendor/npm-asset\",
+      \"@tests\": \"@app/tests\",
+      \"components\": \"[\",
+      \"cache\": \"[\",
+      \"class\": \"yii\\\\caching\\\\FileCache\",
+      \"log\": \"[\",
+    ..."} 
+[2025-09-26 16:41:40] local.INFO: JSON数据采集成功 {"keys":[0,1,2,3,4,5,6,7,8],"size":9828,"formatted_size":10115} 
+[2025-09-26 16:41:40] local.INFO: 采集组件执行成功 {"server_id":78,"collector_id":5,"output_length":9829,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-26 16:41:40] local.INFO: 任务详情执行成功 {"task_id":34,"detail_id":568,"execution_time":2.214} 
+[2025-09-26 16:41:40] local.INFO: 开始执行任务详情 {"task_id":34,"detail_id":569,"server_name":"122.9.15.110","collector_name":"系统-目录读取"} 
+[2025-09-26 16:41:40] local.INFO: 任务进度更新 {"task_id":34,"total":6,"completed":5,"running":1,"progress":83.33} 
+[2025-09-26 16:41:42] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":78,"server_name":"122.9.15.110","server_ip":"122.9.15.110","collector_id":7,"collector_name":"系统-目录读取","collector_code":"system_dir_info","output_length":329,"raw_output":"{\"filesystem\":{\"path\":\"/\",\"children\":[\"//alidata\",\"//bin\",\"//boot\",\"//CloudResetPwdAgentNew\",\"//CloudResetPwdUpdateAgent\",\"//CloudrResetPwdAgent\",\"//data\",\"//dev\",\"//etc\",\"//home\",\"//lib\",\"//lib64\",\"//lost+found\",\"//media\",\"//mnt\",\"//opt\",\"//proc\",\"//root\",\"//run\",\"//sbin\",\"//srv\",\"//sys\",\"//tmp\",\"//usr\",\"//var\",\"//wwwroot\"]}}
+","output_preview":"{\"filesystem\":{\"path\":\"/\",\"children\":[\"//alidata\",\"//bin\",\"//boot\",\"//CloudResetPwdAgentNew\",\"//CloudResetPwdUpdateAgent\",\"//CloudrResetPwdAgent\",\"//data\",\"//dev\",\"//etc\",\"//home\",\"//lib\",\"//lib64\",\"//lost+found\",\"//media\",\"//mnt\",\"//opt\",\"//proc\",\"//root\",\"//run\",\"//sbin\",\"//srv\",\"//sys\",\"//tmp\",\"//usr\",\"//var\",\"//wwwroot\"]}}
+"} 
+[2025-09-26 16:41:42] local.INFO: JSON数据采集成功 {"keys":["filesystem"],"size":328,"formatted_size":760} 
+[2025-09-26 16:41:42] local.INFO: 采集组件执行成功 {"server_id":78,"collector_id":7,"output_length":329,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-26 16:41:42] local.INFO: 任务详情执行成功 {"task_id":34,"detail_id":569,"execution_time":1.367} 
+[2025-09-26 16:41:42] local.INFO: 任务最终状态更新 {"task_id":34,"final_status":2,"total":6,"completed":6,"failed":0} 
+[2025-09-26 16:42:38] local.ERROR: 任务状态重置失败 {"task_id":"34","error":"SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'execution_time' cannot be null (SQL: update `task_details` set `status` = 0, `result` = ?, `error_message` = ?, `execution_time` = ?, `started_at` = ?, `completed_at` = ?, `task_details`.`updated_at` = 2025-09-26 16:42:38 where `task_details`.`task_id` = 34 and `task_details`.`task_id` is not null)"} 
+[2025-09-26 16:42:59] local.ERROR: 任务状态重置失败 {"task_id":"34","error":"SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'execution_time' cannot be null (SQL: update `task_details` set `status` = 0, `result` = ?, `error_message` = ?, `execution_time` = ?, `started_at` = ?, `completed_at` = ?, `task_details`.`updated_at` = 2025-09-26 16:42:59 where `task_details`.`task_id` = 34 and `task_details`.`task_id` is not null)"} 
+[2025-09-26 16:47:05] local.INFO: 任务状态重置成功 {"task_id":"34"} 
+[2025-09-26 16:47:13] local.INFO: 开始执行批量采集任务 {"task_id":"34","task_name":"批量采集任务_20250926_1636"} 
+[2025-09-26 16:47:13] local.INFO: 开始执行任务详情 {"task_id":34,"detail_id":564,"server_name":"122.9.15.110","collector_name":"系统-基础信息"} 
+[2025-09-26 16:47:14] local.INFO: 任务进度更新 {"task_id":34,"total":6,"completed":0,"running":1,"progress":0.0} 
+[2025-09-26 16:47:15] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":78,"server_name":"122.9.15.110","server_ip":"122.9.15.110","collector_id":1,"collector_name":"系统-基础信息","collector_code":"system_basic_info","output_length":174,"raw_output":"{\"system\":{\"os_release\":\"CentOS Linux 7 (Core)\",\"kernel\":\"3.10.0-1062.1.1.el7.x86_64\",\"cpu_model\":\"Intel(R) Xeon(R) Gold 6161 CPU @ 2.20GHz\",\"cpu_cores\":1,\"memory_gb\":1.79}}
+","output_preview":"{\"system\":{\"os_release\":\"CentOS Linux 7 (Core)\",\"kernel\":\"3.10.0-1062.1.1.el7.x86_64\",\"cpu_model\":\"Intel(R) Xeon(R) Gold 6161 CPU @ 2.20GHz\",\"cpu_cores\":1,\"memory_gb\":1.79}}
+"} 
+[2025-09-26 16:47:15] local.INFO: JSON数据采集成功 {"keys":["system"],"size":173,"formatted_size":235} 
+[2025-09-26 16:47:15] local.INFO: 采集组件执行成功 {"server_id":78,"collector_id":1,"output_length":174,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-26 16:47:15] local.INFO: 任务详情执行成功 {"task_id":34,"detail_id":564,"execution_time":1.223} 
+[2025-09-26 16:47:15] local.INFO: 开始执行任务详情 {"task_id":34,"detail_id":565,"server_name":"122.9.15.110","collector_name":"系统-环境变量"} 
+[2025-09-26 16:47:16] local.INFO: 任务进度更新 {"task_id":34,"total":6,"completed":1,"running":1,"progress":16.67} 
+[2025-09-26 16:47:17] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":78,"server_name":"122.9.15.110","server_ip":"122.9.15.110","collector_id":2,"collector_name":"系统-环境变量","collector_code":"system_env_vars","output_length":285,"raw_output":"{
+  \"path\": \"/usr/local/bin:/usr/bin\",
+  \"home\": \"/home/liuyidong\",
+  \"user\": \"liuyidong\",
+  \"shell\": \"/bin/bash\",
+  \"lang\": \"en_US.UTF-8\",
+  \"timezone\": \"CST\",
+  \"hostname\": \"young-0002\",
+  \"pwd\": \"/home/liuyidong\",
+  \"total_env_vars\": \"17\",
+  \"collected_at\": \"2025-09-26 16:47:17\"
+}
+","output_preview":"{
+  \"path\": \"/usr/local/bin:/usr/bin\",
+  \"home\": \"/home/liuyidong\",
+  \"user\": \"liuyidong\",
+  \"shell\": \"/bin/bash\",
+  \"lang\": \"en_US.UTF-8\",
+  \"timezone\": \"CST\",
+  \"hostname\": \"young-0002\",
+  \"pwd\": \"/home/liuyidong\",
+  \"total_env_vars\": \"17\",
+  \"collected_at\": \"2025-09-26 16:47:17\"
+}
+"} 
+[2025-09-26 16:47:17] local.INFO: JSON数据采集成功 {"keys":["path","home","user","shell","lang","timezone","hostname","pwd","total_env_vars","collected_at"],"size":284,"formatted_size":315} 
+[2025-09-26 16:47:17] local.INFO: 采集组件执行成功 {"server_id":78,"collector_id":2,"output_length":285,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-26 16:47:17] local.INFO: 任务详情执行成功 {"task_id":34,"detail_id":565,"execution_time":1.287} 
+[2025-09-26 16:47:17] local.INFO: 开始执行任务详情 {"task_id":34,"detail_id":566,"server_name":"122.9.15.110","collector_name":"系统-进程采集"} 
+[2025-09-26 16:47:18] local.INFO: 任务进度更新 {"task_id":34,"total":6,"completed":2,"running":1,"progress":33.33} 
+[2025-09-26 16:47:19] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":78,"server_name":"122.9.15.110","server_ip":"122.9.15.110","collector_id":3,"collector_name":"系统-进程采集","collector_code":"system_processes","output_length":1403,"raw_output":"{
+  \"total_processes\": 121,
+  \"running_processes\": 3,
+  \"sleeping_processes\": 118,
+  \"zombie_processes\": 0,
+  \"load_average\": \"0.21,0.10,0.06\",
+  \"memory\": {
+    \"total_mb\": 1837,
+    \"used_mb\": 467,
+    \"free_mb\": 297
+  },
+  \"cpu_cores\": 1,
+  \"top5_cpu_processes\": [
+    {\"pid\":26625,\"user\":\"root\",\"cpu_percent\":5.0,\"mem_percent\":0.3,\"command\":\"sshd\",\"exe_path\":\"\"},
+    {\"pid\":1144,\"user\":\"root\",\"cpu_percent\":1.8,\"mem_percent\":1.5,\"command\":\"python\",\"exe_path\":\"\"},
+    {\"pid\":23340,\"user\":\"www\",\"cpu_percent\":0.1,\"mem_percent\":1.5,\"command\":\"nginx\",\"exe_path\":\"\"},
+    {\"pid\":1,\"user\":\"root\",\"cpu_percent\":0.0,\"mem_percent\":0.1,\"command\":\"systemd\",\"exe_path\":\"\"},
+    {\"pid\":2,\"user\":\"root\",\"cpu_percent\":0.0,\"mem_percent\":0.0,\"command\":\"kthreadd\",\"exe_path\":\"\"}
+  ],
+  \"top5_mem_processes\": [
+    {\"pid\":1190,\"user\":\"root\",\"cpu_percent\":0.0,\"mem_percent\":3.5,\"command\":\"java\",\"exe_path\":\"\"},
+    {\"pid\":1144,\"user\":\"root\",\"cpu_percent\":1.8,\"mem_percent\":1.5,\"command\":\"python\",\"exe_path\":\"\"},
+    {\"pid\":23340,\"user\":\"www\",\"cpu_percent\":0.1,\"mem_percent\":1.5,\"command\":\"nginx\",\"exe_path\":\"\"},
+    {\"pid\":31802,\"user\":\"www\",\"cpu_percent\":0.0,\"mem_percent\":1.3,\"command\":\"php-fpm\",\"exe_path\":\"\"},
+    {\"pid\":745,\"user\":\"www\",\"cpu_percent\":0.0,\"mem_percent\":1.3,\"command\":\"php-fpm\",\"exe_path\":\"\"}
+  ],
+date: extra operand ‘%H:%M:%S\"’
+Try 'date --help' for more information.
+  \"collected_at\": \"\"
+}
+","output_preview":"{
+  \"total_processes\": 121,
+  \"running_processes\": 3,
+  \"sleeping_processes\": 118,
+  \"zombie_processes\": 0,
+  \"load_average\": \"0.21,0.10,0.06\",
+  \"memory\": {
+    \"total_mb\": 1837,
+    \"used_mb\": 467,
+    \"free_mb\": 297
+  },
+  \"cpu_cores\": 1,
+  \"top5_cpu_processes\": [
+    {\"pid\":26625,\"user\":\"root\",\"cpu_percent\":5.0,\"mem_percent\":0.3,\"command\":\"sshd\",\"exe_path\":\"\"},
+    {\"pid\":1144,\"user\":\"root\",\"cpu_percent\":1.8,\"mem_percent\":1.5,\"command\":\"python\",\"exe_path\":\"\"},
+    {\"pid\":23340,\"user\":\"www\",\"..."} 
+[2025-09-26 16:47:19] local.INFO: 原始数据采集 {"type":"raw_output","size":1402,"json_error":"Syntax error"} 
+[2025-09-26 16:47:19] local.INFO: 采集组件执行成功 {"server_id":78,"collector_id":3,"output_length":1403,"parsed_result_keys":["data_type","raw_output","parsed_at","note"],"parsed_result_type":"array"} 
+[2025-09-26 16:47:19] local.INFO: 任务详情执行成功 {"task_id":34,"detail_id":566,"execution_time":1.407} 
+[2025-09-26 16:47:19] local.INFO: 开始执行任务详情 {"task_id":34,"detail_id":567,"server_name":"122.9.15.110","collector_name":"应用-nginx"} 
+[2025-09-26 16:47:20] local.INFO: 任务进度更新 {"task_id":34,"total":6,"completed":3,"running":1,"progress":50.0} 
+[2025-09-26 16:47:21] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":78,"server_name":"122.9.15.110","server_ip":"122.9.15.110","collector_id":4,"collector_name":"应用-nginx","collector_code":"nginx_info","output_length":1015,"raw_output":"{
+  \"nginx_conf\": \"/alidata/server/nginx/conf/nginx.conf\",
+  \"vhosts\": [
+    {
+      \"server_name\": \"www.uyoungdiy.com young.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/\",
+      \"locations\": [
+      ]
+    },
+    {
+      \"server_name\": \"front.uyoungdiy.com young-front.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/dist\",
+      \"locations\": [
+        {\"path\": \"/\", \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/dist\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"wap.uyoungdiy.com\",
+      \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/wap\",
+      \"locations\": [
+        {\"path\": \"/\", \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/wap\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"pc.uyoungdiy.com\",
+      \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/pc\",
+      \"locations\": [
+        {\"path\": \"/\", \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/pc\", \"proxy_pass\": \"\"}
+      ]
+    }
+  ]
+}
+","output_preview":"{
+  \"nginx_conf\": \"/alidata/server/nginx/conf/nginx.conf\",
+  \"vhosts\": [
+    {
+      \"server_name\": \"www.uyoungdiy.com young.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/\",
+      \"locations\": [
+      ]
+    },
+    {
+      \"server_name\": \"front.uyoungdiy.com young-front.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/dist\",
+      \"locations\": [
+        {\"path\": \"/\", \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/dist\", \"proxy_pass\": \"\"..."} 
+[2025-09-26 16:47:21] local.INFO: JSON数据采集成功 {"keys":["nginx_conf","vhosts"],"size":1014,"formatted_size":1436} 
+[2025-09-26 16:47:21] local.INFO: 采集组件执行成功 {"server_id":78,"collector_id":4,"output_length":1015,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-26 16:47:21] local.INFO: 任务详情执行成功 {"task_id":34,"detail_id":567,"execution_time":1.272} 
+[2025-09-26 16:47:21] local.INFO: 开始执行任务详情 {"task_id":34,"detail_id":568,"server_name":"122.9.15.110","collector_name":"应用-配置（PHP）"} 
+[2025-09-26 16:47:21] local.INFO: 任务进度更新 {"task_id":34,"total":6,"completed":4,"running":1,"progress":66.67} 
+[2025-09-26 16:47:24] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":78,"server_name":"122.9.15.110","server_ip":"122.9.15.110","collector_id":5,"collector_name":"应用-配置（PHP）","collector_code":"php_app_info","output_length":9829,"raw_output":"[
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/console.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"id\": \"basic-console\",
+      \"basePath\": \"dirname(__DIR__),\",
+      \"bootstrap\": \"[\",
+      \"controllerNamespace\": \"app\\\\commands\",
+      \"aliases\": \"[\",
+      \"@bower\": \"@vendor/bower-asset\",
+      \"@npm\": \"@vendor/npm-asset\",
+      \"@tests\": \"@app/tests\",
+      \"components\": \"[\",
+      \"cache\": \"[\",
+      \"class\": \"yii\\\\caching\\\\FileCache\",
+      \"log\": \"[\",
+      \"targets\": \"[\",
+      \"class\": \"yii\\\\log\\\\FileTarget\",
+      \"levels\": \"[\",
+      \"db\": \"$db,\",
+      \"params\": \"$params,\",
+      \"controllerMap\": \"[\",
+      \"fixture\": \"[ // Fixture generation command line.\",
+      \"class\": \"yii\\\\faker\\\\FixtureController\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/env.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/web.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"id\": \"basic\",
+      \"basePath\": \"dirname(__DIR__),\",
+      \"bootstrap\": \"[\",
+      \"aliases\": \"[\",
+      \"@bower\": \"@vendor/bower-asset\",
+      \"@npm\": \"@vendor/npm-asset\",
+      \"@yii/redis\": \"@vendor/yii2-redis\",
+      \"vendorPath\": \"/wwwroot/yii2/vendor\",
+      \"defaultRoute\": \"index/index\",
+      \"components\": \"[\",
+      \"aliaop\": \"$aliaop,\",
+      \"wechat\": \"[\",
+      \"class\": \"jianyan\\\\easywechat\\\\Wechat\",
+      \"request\": \"[\",
+      \"cookieValidationKey\": \"asdfsdfsdf123123\",
+      \"cache\": \"[\",
+      \"class\": \"yii\\\\caching\\\\FileCache\",
+      \"user\": \"[\",
+      \"identityClass\": \"app\\\\models\\\\User\",
+      \"enableAutoLogin\": \"false,\",
+      \"enableSession\": \"false,\",
+      \"errorHandler\": \"[\",
+      \"errorAction\": \"index/error\",
+      \"mailer\": \"[\",
+      \"class\": \"yii\\\\swiftmailer\\\\Mailer\",
+      \"useFileTransport\": \"true,\",
+      \"log\": \"[\",
+      \"traceLevel\": \"YII_DEBUG ? 3 : 0,\",
+      \"targets\": \"[\",
+      \"class\": \"yii\\\\log\\\\FileTarget\",
+      \"levels\": \"[\",
+      \"logFile\": \"/data/log/applications/young.log\",
+      \"db\": \"$db,\",
+      \"redis\": \"$redis,\",
+      \"redis_bizhi_app\": \"$bzappredis,\",
+      \"urlManager\": \"[\",
+      \"enablePrettyUrl\": \"true,\",
+      \"showScriptName\": \"false,\",
+      \"rules\": \"[\",
+      \"<controller:\\\\w+>/<action:\\\\w+>/<id:\\\\d+>\": \"<controller>/<action>\",
+      \"<controller:\\\\w+>/<action:\\\\w+>\": \"<controller>/<action>\",
+      \"session\": \"[\",
+      \"name\": \"advanced-frontend\",
+      \"class\": \"yii\\\\redis\\\\Session\",
+      \"cookieParams\": \"[\",
+      \"lifetime\": \"3600,\",
+      \"nfreq\": \"$nfreq,\",
+      \"cache\": \"[\",
+      \"class\": \"yii\\\\redis\\\\Cache\",
+      \"params\": \"$params,\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/online/redis_bizhi_app.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"yii\\\\redis\\\\Connection\",
+      \"hostname\": \"redis-e69e26b5-1598-4c17-aa13-9078c000b0e4.dcs.huaweicloud.com\",
+      \"port\": \"6379,\",
+      \"database\": \"0,\",
+      \"password\": \"vcDJ7AemWDQ3fyQd\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/online/params.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"wechatOpenPlatformConfig\": \"[\",
+      \"app_id\": \"wxbef85269a271de90\",
+      \"secret\": \"185913e3bc440ed5fa4894075b07acf8\",
+      \"token\": \"开放平台第三方平台 Token\",
+      \"aes_key\": \"开放平台第三方平台 AES Key\",
+      \"wechatPaymentConfig\": \"[\",
+      \"app_id\": \"wxdb94ecf33bc26ff5\",
+      \"mch_id\": \"1573416291\",
+      \"key\": \"LDSLDSLDSLDSLDSLDSLDSLDSLDS12345\",
+      \"cert_path\": \"path/to/your/cert.pem\",
+      \"key_path\": \"path/to/your/key\",
+      \"notify_url\": \"http://www.uyoungdiy.com/paycallback/wechat\",
+      \"wechatGzhPaymentConfig\": \"[\",
+      \"app_id\": \"wx704213c76d1873e4\",
+      \"mch_id\": \"1573416291\",
+      \"key\": \"LDSLDSLDSLDSLDSLDSLDSLDSLDS12345\",
+      \"cert_path\": \"path/to/your/cert.pem\",
+      \"key_path\": \"path/to/your/key\",
+      \"notify_url\": \"http://www.uyoungdiy.com/paycallback/wechat\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/online/db.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"yii\\\\db\\\\Connection\",
+      \"dsn\": \"mysql:host=7c029eeb4657427aad7f589016c04b2bin01.internal.cn-north-4.mysql.rds.myhuaweicloud.com;port=3306;dbname=young\",
+      \"username\": \"young\",
+      \"password\": \"PbYmiqrGQ9Lwflmj\",
+      \"charset\": \"utf8\",
+      \"enableSchemaCache\": \"true,\",
+      \"schemaCacheDuration\": \"60,\",
+      \"schemaCache\": \"cache\"
+    },
+    \"dependencies\": {
+      \"database\": \"    'dsn' => 'mysql:host=7c029eeb4657427aad7f589016c04b2bin01.internal.cn-north-4.mysql.rds.myhuaweicloud.com;port=3306;dbname=young',\"
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/online/redis.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"yii\\\\redis\\\\Connection\",
+      \"hostname\": \"redis-5918692-diy-01.dcs.huaweicloud.com\",
+      \"port\": \"6379,\",
+      \"database\": \"4,\",
+      \"password\": \"diy_online_eZcZQes5kPAPBWXP\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/online/nfreq.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"app\\\\utils\\\\CFreqCtrl\",
+      \"configs\": \"array(\",
+      \"captcha\": \"array(\",
+      \"ip\": \"array(\",
+      \"freq\": \"30), //120s 30次\",
+      \"phone\": \"array( //限制手机号\",
+      \"freq\": \"3), //频率限制: 60秒1次\",
+      \"600\": \"3600), //惩罚措施: 60秒内1次后惩罚50秒，需要使用runV2\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/online/aliaop.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"app\\\\utils\\\\aliaop\\\\AopClient\",
+      \"configs\": \"array(\",
+      \"appId\": \"2021002110607596\",
+      \"rsaPrivateKey\": \"MIIEpQIBAAKCAQEA7rpVBtOeum10fU9gq53b1eIEN7r2yoat2Wku2pPn3LaZ4JYS1KpjC8eMtolB3+qsJmY98eXFQRWo4IYE96s0rE06GCdeOrSwUXFvWsU5HjPaD1GwuBK/j8RG30GVIvnZneXXNmvAeKf9a1qqcumT2Fj9GgbgingcQKm6CAVIqBpWCBlMbSqRh7CFSZUIw2RkyuSPRIwT9zNIucn2E8j1UsQy3zyY/ok0zNgaLt3LkEq+QZdPZ1IZ+DFNaicdNGC3rB4xI1aOpFiCh/D/aZejQxhGKDCHAltp0BGxFq4lj3Eq8Ur0a1es0WHSkg2EVMGS9oUle0EYuLPYGmrH+Uym/wIDAQABAoIBAQDiF263jGxju437r9WqM1MkeW3tKhDZNjwoD8nkEPgivH13iipDZytu2IqXxd6xpptrsqEwG6B5R34tRkAmH+s+09UVUxOXHdFvELOZj/fMducqYv+vFXJ/QjCs+Hu6KE7FkAwG6n3ax57msXOEaVswJvduUt0NxztasmQRfI+XQ6W5agq/DjsgR6AmJfZOzLfeHqHFWwrseRrpaO6UFdhjOnngqcQBlXiOOzQbGSwL1TvFjIULxQJow0nVy5i9Gknhb0AEiyBZ7xMdccumzfzB0G2eBRo1QBy08RByElV35wLaasHb9XutnUO4urYvuGO0AurCkStfjC6oiumvly/hAoGBAPjHC/AXpyUMERRudDpiRwodq2wHxVHFR8WzZGETvpxCcdf/pMFl5xaSXhp7eWzLY1+zRnyBtn6EcJwtSeGpRuQmocxyeG4KkqGqeBv1ejDEGjvcsK9agafERqj6xS4IUnLkdu8NxlNDECijReZ6BrzN1rtJhzfn4c4pgRKCZS0rAoGBAPWomEYB9pqiUNvjTW505lryBrQfidz5Kqb/MBQ2Wabp3pVtsTJnclB/ySnLU1CToqgb8zx7rpZlfcxwRCMKeD+qzL/PdWTl7iVQNljvAItkdWflCQ486tNMdUToaH+k1Lr7GkjyXcMQiLqN9ZFwF6gpJiEvL4i/CZQgKCUL/kt9AoGBAJQS5agia/pBFGl01PlrRZ1fy4ihl3D0W6PxAu5FMk8PvXMzVn1GiiWFOT3KAJwg8yUjL/Erw9PKQLy0uCT4/JkP5X4rJENbR6uyK4t4sSIVlwfKc9/rnwCccvJhULv1eB2qnp/rMwCcCiImDJUCTMBURFt1iGZePqjXS1wZAN/BAoGAeNVQ8T6N+knU1BPeRnKhzCI4QekxesvkuvfSwl5pgryOi5nFCzHu/MGeRTyJ4px76Yy1/A4qNjf9xM2D9mhz9X0h8UcuS0798MSftub4sZfcWBpEdghoyT5WgGqA3ChLqx1QNIlirUw4tOqW287zE/gJlVEMZIrzPzUCChb4IlECgYEAp352KZTJUz6YMtKf3boOZHuA/Mw8MUqwmz/n+5g/8n7BJyDZkIqJwLzGLTOd6XFLWQydnpMPJA/lgZFByPq69eeu5PWOojAq7MIbN3kDtt8WZJ+o/ytm8o1W8UvqgloPo/pppDgbSeVyThgf+xQbw9QC/EDArmCvc0lBeYHHokk=\",
+      \"alipayrsaPublicKey\": \"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgcxKESKuD67XpvbHDviZubZAWNB3aM/i8yyo2KnK9jae1pySHO7/SpEaW1UQiBTt6BhFhGWO3+K0VZ0/ViZaZKhT3v3U2sYnARkVBNKn2BwlRVw45aKGyohXtLV1gWHkfHMpivSZvKYQK6OAM3MDcKFETgVVsmP3zHtyTqSVlildPl1BBRo+vGT3DCTQnXYQ2/ePGDNPDOL57Y4D/NghZ2e0fYnJpy2YMIDeJuQz3V5YJ5A72Fph9hDhLapVLFcAFMfBitOp1LoZwpmvYio7WDvjLWahL5XpKFL6/yZoPE/1vIbHtZMGGweeq+LsLFEObWyruSig9GayCx9zizbDkwIDAQAB\",
+      \"notifyUrl\": \"http://www.uyoungdiy.com/paycallback/zfb\"
+    },
+    \"dependencies\": {
+      \"api\": \"        'notifyUrl' => 'http://www.uyoungdiy.com/paycallback/zfb'\",
+      \"cdn\": \"        'rsaPrivateKey' => 'MIIEpQIBAAKCAQEA7rpVBtOeum10fU9gq53b1eIEN7r2yoat2Wku2pPn3LaZ4JYS1KpjC8eMtolB3+qsJmY98eXFQRWo4IYE96s0rE06GCdeOrSwUXFvWsU5HjPaD1GwuBK/j8RG30GVIvnZneXXNmvAeKf9a1qqcumT2Fj9GgbgingcQKm6CAVIqBpWCBlMbSqRh7CFSZUIw2RkyuSPRIwT9zNIucn2E8j1UsQy3zyY/ok0zNgaLt3LkEq+QZdPZ1IZ+DFNaicdNGC3rB4xI1aOpFiCh/D/aZejQxhGKDCHAltp0BGxFq4lj3Eq8Ur0a1es0WHSkg2EVMGS9oUle0EYuLPYGmrH+Uym/wIDAQABAoIBAQDiF263jGxju437r9WqM1MkeW3tKhDZNjwoD8nkEPgivH13iipDZytu2IqXxd6xpptrsqEwG6B5R34tRkAmH+s+09UVUxOXHdFvELOZj/fMducqYv+vFXJ/QjCs+Hu6KE7FkAwG6n3ax57msXOEaVswJvduUt0NxztasmQRfI+XQ6W5agq/DjsgR6AmJfZOzLfeHqHFWwrseRrpaO6UFdhjOnngqcQBlXiOOzQbGSwL1TvFjIULxQJow0nVy5i9Gknhb0AEiyBZ7xMdccumzfzB0G2eBRo1QBy08RByElV35wLaasHb9XutnUO4urYvuGO0AurCkStfjC6oiumvly/hAoGBAPjHC/AXpyUMERRudDpiRwodq2wHxVHFR8WzZGETvpxCcdf/pMFl5xaSXhp7eWzLY1+zRnyBtn6EcJwtSeGpRuQmocxyeG4KkqGqeBv1ejDEGjvcsK9agafERqj6xS4IUnLkdu8NxlNDECijReZ6BrzN1rtJhzfn4c4pgRKCZS0rAoGBAPWomEYB9pqiUNvjTW505lryBrQfidz5Kqb/MBQ2Wabp3pVtsTJnclB/ySnLU1CToqgb8zx7rpZlfcxwRCMKeD+qzL/PdWTl7iVQNljvAItkdWflCQ486tNMdUToaH+k1Lr7GkjyXcMQiLqN9ZFwF6gpJiEvL4i/CZQgKCUL/kt9AoGBAJQS5agia/pBFGl01PlrRZ1fy4ihl3D0W6PxAu5FMk8PvXMzVn1GiiWFOT3KAJwg8yUjL/Erw9PKQLy0uCT4/JkP5X4rJENbR6uyK4t4sSIVlwfKc9/rnwCccvJhULv1eB2qnp/rMwCcCiImDJUCTMBURFt1iGZePqjXS1wZAN/BAoGAeNVQ8T6N+knU1BPeRnKhzCI4QekxesvkuvfSwl5pgryOi5nFCzHu/MGeRTyJ4px76Yy1/A4qNjf9xM2D9mhz9X0h8UcuS0798MSftub4sZfcWBpEdghoyT5WgGqA3ChLqx1QNIlirUw4tOqW287zE/gJlVEMZIrzPzUCChb4IlECgYEAp352KZTJUz6YMtKf3boOZHuA/Mw8MUqwmz/n+5g/8n7BJyDZkIqJwLzGLTOd6XFLWQydnpMPJA/lgZFByPq69eeu5PWOojAq7MIbN3kDtt8WZJ+o/ytm8o1W8UvqgloPo/pppDgbSeVyThgf+xQbw9QC/EDArmCvc0lBeYHHokk=',\"
+    }
+  }
+]
+","output_preview":"[
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/console.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"id\": \"basic-console\",
+      \"basePath\": \"dirname(__DIR__),\",
+      \"bootstrap\": \"[\",
+      \"controllerNamespace\": \"app\\\\commands\",
+      \"aliases\": \"[\",
+      \"@bower\": \"@vendor/bower-asset\",
+      \"@npm\": \"@vendor/npm-asset\",
+      \"@tests\": \"@app/tests\",
+      \"components\": \"[\",
+      \"cache\": \"[\",
+      \"class\": \"yii\\\\caching\\\\FileCache\",
+      \"log\": \"[\",
+    ..."} 
+[2025-09-26 16:47:24] local.INFO: JSON数据采集成功 {"keys":[0,1,2,3,4,5,6,7,8],"size":9828,"formatted_size":10115} 
+[2025-09-26 16:47:24] local.INFO: 采集组件执行成功 {"server_id":78,"collector_id":5,"output_length":9829,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-26 16:47:24] local.INFO: 任务详情执行成功 {"task_id":34,"detail_id":568,"execution_time":2.269} 
+[2025-09-26 16:47:24] local.INFO: 开始执行任务详情 {"task_id":34,"detail_id":569,"server_name":"122.9.15.110","collector_name":"系统-目录读取"} 
+[2025-09-26 16:47:24] local.INFO: 任务进度更新 {"task_id":34,"total":6,"completed":5,"running":1,"progress":83.33} 
+[2025-09-26 16:47:26] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":78,"server_name":"122.9.15.110","server_ip":"122.9.15.110","collector_id":7,"collector_name":"系统-目录读取","collector_code":"system_dir_info","output_length":329,"raw_output":"{\"filesystem\":{\"path\":\"/\",\"children\":[\"//alidata\",\"//bin\",\"//boot\",\"//CloudResetPwdAgentNew\",\"//CloudResetPwdUpdateAgent\",\"//CloudrResetPwdAgent\",\"//data\",\"//dev\",\"//etc\",\"//home\",\"//lib\",\"//lib64\",\"//lost+found\",\"//media\",\"//mnt\",\"//opt\",\"//proc\",\"//root\",\"//run\",\"//sbin\",\"//srv\",\"//sys\",\"//tmp\",\"//usr\",\"//var\",\"//wwwroot\"]}}
+","output_preview":"{\"filesystem\":{\"path\":\"/\",\"children\":[\"//alidata\",\"//bin\",\"//boot\",\"//CloudResetPwdAgentNew\",\"//CloudResetPwdUpdateAgent\",\"//CloudrResetPwdAgent\",\"//data\",\"//dev\",\"//etc\",\"//home\",\"//lib\",\"//lib64\",\"//lost+found\",\"//media\",\"//mnt\",\"//opt\",\"//proc\",\"//root\",\"//run\",\"//sbin\",\"//srv\",\"//sys\",\"//tmp\",\"//usr\",\"//var\",\"//wwwroot\"]}}
+"} 
+[2025-09-26 16:47:26] local.INFO: JSON数据采集成功 {"keys":["filesystem"],"size":328,"formatted_size":760} 
+[2025-09-26 16:47:26] local.INFO: 采集组件执行成功 {"server_id":78,"collector_id":7,"output_length":329,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-26 16:47:26] local.INFO: 任务详情执行成功 {"task_id":34,"detail_id":569,"execution_time":1.309} 
+[2025-09-26 16:47:26] local.INFO: 任务最终状态更新 {"task_id":34,"final_status":2,"total":6,"completed":6,"failed":0} 
+[2025-09-26 16:50:38] local.INFO: 任务状态重置成功 {"task_id":"34"} 
+[2025-09-26 16:50:45] local.INFO: 开始执行批量采集任务 {"task_id":"34","task_name":"批量采集任务_20250926_1636"} 
+[2025-09-26 16:50:46] local.INFO: 开始执行任务详情 {"task_id":34,"detail_id":564,"server_name":"122.9.15.110","collector_name":"系统-基础信息"} 
+[2025-09-26 16:50:46] local.INFO: 任务进度更新 {"task_id":34,"total":6,"completed":0,"running":1,"progress":0.0} 
+[2025-09-26 16:50:47] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":78,"server_name":"122.9.15.110","server_ip":"122.9.15.110","collector_id":1,"collector_name":"系统-基础信息","collector_code":"system_basic_info","output_length":174,"raw_output":"{\"system\":{\"os_release\":\"CentOS Linux 7 (Core)\",\"kernel\":\"3.10.0-1062.1.1.el7.x86_64\",\"cpu_model\":\"Intel(R) Xeon(R) Gold 6161 CPU @ 2.20GHz\",\"cpu_cores\":1,\"memory_gb\":1.79}}
+","output_preview":"{\"system\":{\"os_release\":\"CentOS Linux 7 (Core)\",\"kernel\":\"3.10.0-1062.1.1.el7.x86_64\",\"cpu_model\":\"Intel(R) Xeon(R) Gold 6161 CPU @ 2.20GHz\",\"cpu_cores\":1,\"memory_gb\":1.79}}
+"} 
+[2025-09-26 16:50:47] local.INFO: JSON数据采集成功 {"keys":["system"],"size":173,"formatted_size":235} 
+[2025-09-26 16:50:47] local.INFO: 采集组件执行成功 {"server_id":78,"collector_id":1,"output_length":174,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-26 16:50:48] local.INFO: 任务详情执行成功 {"task_id":34,"detail_id":564,"execution_time":1.268} 
+[2025-09-26 16:50:48] local.INFO: 开始执行任务详情 {"task_id":34,"detail_id":565,"server_name":"122.9.15.110","collector_name":"系统-环境变量"} 
+[2025-09-26 16:50:48] local.INFO: 任务进度更新 {"task_id":34,"total":6,"completed":1,"running":1,"progress":16.67} 
+[2025-09-26 16:50:50] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":78,"server_name":"122.9.15.110","server_ip":"122.9.15.110","collector_id":2,"collector_name":"系统-环境变量","collector_code":"system_env_vars","output_length":285,"raw_output":"{
+  \"path\": \"/usr/local/bin:/usr/bin\",
+  \"home\": \"/home/liuyidong\",
+  \"user\": \"liuyidong\",
+  \"shell\": \"/bin/bash\",
+  \"lang\": \"en_US.UTF-8\",
+  \"timezone\": \"CST\",
+  \"hostname\": \"young-0002\",
+  \"pwd\": \"/home/liuyidong\",
+  \"total_env_vars\": \"17\",
+  \"collected_at\": \"2025-09-26 16:50:50\"
+}
+","output_preview":"{
+  \"path\": \"/usr/local/bin:/usr/bin\",
+  \"home\": \"/home/liuyidong\",
+  \"user\": \"liuyidong\",
+  \"shell\": \"/bin/bash\",
+  \"lang\": \"en_US.UTF-8\",
+  \"timezone\": \"CST\",
+  \"hostname\": \"young-0002\",
+  \"pwd\": \"/home/liuyidong\",
+  \"total_env_vars\": \"17\",
+  \"collected_at\": \"2025-09-26 16:50:50\"
+}
+"} 
+[2025-09-26 16:50:50] local.INFO: JSON数据采集成功 {"keys":["path","home","user","shell","lang","timezone","hostname","pwd","total_env_vars","collected_at"],"size":284,"formatted_size":315} 
+[2025-09-26 16:50:50] local.INFO: 采集组件执行成功 {"server_id":78,"collector_id":2,"output_length":285,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-26 16:50:50] local.INFO: 任务详情执行成功 {"task_id":34,"detail_id":565,"execution_time":1.868} 
+[2025-09-26 16:50:50] local.INFO: 开始执行任务详情 {"task_id":34,"detail_id":566,"server_name":"122.9.15.110","collector_name":"系统-进程采集"} 
+[2025-09-26 16:50:50] local.INFO: 任务进度更新 {"task_id":34,"total":6,"completed":2,"running":1,"progress":33.33} 
+[2025-09-26 16:50:52] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":78,"server_name":"122.9.15.110","server_ip":"122.9.15.110","collector_id":3,"collector_name":"系统-进程采集","collector_code":"system_processes","output_length":1403,"raw_output":"{
+  \"total_processes\": 121,
+  \"running_processes\": 4,
+  \"sleeping_processes\": 119,
+  \"zombie_processes\": 0,
+  \"load_average\": \"0.20,0.13,0.08\",
+  \"memory\": {
+    \"total_mb\": 1837,
+    \"used_mb\": 467,
+    \"free_mb\": 301
+  },
+  \"cpu_cores\": 1,
+  \"top5_cpu_processes\": [
+    {\"pid\":29414,\"user\":\"root\",\"cpu_percent\":3.0,\"mem_percent\":0.3,\"command\":\"sshd\",\"exe_path\":\"\"},
+    {\"pid\":1144,\"user\":\"root\",\"cpu_percent\":1.8,\"mem_percent\":1.5,\"command\":\"python\",\"exe_path\":\"\"},
+    {\"pid\":23340,\"user\":\"www\",\"cpu_percent\":0.1,\"mem_percent\":1.5,\"command\":\"nginx\",\"exe_path\":\"\"},
+    {\"pid\":1,\"user\":\"root\",\"cpu_percent\":0.0,\"mem_percent\":0.1,\"command\":\"systemd\",\"exe_path\":\"\"},
+    {\"pid\":2,\"user\":\"root\",\"cpu_percent\":0.0,\"mem_percent\":0.0,\"command\":\"kthreadd\",\"exe_path\":\"\"}
+  ],
+  \"top5_mem_processes\": [
+    {\"pid\":1190,\"user\":\"root\",\"cpu_percent\":0.0,\"mem_percent\":3.5,\"command\":\"java\",\"exe_path\":\"\"},
+    {\"pid\":23340,\"user\":\"www\",\"cpu_percent\":0.1,\"mem_percent\":1.5,\"command\":\"nginx\",\"exe_path\":\"\"},
+    {\"pid\":1144,\"user\":\"root\",\"cpu_percent\":1.8,\"mem_percent\":1.5,\"command\":\"python\",\"exe_path\":\"\"},
+    {\"pid\":31802,\"user\":\"www\",\"cpu_percent\":0.0,\"mem_percent\":1.3,\"command\":\"php-fpm\",\"exe_path\":\"\"},
+    {\"pid\":745,\"user\":\"www\",\"cpu_percent\":0.0,\"mem_percent\":1.3,\"command\":\"php-fpm\",\"exe_path\":\"\"}
+  ],
+date: extra operand ‘%H:%M:%S\"’
+Try 'date --help' for more information.
+  \"collected_at\": \"\"
+}
+","output_preview":"{
+  \"total_processes\": 121,
+  \"running_processes\": 4,
+  \"sleeping_processes\": 119,
+  \"zombie_processes\": 0,
+  \"load_average\": \"0.20,0.13,0.08\",
+  \"memory\": {
+    \"total_mb\": 1837,
+    \"used_mb\": 467,
+    \"free_mb\": 301
+  },
+  \"cpu_cores\": 1,
+  \"top5_cpu_processes\": [
+    {\"pid\":29414,\"user\":\"root\",\"cpu_percent\":3.0,\"mem_percent\":0.3,\"command\":\"sshd\",\"exe_path\":\"\"},
+    {\"pid\":1144,\"user\":\"root\",\"cpu_percent\":1.8,\"mem_percent\":1.5,\"command\":\"python\",\"exe_path\":\"\"},
+    {\"pid\":23340,\"user\":\"www\",\"..."} 
+[2025-09-26 16:50:52] local.INFO: 原始数据采集 {"type":"raw_output","size":1402,"json_error":"Syntax error"} 
+[2025-09-26 16:50:52] local.INFO: 采集组件执行成功 {"server_id":78,"collector_id":3,"output_length":1403,"parsed_result_keys":["data_type","raw_output","parsed_at","note"],"parsed_result_type":"array"} 
+[2025-09-26 16:50:52] local.INFO: 任务详情执行成功 {"task_id":34,"detail_id":566,"execution_time":1.374} 
+[2025-09-26 16:50:52] local.INFO: 开始执行任务详情 {"task_id":34,"detail_id":567,"server_name":"122.9.15.110","collector_name":"应用-nginx"} 
+[2025-09-26 16:50:52] local.INFO: 任务进度更新 {"task_id":34,"total":6,"completed":3,"running":1,"progress":50.0} 
+[2025-09-26 16:50:54] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":78,"server_name":"122.9.15.110","server_ip":"122.9.15.110","collector_id":4,"collector_name":"应用-nginx","collector_code":"nginx_info","output_length":1015,"raw_output":"{
+  \"nginx_conf\": \"/alidata/server/nginx/conf/nginx.conf\",
+  \"vhosts\": [
+    {
+      \"server_name\": \"www.uyoungdiy.com young.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/\",
+      \"locations\": [
+      ]
+    },
+    {
+      \"server_name\": \"front.uyoungdiy.com young-front.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/dist\",
+      \"locations\": [
+        {\"path\": \"/\", \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/dist\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"wap.uyoungdiy.com\",
+      \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/wap\",
+      \"locations\": [
+        {\"path\": \"/\", \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/wap\", \"proxy_pass\": \"\"}
+      ]
+    },
+    {
+      \"server_name\": \"pc.uyoungdiy.com\",
+      \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/pc\",
+      \"locations\": [
+        {\"path\": \"/\", \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/pc\", \"proxy_pass\": \"\"}
+      ]
+    }
+  ]
+}
+","output_preview":"{
+  \"nginx_conf\": \"/alidata/server/nginx/conf/nginx.conf\",
+  \"vhosts\": [
+    {
+      \"server_name\": \"www.uyoungdiy.com young.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/\",
+      \"locations\": [
+      ]
+    },
+    {
+      \"server_name\": \"front.uyoungdiy.com young-front.shanhutech.cn\",
+      \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/dist\",
+      \"locations\": [
+        {\"path\": \"/\", \"root\": \"/wwwroot/applications/www.uyoungdiy.com/web/dist\", \"proxy_pass\": \"\"..."} 
+[2025-09-26 16:50:54] local.INFO: JSON数据采集成功 {"keys":["nginx_conf","vhosts"],"size":1014,"formatted_size":1436} 
+[2025-09-26 16:50:54] local.INFO: 采集组件执行成功 {"server_id":78,"collector_id":4,"output_length":1015,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-26 16:50:54] local.INFO: 任务详情执行成功 {"task_id":34,"detail_id":567,"execution_time":1.299} 
+[2025-09-26 16:50:54] local.INFO: 开始执行任务详情 {"task_id":34,"detail_id":568,"server_name":"122.9.15.110","collector_name":"应用-配置（PHP）"} 
+[2025-09-26 16:50:54] local.INFO: 任务进度更新 {"task_id":34,"total":6,"completed":4,"running":1,"progress":66.67} 
+[2025-09-26 16:50:57] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":78,"server_name":"122.9.15.110","server_ip":"122.9.15.110","collector_id":5,"collector_name":"应用-配置（PHP）","collector_code":"php_app_info","output_length":9829,"raw_output":"[
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/console.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"id\": \"basic-console\",
+      \"basePath\": \"dirname(__DIR__),\",
+      \"bootstrap\": \"[\",
+      \"controllerNamespace\": \"app\\\\commands\",
+      \"aliases\": \"[\",
+      \"@bower\": \"@vendor/bower-asset\",
+      \"@npm\": \"@vendor/npm-asset\",
+      \"@tests\": \"@app/tests\",
+      \"components\": \"[\",
+      \"cache\": \"[\",
+      \"class\": \"yii\\\\caching\\\\FileCache\",
+      \"log\": \"[\",
+      \"targets\": \"[\",
+      \"class\": \"yii\\\\log\\\\FileTarget\",
+      \"levels\": \"[\",
+      \"db\": \"$db,\",
+      \"params\": \"$params,\",
+      \"controllerMap\": \"[\",
+      \"fixture\": \"[ // Fixture generation command line.\",
+      \"class\": \"yii\\\\faker\\\\FixtureController\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/env.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/web.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"id\": \"basic\",
+      \"basePath\": \"dirname(__DIR__),\",
+      \"bootstrap\": \"[\",
+      \"aliases\": \"[\",
+      \"@bower\": \"@vendor/bower-asset\",
+      \"@npm\": \"@vendor/npm-asset\",
+      \"@yii/redis\": \"@vendor/yii2-redis\",
+      \"vendorPath\": \"/wwwroot/yii2/vendor\",
+      \"defaultRoute\": \"index/index\",
+      \"components\": \"[\",
+      \"aliaop\": \"$aliaop,\",
+      \"wechat\": \"[\",
+      \"class\": \"jianyan\\\\easywechat\\\\Wechat\",
+      \"request\": \"[\",
+      \"cookieValidationKey\": \"asdfsdfsdf123123\",
+      \"cache\": \"[\",
+      \"class\": \"yii\\\\caching\\\\FileCache\",
+      \"user\": \"[\",
+      \"identityClass\": \"app\\\\models\\\\User\",
+      \"enableAutoLogin\": \"false,\",
+      \"enableSession\": \"false,\",
+      \"errorHandler\": \"[\",
+      \"errorAction\": \"index/error\",
+      \"mailer\": \"[\",
+      \"class\": \"yii\\\\swiftmailer\\\\Mailer\",
+      \"useFileTransport\": \"true,\",
+      \"log\": \"[\",
+      \"traceLevel\": \"YII_DEBUG ? 3 : 0,\",
+      \"targets\": \"[\",
+      \"class\": \"yii\\\\log\\\\FileTarget\",
+      \"levels\": \"[\",
+      \"logFile\": \"/data/log/applications/young.log\",
+      \"db\": \"$db,\",
+      \"redis\": \"$redis,\",
+      \"redis_bizhi_app\": \"$bzappredis,\",
+      \"urlManager\": \"[\",
+      \"enablePrettyUrl\": \"true,\",
+      \"showScriptName\": \"false,\",
+      \"rules\": \"[\",
+      \"<controller:\\\\w+>/<action:\\\\w+>/<id:\\\\d+>\": \"<controller>/<action>\",
+      \"<controller:\\\\w+>/<action:\\\\w+>\": \"<controller>/<action>\",
+      \"session\": \"[\",
+      \"name\": \"advanced-frontend\",
+      \"class\": \"yii\\\\redis\\\\Session\",
+      \"cookieParams\": \"[\",
+      \"lifetime\": \"3600,\",
+      \"nfreq\": \"$nfreq,\",
+      \"cache\": \"[\",
+      \"class\": \"yii\\\\redis\\\\Cache\",
+      \"params\": \"$params,\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/online/redis_bizhi_app.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"yii\\\\redis\\\\Connection\",
+      \"hostname\": \"redis-e69e26b5-1598-4c17-aa13-9078c000b0e4.dcs.huaweicloud.com\",
+      \"port\": \"6379,\",
+      \"database\": \"0,\",
+      \"password\": \"vcDJ7AemWDQ3fyQd\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/online/params.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"wechatOpenPlatformConfig\": \"[\",
+      \"app_id\": \"wxbef85269a271de90\",
+      \"secret\": \"185913e3bc440ed5fa4894075b07acf8\",
+      \"token\": \"开放平台第三方平台 Token\",
+      \"aes_key\": \"开放平台第三方平台 AES Key\",
+      \"wechatPaymentConfig\": \"[\",
+      \"app_id\": \"wxdb94ecf33bc26ff5\",
+      \"mch_id\": \"1573416291\",
+      \"key\": \"LDSLDSLDSLDSLDSLDSLDSLDSLDS12345\",
+      \"cert_path\": \"path/to/your/cert.pem\",
+      \"key_path\": \"path/to/your/key\",
+      \"notify_url\": \"http://www.uyoungdiy.com/paycallback/wechat\",
+      \"wechatGzhPaymentConfig\": \"[\",
+      \"app_id\": \"wx704213c76d1873e4\",
+      \"mch_id\": \"1573416291\",
+      \"key\": \"LDSLDSLDSLDSLDSLDSLDSLDSLDS12345\",
+      \"cert_path\": \"path/to/your/cert.pem\",
+      \"key_path\": \"path/to/your/key\",
+      \"notify_url\": \"http://www.uyoungdiy.com/paycallback/wechat\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/online/db.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"yii\\\\db\\\\Connection\",
+      \"dsn\": \"mysql:host=7c029eeb4657427aad7f589016c04b2bin01.internal.cn-north-4.mysql.rds.myhuaweicloud.com;port=3306;dbname=young\",
+      \"username\": \"young\",
+      \"password\": \"PbYmiqrGQ9Lwflmj\",
+      \"charset\": \"utf8\",
+      \"enableSchemaCache\": \"true,\",
+      \"schemaCacheDuration\": \"60,\",
+      \"schemaCache\": \"cache\"
+    },
+    \"dependencies\": {
+      \"database\": \"    'dsn' => 'mysql:host=7c029eeb4657427aad7f589016c04b2bin01.internal.cn-north-4.mysql.rds.myhuaweicloud.com;port=3306;dbname=young',\"
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/online/redis.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"yii\\\\redis\\\\Connection\",
+      \"hostname\": \"redis-5918692-diy-01.dcs.huaweicloud.com\",
+      \"port\": \"6379,\",
+      \"database\": \"4,\",
+      \"password\": \"diy_online_eZcZQes5kPAPBWXP\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/online/nfreq.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"app\\\\utils\\\\CFreqCtrl\",
+      \"configs\": \"array(\",
+      \"captcha\": \"array(\",
+      \"ip\": \"array(\",
+      \"freq\": \"30), //120s 30次\",
+      \"phone\": \"array( //限制手机号\",
+      \"freq\": \"3), //频率限制: 60秒1次\",
+      \"600\": \"3600), //惩罚措施: 60秒内1次后惩罚50秒，需要使用runV2\"
+    },
+    \"dependencies\": {
+
+    }
+  },
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/online/aliaop.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"class\": \"app\\\\utils\\\\aliaop\\\\AopClient\",
+      \"configs\": \"array(\",
+      \"appId\": \"2021002110607596\",
+      \"rsaPrivateKey\": \"MIIEpQIBAAKCAQEA7rpVBtOeum10fU9gq53b1eIEN7r2yoat2Wku2pPn3LaZ4JYS1KpjC8eMtolB3+qsJmY98eXFQRWo4IYE96s0rE06GCdeOrSwUXFvWsU5HjPaD1GwuBK/j8RG30GVIvnZneXXNmvAeKf9a1qqcumT2Fj9GgbgingcQKm6CAVIqBpWCBlMbSqRh7CFSZUIw2RkyuSPRIwT9zNIucn2E8j1UsQy3zyY/ok0zNgaLt3LkEq+QZdPZ1IZ+DFNaicdNGC3rB4xI1aOpFiCh/D/aZejQxhGKDCHAltp0BGxFq4lj3Eq8Ur0a1es0WHSkg2EVMGS9oUle0EYuLPYGmrH+Uym/wIDAQABAoIBAQDiF263jGxju437r9WqM1MkeW3tKhDZNjwoD8nkEPgivH13iipDZytu2IqXxd6xpptrsqEwG6B5R34tRkAmH+s+09UVUxOXHdFvELOZj/fMducqYv+vFXJ/QjCs+Hu6KE7FkAwG6n3ax57msXOEaVswJvduUt0NxztasmQRfI+XQ6W5agq/DjsgR6AmJfZOzLfeHqHFWwrseRrpaO6UFdhjOnngqcQBlXiOOzQbGSwL1TvFjIULxQJow0nVy5i9Gknhb0AEiyBZ7xMdccumzfzB0G2eBRo1QBy08RByElV35wLaasHb9XutnUO4urYvuGO0AurCkStfjC6oiumvly/hAoGBAPjHC/AXpyUMERRudDpiRwodq2wHxVHFR8WzZGETvpxCcdf/pMFl5xaSXhp7eWzLY1+zRnyBtn6EcJwtSeGpRuQmocxyeG4KkqGqeBv1ejDEGjvcsK9agafERqj6xS4IUnLkdu8NxlNDECijReZ6BrzN1rtJhzfn4c4pgRKCZS0rAoGBAPWomEYB9pqiUNvjTW505lryBrQfidz5Kqb/MBQ2Wabp3pVtsTJnclB/ySnLU1CToqgb8zx7rpZlfcxwRCMKeD+qzL/PdWTl7iVQNljvAItkdWflCQ486tNMdUToaH+k1Lr7GkjyXcMQiLqN9ZFwF6gpJiEvL4i/CZQgKCUL/kt9AoGBAJQS5agia/pBFGl01PlrRZ1fy4ihl3D0W6PxAu5FMk8PvXMzVn1GiiWFOT3KAJwg8yUjL/Erw9PKQLy0uCT4/JkP5X4rJENbR6uyK4t4sSIVlwfKc9/rnwCccvJhULv1eB2qnp/rMwCcCiImDJUCTMBURFt1iGZePqjXS1wZAN/BAoGAeNVQ8T6N+knU1BPeRnKhzCI4QekxesvkuvfSwl5pgryOi5nFCzHu/MGeRTyJ4px76Yy1/A4qNjf9xM2D9mhz9X0h8UcuS0798MSftub4sZfcWBpEdghoyT5WgGqA3ChLqx1QNIlirUw4tOqW287zE/gJlVEMZIrzPzUCChb4IlECgYEAp352KZTJUz6YMtKf3boOZHuA/Mw8MUqwmz/n+5g/8n7BJyDZkIqJwLzGLTOd6XFLWQydnpMPJA/lgZFByPq69eeu5PWOojAq7MIbN3kDtt8WZJ+o/ytm8o1W8UvqgloPo/pppDgbSeVyThgf+xQbw9QC/EDArmCvc0lBeYHHokk=\",
+      \"alipayrsaPublicKey\": \"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgcxKESKuD67XpvbHDviZubZAWNB3aM/i8yyo2KnK9jae1pySHO7/SpEaW1UQiBTt6BhFhGWO3+K0VZ0/ViZaZKhT3v3U2sYnARkVBNKn2BwlRVw45aKGyohXtLV1gWHkfHMpivSZvKYQK6OAM3MDcKFETgVVsmP3zHtyTqSVlildPl1BBRo+vGT3DCTQnXYQ2/ePGDNPDOL57Y4D/NghZ2e0fYnJpy2YMIDeJuQz3V5YJ5A72Fph9hDhLapVLFcAFMfBitOp1LoZwpmvYio7WDvjLWahL5XpKFL6/yZoPE/1vIbHtZMGGweeq+LsLFEObWyruSig9GayCx9zizbDkwIDAQAB\",
+      \"notifyUrl\": \"http://www.uyoungdiy.com/paycallback/zfb\"
+    },
+    \"dependencies\": {
+      \"api\": \"        'notifyUrl' => 'http://www.uyoungdiy.com/paycallback/zfb'\",
+      \"cdn\": \"        'rsaPrivateKey' => 'MIIEpQIBAAKCAQEA7rpVBtOeum10fU9gq53b1eIEN7r2yoat2Wku2pPn3LaZ4JYS1KpjC8eMtolB3+qsJmY98eXFQRWo4IYE96s0rE06GCdeOrSwUXFvWsU5HjPaD1GwuBK/j8RG30GVIvnZneXXNmvAeKf9a1qqcumT2Fj9GgbgingcQKm6CAVIqBpWCBlMbSqRh7CFSZUIw2RkyuSPRIwT9zNIucn2E8j1UsQy3zyY/ok0zNgaLt3LkEq+QZdPZ1IZ+DFNaicdNGC3rB4xI1aOpFiCh/D/aZejQxhGKDCHAltp0BGxFq4lj3Eq8Ur0a1es0WHSkg2EVMGS9oUle0EYuLPYGmrH+Uym/wIDAQABAoIBAQDiF263jGxju437r9WqM1MkeW3tKhDZNjwoD8nkEPgivH13iipDZytu2IqXxd6xpptrsqEwG6B5R34tRkAmH+s+09UVUxOXHdFvELOZj/fMducqYv+vFXJ/QjCs+Hu6KE7FkAwG6n3ax57msXOEaVswJvduUt0NxztasmQRfI+XQ6W5agq/DjsgR6AmJfZOzLfeHqHFWwrseRrpaO6UFdhjOnngqcQBlXiOOzQbGSwL1TvFjIULxQJow0nVy5i9Gknhb0AEiyBZ7xMdccumzfzB0G2eBRo1QBy08RByElV35wLaasHb9XutnUO4urYvuGO0AurCkStfjC6oiumvly/hAoGBAPjHC/AXpyUMERRudDpiRwodq2wHxVHFR8WzZGETvpxCcdf/pMFl5xaSXhp7eWzLY1+zRnyBtn6EcJwtSeGpRuQmocxyeG4KkqGqeBv1ejDEGjvcsK9agafERqj6xS4IUnLkdu8NxlNDECijReZ6BrzN1rtJhzfn4c4pgRKCZS0rAoGBAPWomEYB9pqiUNvjTW505lryBrQfidz5Kqb/MBQ2Wabp3pVtsTJnclB/ySnLU1CToqgb8zx7rpZlfcxwRCMKeD+qzL/PdWTl7iVQNljvAItkdWflCQ486tNMdUToaH+k1Lr7GkjyXcMQiLqN9ZFwF6gpJiEvL4i/CZQgKCUL/kt9AoGBAJQS5agia/pBFGl01PlrRZ1fy4ihl3D0W6PxAu5FMk8PvXMzVn1GiiWFOT3KAJwg8yUjL/Erw9PKQLy0uCT4/JkP5X4rJENbR6uyK4t4sSIVlwfKc9/rnwCccvJhULv1eB2qnp/rMwCcCiImDJUCTMBURFt1iGZePqjXS1wZAN/BAoGAeNVQ8T6N+knU1BPeRnKhzCI4QekxesvkuvfSwl5pgryOi5nFCzHu/MGeRTyJ4px76Yy1/A4qNjf9xM2D9mhz9X0h8UcuS0798MSftub4sZfcWBpEdghoyT5WgGqA3ChLqx1QNIlirUw4tOqW287zE/gJlVEMZIrzPzUCChb4IlECgYEAp352KZTJUz6YMtKf3boOZHuA/Mw8MUqwmz/n+5g/8n7BJyDZkIqJwLzGLTOd6XFLWQydnpMPJA/lgZFByPq69eeu5PWOojAq7MIbN3kDtt8WZJ+o/ytm8o1W8UvqgloPo/pppDgbSeVyThgf+xQbw9QC/EDArmCvc0lBeYHHokk=',\"
+    }
+  }
+]
+","output_preview":"[
+  {
+    \"file\": \"/wwwroot/applications/www.uyoungdiy.com/config/console.php\",
+    \"defines\": {
+
+    },
+    \"array_config\": {
+      \"id\": \"basic-console\",
+      \"basePath\": \"dirname(__DIR__),\",
+      \"bootstrap\": \"[\",
+      \"controllerNamespace\": \"app\\\\commands\",
+      \"aliases\": \"[\",
+      \"@bower\": \"@vendor/bower-asset\",
+      \"@npm\": \"@vendor/npm-asset\",
+      \"@tests\": \"@app/tests\",
+      \"components\": \"[\",
+      \"cache\": \"[\",
+      \"class\": \"yii\\\\caching\\\\FileCache\",
+      \"log\": \"[\",
+    ..."} 
+[2025-09-26 16:50:57] local.INFO: JSON数据采集成功 {"keys":[0,1,2,3,4,5,6,7,8],"size":9828,"formatted_size":10115} 
+[2025-09-26 16:50:57] local.INFO: 采集组件执行成功 {"server_id":78,"collector_id":5,"output_length":9829,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-26 16:50:57] local.INFO: 任务详情执行成功 {"task_id":34,"detail_id":568,"execution_time":2.245} 
+[2025-09-26 16:50:57] local.INFO: 开始执行任务详情 {"task_id":34,"detail_id":569,"server_name":"122.9.15.110","collector_name":"系统-目录读取"} 
+[2025-09-26 16:50:57] local.INFO: 任务进度更新 {"task_id":34,"total":6,"completed":5,"running":1,"progress":83.33} 
+[2025-09-26 16:50:59] local.INFO: 采集组件执行完成 - 完整响应信息 {"server_id":78,"server_name":"122.9.15.110","server_ip":"122.9.15.110","collector_id":7,"collector_name":"系统-目录读取","collector_code":"system_dir_info","output_length":329,"raw_output":"{\"filesystem\":{\"path\":\"/\",\"children\":[\"//alidata\",\"//bin\",\"//boot\",\"//CloudResetPwdAgentNew\",\"//CloudResetPwdUpdateAgent\",\"//CloudrResetPwdAgent\",\"//data\",\"//dev\",\"//etc\",\"//home\",\"//lib\",\"//lib64\",\"//lost+found\",\"//media\",\"//mnt\",\"//opt\",\"//proc\",\"//root\",\"//run\",\"//sbin\",\"//srv\",\"//sys\",\"//tmp\",\"//usr\",\"//var\",\"//wwwroot\"]}}
+","output_preview":"{\"filesystem\":{\"path\":\"/\",\"children\":[\"//alidata\",\"//bin\",\"//boot\",\"//CloudResetPwdAgentNew\",\"//CloudResetPwdUpdateAgent\",\"//CloudrResetPwdAgent\",\"//data\",\"//dev\",\"//etc\",\"//home\",\"//lib\",\"//lib64\",\"//lost+found\",\"//media\",\"//mnt\",\"//opt\",\"//proc\",\"//root\",\"//run\",\"//sbin\",\"//srv\",\"//sys\",\"//tmp\",\"//usr\",\"//var\",\"//wwwroot\"]}}
+"} 
+[2025-09-26 16:50:59] local.INFO: JSON数据采集成功 {"keys":["filesystem"],"size":328,"formatted_size":760} 
+[2025-09-26 16:50:59] local.INFO: 采集组件执行成功 {"server_id":78,"collector_id":7,"output_length":329,"parsed_result_keys":["data_type","formatted_json","parsed_data","raw_output","parsed_at"],"parsed_result_type":"array"} 
+[2025-09-26 16:50:59] local.INFO: 任务详情执行成功 {"task_id":34,"detail_id":569,"execution_time":1.328} 
+[2025-09-26 16:50:59] local.INFO: 任务最终状态更新 {"task_id":34,"final_status":2,"total":6,"completed":6,"failed":0} 

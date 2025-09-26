@@ -14,7 +14,7 @@
 @else
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>采集任务详情 <small class="text-muted">(重构版)</small></h1>
+        <h1>采集任务详情</h1>
         <div>
             <!-- 任务控制按钮 -->
             @if ($task->status == 0)
@@ -501,6 +501,12 @@ function refreshTaskStatus() {
                     stopStatusUpdates();
                     isExecuting = false;
                     addExecutionLog('任务执行完成，状态: ' + response.data.status_text);
+                    
+                    // 延迟刷新页面，让用户看到完成提示
+                    addExecutionLog('正在刷新页面以显示最终结果...');
+                    setTimeout(function() {
+                        location.reload();
+                    }, 3000);
                 }
             }
         },

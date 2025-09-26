@@ -19,16 +19,22 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // 使用JavaScript设置进度条宽度
-            <?php
-            foreach($tasks as $task) {
-                echo "(function() {";
-                echo "    var progressBar = document.querySelector('.task-progress-bar-".$task->id."');";
-                echo "    if (progressBar) {";
-                echo "        progressBar.style.width = '".$task->progress."%';";
-                echo "    }";
-                echo "})();";
-            }
-            ?>
+            var progressBars = [
+                <?php $__currentLoopData = $tasks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                {
+                    id: '<?php echo e($task->id); ?>',
+                    progress: <?php echo e($task->progress); ?>
+
+                },
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            ];
+            
+            progressBars.forEach(function(task) {
+                var progressBar = document.querySelector('.task-progress-bar-' + task.id);
+                if (progressBar) {
+                    progressBar.style.width = task.progress + '%';
+                }
+            });
         });
     </script>
     
@@ -338,6 +344,10 @@
         // 手动触发批量任务
         window.triggerBatchTask = function(taskId) {
             if (confirm("确定要手动触发执行此批量任务吗？")) {
+                // 禁用相关按钮防止重复点击
+                var $button = $('button[onclick*="triggerBatchTask(' + taskId + ')"]');
+                $button.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> 执行中...');
+                
                 $.ajax({
                     url: "<?php echo e(route('collection-tasks.trigger-batch', ':id')); ?>".replace(":id", taskId),
                     type: "POST",
@@ -346,14 +356,27 @@
                     },
                     success: function(response) {
                         if (response.success) {
-                            toastr.success("批量任务已开始执行！");
-                            location.reload();
+                            // 显示成功提示并刷新页面
+                            alert("批量任务已开始执行！页面即将刷新...");
+                            setTimeout(function() {
+                                location.reload();
+                            }, 1000);
                         } else {
-                            toastr.error("触发失败：" + response.message);
+                            alert("触发失败：" + response.message);
+                            // 恢复按钮状态
+                            $button.prop('disabled', false).html('<i class="fas fa-play"></i> 执行');
                         }
                     },
                     error: function(xhr) {
-                        toastr.error("请求失败：" + (xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : xhr.responseText));
+                        var errorMsg = "请求失败";
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMsg = xhr.responseJSON.message;
+                        } else if (xhr.responseText) {
+                            errorMsg = xhr.responseText;
+                        }
+                        alert("请求失败：" + errorMsg);
+                        // 恢复按钮状态
+                        $button.prop('disabled', false).html('<i class="fas fa-play"></i> 执行');
                     }
                 });
             }
