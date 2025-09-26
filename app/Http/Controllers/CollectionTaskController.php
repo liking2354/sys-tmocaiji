@@ -7,9 +7,11 @@ use App\Models\TaskDetail;
 use App\Models\Server;
 use App\Models\Collector;
 use App\Services\CollectionService;
+use App\Services\TaskExecutionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class CollectionTaskController extends Controller
 {
@@ -21,13 +23,22 @@ class CollectionTaskController extends Controller
     protected $collectionService;
 
     /**
+     * 任务执行服务
+     *
+     * @var TaskExecutionService
+     */
+    protected $taskExecutionService;
+
+    /**
      * 构造函数
      *
      * @param CollectionService $collectionService
+     * @param TaskExecutionService $taskExecutionService
      */
-    public function __construct(CollectionService $collectionService)
+    public function __construct(CollectionService $collectionService, TaskExecutionService $taskExecutionService)
     {
         $this->collectionService = $collectionService;
+        $this->taskExecutionService = $taskExecutionService;
     }
 
     /**
@@ -184,7 +195,8 @@ class CollectionTaskController extends Controller
                 ->withInput();
         }
 
-        $result = $this->collectionService->executeBatchCollection(
+        // 创建批量采集任务（不立即执行）
+        $result = $this->createBatchTask(
             $request->input('name'),
             $request->input('description') ?? '',
             $serverIds,
@@ -195,14 +207,14 @@ class CollectionTaskController extends Controller
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => true,
-                    'message' => '批量采集任务已创建并开始执行',
+                    'message' => '批量采集任务已创建，请手动启动执行',
                     'data' => [
                         'id' => $result['task_id']
                     ]
                 ]);
             }
             return redirect()->route('collection-tasks.show', $result['task_id'])
-                ->with('success', '批量采集任务已创建并开始执行');
+                ->with('success', '批量采集任务已创建，请点击"开始执行"按钮启动任务');
         } else {
             if ($request->expectsJson()) {
                 return response()->json([
@@ -213,6 +225,85 @@ class CollectionTaskController extends Controller
             return redirect()->back()
                 ->withErrors(['error' => $result['message']])
                 ->withInput();
+        }
+    }
+
+    /**
+     * 创建批量采集任务（不立即执行）
+     *
+     * @param string $name
+     * @param string $description
+     * @param array $serverIds
+     * @param array $collectorIds
+     * @return array
+     */
+    protected function createBatchTask(string $name, string $description, array $serverIds, array $collectorIds)
+    {
+        try {
+            // 验证服务器和采集组件是否存在
+            $servers = Server::whereIn('id', $serverIds)->get();
+            $collectors = Collector::whereIn('id', $collectorIds)->get();
+
+            if ($servers->count() != count($serverIds)) {
+                return [
+                    'success' => false,
+                    'message' => '部分服务器不存在'
+                ];
+            }
+
+            if ($collectors->count() != count($collectorIds)) {
+                return [
+                    'success' => false,
+                    'message' => '部分采集组件不存在'
+                ];
+            }
+
+            // 创建采集任务（状态为未开始）
+            $task = CollectionTask::create([
+                'name' => $name,
+                'description' => $description,
+                'type' => 'batch',
+                'status' => 0, // 未开始
+                'total_servers' => count($serverIds) * count($collectorIds),
+                'created_by' => Auth::id() ?: 1
+            ]);
+
+            // 创建任务详情
+            foreach ($serverIds as $serverId) {
+                foreach ($collectorIds as $collectorId) {
+                    TaskDetail::create([
+                        'task_id' => $task->id,
+                        'server_id' => $serverId,
+                        'collector_id' => $collectorId,
+                        'status' => 0 // 未开始
+                    ]);
+                }
+            }
+
+            Log::info('批量采集任务创建成功', [
+                'task_id' => $task->id,
+                'task_name' => $name,
+                'server_count' => count($serverIds),
+                'collector_count' => count($collectorIds),
+                'total_details' => count($serverIds) * count($collectorIds)
+            ]);
+
+            return [
+                'success' => true,
+                'message' => '批量采集任务创建成功',
+                'task_id' => $task->id
+            ];
+
+        } catch (\Exception $e) {
+            Log::error('创建批量采集任务失败', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return [
+                'success' => false,
+                'message' => '创建任务失败：' . $e->getMessage()
+            ];
         }
     }
 
@@ -414,49 +505,46 @@ class CollectionTaskController extends Controller
     public function triggerBatchTask($id)
     {
         try {
-            $task = \App\Models\CollectionTask::findOrFail($id);
+            $task = CollectionTask::findOrFail($id);
             
             // 检查是否为批量任务且未执行
-            if ($task->type === 'single' || $task->status !== 0) {
+            if ($task->type === 'single') {
                 return response()->json([
                     'success' => false,
-                    'message' => '只能触发未执行的批量任务'
+                    'message' => '只能触发批量任务'
+                ]);
+            }
+
+            if ($task->status !== 0) {
+                return response()->json([
+                    'success' => false,
+                    'message' => '只能触发未开始的任务'
                 ]);
             }
             
-            // 更新任务状态为进行中
-            $task->status = 1;
-            $task->started_at = now();
-            $task->save();
-            
-            // 获取该批量任务下的所有子任务
-            $taskDetails = $task->taskDetails;
-            
-            // 更新所有子任务状态为进行中
-            foreach ($taskDetails as $detail) {
-                if ($detail->status === 0) { // 只处理未开始的子任务
-                    $detail->status = 1; // 设置为进行中
-                    $detail->started_at = now();
-                    $detail->save();
-                }
-            }
-            
-            // 直接执行批量任务执行逻辑（不使用队列）
-            $job = new \App\Jobs\ExecuteBatchCollectionJob($task->id);
-            $job->handle($task->id);
+            // 使用新的任务执行服务
+            $result = $this->taskExecutionService->executeBatchTask($id);
             
             // 如果是AJAX请求，返回JSON响应
             if (request()->ajax()) {
-                return response()->json([
-                    'success' => true,
-                    'message' => '批量任务已触发，所有子任务开始执行'
-                ]);
+                return response()->json($result);
             }
             
             // 否则重定向到任务详情页
-            return redirect()->route('collection-tasks.show', $task->id)
-                ->with('success', '批量任务已手动触发，所有子任务开始执行');
+            if ($result['success']) {
+                return redirect()->route('collection-tasks.show', $task->id)
+                    ->with('success', $result['message']);
+            } else {
+                return redirect()->route('collection-tasks.show', $task->id)
+                    ->with('error', $result['message']);
+            }
         } catch (\Exception $e) {
+            Log::error('触发批量任务失败', [
+                'task_id' => $id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
             if (request()->ajax()) {
                 return response()->json([
                     'success' => false,
@@ -470,38 +558,74 @@ class CollectionTaskController extends Controller
     }
 
     /**
-     * 取消正在执行的任务
+     * 重置任务状态
      *
-     * @param CollectionTask $task
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function cancel(CollectionTask $task)
+    public function resetTask($id)
     {
-        if (!$task->isRunning()) {
+        try {
+            $result = $this->taskExecutionService->resetTask($id);
+            return response()->json($result);
+        } catch (\Exception $e) {
+            Log::error('重置任务失败', [
+                'task_id' => $id,
+                'error' => $e->getMessage()
+            ]);
+
             return response()->json([
                 'success' => false,
-                'message' => '只能取消正在执行的任务'
-            ]);
+                'message' => '重置失败：' . $e->getMessage()
+            ], 500);
         }
+    }
 
-        // 更新任务状态为失败
-        $task->update([
-            'status' => 3, // 失败
-            'completed_at' => now()
-        ]);
-
-        // 更新所有未完成的任务详情状态
-        $task->taskDetails()
-            ->whereIn('status', [0, 1])
-            ->update([
-                'status' => 3,
-                'error_message' => '任务被用户取消',
-                'completed_at' => now()
+    /**
+     * 取消正在执行的任务
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function cancel($id)
+    {
+        try {
+            $result = $this->taskExecutionService->cancelTask($id);
+            return response()->json($result);
+        } catch (\Exception $e) {
+            Log::error('取消任务失败', [
+                'task_id' => $id,
+                'error' => $e->getMessage()
             ]);
 
-        return response()->json([
-            'success' => true,
-            'message' => '任务已取消'
-        ]);
+            return response()->json([
+                'success' => false,
+                'message' => '取消失败：' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * 获取任务实时状态
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getTaskStatus($id)
+    {
+        try {
+            $result = $this->taskExecutionService->getTaskStatus($id);
+            return response()->json($result);
+        } catch (\Exception $e) {
+            Log::error('获取任务状态失败', [
+                'task_id' => $id,
+                'error' => $e->getMessage()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => '获取状态失败：' . $e->getMessage()
+            ], 500);
+        }
     }
 }

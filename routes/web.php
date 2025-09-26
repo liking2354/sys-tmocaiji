@@ -6,6 +6,7 @@ use App\Http\Controllers\ServerController;
 use App\Http\Controllers\ServerGroupController;
 use App\Http\Controllers\CollectorController;
 use App\Http\Controllers\CollectionTaskController;
+use App\Http\Controllers\TaskExecutionController;
 use App\Http\Controllers\CollectionHistoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataController;
@@ -67,11 +68,30 @@ Route::delete('server-groups/batch-delete', [ServerGroupController::class, 'batc
     Route::get('collection-tasks/batch/create', [CollectionTaskController::class, 'createBatch'])->name('collection-tasks.batch.create');
     Route::post('collection-tasks/batch/execute', [CollectionTaskController::class, 'executeBatch'])->name('collection-tasks.batch.execute');
     Route::post('collection-tasks/{task}/retry', [CollectionTaskController::class, 'retryFailed'])->name('collection-tasks.retry');
-    Route::post('collection-tasks/{task}/cancel', [CollectionTaskController::class, 'cancel'])->name('collection-tasks.cancel');
-    Route::post('collection-tasks/{id}/trigger-batch', [CollectionTaskController::class, 'triggerBatchTask'])->name('collection-tasks.trigger-batch');
-    Route::get('collection-tasks/{task}/progress', [CollectionTaskController::class, 'getProgress'])->name('collection-tasks.progress');
-    Route::get('task-details/{detail}/result', [CollectionTaskController::class, 'getTaskDetailResult'])->name('task-details.result');
     Route::post('collection-tasks/batch-destroy', [CollectionTaskController::class, 'batchDestroy'])->name('collection-tasks.batch-destroy');
+    Route::get('task-details/{detail}/result', [CollectionTaskController::class, 'getTaskDetailResult'])->name('task-details.result');
+    
+    // 任务执行管理 - 重构版
+    Route::prefix('task-execution')->name('task-execution.')->group(function () {
+        // 执行任务
+        Route::post('execute/{taskId}', [TaskExecutionController::class, 'executeBatchTask'])->name('execute');
+        Route::post('batch-execute', [TaskExecutionController::class, 'executeBatchTasks'])->name('batch-execute');
+        
+        // 任务控制
+        Route::post('reset/{taskId}', [TaskExecutionController::class, 'resetTask'])->name('reset');
+        Route::post('cancel/{taskId}', [TaskExecutionController::class, 'cancelTask'])->name('cancel');
+        
+        // 状态查询
+        Route::get('status/{taskId}', [TaskExecutionController::class, 'getTaskStatus'])->name('status');
+        Route::post('batch-status', [TaskExecutionController::class, 'getBatchTaskStatus'])->name('batch-status');
+    });
+    
+    // 兼容旧路由（重定向到新的任务执行服务）
+    Route::post('collection-tasks/{id}/trigger-batch', [CollectionTaskController::class, 'triggerBatchTask'])->name('collection-tasks.trigger-batch');
+    Route::post('collection-tasks/{id}/cancel', [CollectionTaskController::class, 'cancel'])->name('collection-tasks.cancel');
+    Route::post('collection-tasks/{id}/reset', [CollectionTaskController::class, 'resetTask'])->name('collection-tasks.reset');
+    Route::get('collection-tasks/{id}/status', [CollectionTaskController::class, 'getTaskStatus'])->name('collection-tasks.status');
+    Route::get('collection-tasks/{task}/progress', [CollectionTaskController::class, 'getProgress'])->name('collection-tasks.progress');
     
     // 采集组件管理
     Route::resource('collectors', CollectorController::class);
