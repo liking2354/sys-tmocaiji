@@ -310,13 +310,13 @@ class CollectionTaskController extends Controller
     /**
      * 查看任务详情
      *
-     * @param int $id 任务ID
+     * @param CollectionTask $collectionTask 任务实例
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(CollectionTask $collectionTask)
     {
         try {
-            $task = CollectionTask::findOrFail($id);
+            $task = $collectionTask;
             $task->load(['taskDetails.server', 'taskDetails.collector', 'creator']);
             
             // 按服务器分组任务详情
@@ -342,7 +342,7 @@ class CollectionTaskController extends Controller
                 ]);
             }
             
-            return view('collection-tasks.show-enhanced', compact('task', 'detailsByServer', 'stats'));
+            return view('collection-tasks.show', compact('task', 'detailsByServer', 'stats'));
         } catch (\Exception $e) {
             if (request()->ajax()) {
                 return response()->json([
