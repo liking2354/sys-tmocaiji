@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel
         Commands\QueueWorkCommand::class,
         Commands\ResetStuckTasksCommand::class,
         Commands\DiagnoseTasksCommand::class,
+        Commands\FixTaskStatusCommand::class,
     ];
 
     /**
