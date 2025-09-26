@@ -160,8 +160,70 @@ fi
 
 # 设置文件权限
 echo -e "${BLUE}正在设置文件权限...${NC}"
+
+# 检测Web服务器用户
+WEB_USER=""
+if id "www-data" &>/dev/null; then
+    WEB_USER="www-data"
+elif id "nginx" &>/dev/null; then
+    WEB_USER="nginx"
+elif id "apache" &>/dev/null; then
+    WEB_USER="apache"
+else
+    echo -e "${YELLOW}警告: 未检测到常见的Web服务器用户，使用当前用户设置权限${NC}"
+fi
+
+# 设置storage和bootstrap/cache目录权限
 chmod -R 775 storage bootstrap/cache
+
+# 如果检测到Web服务器用户，设置所有者
+if [ ! -z "$WEB_USER" ]; then
+    echo -e "${BLUE}检测到Web服务器用户: ${GREEN}$WEB_USER${NC}"
+    echo -e "${BLUE}正在设置目录所有者...${NC}"
+    
+    # 设置storage目录所有者和权限
+    sudo chown -R $WEB_USER:$WEB_USER storage
+    sudo chmod -R 775 storage
+    
+    # 设置bootstrap/cache目录所有者和权限
+    sudo chown -R $WEB_USER:$WEB_USER bootstrap/cache
+    sudo chmod -R 775 bootstrap/cache
+    
+    echo -e "${GREEN}目录所有者设置完成${NC}"
+fi
+
+# 确保日志目录存在并设置权限
+mkdir -p storage/logs
+chmod 775 storage/logs
+
+# 处理日志文件权限
+if [ -f "storage/logs/laravel.log" ]; then
+    echo -e "${BLUE}正在设置日志文件权限...${NC}"
+    chmod 664 storage/logs/laravel.log
+    if [ ! -z "$WEB_USER" ]; then
+        sudo chown $WEB_USER:$WEB_USER storage/logs/laravel.log
+    fi
+    echo -e "${GREEN}日志文件权限设置完成${NC}"
+else
+    echo -e "${BLUE}创建日志文件并设置权限...${NC}"
+    touch storage/logs/laravel.log
+    chmod 664 storage/logs/laravel.log
+    if [ ! -z "$WEB_USER" ]; then
+        sudo chown $WEB_USER:$WEB_USER storage/logs/laravel.log
+    fi
+    echo -e "${GREEN}日志文件创建并设置权限完成${NC}"
+fi
+
+# 设置其他日志文件权限
+find storage/logs -name "*.log" -exec chmod 664 {} \;
+if [ ! -z "$WEB_USER" ]; then
+    find storage/logs -name "*.log" -exec sudo chown $WEB_USER:$WEB_USER {} \;
+fi
+
+# 设置脚本文件执行权限
 find . -type f -name "*.sh" -exec chmod +x {} \;
+
+echo -e "${GREEN}文件权限设置完成${NC}"
 
 echo -e "${GREEN}====================================================="
 echo "更新完成!"
