@@ -79,6 +79,11 @@
                                         <a href="{{ route('server-groups.edit', $group) }}" class="btn btn-sm btn-warning">
                                             <i class="fas fa-edit"></i> 编辑
                                         </a>
+                                        <button type="button" class="btn btn-sm btn-success" 
+                                                onclick="createChangeTask({{ $group->id }}, '{{ $group->name }}')"
+                                                title="创建变更任务">
+                                            <i class="fas fa-cogs"></i> 变更任务
+                                        </button>
                                         <form action="{{ route('server-groups.destroy', $group) }}" method="POST" class="d-inline" onsubmit="return confirm('确定要删除该分组吗？')">
                                             @csrf
                                             @method('DELETE')
@@ -182,5 +187,14 @@
             $('#batch-form').submit();
         });
     });
+    
+    // 创建变更任务函数
+    function createChangeTask(groupId, groupName) {
+        // 跳转到创建变更任务页面，并预选该服务器分组
+        const url = new URL('{{ route("system-change.tasks.create") }}', window.location.origin);
+        url.searchParams.set('server_group_id', groupId);
+        url.searchParams.set('server_group_name', groupName);
+        window.location.href = url.toString();
+    }
 </script>
 @endsection

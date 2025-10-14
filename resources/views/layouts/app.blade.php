@@ -313,6 +313,26 @@
                             </ul>
                         </li>
                         
+                        <!-- 系统变更菜单 -->
+                        <li class="nav-item">
+                            <a class="nav-link sidebar-submenu-toggle {{ request()->routeIs('system-change.*') ? 'active' : '' }}" href="javascript:void(0);">
+                                <i class="fas fa-exchange-alt mr-2"></i> 系统变更
+                                <i class="fas fa-chevron-down float-right mt-1"></i>
+                            </a>
+                            <ul class="sidebar-submenu" style="display: {{ request()->routeIs('system-change.*') ? 'block' : 'none' }};">
+                                <li class="nav-item">
+                                    <a class="nav-link pl-4 {{ request()->routeIs('system-change.templates.*') ? 'active' : '' }}" href="{{ route('system-change.templates.index') }}">
+                                        <i class="fas fa-file-code mr-2"></i> 配置模板
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link pl-4 {{ request()->routeIs('system-change.tasks.*') ? 'active' : '' }}" href="{{ route('system-change.tasks.index') }}">
+                                        <i class="fas fa-tasks mr-2"></i> 变更任务
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        
                         <!-- 云资源管理菜单 -->
                         <li class="nav-item">
                             <a class="nav-link sidebar-submenu-toggle {{ request()->routeIs('cloud.*') ? 'active' : '' }}" href="javascript:void(0);">

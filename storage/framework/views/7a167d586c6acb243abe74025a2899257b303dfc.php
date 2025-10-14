@@ -17,9 +17,19 @@
             <button type="button" class="btn btn-info" id="batchModifyComponentsBtn" disabled>
                 <i class="fas fa-cogs"></i> 批量修改组件
             </button>
-            <button type="button" class="btn btn-success" id="downloadBtn" disabled>
-                <i class="fas fa-download"></i> 直接下载
-            </button>
+            <div class="btn-group">
+                <button type="button" class="btn btn-success dropdown-toggle" id="downloadBtn" disabled data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-download"></i> 直接下载
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#" id="downloadExcel">
+                        <i class="fas fa-file-excel"></i> 下载 Excel (.xlsx)
+                    </a>
+                    <a class="dropdown-item" href="#" id="downloadCsv">
+                        <i class="fas fa-file-csv"></i> 下载 CSV (.csv)
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
     
@@ -327,10 +337,8 @@
             $('#selectAll').prop('checked', allChecked && checkedCount > 0);
         }
         
-        // 直接下载按钮点击事件
-        $('#downloadBtn').click(function(e) {
-            e.preventDefault();
-
+        // 下载功能通用函数
+        function downloadServers(format) {
             var serverIds = $('.server-checkbox:checked').map(function() {
                 return $(this).val();
             }).get();
@@ -340,16 +348,19 @@
                 return false;
             }
             
-            // 创建临时表单（推荐方案）
+            // 创建临时表单
             var tempForm = $('<form>', {
                 action: '<?php echo e(route("servers.download")); ?>',
                 method: 'POST',
                 style: 'display: none;',
-                target: '_blank' // 在新窗口打开下载，避免影响当前页面
+                target: '_blank'
             });
             
             // 添加CSRF令牌
             tempForm.append('<input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>">');
+            
+            // 添加格式参数
+            tempForm.append('<input type="hidden" name="format" value="' + format + '">');
             
             // 添加服务器ID
             serverIds.forEach(function(serverId) {
@@ -364,6 +375,18 @@
             setTimeout(function() {
                 tempForm.remove();
             }, 1000);
+        }
+        
+        // Excel下载点击事件
+        $('#downloadExcel').click(function(e) {
+            e.preventDefault();
+            downloadServers('xlsx');
+        });
+        
+        // CSV下载点击事件
+        $('#downloadCsv').click(function(e) {
+            e.preventDefault();
+            downloadServers('csv');
         });
         
         // 批量采集按钮点击事件

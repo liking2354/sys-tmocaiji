@@ -13,6 +13,8 @@ use App\Http\Controllers\DataController;
 use App\Http\Controllers\CloudPlatformController;
 use App\Http\Controllers\CloudResourceController;
 use App\Http\Controllers\CloudRegionController;
+use App\Http\Controllers\ConfigTemplateController;
+use App\Http\Controllers\SystemChangeTaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -142,6 +144,30 @@ Route::delete('server-groups/batch-delete', [ServerGroupController::class, 'batc
         Route::post('regions/sync-platform', [CloudRegionController::class, 'syncPlatformRegions'])->name('regions.sync-platform');
         Route::post('regions/batch-delete', [CloudRegionController::class, 'batchDelete'])->name('regions.batch-delete');
         Route::post('regions/clear-all', [CloudRegionController::class, 'clearAll'])->name('regions.clear-all');
+    });
+    
+    // 系统变更管理
+    Route::prefix('system-change')->name('system-change.')->group(function () {
+        // 配置模板管理
+        Route::resource('templates', ConfigTemplateController::class);
+        Route::post('templates/{template}/toggle-status', [ConfigTemplateController::class, 'toggleStatus'])->name('templates.toggle-status');
+        Route::post('templates/{template}/duplicate', [ConfigTemplateController::class, 'duplicate'])->name('templates.duplicate');
+        Route::post('templates/preview', [ConfigTemplateController::class, 'preview'])->name('templates.preview');
+        Route::get('templates/{template}/variables', [ConfigTemplateController::class, 'getVariables'])->name('templates.variables');
+        Route::get('templates/{template}/export', [ConfigTemplateController::class, 'export'])->name('templates.export');
+        Route::post('templates/import', [ConfigTemplateController::class, 'import'])->name('templates.import');
+        
+        // 变更任务管理
+        Route::resource('tasks', SystemChangeTaskController::class);
+        Route::post('tasks/{task}/execute', [SystemChangeTaskController::class, 'execute'])->name('tasks.execute');
+        Route::post('tasks/{task}/pause', [SystemChangeTaskController::class, 'pause'])->name('tasks.pause');
+        Route::post('tasks/{task}/cancel', [SystemChangeTaskController::class, 'cancel'])->name('tasks.cancel');
+        Route::post('tasks/{task}/duplicate', [SystemChangeTaskController::class, 'duplicate'])->name('tasks.duplicate');
+        Route::get('tasks/{task}/status', [SystemChangeTaskController::class, 'getStatus'])->name('tasks.status');
+        
+        // AJAX接口
+        Route::get('server-groups/{serverGroup}/servers', [SystemChangeTaskController::class, 'getServers'])->name('server-groups.servers');
+        Route::post('templates/variables', [SystemChangeTaskController::class, 'getTemplateVariables'])->name('templates.get-variables');
     });
     
     // 用户管理

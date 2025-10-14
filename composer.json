@@ -5,12 +5,23 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "alibabacloud/domain-20180129": "^4.0",
+        "alibabacloud/ecs-20140526": "^1.0",
+        "alibabacloud/r-kvstore-20150101": "^6.0",
+        "alibabacloud/rds-20140815": "^1.0",
+        "alibabacloud/slb-20140515": "^2.0",
         "doctrine/dbal": "^4.3",
+        "huaweicloud/huaweicloud-sdk-php": "^3.1.0",
         "laravel/framework": "^9.0",
         "laravel/ui": "^3.4",
         "maatwebsite/excel": "^3.1",
         "phpseclib/phpseclib": "^3.0",
-        "predis/predis": "^3.2"
+        "predis/predis": "^3.2",
+        "tencentcloud/cdb": "^3.0.0",
+        "tencentcloud/clb": "^3.0.0",
+        "tencentcloud/cvm": "^3.0.0",
+        "tencentcloud/domain": "^3.0.0",
+        "tencentcloud/redis": "^3.0.0"
     },
     "require-dev": {
         "spatie/laravel-ignition": "^1.0",
