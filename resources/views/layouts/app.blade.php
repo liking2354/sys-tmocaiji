@@ -12,6 +12,8 @@
     <!-- Styles -->
     <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/all.min.css') }}" rel="stylesheet">
+    <!-- Toastr CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     @yield('styles')
     
     <style>
@@ -311,6 +313,31 @@
                             </ul>
                         </li>
                         
+                        <!-- 云资源管理菜单 -->
+                        <li class="nav-item">
+                            <a class="nav-link sidebar-submenu-toggle {{ request()->routeIs('cloud.*') ? 'active' : '' }}" href="javascript:void(0);">
+                                <i class="fas fa-cloud mr-2"></i> 云资源管理
+                                <i class="fas fa-chevron-down float-right mt-1"></i>
+                            </a>
+                            <ul class="sidebar-submenu" style="display: {{ request()->routeIs('cloud.*') ? 'block' : 'none' }};">
+                                <li class="nav-item">
+                                    <a class="nav-link pl-4 {{ request()->routeIs('cloud.platforms.*') ? 'active' : '' }}" href="{{ route('cloud.platforms.index') }}">
+                                        <i class="fas fa-server mr-2"></i> 云平台管理
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link pl-4 {{ request()->routeIs('cloud.regions.*') ? 'active' : '' }}" href="{{ route('cloud.regions.index') }}">
+                                        <i class="fas fa-globe-asia mr-2"></i> 可用区管理
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link pl-4 {{ request()->routeIs('cloud.resources.*') ? 'active' : '' }}" href="{{ route('cloud.resources.index') }}">
+                                        <i class="fas fa-cubes mr-2"></i> 云资源查询
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        
                         <!-- 系统管理菜单 -->
                         <li class="nav-item">
                             <a class="nav-link sidebar-submenu-toggle {{ request()->routeIs('admin.*') ? 'active' : '' }}" href="javascript:void(0);">
@@ -374,6 +401,8 @@
     <!-- Scripts -->
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
         $(document).ready(function() {
             // 侧边栏展开/收起功能
@@ -403,6 +432,18 @@
                     $this.removeClass('collapsed');
                     $submenu.show();
                     $icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+                }
+                // 云资源管理菜单根据当前路由决定是否展开
+                else if ($this.text().trim().includes('云资源管理')) {
+                    if (window.location.pathname.includes('/cloud/')) {
+                        $this.removeClass('collapsed');
+                        $submenu.show();
+                        $icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+                    } else {
+                        $this.addClass('collapsed');
+                        $submenu.hide();
+                        $icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+                    }
                 }
                 // 系统管理菜单根据当前路由决定是否展开
                 else if ($this.text().trim().includes('系统管理')) {

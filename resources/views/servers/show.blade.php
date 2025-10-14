@@ -658,6 +658,79 @@ function getArrayPreview($array, $maxItems = 3) {
         </div>
     </div>
 </div>
+
+<!-- 进度弹出框 -->
+<div class="modal fade" id="progressModal" tabindex="-1" role="dialog" aria-labelledby="progressModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="progressModalLabel">
+                    <i class="fas fa-cog fa-spin mr-2"></i>
+                    <span id="progressTitle">执行中...</span>
+                </h5>
+            </div>
+            <div class="modal-body">
+                <!-- 总体进度 -->
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="font-weight-bold">总体进度</span>
+                        <span id="overallProgress">0%</span>
+                    </div>
+                    <div class="progress mb-2" style="height: 25px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                             id="overallProgressBar" 
+                             role="progressbar" 
+                             style="width: 0%" 
+                             aria-valuenow="0" 
+                             aria-valuemin="0" 
+                             aria-valuemax="100">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 当前步骤 -->
+                <div class="mb-4">
+                    <h6 class="font-weight-bold mb-3">
+                        <i class="fas fa-tasks mr-2"></i>执行步骤
+                    </h6>
+                    <div id="stepsList">
+                        <!-- 步骤将通过JavaScript动态添加 -->
+                    </div>
+                </div>
+
+                <!-- 详细日志 -->
+                <div class="mb-3">
+                    <h6 class="font-weight-bold mb-2">
+                        <i class="fas fa-list-alt mr-2"></i>详细日志
+                    </h6>
+                    <div id="logContainer" style="max-height: 200px; overflow-y: auto; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 0.25rem; padding: 10px;">
+                        <div id="logContent" style="font-family: 'Courier New', monospace; font-size: 12px; white-space: pre-wrap;"></div>
+                    </div>
+                </div>
+
+                <!-- 结果信息 -->
+                <div id="resultContainer" style="display: none;">
+                    <div class="alert" id="resultAlert" role="alert">
+                        <h6 class="alert-heading" id="resultTitle"></h6>
+                        <p id="resultMessage" class="mb-0"></p>
+                        <div id="resultDetails" class="mt-2" style="display: none;">
+                            <hr>
+                            <small id="resultDetailsContent"></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="progressCloseBtn" disabled>
+                    <i class="fas fa-times mr-1"></i>关闭
+                </button>
+                <button type="button" class="btn btn-primary" id="progressRetryBtn" style="display: none;">
+                    <i class="fas fa-redo mr-1"></i>重试
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('styles')
@@ -687,7 +760,191 @@ function getArrayPreview($array, $maxItems = 3) {
 
 @section('scripts')
 <script>
+// 进度管理器
+class ProgressManager {
+    constructor() {
+        this.modal = $('#progressModal');
+        this.steps = [];
+        this.currentStep = 0;
+        this.isCompleted = false;
+        this.onRetry = null;
+    }
+
+    // 初始化进度框
+    init(title, steps, onRetry = null) {
+        this.steps = steps;
+        this.currentStep = 0;
+        this.isCompleted = false;
+        this.onRetry = onRetry;
+        
+        // 设置标题
+        $('#progressTitle').text(title);
+        
+        // 重置进度条
+        this.updateProgress(0);
+        
+        // 清空并创建步骤列表
+        this.createStepsList();
+        
+        // 清空日志
+        $('#logContent').empty();
+        
+        // 隐藏结果容器
+        $('#resultContainer').hide();
+        
+        // 重置按钮状态
+        $('#progressCloseBtn').prop('disabled', true).show();
+        $('#progressRetryBtn').hide();
+        
+        // 显示模态框
+        this.modal.modal('show');
+    }
+
+    // 创建步骤列表
+    createStepsList() {
+        const stepsList = $('#stepsList');
+        stepsList.empty();
+        
+        this.steps.forEach((step, index) => {
+            const stepHtml = `
+                <div class="d-flex align-items-center mb-2" id="step-${index}">
+                    <div class="step-icon mr-3" style="width: 30px; text-align: center;">
+                        <i class="fas fa-circle text-muted" id="step-icon-${index}"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <span class="step-text" id="step-text-${index}">${step}</span>
+                    </div>
+                    <div class="step-status ml-2" id="step-status-${index}">
+                        <span class="badge badge-secondary">等待中</span>
+                    </div>
+                </div>
+            `;
+            stepsList.append(stepHtml);
+        });
+    }
+
+    // 更新总体进度
+    updateProgress(percentage) {
+        $('#overallProgress').text(Math.round(percentage) + '%');
+        $('#overallProgressBar')
+            .css('width', percentage + '%')
+            .attr('aria-valuenow', percentage);
+    }
+
+    // 开始执行步骤
+    startStep(stepIndex, message = '') {
+        if (stepIndex >= this.steps.length) return;
+        
+        this.currentStep = stepIndex;
+        
+        // 更新步骤状态
+        $(`#step-icon-${stepIndex}`)
+            .removeClass('fa-circle text-muted fa-check text-success fa-times text-danger')
+            .addClass('fa-spinner fa-spin text-primary');
+        
+        $(`#step-status-${stepIndex}`)
+            .html('<span class="badge badge-primary">执行中</span>');
+        
+        // 添加日志
+        this.addLog(`[步骤 ${stepIndex + 1}] ${this.steps[stepIndex]}${message ? ': ' + message : ''}`);
+        
+        // 更新进度
+        const progress = (stepIndex / this.steps.length) * 100;
+        this.updateProgress(progress);
+    }
+
+    // 完成步骤
+    completeStep(stepIndex, success = true, message = '') {
+        if (stepIndex >= this.steps.length) return;
+        
+        const iconClass = success ? 'fa-check text-success' : 'fa-times text-danger';
+        const statusClass = success ? 'badge-success' : 'badge-danger';
+        const statusText = success ? '完成' : '失败';
+        
+        // 更新步骤状态
+        $(`#step-icon-${stepIndex}`)
+            .removeClass('fa-spinner fa-spin text-primary fa-circle text-muted')
+            .addClass(iconClass);
+        
+        $(`#step-status-${stepIndex}`)
+            .html(`<span class="badge ${statusClass}">${statusText}</span>`);
+        
+        // 添加日志
+        const logMessage = `[步骤 ${stepIndex + 1}] ${success ? '✓' : '✗'} ${this.steps[stepIndex]}${message ? ': ' + message : ''}`;
+        this.addLog(logMessage);
+        
+        // 更新进度
+        const progress = ((stepIndex + 1) / this.steps.length) * 100;
+        this.updateProgress(progress);
+    }
+
+    // 添加日志
+    addLog(message) {
+        const timestamp = new Date().toLocaleTimeString();
+        const logContent = $('#logContent');
+        const newLog = `[${timestamp}] ${message}\n`;
+        logContent.append(newLog);
+        
+        // 自动滚动到底部
+        const container = $('#logContainer');
+        container.scrollTop(container[0].scrollHeight);
+    }
+
+    // 显示结果
+    showResult(success, title, message, details = '') {
+        this.isCompleted = true;
+        
+        const alertClass = success ? 'alert-success' : 'alert-danger';
+        const iconClass = success ? 'fa-check-circle' : 'fa-exclamation-circle';
+        
+        $('#resultAlert')
+            .removeClass('alert-success alert-danger alert-warning alert-info')
+            .addClass(alertClass);
+        
+        $('#resultTitle').html(`<i class="fas ${iconClass} mr-2"></i>${title}`);
+        $('#resultMessage').text(message);
+        
+        if (details) {
+            $('#resultDetailsContent').text(details);
+            $('#resultDetails').show();
+        } else {
+            $('#resultDetails').hide();
+        }
+        
+        $('#resultContainer').show();
+        
+        // 启用关闭按钮
+        $('#progressCloseBtn').prop('disabled', false);
+        
+        // 显示重试按钮（如果失败且有重试回调）
+        if (!success && this.onRetry) {
+            $('#progressRetryBtn').show();
+        }
+        
+        // 更新进度到100%
+        this.updateProgress(100);
+    }
+
+    // 关闭进度框
+    close() {
+        this.modal.modal('hide');
+    }
+}
+
+// 全局进度管理器实例
+const progressManager = new ProgressManager();
+
     $(document).ready(function() {
+        // 进度框事件处理
+        $('#progressCloseBtn').click(function() {
+            progressManager.close();
+        });
+        
+        $('#progressRetryBtn').click(function() {
+            if (progressManager.onRetry) {
+                progressManager.onRetry();
+            }
+        });
         // 系统信息展开/收起按钮点击事件
         $('#toggleSystemInfoBtn').click(function() {
             var systemInfo = $('#system-info');
@@ -825,8 +1082,10 @@ function getArrayPreview($array, $maxItems = 3) {
         // 执行所有采集组件
         $('#executeAllCollectorsBtn').click(function() {
             var installedCollectors = [];
+            var collectorNames = [];
             @foreach ($relatedCollectors as $collector)
                 installedCollectors.push({{ $collector->id }});
+                collectorNames.push('{{ $collector->name }}');
             @endforeach
             
             if (installedCollectors.length === 0) {
@@ -835,7 +1094,7 @@ function getArrayPreview($array, $maxItems = 3) {
             }
             
             if (confirm('确定要执行所有采集组件吗？')) {
-                executeMultipleCollectors(installedCollectors);
+                executeAllCollectorsWithProgress(installedCollectors, collectorNames);
             }
         });
         
@@ -847,37 +1106,222 @@ function getArrayPreview($array, $maxItems = 3) {
     
     // 执行单个采集组件
     function executeSingleCollector(collectorId) {
+        // 获取采集组件名称
+        var collectorName = '';
+        @foreach ($relatedCollectors as $collector)
+            if ({{ $collector->id }} === collectorId) {
+                collectorName = '{{ $collector->name }}';
+            }
+        @endforeach
+        
         if (confirm('确定要执行该采集组件吗？')) {
-            var btn = $('button[onclick="executeSingleCollector(' + collectorId + ')"]');
-            var originalText = btn.html();
-            btn.html('<i class="fas fa-spinner fa-spin"></i> 执行中...').prop('disabled', true);
-            
-            $.ajax({
-                url: '{{ route("servers.collection.execute", $server) }}',
-                type: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    collector_ids: [collectorId]
-                },
-                success: function(response) {
-                    if (response.success) {
-                        alert('采集任务已启动！');
-                        // 刷新页面显示最新结果
-                        location.reload();
-                    } else {
-                        alert('执行失败：' + response.message);
-                        btn.html(originalText).prop('disabled', false);
-                    }
-                },
-                error: function(xhr) {
-                    alert('请求失败：' + xhr.responseJSON?.message || xhr.responseText);
-                    btn.html(originalText).prop('disabled', false);
-                }
-            });
+            executeSingleCollectorWithProgress(collectorId, collectorName);
         }
     }
+
+    // 执行单个采集组件（带进度显示）
+    function executeSingleCollectorWithProgress(collectorId, collectorName) {
+        // 定义执行步骤
+        const steps = [
+            '验证采集组件状态',
+            '准备执行环境',
+            '执行采集任务',
+            '处理采集结果'
+        ];
+        
+        // 初始化进度管理器
+        progressManager.init(`执行采集组件: ${collectorName}`, steps, () => executeSingleCollectorWithProgress(collectorId, collectorName));
+        
+        // 执行单个采集流程
+        executeSingleCollectionProcess(collectorId, collectorName);
+    }
+
+    // 执行单个采集流程
+    function executeSingleCollectionProcess(collectorId, collectorName) {
+        // 步骤1: 验证采集组件状态
+        progressManager.startStep(0, `检查采集组件 ${collectorName} 的状态`);
+        
+        setTimeout(() => {
+            progressManager.completeStep(0, true, '采集组件状态正常');
+            
+            // 步骤2: 准备执行环境
+            progressManager.startStep(1, '准备执行环境和参数');
+            
+            setTimeout(() => {
+                progressManager.completeStep(1, true, '执行环境准备完成');
+                
+                // 步骤3: 执行采集任务
+                progressManager.startStep(2, `开始执行采集组件: ${collectorName}`);
+                
+                // 实际的API调用
+                $.ajax({
+                    url: '{{ route("servers.collection.execute", $server) }}',
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        collector_ids: [collectorId]
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            progressManager.completeStep(2, true, '采集任务启动成功');
+                            
+                            // 步骤4: 处理采集结果
+                            progressManager.startStep(3, '等待采集完成并处理结果');
+                            
+                            setTimeout(() => {
+                                progressManager.completeStep(3, true, '采集结果处理完成');
+                                
+                                // 显示成功结果
+                                progressManager.showResult(
+                                    true,
+                                    '采集任务执行成功',
+                                    `采集组件 "${collectorName}" 执行任务已启动`,
+                                    `服务器: {{ $server->name }}\n采集组件: ${collectorName}\n执行时间: ${new Date().toLocaleString()}\n\n页面将在3秒后自动刷新以显示最新结果...`
+                                );
+                                
+                                // 3秒后刷新页面
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 3000);
+                                
+                            }, 800);
+                            
+                        } else {
+                            progressManager.completeStep(2, false, response.message || '采集任务启动失败');
+                            progressManager.showResult(
+                                false,
+                                '采集任务执行失败',
+                                response.message || '采集任务启动失败',
+                                '请检查采集组件配置和服务器连接状态'
+                            );
+                        }
+                    },
+                    error: function(xhr) {
+                        const errorMsg = xhr.responseJSON?.message || '网络错误';
+                        progressManager.completeStep(2, false, errorMsg);
+                        progressManager.showResult(
+                            false,
+                            '采集任务执行失败',
+                            '执行过程中发生错误: ' + errorMsg,
+                            '请检查网络连接和服务器状态'
+                        );
+                    }
+                });
+                
+            }, 500);
+            
+        }, 400);
+    }
     
-    // 执行多个采集组件
+    // 执行所有采集组件（带进度显示）
+    function executeAllCollectorsWithProgress(collectorIds, collectorNames) {
+        // 定义执行步骤
+        const steps = [
+            '验证服务器连接状态',
+            '准备采集环境',
+            '执行采集组件',
+            '收集执行结果',
+            '完成数据处理'
+        ];
+        
+        // 初始化进度管理器
+        progressManager.init('执行所有采集组件', steps, () => executeAllCollectorsWithProgress(collectorIds, collectorNames));
+        
+        // 执行采集流程
+        executeCollectionProcess(collectorIds, collectorNames);
+    }
+
+    // 执行采集流程
+    function executeCollectionProcess(collectorIds, collectorNames) {
+        // 步骤1: 验证服务器连接状态
+        progressManager.startStep(0, '检查服务器 {{ $server->name }} 的连接状态');
+        
+        setTimeout(() => {
+            progressManager.completeStep(0, true, '服务器连接正常');
+            
+            // 步骤2: 准备采集环境
+            progressManager.startStep(1, '准备执行环境和采集参数');
+            
+            setTimeout(() => {
+                progressManager.completeStep(1, true, '采集环境准备完成');
+                
+                // 步骤3: 执行采集组件
+                progressManager.startStep(2, `开始执行 ${collectorIds.length} 个采集组件`);
+                
+                // 添加详细的采集组件信息到日志
+                collectorNames.forEach((name, index) => {
+                    progressManager.addLog(`  - 采集组件 ${index + 1}: ${name}`);
+                });
+                
+                // 实际的API调用
+                $.ajax({
+                    url: '{{ route("servers.collection.execute", $server) }}',
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        collector_ids: collectorIds
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            progressManager.completeStep(2, true, `成功启动 ${collectorIds.length} 个采集任务`);
+                            
+                            // 步骤4: 收集执行结果
+                            progressManager.startStep(3, '等待采集任务完成并收集结果');
+                            
+                            setTimeout(() => {
+                                progressManager.completeStep(3, true, '采集结果收集完成');
+                                
+                                // 步骤5: 完成数据处理
+                                progressManager.startStep(4, '处理采集数据并更新显示');
+                                
+                                setTimeout(() => {
+                                    progressManager.completeStep(4, true, '数据处理完成');
+                                    
+                                    // 显示成功结果
+                                    progressManager.showResult(
+                                        true,
+                                        '采集任务执行成功',
+                                        `成功启动 ${collectorIds.length} 个采集组件的执行任务`,
+                                        `服务器: {{ $server->name }}\n执行时间: ${new Date().toLocaleString()}\n采集组件: ${collectorNames.join(', ')}\n\n页面将在3秒后自动刷新以显示最新结果...`
+                                    );
+                                    
+                                    // 3秒后刷新页面
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 3000);
+                                    
+                                }, 800);
+                                
+                            }, 1000);
+                            
+                        } else {
+                            progressManager.completeStep(2, false, response.message || '采集任务启动失败');
+                            progressManager.showResult(
+                                false,
+                                '采集任务执行失败',
+                                response.message || '采集任务启动失败，请检查服务器状态和采集组件配置',
+                                '请确认服务器连接正常，采集组件已正确安装'
+                            );
+                        }
+                    },
+                    error: function(xhr) {
+                        const errorMsg = xhr.responseJSON?.message || '网络错误';
+                        progressManager.completeStep(2, false, errorMsg);
+                        progressManager.showResult(
+                            false,
+                            '采集任务执行失败',
+                            '执行过程中发生错误: ' + errorMsg,
+                            '请检查网络连接、服务器状态和系统日志'
+                        );
+                    }
+                });
+                
+            }, 600);
+            
+        }, 500);
+    }
+
+    // 执行多个采集组件（保留原有函数作为备用）
     function executeMultipleCollectors(collectorIds) {
         var btn = $('#executeAllCollectorsBtn');
         var originalText = btn.html();

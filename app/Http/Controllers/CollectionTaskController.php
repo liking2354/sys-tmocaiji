@@ -8,6 +8,7 @@ use App\Models\Server;
 use App\Models\Collector;
 use App\Services\CollectionService;
 use App\Services\TaskExecutionService;
+use App\Services\TaskTimeoutService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -30,15 +31,27 @@ class CollectionTaskController extends Controller
     protected $taskExecutionService;
 
     /**
+     * 超时处理服务
+     *
+     * @var TaskTimeoutService
+     */
+    protected $timeoutService;
+
+    /**
      * 构造函数
      *
      * @param CollectionService $collectionService
      * @param TaskExecutionService $taskExecutionService
+     * @param TaskTimeoutService $timeoutService
      */
-    public function __construct(CollectionService $collectionService, TaskExecutionService $taskExecutionService)
-    {
+    public function __construct(
+        CollectionService $collectionService, 
+        TaskExecutionService $taskExecutionService,
+        TaskTimeoutService $timeoutService
+    ) {
         $this->collectionService = $collectionService;
         $this->taskExecutionService = $taskExecutionService;
+        $this->timeoutService = $timeoutService;
     }
 
     /**
@@ -625,6 +638,81 @@ class CollectionTaskController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => '获取状态失败：' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * 检测并处理超时任务
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function detectTimeout($id)
+    {
+        try {
+            $result = $this->timeoutService->detectAndHandleTimeouts();
+            return response()->json($result);
+        } catch (\Exception $e) {
+            Log::error('检测超时任务失败', [
+                'task_id' => $id,
+                'error' => $e->getMessage()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => '检测失败：' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * 重新执行单个任务详情
+     *
+     * @param int $taskDetailId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function retryTaskDetail($taskDetailId)
+    {
+        try {
+            $result = $this->timeoutService->retryTaskDetail($taskDetailId);
+            return response()->json($result);
+        } catch (\Exception $e) {
+            Log::error('重新执行任务详情失败', [
+                'task_detail_id' => $taskDetailId,
+                'error' => $e->getMessage()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => '重新执行失败：' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * 获取任务超时统计
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getTimeoutStats($id)
+    {
+        try {
+            $stats = $this->timeoutService->getTaskTimeoutStats($id);
+            return response()->json([
+                'success' => true,
+                'data' => $stats
+            ]);
+        } catch (\Exception $e) {
+            Log::error('获取超时统计失败', [
+                'task_id' => $id,
+                'error' => $e->getMessage()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => '获取统计失败：' . $e->getMessage()
             ], 500);
         }
     }

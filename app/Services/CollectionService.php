@@ -483,6 +483,138 @@ class CollectionService
     }
 
     /**
+     * 执行单个任务详情
+     *
+     * @param TaskDetail $taskDetail
+     * @return array
+     */
+    public function executeSingleTaskDetail(TaskDetail $taskDetail)
+    {
+        try {
+            // 更新状态为进行中
+            $taskDetail->update([
+                'status' => 1, // 进行中
+                'started_at' => now()
+            ]);
+
+            // 获取服务器和采集器
+            $server = $taskDetail->server;
+            $collector = $taskDetail->collector;
+
+            if (!$server || !$collector) {
+                $taskDetail->update([
+                    'status' => 3, // 失败
+                    'error_message' => '服务器或采集器不存在',
+                    'completed_at' => now()
+                ]);
+
+                return [
+                    'success' => false,
+                    'message' => '服务器或采集器不存在'
+                ];
+            }
+
+            // 执行采集
+            $startTime = microtime(true);
+            $result = $this->executeCollectorScript($server, $collector);
+            $endTime = microtime(true);
+            $executionTime = round($endTime - $startTime, 3);
+
+            if ($result['success']) {
+                // 成功
+                $taskDetail->update([
+                    'status' => 2, // 已完成
+                    'result' => $result['data'],
+                    'execution_time' => $executionTime,
+                    'completed_at' => now()
+                ]);
+
+                // 保存到采集历史
+                CollectionHistory::create([
+                    'task_detail_id' => $taskDetail->id,
+                    'server_id' => $server->id,
+                    'collector_id' => $collector->id,
+                    'result' => $result['data'],
+                    'status' => 2, // 成功
+                    'execution_time' => $executionTime
+                ]);
+
+                Log::info('单个任务详情执行成功', [
+                    'task_detail_id' => $taskDetail->id,
+                    'server_id' => $server->id,
+                    'collector_id' => $collector->id,
+                    'execution_time' => $executionTime
+                ]);
+
+                // 更新父任务状态
+                $this->updateParentTaskStatus($taskDetail->task_id);
+
+                return [
+                    'success' => true,
+                    'message' => '采集成功',
+                    'data' => $result['data']
+                ];
+            } else {
+                // 失败
+                $taskDetail->update([
+                    'status' => 3, // 失败
+                    'error_message' => $result['message'],
+                    'execution_time' => $executionTime,
+                    'completed_at' => now()
+                ]);
+
+                // 保存失败记录
+                CollectionHistory::create([
+                    'task_detail_id' => $taskDetail->id,
+                    'server_id' => $server->id,
+                    'collector_id' => $collector->id,
+                    'status' => 3, // 失败
+                    'error_message' => $result['message'],
+                    'execution_time' => $executionTime
+                ]);
+
+                Log::warning('单个任务详情执行失败', [
+                    'task_detail_id' => $taskDetail->id,
+                    'server_id' => $server->id,
+                    'collector_id' => $collector->id,
+                    'error' => $result['message'],
+                    'execution_time' => $executionTime
+                ]);
+
+                // 更新父任务状态
+                $this->updateParentTaskStatus($taskDetail->task_id);
+
+                return [
+                    'success' => false,
+                    'message' => $result['message']
+                ];
+            }
+
+        } catch (Exception $e) {
+            // 异常处理
+            $taskDetail->update([
+                'status' => 3, // 失败
+                'error_message' => '执行异常：' . $e->getMessage(),
+                'completed_at' => now()
+            ]);
+
+            Log::error('单个任务详情执行异常', [
+                'task_detail_id' => $taskDetail->id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            // 更新父任务状态
+            $this->updateParentTaskStatus($taskDetail->task_id);
+
+            return [
+                'success' => false,
+                'message' => '执行异常：' . $e->getMessage()
+            ];
+        }
+    }
+
+    /**
      * 获取任务进度信息
      *
      * @param CollectionTask $task
@@ -508,5 +640,82 @@ class CollectionService
             'started_at' => $task->started_at,
             'completed_at' => $task->completed_at
         ];
+    }
+
+    /**
+     * 更新父任务状态
+     *
+     * @param int $taskId
+     */
+    protected function updateParentTaskStatus($taskId)
+    {
+        try {
+            $task = CollectionTask::find($taskId);
+            if (!$task) {
+                return;
+            }
+
+            $stats = TaskDetail::where('task_id', $taskId)
+                ->selectRaw('
+                    COUNT(*) as total_count,
+                    COUNT(CASE WHEN status = 0 THEN 1 END) as pending_count,
+                    COUNT(CASE WHEN status = 1 THEN 1 END) as running_count,
+                    COUNT(CASE WHEN status = 2 THEN 1 END) as completed_count,
+                    COUNT(CASE WHEN status = 3 THEN 1 END) as failed_count,
+                    COUNT(CASE WHEN status = 4 THEN 1 END) as timeout_count
+                ')
+                ->first();
+
+            // 计算新的任务状态
+            $newStatus = $task->status;
+            $completedAt = $task->completed_at;
+
+            // 如果所有任务都已完成（成功、失败或超时），则标记整个任务为完成
+            if ($stats->pending_count == 0 && $stats->running_count == 0) {
+                $newStatus = 2; // 已完成
+                
+                // 如果状态发生变化，设置完成时间
+                if ($newStatus != $task->status) {
+                    $completedAt = now();
+                }
+            } elseif ($stats->running_count > 0 || $stats->pending_count > 0) {
+                // 还有任务在进行中或未开始
+                $newStatus = 1; // 进行中
+                $completedAt = null; // 清除完成时间
+            }
+
+            // 更新任务统计和状态
+            $updateData = [
+                'completed_servers' => $stats->completed_count,
+                'failed_servers' => $stats->failed_count + $stats->timeout_count, // 超时也算失败
+                'status' => $newStatus
+            ];
+
+            // 只有在状态变化时才更新完成时间
+            if ($completedAt !== $task->completed_at) {
+                $updateData['completed_at'] = $completedAt;
+            }
+
+            $task->update($updateData);
+
+            Log::info('父任务状态已更新', [
+                'task_id' => $taskId,
+                'total' => $stats->total_count,
+                'pending' => $stats->pending_count,
+                'running' => $stats->running_count,
+                'completed' => $stats->completed_count,
+                'failed' => $stats->failed_count,
+                'timeout' => $stats->timeout_count,
+                'old_status' => $task->status,
+                'new_status' => $newStatus,
+                'completed_at' => $completedAt
+            ]);
+
+        } catch (Exception $e) {
+            Log::error('更新父任务状态失败', [
+                'task_id' => $taskId,
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 }

@@ -10,6 +10,9 @@ use App\Http\Controllers\TaskExecutionController;
 use App\Http\Controllers\CollectionHistoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataController;
+use App\Http\Controllers\CloudPlatformController;
+use App\Http\Controllers\CloudResourceController;
+use App\Http\Controllers\CloudRegionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -94,6 +97,11 @@ Route::delete('server-groups/batch-delete', [ServerGroupController::class, 'batc
     Route::get('collection-tasks/{id}/status', [CollectionTaskController::class, 'getTaskStatus'])->name('collection-tasks.status');
     Route::get('collection-tasks/{task}/progress', [CollectionTaskController::class, 'getProgress'])->name('collection-tasks.progress');
     
+    // 超时处理和重新执行功能
+    Route::post('collection-tasks/{id}/detect-timeout', [CollectionTaskController::class, 'detectTimeout'])->name('collection-tasks.detect-timeout');
+    Route::post('task-details/{taskDetailId}/retry', [CollectionTaskController::class, 'retryTaskDetail'])->name('task-details.retry');
+    Route::get('collection-tasks/{id}/timeout-stats', [CollectionTaskController::class, 'getTimeoutStats'])->name('collection-tasks.timeout-stats');
+    
     // 采集组件管理
     Route::resource('collectors', CollectorController::class);
     
@@ -103,6 +111,38 @@ Route::delete('server-groups/batch-delete', [ServerGroupController::class, 'batc
     // 数据清理
     Route::get('data/cleanup', [DataController::class, 'showCleanupForm'])->name('data.cleanup.form');
     Route::post('data/cleanup', [DataController::class, 'cleanup'])->name('data.cleanup');
+    
+    // 云资源管理
+    Route::prefix('cloud')->name('cloud.')->group(function () {
+        // 云平台管理
+        Route::resource('platforms', CloudPlatformController::class);
+        Route::post('platforms/{platform}/test-connection', [CloudPlatformController::class, 'testConnection'])->name('platforms.test-connection');
+        Route::post('platforms/{platform}/sync-regions', [CloudPlatformController::class, 'syncRegions'])->name('platforms.sync-regions');
+        Route::post('platforms/{platform}/sync-resources', [CloudPlatformController::class, 'syncResources'])->name('platforms.sync-resources');
+        // 创建/编辑页无模型测试连接接口
+        Route::post('platforms/test-connection', [CloudPlatformController::class, 'testConnectionConfig'])->name('platforms.test-connection-config');
+        Route::post('platforms/batch-action', [CloudPlatformController::class, 'batchAction'])->name('platforms.batch-action');
+        // 智能区域获取接口
+        Route::get('platforms/regions/{platform_type}', [CloudPlatformController::class, 'getRegionsByPlatform'])->name('platforms.regions-by-type');
+        
+        // 云资源管理
+        Route::resource('resources', CloudResourceController::class);
+        Route::post('resources/{cloudResource}/refresh', [CloudResourceController::class, 'refresh'])->name('resources.refresh');
+        Route::post('resources/batch-action', [CloudResourceController::class, 'batchAction'])->name('resources.batch-action');
+        Route::post('resources/sync-platform', [CloudResourceController::class, 'syncPlatformResources'])->name('resources.sync-platform');
+        Route::post('resources/cleanup', [CloudResourceController::class, 'cleanup'])->name('resources.cleanup');
+        Route::get('resources/export', [CloudResourceController::class, 'export'])->name('resources.export');
+        Route::get('resources/statistics', [CloudResourceController::class, 'statistics'])->name('resources.statistics');
+        Route::get('resources/{id}/detail', [CloudResourceController::class, 'detail'])->name('resources.detail');
+        Route::get('resources/{id}/monitoring', [CloudResourceController::class, 'monitoringModal'])->name('resources.monitoring-modal');
+        Route::get('resources/{cloudResource}/monitoring', [CloudResourceController::class, 'monitoring'])->name('resources.monitoring');
+        
+        // 可用区管理
+        Route::resource('regions', CloudRegionController::class);
+        Route::post('regions/sync-platform', [CloudRegionController::class, 'syncPlatformRegions'])->name('regions.sync-platform');
+        Route::post('regions/batch-delete', [CloudRegionController::class, 'batchDelete'])->name('regions.batch-delete');
+        Route::post('regions/clear-all', [CloudRegionController::class, 'clearAll'])->name('regions.clear-all');
+    });
     
     // 用户管理
     Route::prefix('admin')->name('admin.')->group(function () {
