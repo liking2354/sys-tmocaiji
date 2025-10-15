@@ -41,8 +41,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     
     // 服务器分组管理
+    Route::post('server-groups/batch-delete', [ServerGroupController::class, 'batchDelete'])->name('server-groups.batch-delete');
     Route::resource('server-groups', ServerGroupController::class);
-Route::delete('server-groups/batch-delete', [ServerGroupController::class, 'batchDelete'])->name('server-groups.batch-delete');
     
     // 服务器管理
     Route::resource('servers', ServerController::class);
@@ -164,9 +164,16 @@ Route::delete('server-groups/batch-delete', [ServerGroupController::class, 'batc
         Route::post('tasks/{task}/cancel', [SystemChangeTaskController::class, 'cancel'])->name('tasks.cancel');
         Route::post('tasks/{task}/duplicate', [SystemChangeTaskController::class, 'duplicate'])->name('tasks.duplicate');
         Route::get('tasks/{task}/status', [SystemChangeTaskController::class, 'getStatus'])->name('tasks.status');
+        Route::post('tasks/batch-delete', [SystemChangeTaskController::class, 'batchDelete'])->name('tasks.batch-delete');
+        
+        // 还原功能
+        Route::post('tasks/{task}/revert', [SystemChangeTaskController::class, 'revertTask'])->name('tasks.revert');
+        Route::post('task-details/{detailId}/revert', [SystemChangeTaskController::class, 'revertTaskDetail'])->name('task-details.revert');
+        Route::post('task-details/batch-revert', [SystemChangeTaskController::class, 'batchRevertTaskDetails'])->name('task-details.batch-revert');
         
         // AJAX接口
         Route::get('server-groups/{serverGroup}/servers', [SystemChangeTaskController::class, 'getServers'])->name('server-groups.servers');
+        Route::get('server-groups/servers', [SystemChangeTaskController::class, 'getServers'])->name('server-groups.get-servers');
         Route::post('templates/variables', [SystemChangeTaskController::class, 'getTemplateVariables'])->name('templates.get-variables');
     });
     

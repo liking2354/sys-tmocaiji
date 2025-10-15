@@ -4,22 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ConfigTemplate extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $fillable = [
         'name',
         'description',
-        'config_items',
+        'config_rules',
+        'template_variables',
+        'template_type',
         'is_active',
         'created_by'
     ];
 
     protected $casts = [
-        'config_items' => 'array',
+        'config_rules' => 'array',
+        'template_variables' => 'array',
         'is_active' => 'boolean'
     ];
 
@@ -32,33 +34,63 @@ class ConfigTemplate extends Model
     }
 
     /**
-     * 获取模板的配置项数量
+     * 获取模板的配置规则数量
      */
-    public function getConfigItemsCountAttribute()
+    public function getConfigRulesCountAttribute()
     {
-        return is_array($this->config_items) ? count($this->config_items) : 0;
+        return is_array($this->config_rules) ? count($this->config_rules) : 0;
     }
 
     /**
-     * 获取模板中的所有变量
+     * 获取模板变量数量
      */
-    public function getVariablesAttribute()
+    public function getTemplateVariablesCountAttribute()
+    {
+        return is_array($this->template_variables) ? count($this->template_variables) : 0;
+    }
+
+    /**
+     * 获取模板中使用的所有变量名
+     */
+    public function getUsedVariablesAttribute()
     {
         $variables = [];
-        if (is_array($this->config_items)) {
-            foreach ($this->config_items as $item) {
-                if (isset($item['modifications']) && is_array($item['modifications'])) {
-                    foreach ($item['modifications'] as $modification) {
-                        if (isset($modification['replacement'])) {
-                            preg_match_all('/\{\{(\w+)\}\}/', $modification['replacement'], $matches);
-                            if (!empty($matches[1])) {
-                                $variables = array_merge($variables, $matches[1]);
-                            }
+        
+        // 从模板变量定义中获取
+        if (is_array($this->template_variables)) {
+            foreach ($this->template_variables as $variable) {
+                if (isset($variable['name'])) {
+                    $variables[] = $variable['name'];
+                }
+            }
+        }
+        
+        // 从配置规则中提取使用的变量
+        if (is_array($this->config_rules)) {
+            foreach ($this->config_rules as $rule) {
+                // 支持新的多变量格式
+                if (isset($rule['variables']) && is_array($rule['variables'])) {
+                    foreach ($rule['variables'] as $varConfig) {
+                        if (isset($varConfig['variable'])) {
+                            $variables[] = $varConfig['variable'];
                         }
+                    }
+                }
+                // 兼容旧的单变量格式
+                elseif (isset($rule['variable'])) {
+                    $variables[] = $rule['variable'];
+                }
+                
+                // 从替换字符串中提取变量
+                if (isset($rule['replace_string'])) {
+                    preg_match_all('/\{\{(\w+)\}\}/', $rule['replace_string'], $matches);
+                    if (!empty($matches[1])) {
+                        $variables = array_merge($variables, $matches[1]);
                     }
                 }
             }
         }
+        
         return array_unique($variables);
     }
 
@@ -69,41 +101,111 @@ class ConfigTemplate extends Model
     {
         $errors = [];
         
-        if (!is_array($this->config_items)) {
-            $errors[] = '配置项必须是数组格式';
+        // 验证配置规则
+        if (!is_array($this->config_rules)) {
+            $errors[] = '配置规则必须是数组格式';
             return $errors;
         }
 
-        foreach ($this->config_items as $index => $item) {
-            if (!isset($item['name'])) {
-                $errors[] = "配置项 {$index} 缺少名称";
-            }
-            
-            if (!isset($item['file_path'])) {
-                $errors[] = "配置项 {$index} 缺少文件路径";
-            }
-            
-            if (!isset($item['modifications']) || !is_array($item['modifications'])) {
-                $errors[] = "配置项 {$index} 缺少修改规则";
+        foreach ($this->config_rules as $index => $rule) {
+            if (!isset($rule['type'])) {
+                $errors[] = "配置规则 {$index} 缺少类型";
                 continue;
             }
             
-            foreach ($item['modifications'] as $modIndex => $modification) {
-                if (!isset($modification['type'])) {
-                    $errors[] = "配置项 {$index} 修改规则 {$modIndex} 缺少类型";
-                }
-                
-                if (!isset($modification['pattern'])) {
-                    $errors[] = "配置项 {$index} 修改规则 {$modIndex} 缺少匹配模式";
-                }
-                
-                if (!isset($modification['replacement'])) {
-                    $errors[] = "配置项 {$index} 修改规则 {$modIndex} 缺少替换内容";
+            switch ($rule['type']) {
+                case 'directory':
+                    if (empty($rule['directory'])) {
+                        $errors[] = "目录规则 {$index} 缺少目录路径";
+                    }
+                    // 支持新的多变量格式和旧的单变量格式
+                    if (empty($rule['variables']) && empty($rule['variable'])) {
+                        $errors[] = "目录规则 {$index} 缺少变量配置";
+                    }
+                    // 验证多变量格式
+                    if (isset($rule['variables']) && is_array($rule['variables'])) {
+                        foreach ($rule['variables'] as $varIndex => $varConfig) {
+                            if (empty($varConfig['variable'])) {
+                                $errors[] = "目录规则 {$index} 的变量 {$varIndex} 缺少变量名";
+                            }
+                        }
+                    }
+                    break;
+                    
+                case 'file':
+                    if (empty($rule['file_path'])) {
+                        $errors[] = "文件规则 {$index} 缺少文件路径";
+                    }
+                    // 支持新的多变量格式和旧的单变量格式
+                    if (empty($rule['variables']) && empty($rule['variable'])) {
+                        $errors[] = "文件规则 {$index} 缺少变量配置";
+                    }
+                    // 验证多变量格式
+                    if (isset($rule['variables']) && is_array($rule['variables'])) {
+                        foreach ($rule['variables'] as $varIndex => $varConfig) {
+                            if (empty($varConfig['variable'])) {
+                                $errors[] = "文件规则 {$index} 的变量 {$varIndex} 缺少变量名";
+                            }
+                        }
+                    }
+                    break;
+                    
+                case 'string':
+                    if (empty($rule['file_path'])) {
+                        $errors[] = "字符串规则 {$index} 缺少文件路径";
+                    }
+                    if (empty($rule['search_string'])) {
+                        $errors[] = "字符串规则 {$index} 缺少查找字符串";
+                    }
+                    if (empty($rule['replace_string'])) {
+                        $errors[] = "字符串规则 {$index} 缺少替换字符串";
+                    }
+                    break;
+                    
+                default:
+                    $errors[] = "配置规则 {$index} 类型无效: {$rule['type']}";
+            }
+        }
+        
+        // 验证模板变量
+        if (is_array($this->template_variables)) {
+            foreach ($this->template_variables as $index => $variable) {
+                if (empty($variable['name'])) {
+                    $errors[] = "模板变量 {$index} 缺少变量名";
                 }
             }
         }
         
         return $errors;
+    }
+
+    /**
+     * 获取指定类型的规则
+     */
+    public function getRulesByType($type)
+    {
+        if (!is_array($this->config_rules)) {
+            return [];
+        }
+        
+        return array_filter($this->config_rules, function($rule) use ($type) {
+            return isset($rule['type']) && $rule['type'] === $type;
+        });
+    }
+
+    /**
+     * 获取模板类型的中文名称
+     */
+    public function getTemplateTypeNameAttribute()
+    {
+        $types = [
+            'mixed' => '混合模式',
+            'directory' => '目录批量处理',
+            'file' => '文件精确处理',
+            'string' => '字符串替换'
+        ];
+        
+        return $types[$this->template_type] ?? '未知类型';
     }
 
     /**

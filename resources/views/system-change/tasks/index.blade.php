@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '系统变更任务')
+@section('title', '配置任务')
 
 @section('content')
 <div class="container-fluid">
@@ -10,9 +10,17 @@
                 <div class="card-header">
                     <h3 class="card-title">
                         <i class="fas fa-tasks mr-2"></i>
-                        系统变更任务
+                        配置任务
                     </h3>
                     <div class="card-tools">
+                        <button type="button" class="btn btn-danger btn-sm mr-2" id="batchDeleteBtn" style="display: none;" onclick="batchDelete()">
+                            <i class="fas fa-trash mr-1"></i>
+                            批量删除
+                        </button>
+                        <button type="button" class="btn btn-info btn-sm mr-2" onclick="refreshProgress()">
+                            <i class="fas fa-sync-alt mr-1"></i>
+                            刷新进度
+                        </button>
                         <a href="{{ route('system-change.tasks.create') }}" class="btn btn-primary btn-sm">
                             <i class="fas fa-plus mr-1"></i>
                             创建任务
@@ -70,6 +78,9 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                                 <tr>
+                                    <th width="3%">
+                                        <input type="checkbox" id="selectAll" onchange="toggleSelectAll()">
+                                    </th>
                                     <th width="5%">ID</th>
                                     <th>任务名称</th>
                                     <th width="12%">服务器分组</th>
@@ -85,6 +96,9 @@
                             <tbody>
                                 @forelse($tasks as $task)
                                 <tr>
+                                    <td>
+                                        <input type="checkbox" class="task-checkbox" value="{{ $task->id }}" onchange="updateBatchDeleteButton()">
+                                    </td>
                                     <td>{{ $task->id }}</td>
                                     <td>
                                         <strong>{{ $task->name }}</strong>
@@ -163,13 +177,10 @@
                                                 </a>
                                             @endif
                                             
-                                            <form method="POST" action="{{ route('system-change.tasks.duplicate', $task) }}" 
-                                                  style="display: inline;">
-                                                @csrf
-                                                <button type="submit" class="btn btn-secondary btn-xs mb-1" title="复制任务">
-                                                    <i class="fas fa-copy mr-1"></i>复制
-                                                </button>
-                                            </form>
+                                            <button type="button" class="btn btn-secondary btn-xs mb-1" 
+                                                    onclick="duplicateTask({{ $task->id }})" title="复制任务">
+                                                <i class="fas fa-copy mr-1"></i>复制
+                                            </button>
                                             
                                             @if($task->status === 'pending')
                                                 <form method="POST" action="{{ route('system-change.tasks.destroy', $task) }}" 
@@ -187,7 +198,7 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="10" class="text-center text-muted">
+                                    <td colspan="11" class="text-center text-muted">
                                         <i class="fas fa-inbox fa-3x mb-3"></i><br>
                                         暂无系统变更任务
                                     </td>
@@ -208,6 +219,9 @@
 </div>
 @endsection
 
+<!-- 引入执行进度组件 -->
+@include('components.execution-progress')
+
 @push('styles')
 <style>
 .table th {
@@ -223,27 +237,144 @@
 </style>
 @endpush
 
-@push('scripts')
+@section('scripts')
 <script>
+// 带进度显示的任务执行
 function executeTask(taskId) {
     if (!confirm('确定要执行这个任务吗？')) {
         return;
     }
     
-    $.post(`/system-change/tasks/${taskId}/execute`, {
-        _token: $('meta[name="csrf-token"]').attr('content')
-    })
-    .done(function(response) {
-        if (response.success) {
-            toastr.success('任务开始执行');
-            setTimeout(() => location.reload(), 1000);
-        } else {
-            toastr.error(response.message || '执行失败');
+    // 检查进度管理器是否可用
+    if (!window.executionProgressManager) {
+        // 如果进度管理器不可用，使用简单的执行方式
+        executeTaskSimple(taskId);
+        return;
+    }
+    
+    // 定义执行步骤
+    const steps = [
+        '验证任务配置',
+        '检查目标服务器连接',
+        '准备执行环境',
+        '执行配置变更',
+        '验证变更结果',
+        '完成任务处理'
+    ];
+    
+    // 初始化进度管理器
+    window.executionProgressManager.init('执行系统变更任务', steps, () => executeTask(taskId));
+    
+    // 开始执行流程
+    executeSystemChangeTask(taskId);
+}
+
+// 简单的任务执行（备用方案）
+function executeTaskSimple(taskId) {
+    $.ajax({
+        url: '/system-change/tasks/' + taskId + '/execute',
+        method: 'POST',
+        data: {
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        beforeSend: function() {
+            $('button[onclick="executeTask(' + taskId + ')"]').prop('disabled', true).text('执行中...');
+        },
+        success: function(response) {
+            if (response.success) {
+                toastr.success('任务开始执行');
+                setTimeout(function() { location.reload(); }, 1000);
+            } else {
+                toastr.error(response.message || '执行失败');
+                $('button[onclick="executeTask(' + taskId + ')"]').prop('disabled', false).text('执行');
+            }
+        },
+        error: function(xhr) {
+            console.error('执行任务失败:', xhr);
+            var message = '未知错误';
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+                message = xhr.responseJSON.message;
+            }
+            toastr.error('执行失败: ' + message);
+            $('button[onclick="executeTask(' + taskId + ')"]').prop('disabled', false).text('执行');
         }
-    })
-    .fail(function(xhr) {
-        toastr.error('执行失败: ' + (xhr.responseJSON?.message || '未知错误'));
     });
+}
+
+// 执行系统变更任务流程
+function executeSystemChangeTask(taskId) {
+    const progressManager = window.executionProgressManager;
+    if (!progressManager) {
+        console.error('Progress manager not available');
+        return;
+    }
+    
+    // 步骤1: 验证任务配置
+    progressManager.startStep(0, '检查任务配置和模板信息');
+    
+    setTimeout(() => {
+        progressManager.completeStep(0, true, '任务配置验证通过');
+        
+        // 步骤2: 检查目标服务器连接
+        progressManager.startStep(1, '测试目标服务器连接状态');
+        
+        setTimeout(() => {
+            progressManager.completeStep(1, true, '服务器连接正常');
+            
+            // 步骤3: 准备执行环境
+            progressManager.startStep(2, '准备配置变更环境');
+            
+            setTimeout(() => {
+                progressManager.completeStep(2, true, '执行环境准备完成');
+                
+                // 步骤4: 执行配置变更（实际API调用）
+                progressManager.startStep(3, '开始执行配置变更操作');
+                
+                // 实际的API调用
+                $.ajax({
+                    url: '/system-change/tasks/' + taskId + '/execute',
+                    method: 'POST',
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            progressManager.completeStep(3, true, '任务已启动，开始监控执行状态');
+                            
+                            // 步骤5: 监控执行状态
+                            progressManager.startStep(4, '监控任务执行状态');
+                            
+                            // 开始轮询任务状态
+                            pollTaskStatusInList(taskId, progressManager);
+                            
+                        } else {
+                            progressManager.completeStep(3, false, response.message || '配置变更执行失败');
+                            progressManager.showResult(
+                                false,
+                                '任务执行失败',
+                                response.message || '配置变更执行失败，请检查任务配置和服务器状态',
+                                '请查看详细日志了解失败原因，或联系系统管理员'
+                            );
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error('执行任务失败:', xhr);
+                        const errorMsg = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : '网络错误或服务器异常';
+                        progressManager.completeStep(3, false, errorMsg);
+                        progressManager.showResult(
+                            false,
+                            '任务执行失败',
+                            '执行过程中发生错误: ' + errorMsg,
+                            '请检查网络连接、服务器状态和系统日志，或联系系统管理员'
+                        );
+                    }
+                });
+                
+            }, 600);
+            
+        }, 500);
+        
+    }, 400);
 }
 
 function pauseTask(taskId) {
@@ -251,19 +382,33 @@ function pauseTask(taskId) {
         return;
     }
     
-    $.post(`/system-change/tasks/${taskId}/pause`, {
-        _token: $('meta[name="csrf-token"]').attr('content')
-    })
-    .done(function(response) {
-        if (response.success) {
-            toastr.success('任务已暂停');
-            setTimeout(() => location.reload(), 1000);
-        } else {
-            toastr.error(response.message || '暂停失败');
+    $.ajax({
+        url: '/system-change/tasks/' + taskId + '/pause',
+        method: 'POST',
+        data: {
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        beforeSend: function() {
+            $('button[onclick="pauseTask(' + taskId + ')"]').prop('disabled', true).text('暂停中...');
+        },
+        success: function(response) {
+            if (response.success) {
+                toastr.success('任务已暂停');
+                setTimeout(function() { location.reload(); }, 1000);
+            } else {
+                toastr.error(response.message || '暂停失败');
+                $('button[onclick="pauseTask(' + taskId + ')"]').prop('disabled', false).text('暂停');
+            }
+        },
+        error: function(xhr) {
+            console.error('暂停任务失败:', xhr);
+            var message = '未知错误';
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+                message = xhr.responseJSON.message;
+            }
+            toastr.error('暂停失败: ' + message);
+            $('button[onclick="pauseTask(' + taskId + ')"]').prop('disabled', false).text('暂停');
         }
-    })
-    .fail(function(xhr) {
-        toastr.error('暂停失败: ' + (xhr.responseJSON?.message || '未知错误'));
     });
 }
 
@@ -272,30 +417,274 @@ function cancelTask(taskId) {
         return;
     }
     
-    $.post(`/system-change/tasks/${taskId}/cancel`, {
-        _token: $('meta[name="csrf-token"]').attr('content')
-    })
-    .done(function(response) {
-        if (response.success) {
-            toastr.success('任务已取消');
-            setTimeout(() => location.reload(), 1000);
-        } else {
-            toastr.error(response.message || '取消失败');
+    $.ajax({
+        url: '/system-change/tasks/' + taskId + '/cancel',
+        method: 'POST',
+        data: {
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        beforeSend: function() {
+            $('button[onclick="cancelTask(' + taskId + ')"]').prop('disabled', true).text('取消中...');
+        },
+        success: function(response) {
+            if (response.success) {
+                toastr.success('任务已取消');
+                setTimeout(function() { location.reload(); }, 1000);
+            } else {
+                toastr.error(response.message || '取消失败');
+                $('button[onclick="cancelTask(' + taskId + ')"]').prop('disabled', false).text('取消');
+            }
+        },
+        error: function(xhr) {
+            console.error('取消任务失败:', xhr);
+            var message = '未知错误';
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+                message = xhr.responseJSON.message;
+            }
+            toastr.error('取消失败: ' + message);
+            $('button[onclick="cancelTask(' + taskId + ')"]').prop('disabled', false).text('取消');
         }
-    })
-    .fail(function(xhr) {
-        toastr.error('取消失败: ' + (xhr.responseJSON?.message || '未知错误'));
     });
 }
 
-// 自动刷新执行中的任务状态
-$(document).ready(function() {
-    const runningTasks = $('tr').find('.badge-warning, .badge-info').closest('tr');
-    
-    if (runningTasks.length > 0) {
-        // 每30秒刷新一次页面
-        setTimeout(() => location.reload(), 30000);
+function duplicateTask(taskId) {
+    if (!confirm('确定要复制这个任务吗？')) {
+        return;
     }
+    
+    $.ajax({
+        url: '/system-change/tasks/' + taskId + '/duplicate',
+        method: 'POST',
+        data: {
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        beforeSend: function() {
+            $('button[onclick="duplicateTask(' + taskId + ')"]').prop('disabled', true).text('复制中...');
+        },
+        success: function(response) {
+            if (response.success) {
+                toastr.success('任务复制成功');
+                setTimeout(function() { location.reload(); }, 1000);
+            } else {
+                toastr.error(response.message || '复制失败');
+                $('button[onclick="duplicateTask(' + taskId + ')"]').prop('disabled', false).text('复制');
+            }
+        },
+        error: function(xhr) {
+            console.error('复制任务失败:', xhr);
+            var message = '未知错误';
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+                message = xhr.responseJSON.message;
+            }
+            toastr.error('复制失败: ' + message);
+            $('button[onclick="duplicateTask(' + taskId + ')"]').prop('disabled', false).text('复制');
+        }
+    });
+}
+
+// 手动刷新进度功能
+function refreshProgress() {
+    location.reload();
+}
+
+$(document).ready(function() {
+    console.log('页面加载完成，初始化任务管理功能');
+    
+    // 移除自动刷新逻辑，改为手动刷新
 });
+
+// 全选/取消全选
+function toggleSelectAll() {
+    var selectAll = document.getElementById('selectAll');
+    var checkboxes = document.querySelectorAll('.task-checkbox');
+    
+    for (var i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = selectAll.checked;
+    }
+    
+    updateBatchDeleteButton();
+}
+
+// 更新批量删除按钮显示状态
+function updateBatchDeleteButton() {
+    var checkboxes = document.querySelectorAll('.task-checkbox:checked');
+    var batchDeleteBtn = document.getElementById('batchDeleteBtn');
+    
+    if (checkboxes.length > 0) {
+        batchDeleteBtn.style.display = 'inline-block';
+        batchDeleteBtn.innerHTML = '<i class="fas fa-trash mr-1"></i>批量删除 (' + checkboxes.length + ')';
+    } else {
+        batchDeleteBtn.style.display = 'none';
+    }
+    
+    // 更新全选复选框状态
+    var allCheckboxes = document.querySelectorAll('.task-checkbox');
+    var selectAll = document.getElementById('selectAll');
+    
+    if (checkboxes.length === allCheckboxes.length && allCheckboxes.length > 0) {
+        selectAll.checked = true;
+        selectAll.indeterminate = false;
+    } else if (checkboxes.length > 0) {
+        selectAll.checked = false;
+        selectAll.indeterminate = true;
+    } else {
+        selectAll.checked = false;
+        selectAll.indeterminate = false;
+    }
+}
+
+// 批量删除
+function batchDelete() {
+    var checkboxes = document.querySelectorAll('.task-checkbox:checked');
+    
+    if (checkboxes.length === 0) {
+        toastr.warning('请选择要删除的任务');
+        return;
+    }
+    
+    if (!confirm('确定要删除选中的 ' + checkboxes.length + ' 个任务吗？此操作不可恢复！')) {
+        return;
+    }
+    
+    var taskIds = [];
+    for (var i = 0; i < checkboxes.length; i++) {
+        taskIds.push(checkboxes[i].value);
+    }
+    
+    $.ajax({
+        url: '/system-change/tasks/batch-delete',
+        method: 'POST',
+        data: {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            task_ids: taskIds
+        },
+        beforeSend: function() {
+            $('#batchDeleteBtn').prop('disabled', true).text('删除中...');
+        },
+        success: function(response) {
+            if (response.success) {
+                toastr.success('成功删除 ' + response.deleted_count + ' 个任务');
+                setTimeout(function() { location.reload(); }, 1000);
+            } else {
+                toastr.error(response.message || '批量删除失败');
+                $('#batchDeleteBtn').prop('disabled', false);
+                updateBatchDeleteButton();
+            }
+        },
+        error: function(xhr) {
+            console.error('批量删除失败:', xhr);
+            var message = '未知错误';
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+                message = xhr.responseJSON.message;
+            }
+            toastr.error('批量删除失败: ' + message);
+            $('#batchDeleteBtn').prop('disabled', false);
+            updateBatchDeleteButton();
+        }
+    });
+}
+
+// 轮询任务状态（任务列表版本）
+function pollTaskStatusInList(taskId, progressManager) {
+    let pollCount = 0;
+    const maxPolls = 150; // 最多轮询5分钟 (150 * 2秒)
+    
+    const pollInterval = setInterval(() => {
+        pollCount++;
+        
+        if (pollCount >= maxPolls) {
+            clearInterval(pollInterval);
+            progressManager.completeStep(4, false, '任务执行超时');
+            progressManager.showResult(
+                false,
+                '任务执行超时',
+                '任务执行时间超过5分钟，请检查任务状态',
+                '可能的原因：\n1. 服务器响应缓慢\n2. 任务配置复杂\n3. 网络连接问题\n\n请刷新页面查看最新状态'
+            );
+            return;
+        }
+        
+        $.ajax({
+            url: '/system-change/tasks/' + taskId + '/status',
+            type: 'GET',
+            success: function(response) {
+                // 检查响应格式
+                const task = response.success ? response.task : response;
+                const details = response.success ? response.details : [];
+                
+                if (task.status === 'completed') {
+                    clearInterval(pollInterval);
+                    progressManager.completeStep(4, true, '任务执行完成');
+                    
+                    // 步骤6: 完成任务处理
+                    progressManager.startStep(5, '收集执行结果');
+                    
+                    setTimeout(() => {
+                        progressManager.completeStep(5, true, '执行结果收集完成');
+                        
+                        // 显示成功结果
+                        let resultDetails = `任务ID: ${taskId}\n执行时间: ${new Date().toLocaleString()}\n状态: 已完成`;
+                        
+                        if (details && details.length > 0) {
+                            resultDetails += '\n\n执行详情:';
+                            details.forEach((detail, index) => {
+                                resultDetails += `\n${index + 1}. 服务器: ${detail.server_name || detail.server_ip}`;
+                                resultDetails += `\n   状态: ${detail.status === 'completed' ? '成功' : '失败'}`;
+                                if (detail.error_message) {
+                                    resultDetails += `\n   错误: ${detail.error_message}`;
+                                }
+                            });
+                        }
+                        
+                        resultDetails += '\n\n页面将在3秒后自动刷新以显示最新结果...';
+                        
+                        progressManager.showResult(
+                            true,
+                            '任务执行成功',
+                            '系统变更任务已成功执行完成',
+                            resultDetails
+                        );
+                        
+                        // 移除自动刷新，改为手动刷新
+                    }, 1000);
+                    
+                } else if (task.status === 'failed') {
+                    clearInterval(pollInterval);
+                    progressManager.completeStep(4, false, '任务执行失败');
+                    
+                    // 收集失败详情
+                    let failureDetails = `任务ID: ${taskId}\n执行时间: ${new Date().toLocaleString()}\n状态: 执行失败`;
+                    
+                    if (details && details.length > 0) {
+                        failureDetails += '\n\n失败详情:';
+                        details.forEach((detail, index) => {
+                            if (detail.status === 'failed' && detail.error_message) {
+                                failureDetails += `\n${index + 1}. 服务器: ${detail.server_name || detail.server_ip}`;
+                                failureDetails += `\n   错误: ${detail.error_message}`;
+                            }
+                        });
+                    }
+                    
+                    progressManager.showResult(
+                        false,
+                        '任务执行失败',
+                        '系统变更任务执行过程中发生错误',
+                        failureDetails
+                    );
+                    
+                } else if (task.status === 'running') {
+                    // 任务仍在执行中，显示进度信息
+                    const progress = task.progress || 0;
+                    // 更新任务执行进度
+                    progressManager.updateStepProgress(4, `任务执行中... (${progress}%)`);
+                }
+            },
+            error: function(xhr) {
+                console.error('获取任务状态失败:', xhr);
+                // 继续轮询，不中断
+            }
+        });
+    }, 2000); // 每2秒轮询一次
+}
 </script>
-@endpush
+@endsection

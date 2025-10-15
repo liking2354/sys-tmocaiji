@@ -7,7 +7,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>服务器分组管理</h1>
         <div>
-            <button type="button" class="btn btn-danger me-2" id="batch-delete-btn" disabled data-bs-toggle="modal" data-bs-target="#deleteModal">
+            <button type="button" class="btn btn-danger me-2" id="batch-delete-btn" disabled>
                 <i class="fas fa-trash"></i> 批量删除
             </button>
             <a href="{{ route('server-groups.create') }}" class="btn btn-primary">
@@ -39,8 +39,6 @@
         <div class="card-body">
             <form id="batch-form" action="{{ route('server-groups.batch-delete') }}" method="POST">
                 @csrf
-                @method('DELETE')
-            </form>   
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
@@ -80,9 +78,9 @@
                                             <i class="fas fa-edit"></i> 编辑
                                         </a>
                                         <button type="button" class="btn btn-sm btn-success" 
-                                                onclick="createChangeTask({{ $group->id }}, '{{ $group->name }}')"
-                                                title="创建变更任务">
-                                            <i class="fas fa-cogs"></i> 变更任务
+                                                onclick="createChangeTask({{ $group->id }}, {{ json_encode($group->name) }})"
+                                                title="创建配置变更任务">
+                                            <i class="fas fa-cogs"></i> 配置变更
                                         </button>
                                         <form action="{{ route('server-groups.destroy', $group) }}" method="POST" class="d-inline" onsubmit="return confirm('确定要删除该分组吗？')">
                                             @csrf
@@ -101,35 +99,17 @@
                         @endforelse
                     </tbody>
                 </table>
-            </div>
-            
-            <div class="d-flex justify-content-center mt-3">
-                {{ $groups->links() }}
-            </div>
+                </div>
+                
+                <div class="d-flex justify-content-center mt-3">
+                    {{ $groups->links() }}
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
-<!-- 删除确认模态框 -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">确认删除</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                确定要删除选中的分组吗？此操作不可恢复！
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-danger" id="confirm-delete">确认删除</button>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 @endsection
 
@@ -178,13 +158,11 @@
                 return false;
             }
             
-            // 使用Bootstrap 4的模态框显示方法
-            $('#deleteModal').modal('show');
-        });
-        
-        // 确认删除按钮点击事件
-        $(document).on('click', '#confirm-delete', function() {
-            $('#batch-form').submit();
+            // 显示确认对话框
+            if (confirm('确定要删除选中的分组吗？此操作不可恢复！')) {
+                // 直接提交表单
+                document.getElementById('batch-form').submit();
+            }
         });
     });
     

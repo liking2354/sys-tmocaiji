@@ -120,13 +120,13 @@
         {
           "type": "replace",
           "pattern": "DB_HOST=.*",
-          "replacement": "DB_HOST={{db_host}}",
+          "replacement": "DB_HOST=@{{db_host@}}",
           "description": "数据库主机地址"
         },
         {
           "type": "replace",
           "pattern": "DB_DATABASE=.*",
-          "replacement": "DB_DATABASE={{db_name}}",
+          "replacement": "DB_DATABASE=@{{db_name@}}",
           "description": "数据库名称"
         }
       ]
@@ -138,7 +138,7 @@
         {
           "type": "replace",
           "pattern": "server_name .*;",
-          "replacement": "server_name {{domain_name}};",
+          "replacement": "server_name @{{domain_name@}};",
           "description": "服务器域名"
         }
       ]
@@ -152,7 +152,7 @@
                         <li><code>file_path</code>: 要修改的文件路径</li>
                         <li><code>type</code>: 修改类型（目前支持 replace）</li>
                         <li><code>pattern</code>: 匹配的正则表达式模式</li>
-                        <li><code>replacement</code>: 替换的内容，支持变量 {{variable_name}}</li>
+                        <li><code>replacement</code>: 替换的内容，支持变量 @{{variable_name@}}</li>
                         <li><code>description</code>: 修改描述</li>
                     </ul>
                 </div>
@@ -299,13 +299,13 @@ function useExample() {
         {
           "type": "replace",
           "pattern": "DB_HOST=.*",
-          "replacement": "DB_HOST={{db_host}}",
+          "replacement": "DB_HOST=\\{\\{db_host\\}\\}",
           "description": "数据库主机地址"
         },
         {
           "type": "replace",
           "pattern": "DB_DATABASE=.*",
-          "replacement": "DB_DATABASE={{db_name}}",
+          "replacement": "DB_DATABASE=\\{\\{db_name\\}\\}",
           "description": "数据库名称"
         }
       ]
@@ -317,7 +317,7 @@ function useExample() {
         {
           "type": "replace",
           "pattern": "server_name .*;",
-          "replacement": "server_name {{domain_name}};",
+          "replacement": "server_name \\{\\{domain_name\\}\\};",
           "description": "服务器域名"
         }
       ]

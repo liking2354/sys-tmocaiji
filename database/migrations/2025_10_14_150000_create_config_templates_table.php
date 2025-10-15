@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name')->comment('模板名称');
             $table->text('description')->nullable()->comment('模板描述');
             $table->json('config_items')->comment('配置项列表');
+            $table->json('variables')->nullable()->comment('变量定义');
             $table->boolean('is_active')->default(true)->comment('是否启用');
             $table->string('created_by')->nullable()->comment('创建人');
             $table->timestamps();

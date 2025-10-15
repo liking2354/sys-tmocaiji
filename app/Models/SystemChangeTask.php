@@ -4,11 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SystemChangeTask extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $fillable = [
         'name',
@@ -134,11 +133,62 @@ class SystemChangeTask extends Model
     }
 
     /**
+     * 获取进度条样式类
+     */
+    public function getProgressBarClass()
+    {
+        switch ($this->status) {
+            case self::STATUS_COMPLETED:
+                return 'bg-success';
+            case self::STATUS_FAILED:
+                return 'bg-danger';
+            case self::STATUS_RUNNING:
+                return 'bg-info progress-bar-animated progress-bar-striped';
+            case self::STATUS_PAUSED:
+                return 'bg-warning';
+            case self::STATUS_CANCELLED:
+                return 'bg-secondary';
+            default:
+                return 'bg-primary';
+        }
+    }
+
+    /**
+     * 获取状态徽章HTML
+     */
+    public function getStatusBadge()
+    {
+        switch ($this->status) {
+            case self::STATUS_DRAFT:
+                return '<span class="badge badge-secondary">草稿</span>';
+            case self::STATUS_PENDING:
+                return '<span class="badge badge-warning">待执行</span>';
+            case self::STATUS_RUNNING:
+                return '<span class="badge badge-info">执行中</span>';
+            case self::STATUS_COMPLETED:
+                return '<span class="badge badge-success">已完成</span>';
+            case self::STATUS_FAILED:
+                return '<span class="badge badge-danger">执行失败</span>';
+            case self::STATUS_PAUSED:
+                return '<span class="badge badge-warning">已暂停</span>';
+            case self::STATUS_CANCELLED:
+                return '<span class="badge badge-secondary">已取消</span>';
+            default:
+                return '<span class="badge badge-light">' . $this->status . '</span>';
+        }
+    }
+
+    /**
      * 检查任务是否可以执行
      */
     public function canExecute()
     {
-        return in_array($this->status, [self::STATUS_DRAFT, self::STATUS_PENDING, self::STATUS_PAUSED]);
+        return in_array($this->status, [
+            self::STATUS_DRAFT, 
+            self::STATUS_PENDING, 
+            self::STATUS_PAUSED,
+            self::STATUS_FAILED  // 允许失败的任务重新执行
+        ]);
     }
 
     /**

@@ -276,10 +276,10 @@
                         <!-- 系统采集菜单 -->
                         <li class="nav-item">
                             <a class="nav-link sidebar-submenu-toggle {{ request()->routeIs(['server-groups.*', 'servers.*', 'collectors.*', 'collection-tasks.*', 'collection-history.*', 'data.cleanup.*']) ? 'active' : '' }}" href="javascript:void(0);">
-                                <i class="fas fa-cloud-download-alt mr-2"></i> 系统采集
-                                <i class="fas fa-chevron-up float-right mt-1"></i>
+                                <i class="fas fa-cloud-download-alt mr-2"></i> 基础设施
+                                <i class="fas fa-chevron-{{ request()->routeIs(['server-groups.*', 'servers.*', 'collectors.*', 'collection-tasks.*', 'collection-history.*', 'data.cleanup.*']) ? 'up' : 'down' }} float-right mt-1"></i>
                             </a>
-                            <ul class="sidebar-submenu" style="display: block;">
+                            <ul class="sidebar-submenu" style="display: {{ request()->routeIs(['server-groups.*', 'servers.*', 'collectors.*', 'collection-tasks.*', 'collection-history.*', 'data.cleanup.*']) ? 'block' : 'none' }};">
                                 <li class="nav-item">
                                     <a class="nav-link pl-4 {{ request()->routeIs('server-groups.*') ? 'active' : '' }}" href="{{ route('server-groups.index') }}">
                                         <i class="fas fa-layer-group mr-2"></i> 服务器分组
@@ -313,10 +313,10 @@
                             </ul>
                         </li>
                         
-                        <!-- 系统变更菜单 -->
+                        <!-- 配置管理菜单 -->
                         <li class="nav-item">
                             <a class="nav-link sidebar-submenu-toggle {{ request()->routeIs('system-change.*') ? 'active' : '' }}" href="javascript:void(0);">
-                                <i class="fas fa-exchange-alt mr-2"></i> 系统变更
+                                <i class="fas fa-cogs mr-2"></i> 配置管理
                                 <i class="fas fa-chevron-down float-right mt-1"></i>
                             </a>
                             <ul class="sidebar-submenu" style="display: {{ request()->routeIs('system-change.*') ? 'block' : 'none' }};">
@@ -327,7 +327,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link pl-4 {{ request()->routeIs('system-change.tasks.*') ? 'active' : '' }}" href="{{ route('system-change.tasks.index') }}">
-                                        <i class="fas fa-tasks mr-2"></i> 变更任务
+                                        <i class="fas fa-tasks mr-2"></i> 配置任务
                                     </a>
                                 </li>
                             </ul>
@@ -447,11 +447,9 @@
                 var $submenu = $this.next('.sidebar-submenu');
                 var $icon = $this.find('.fas.float-right');
                 
-                // 系统采集菜单默认展开
-                if ($this.text().trim().includes('系统采集')) {
-                    $this.removeClass('collapsed');
-                    $submenu.show();
-                    $icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+                // 基础设施菜单保持当前状态，不自动收起
+                if ($this.text().trim().includes('基础设施')) {
+                    // 不做任何自动操作，保持HTML中设置的状态
                 }
                 // 云资源管理菜单根据当前路由决定是否展开
                 else if ($this.text().trim().includes('云资源管理')) {
@@ -480,7 +478,8 @@
             });
             
             // 子菜单展开/收起功能
-            $('.sidebar-submenu-toggle').click(function() {
+            $('.sidebar-submenu-toggle').click(function(e) {
+                e.preventDefault();
                 var $this = $(this);
                 var $submenu = $this.next('.sidebar-submenu');
                 var $icon = $this.find('.fas.float-right');
@@ -493,6 +492,11 @@
                 } else {
                     $icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
                 }
+            });
+            
+            // 阻止子菜单项点击时触发父菜单收起
+            $('.sidebar-submenu .nav-link').click(function(e) {
+                e.stopPropagation();
             });
             
             // 页面加载时恢复侧边栏状态

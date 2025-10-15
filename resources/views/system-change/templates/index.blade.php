@@ -63,7 +63,7 @@
                                     <th width="5%">ID</th>
                                     <th>模板名称</th>
                                     <th>描述</th>
-                                    <th width="10%">配置项数</th>
+                                    <th width="10%">规则数</th>
                                     <th width="10%">变量数</th>
                                     <th width="8%">状态</th>
                                     <th width="10%">创建人</th>
@@ -82,10 +82,10 @@
                                         {{ Str::limit($template->description, 50) ?: '-' }}
                                     </td>
                                     <td>
-                                        <span class="badge badge-info">{{ $template->config_items_count }}</span>
+                                        <span class="badge badge-info">{{ is_array($template->config_rules) ? count($template->config_rules) : 0 }}</span>
                                     </td>
                                     <td>
-                                        <span class="badge badge-secondary">{{ count($template->variables) }}</span>
+                                        <span class="badge badge-secondary">{{ is_array($template->template_variables) ? count($template->template_variables) : 0 }}</span>
                                     </td>
                                     <td>
                                         @if($template->is_active)
