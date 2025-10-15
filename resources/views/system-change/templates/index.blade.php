@@ -172,6 +172,18 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <div class="alert alert-info">
+                        <h6><i class="fas fa-info-circle"></i> 导入说明：</h6>
+                        <ul class="mb-2">
+                            <li>支持JSON格式的配置模板文件</li>
+                            <li>文件大小不超过2MB</li>
+                            <li>如果不知道格式，请先下载样例模板</li>
+                        </ul>
+                        <a href="{{ route('system-change.templates.download-sample') }}" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-download"></i> 下载样例模板
+                        </a>
+                    </div>
+                    
                     <div class="form-group">
                         <label for="template_file">选择模板文件</label>
                         <input type="file" class="form-control-file" id="template_file" name="template_file" 

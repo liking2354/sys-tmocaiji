@@ -1,0 +1,119 @@
+{
+    "name": "样例配置模板",
+    "description": "这是一个配置模板的样例文件，展示了如何创建配置规则和变量。您可以基于此样例创建自己的配置模板。",
+    "template_type": "mixed",
+    "is_active": true,
+    "config_rules": [
+        {
+            "type": "directory",
+            "description": "批量处理目录中的配置文件 - 适用于需要修改多个相似配置文件的场景",
+            "directory": "/etc/nginx/conf.d",
+            "pattern": "*.conf",
+            "variables": [
+                {
+                    "variable": "server_name",
+                    "match_type": "key_value",
+                    "match_pattern": "server_name"
+                },
+                {
+                    "variable": "listen_port",
+                    "match_type": "key_value",
+                    "match_pattern": "listen"
+                }
+            ]
+        },
+        {
+            "type": "file",
+            "description": "修改特定配置文件 - 适用于需要精确修改某个配置文件的场景",
+            "file_path": "/etc/nginx/nginx.conf",
+            "variables": [
+                {
+                    "variable": "worker_processes",
+                    "match_type": "key_value",
+                    "match_pattern": "worker_processes"
+                },
+                {
+                    "variable": "worker_connections",
+                    "match_type": "key_value",
+                    "match_pattern": "worker_connections"
+                }
+            ]
+        },
+        {
+            "type": "string",
+            "description": "字符串替换示例 - 适用于需要替换文件中特定字符串的场景",
+            "file_path": "/etc/hosts",
+            "search_string": "127.0.0.1 localhost",
+            "replace_string": "127.0.0.1 localhost {{hostname}}"
+        },
+        {
+            "type": "string",
+            "description": "配置文件中的数据库连接信息替换",
+            "file_path": "/var/www/html/.env",
+            "search_string": "DB_HOST=localhost",
+            "replace_string": "DB_HOST={{db_host}}"
+        }
+    ],
+    "template_variables": [
+        {
+            "name": "server_name",
+            "description": "服务器域名，用于nginx配置中的server_name指令",
+            "default_value": "example.com",
+            "required": true
+        },
+        {
+            "name": "listen_port",
+            "description": "监听端口，用于nginx配置中的listen指令",
+            "default_value": "80",
+            "required": true
+        },
+        {
+            "name": "worker_processes",
+            "description": "工作进程数，建议设置为CPU核心数或auto",
+            "default_value": "auto",
+            "required": false
+        },
+        {
+            "name": "worker_connections",
+            "description": "每个工作进程的最大连接数",
+            "default_value": "1024",
+            "required": false
+        },
+        {
+            "name": "hostname",
+            "description": "主机名，用于hosts文件或其他需要主机名的配置",
+            "default_value": "myserver",
+            "required": true
+        },
+        {
+            "name": "db_host",
+            "description": "数据库主机地址",
+            "default_value": "127.0.0.1",
+            "required": true
+        }
+    ],
+    "_说明": {
+        "配置规则类型": {
+            "directory": "批量处理目录中匹配模式的文件",
+            "file": "处理单个指定的文件",
+            "string": "在文件中进行字符串查找和替换"
+        },
+        "变量匹配类型": {
+            "key_value": "键值对匹配，如 'server_name example.com'",
+            "regex": "正则表达式匹配",
+            "exact": "精确匹配"
+        },
+        "使用步骤": [
+            "1. 根据实际需求修改config_rules中的配置规则",
+            "2. 更新template_variables中的变量定义",
+            "3. 确保变量名在config_rules和template_variables中保持一致",
+            "4. 保存为JSON文件并通过系统导入"
+        ],
+        "注意事项": [
+            "文件路径必须是绝对路径",
+            "目录路径必须存在于目标服务器上",
+            "变量名只能包含字母、数字和下划线",
+            "search_string必须能在目标文件中找到"
+        ]
+    }
+}

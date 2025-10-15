@@ -30,7 +30,16 @@ class ConfigTemplate extends Model
      */
     public function changeTasks()
     {
-        return $this->belongsToMany(SystemChangeTask::class, 'system_change_task_details', 'template_id', 'task_id');
+        return $this->belongsToMany(SystemChangeTask::class, 'system_change_task_details', 'template_id', 'task_id')
+                    ->distinct();
+    }
+
+    /**
+     * 获取使用此模板的任务详情
+     */
+    public function taskDetails()
+    {
+        return $this->hasMany(SystemChangeTaskDetail::class, 'template_id');
     }
 
     /**

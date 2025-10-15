@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ConfigTemplate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class ConfigTemplateController extends Controller
@@ -125,7 +126,18 @@ class ConfigTemplateController extends Controller
      */
     public function show(ConfigTemplate $template)
     {
-        $template->load('changeTasks');
+        // 加载关联的任务数据，并确保获取服务器数量
+        $template->load(['changeTasks' => function($query) {
+            $query->orderBy('created_at', 'desc');
+        }]);
+        
+        // 为每个任务计算服务器数量（如果total_servers为0）
+        foreach ($template->changeTasks as $task) {
+            if ($task->total_servers == 0 && is_array($task->server_ids)) {
+                $task->total_servers = count($task->server_ids);
+                $task->save();
+            }
+        }
         
         return view('system-change.templates.show', compact('template'));
     }
@@ -390,6 +402,122 @@ class ConfigTemplateController extends Controller
             $string = str_replace("{{$key}}", $value, $string);
         }
         return $string;
+    }
+
+    /**
+     * 下载样例模板
+     */
+    public function downloadSample()
+    {
+        try {
+            // 读取样例模板文件
+            $samplePath = storage_path('app/config_template_sample.json');
+            
+            if (!file_exists($samplePath)) {
+                return redirect()->back()
+                    ->with('error', '样例模板文件不存在');
+            }
+
+            $content = file_get_contents($samplePath);
+            $filename = '配置模板样例_' . date('Y-m-d_H-i-s') . '.json';
+
+            return response($content)
+                ->header('Content-Type', 'application/json; charset=utf-8')
+                ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
+                
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', '下载样例模板失败：' . $e->getMessage());
+        }
+    }
+
+    /**
+     * 导入配置模板
+     */
+    public function import(Request $request)
+    {
+        $request->validate([
+            'template_file' => 'required|file|mimes:json|max:2048'
+        ], [
+            'template_file.required' => '请选择要导入的模板文件',
+            'template_file.mimes' => '只支持JSON格式的文件',
+            'template_file.max' => '文件大小不能超过2MB'
+        ]);
+
+        try {
+            $file = $request->file('template_file');
+            $content = file_get_contents($file->getRealPath());
+            $templateData = json_decode($content, true);
+
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return redirect()->back()
+                    ->with('error', 'JSON文件格式错误：' . json_last_error_msg());
+            }
+
+            // 验证必需字段
+            $requiredFields = ['name', 'config_rules'];
+            foreach ($requiredFields as $field) {
+                if (!isset($templateData[$field])) {
+                    return redirect()->back()
+                        ->with('error', "模板文件缺少必需字段：{$field}");
+                }
+            }
+
+            // 检查模板名称是否已存在
+            if (ConfigTemplate::where('name', $templateData['name'])->exists()) {
+                $templateData['name'] = $templateData['name'] . '_导入_' . date('Y-m-d_H-i-s');
+            }
+
+            // 创建模板
+            $template = ConfigTemplate::create([
+                'name' => $templateData['name'],
+                'description' => $templateData['description'] ?? '',
+                'config_rules' => $templateData['config_rules'],
+                'template_variables' => $templateData['template_variables'] ?? [],
+                'template_type' => $templateData['template_type'] ?? 'mixed',
+                'is_active' => $templateData['is_active'] ?? true,
+                'created_by' => Auth::id()
+            ]);
+
+            // 验证配置
+            $errors = $template->validateConfig();
+            if (!empty($errors)) {
+                $template->delete();
+                return redirect()->back()
+                    ->with('error', '模板配置验证失败：' . implode(', ', $errors));
+            }
+
+            return redirect()->route('system-change.templates.index')
+                ->with('success', '配置模板导入成功');
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', '导入失败：' . $e->getMessage());
+        }
+    }
+
+    /**
+     * 导出配置模板
+     */
+    public function export(ConfigTemplate $template)
+    {
+        $exportData = [
+            'name' => $template->name,
+            'description' => $template->description,
+            'template_type' => $template->template_type,
+            'is_active' => $template->is_active,
+            'config_rules' => $template->config_rules,
+            'template_variables' => $template->template_variables,
+            'exported_at' => now()->toISOString(),
+            'exported_by' => Auth::user()->name ?? 'Unknown'
+        ];
+
+        $filename = '配置模板_' . $template->name . '_' . date('Y-m-d_H-i-s') . '.json';
+        $content = json_encode($exportData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+
+        return response($content)
+            ->header('Content-Type', 'application/json; charset=utf-8')
+            ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
     }
 
     /**

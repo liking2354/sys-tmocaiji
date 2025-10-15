@@ -149,13 +149,16 @@ Route::middleware(['auth'])->group(function () {
     // 系统变更管理
     Route::prefix('system-change')->name('system-change.')->group(function () {
         // 配置模板管理
+        // 注意：静态路由必须放在动态路由之前
+        Route::get('templates/download-sample', [ConfigTemplateController::class, 'downloadSample'])->name('templates.download-sample');
+        Route::post('templates/preview', [ConfigTemplateController::class, 'preview'])->name('templates.preview');
+        Route::post('templates/import', [ConfigTemplateController::class, 'import'])->name('templates.import');
+        
         Route::resource('templates', ConfigTemplateController::class);
         Route::post('templates/{template}/toggle-status', [ConfigTemplateController::class, 'toggleStatus'])->name('templates.toggle-status');
         Route::post('templates/{template}/duplicate', [ConfigTemplateController::class, 'duplicate'])->name('templates.duplicate');
-        Route::post('templates/preview', [ConfigTemplateController::class, 'preview'])->name('templates.preview');
         Route::get('templates/{template}/variables', [ConfigTemplateController::class, 'getVariables'])->name('templates.variables');
         Route::get('templates/{template}/export', [ConfigTemplateController::class, 'export'])->name('templates.export');
-        Route::post('templates/import', [ConfigTemplateController::class, 'import'])->name('templates.import');
         
         // 变更任务管理
         Route::resource('tasks', SystemChangeTaskController::class);

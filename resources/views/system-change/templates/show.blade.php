@@ -102,47 +102,140 @@
                     <h5 class="card-title mb-0">配置项详情</h5>
                 </div>
                 <div class="card-body">
-                    @if(is_array($template->config_items) && count($template->config_items) > 0)
-                        @foreach($template->config_items as $index => $item)
+                    @if(is_array($template->config_rules) && count($template->config_rules) > 0)
+                        @foreach($template->config_rules as $index => $rule)
                             <div class="config-item mb-4 p-3 border rounded">
                                 <h6 class="text-primary mb-3">
-                                    <i class="fas fa-file-code"></i> 
-                                    {{ $item['name'] ?? '配置项 ' . ($index + 1) }}
+                                    <i class="fas fa-cog"></i> 
+                                    配置规则 {{ $index + 1 }} - {{ ucfirst($rule['type'] ?? 'unknown') }}
                                 </h6>
                                 
                                 <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <strong>文件路径:</strong>
-                                        <code class="d-block mt-1">{{ $item['file_path'] ?? '未指定' }}</code>
+                                    <div class="col-md-4">
+                                        <strong>规则类型:</strong>
+                                        <span class="badge bg-primary">{{ $rule['type'] ?? '未知' }}</span>
                                     </div>
-                                    <div class="col-md-6">
-                                        <strong>修改项数量:</strong>
-                                        <span class="badge bg-info">{{ count($item['modifications'] ?? []) }} 项</span>
+                                    <div class="col-md-8">
+                                        <strong>描述:</strong>
+                                        <span>{{ $rule['description'] ?? '无描述' }}</span>
                                     </div>
                                 </div>
 
-                                @if(isset($item['modifications']) && is_array($item['modifications']))
-                                    <div class="modifications">
-                                        <strong>修改规则:</strong>
-                                        <div class="table-responsive mt-2">
-                                            <table class="table table-sm table-bordered">
-                                                <thead class="table-light">
-                                                    <tr>
-                                                        <th width="30%">匹配模式</th>
-                                                        <th width="30%">替换内容</th>
-                                                        <th width="40%">说明</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach($item['modifications'] as $mod)
+                                @if($rule['type'] === 'directory')
+                                    <div class="rule-details">
+                                        <div class="row mb-2">
+                                            <div class="col-md-6">
+                                                <strong>目录路径:</strong>
+                                                <code class="d-block mt-1">{{ $rule['directory'] ?? '未指定' }}</code>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <strong>文件模式:</strong>
+                                                <code class="d-block mt-1">{{ $rule['pattern'] ?? '*' }}</code>
+                                            </div>
+                                        </div>
+                                        @if(isset($rule['variables']) && is_array($rule['variables']))
+                                            <strong>变量配置:</strong>
+                                            <div class="table-responsive mt-2">
+                                                <table class="table table-sm table-bordered">
+                                                    <thead class="table-light">
                                                         <tr>
-                                                            <td><code>{{ $mod['pattern'] ?? '' }}</code></td>
-                                                            <td><code>{{ $mod['replacement'] ?? '' }}</code></td>
-                                                            <td>{{ $mod['description'] ?? '无' }}</td>
+                                                            <th>变量名</th>
+                                                            <th>匹配类型</th>
+                                                            <th>匹配模式</th>
                                                         </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach($rule['variables'] as $var)
+                                                            <tr>
+                                                                <td><code>{{ $var['variable'] ?? '' }}</code></td>
+                                                                <td>{{ $var['match_type'] ?? 'key_value' }}</td>
+                                                                <td><code>{{ $var['match_pattern'] ?? '' }}</code></td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        @elseif(isset($rule['variable']))
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <strong>变量名:</strong>
+                                                    <code>{{ $rule['variable'] }}</code>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <strong>匹配类型:</strong>
+                                                    {{ $rule['match_type'] ?? 'key_value' }}
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <strong>匹配模式:</strong>
+                                                    <code>{{ $rule['match_pattern'] ?? '' }}</code>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
+                                @elseif($rule['type'] === 'file')
+                                    <div class="rule-details">
+                                        <div class="row mb-2">
+                                            <div class="col-md-12">
+                                                <strong>文件路径:</strong>
+                                                <code class="d-block mt-1">{{ $rule['file_path'] ?? '未指定' }}</code>
+                                            </div>
+                                        </div>
+                                        @if(isset($rule['variables']) && is_array($rule['variables']))
+                                            <strong>变量配置:</strong>
+                                            <div class="table-responsive mt-2">
+                                                <table class="table table-sm table-bordered">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>变量名</th>
+                                                            <th>匹配类型</th>
+                                                            <th>匹配模式</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach($rule['variables'] as $var)
+                                                            <tr>
+                                                                <td><code>{{ $var['variable'] ?? '' }}</code></td>
+                                                                <td>{{ $var['match_type'] ?? 'key_value' }}</td>
+                                                                <td><code>{{ $var['match_pattern'] ?? '' }}</code></td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        @elseif(isset($rule['variable']))
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <strong>变量名:</strong>
+                                                    <code>{{ $rule['variable'] }}</code>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <strong>匹配类型:</strong>
+                                                    {{ $rule['match_type'] ?? 'key_value' }}
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <strong>匹配模式:</strong>
+                                                    <code>{{ $rule['match_pattern'] ?? '' }}</code>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
+                                @elseif($rule['type'] === 'string')
+                                    <div class="rule-details">
+                                        <div class="row mb-2">
+                                            <div class="col-md-12">
+                                                <strong>文件路径:</strong>
+                                                <code class="d-block mt-1">{{ $rule['file_path'] ?? '未指定' }}</code>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-md-6">
+                                                <strong>查找字符串:</strong>
+                                                <code class="d-block mt-1">{{ $rule['search_string'] ?? '' }}</code>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <strong>替换字符串:</strong>
+                                                <code class="d-block mt-1">{{ $rule['replace_string'] ?? '' }}</code>
+                                            </div>
                                         </div>
                                     </div>
                                 @endif

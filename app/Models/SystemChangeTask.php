@@ -133,6 +133,25 @@ class SystemChangeTask extends Model
     }
 
     /**
+     * 获取服务器数量
+     */
+    public function getServerCountAttribute()
+    {
+        // 优先使用total_servers字段
+        if ($this->total_servers > 0) {
+            return $this->total_servers;
+        }
+        
+        // 如果total_servers为0，则从server_ids计算
+        if (is_array($this->server_ids) && count($this->server_ids) > 0) {
+            return count($this->server_ids);
+        }
+        
+        // 最后从任务详情中计算
+        return $this->taskDetails()->distinct('server_id')->count();
+    }
+
+    /**
      * 获取进度条样式类
      */
     public function getProgressBarClass()
