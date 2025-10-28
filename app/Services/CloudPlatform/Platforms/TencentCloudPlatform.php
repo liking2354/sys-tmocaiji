@@ -11,6 +11,7 @@ use TencentCloud\Clb\V20180317\ClbClient;
 use TencentCloud\Cdb\V20170320\CdbClient;
 use TencentCloud\Redis\V20180412\RedisClient;
 use TencentCloud\Domain\V20180808\DomainClient;
+use Illuminate\Support\Facades\Log;
 use Exception;
 
 class TencentCloudPlatform extends AbstractCloudPlatform
@@ -123,7 +124,7 @@ class TencentCloudPlatform extends AbstractCloudPlatform
     /**
      * 获取云主机列表
      */
-    public function getEcsInstances(string $region = null): array
+    public function getEcsInstances(?string $region = null): array
     {
         try {
             $region = $region ?? $this->getConfig('region');
@@ -146,23 +147,36 @@ class TencentCloudPlatform extends AbstractCloudPlatform
             $req->setLimit(100); // 每页最多100个实例
             $req->setOffset(0);
             
-            // 设置过滤器，只查询运行状态的实例
-            $filter = new \TencentCloud\Cvm\V20170312\Models\Filter();
-            $filter->setName("instance-state");
-            $filter->setValues(["RUNNING"]);
-            $req->setFilters([$filter]);
+            // 不设置过滤器，查询所有状态的实例
+            // $filter = new \TencentCloud\Cvm\V20170312\Models\Filter();
+            // $filter->setName("instance-state");
+            // $filter->setValues(["RUNNING"]);
+            // $req->setFilters([$filter]);
             
             \Log::info('TencentCloud: 准备调用DescribeInstances API', [
                 'limit' => 100,
-                'offset' => 0
+                'offset' => 0,
+                'region' => $region,
+                'access_key_id' => substr($this->getConfig('access_key_id'), 0, 8) . '***'
             ]);
             
             $resp = $this->cvmClient->DescribeInstances($req);
             
             \Log::info('TencentCloud: API调用成功', [
                 'total_count' => $resp->getTotalCount(),
-                'instance_count' => $resp->getInstanceSet() ? count($resp->getInstanceSet()) : 0
+                'instance_count' => $resp->getInstanceSet() ? count($resp->getInstanceSet()) : 0,
+                'region' => $region,
+                'response_class' => get_class($resp)
             ]);
+            
+            // 如果没有实例，记录详细信息
+            if ($resp->getTotalCount() == 0) {
+                \Log::info('TencentCloud: 该区域没有找到任何实例', [
+                    'region' => $region,
+                    'total_count' => $resp->getTotalCount(),
+                    'message' => '可能原因：1) 该区域确实没有实例 2) 权限不足 3) 区域配置错误'
+                ]);
+            }
             
             $instances = [];
             
@@ -234,27 +248,69 @@ class TencentCloudPlatform extends AbstractCloudPlatform
     /**
      * 获取负载均衡列表
      */
-    public function getClbInstances(string $region = null): array
+    public function getClbInstances(?string $region = null): array
     {
         try {
             $region = $region ?? $this->getConfig('region');
-            // 这里应该调用腾讯云CLB API
-            // 暂时返回模拟数据
+            $this->initializeClient();
+            
+            \Log::info('TencentCloud: 开始获取CLB实例列表', ['region' => $region]);
+            
+            // 调用腾讯云 CLB API 获取负载均衡列表
+            $req = new \TencentCloud\Clb\V20180317\Models\DescribeLoadBalancersRequest();
+            $req->setLimit(100);
+            
+            \Log::info('TencentCloud: 准备调用DescribeLoadBalancers API');
+            $resp = $this->clbClient->DescribeLoadBalancers($req);
+            
             $instances = [];
-            for ($i = 1; $i <= 2; $i++) {
-                $instances[] = $this->formatResourceData('clb', [
-                    'LoadBalancerId' => 'lb-tencent-' . $region . '-' . $i,
-                    'LoadBalancerName' => 'CLB-Tencent-' . $i,
-                    'Status' => 1, // 1表示正常
-                    'LoadBalancerType' => 'OPEN',
-                    'LoadBalancerVips' => ['203.0.114.' . ($i + 10)],
-                    'CreateTime' => now()->subDays(rand(1, 30))->toISOString(),
-                ]);
+            $loadBalancers = $resp->getLoadBalancerSet();
+            
+            \Log::info('TencentCloud: CLB API调用成功', [
+                'total_count' => $resp->getTotalCount(),
+                'returned_count' => $loadBalancers ? count($loadBalancers) : 0
+            ]);
+            
+            if ($loadBalancers) {
+                foreach ($loadBalancers as $index => $lb) {
+                    \Log::info("TencentCloud: 处理CLB实例 #{$index}", [
+                        'LoadBalancerId' => $lb->getLoadBalancerId(),
+                        'LoadBalancerName' => $lb->getLoadBalancerName(),
+                        'Status' => $lb->getStatus()
+                    ]);
+                    
+                    $lbData = [
+                        'LoadBalancerId' => $lb->getLoadBalancerId(),
+                        'LoadBalancerName' => $lb->getLoadBalancerName(),
+                        'Status' => $lb->getStatus(),
+                        'LoadBalancerType' => $lb->getLoadBalancerType(),
+                        'LoadBalancerVips' => $lb->getLoadBalancerVips() ?: [],
+                        'CreateTime' => $lb->getCreateTime(),
+                        'Region' => $region,
+                        'ProjectId' => $lb->getProjectId(),
+                        'VpcId' => $lb->getVpcId(),
+                        'SubnetId' => $lb->getSubnetId(),
+                    ];
+                    
+                    $formattedData = $this->formatResourceData('clb', $lbData);
+                    \Log::info("TencentCloud: 格式化后的CLB数据 #{$index}", $formattedData);
+                    
+                    $instances[] = $formattedData;
+                }
+            } else {
+                \Log::warning('TencentCloud: API返回的CLB集合为空');
             }
 
+            \Log::info('TencentCloud: 最终返回CLB数量', ['count' => count($instances)]);
             $this->logApiCall('getLoadBalancers', ['region' => $region], $instances);
             return $instances;
         } catch (Exception $e) {
+            \Log::error('TencentCloud: getClbInstances异常', [
+                'error' => $e->getMessage(),
+                'code' => $e->getCode(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ]);
             $this->handleApiException($e, 'getLoadBalancers', ['region' => $region]);
             return [];
         }
@@ -263,32 +319,75 @@ class TencentCloudPlatform extends AbstractCloudPlatform
     /**
      * 获取MySQL数据库列表
      */
-    public function getCdbInstances(string $region = null): array
+    public function getCdbInstances(?string $region = null): array
     {
         try {
             $region = $region ?? $this->getConfig('region');
-            // 这里应该调用腾讯云CDB API
-            // 暂时返回模拟数据
+            $this->initializeClient();
+            
+            \Log::info('TencentCloud: 开始获取CDB实例列表', ['region' => $region]);
+            
+            // 调用腾讯云 CDB API 获取数据库实例列表
+            $req = new \TencentCloud\Cdb\V20170320\Models\DescribeDBInstancesRequest();
+            $req->setLimit(100);
+            
+            \Log::info('TencentCloud: 准备调用DescribeDBInstances API');
+            $resp = $this->cdbClient->DescribeDBInstances($req);
+            
             $instances = [];
-            for ($i = 1; $i <= 2; $i++) {
-                $instances[] = $this->formatResourceData('cdb', [
-                    'InstanceId' => 'cdb-tencent-' . $region . '-' . $i,
-                    'InstanceName' => 'CDB-MySQL-Tencent-' . $i,
-                    'Status' => 1, // 1表示运行中
-                    'EngineVersion' => '8.0',
-                    'InstanceType' => 1, // 1表示主实例
-                    'Memory' => 1000,
-                    'Volume' => 25,
-                    'Vip' => '10.0.1.' . ($i + 10),
-                    'Vport' => 3306,
-                    'CreateTime' => now()->subDays(rand(1, 30))->toISOString(),
-                ]);
+            $dbInstances = $resp->getItems();
+            
+            \Log::info('TencentCloud: CDB API调用成功', [
+                'total_count' => $resp->getTotalCount(),
+                'returned_count' => $dbInstances ? count($dbInstances) : 0
+            ]);
+            
+            if ($dbInstances) {
+                foreach ($dbInstances as $index => $db) {
+                    \Log::info("TencentCloud: 处理CDB实例 #{$index}", [
+                        'InstanceId' => $db->getInstanceId(),
+                        'InstanceName' => $db->getInstanceName(),
+                        'Status' => $db->getStatus()
+                    ]);
+                    
+                    $dbData = [
+                        'InstanceId' => $db->getInstanceId(),
+                        'InstanceName' => $db->getInstanceName(),
+                        'Status' => $db->getStatus(),
+                        'EngineVersion' => $db->getEngineVersion(),
+                        'InstanceType' => $db->getInstanceType(),
+                        'Memory' => $db->getMemory(),
+                        'Volume' => $db->getVolume(),
+                        'Vip' => $db->getVip(),
+                        'Vport' => $db->getVport(),
+                        'CreateTime' => $db->getCreateTime(),
+                        'Region' => $region,
+                        'Zone' => $db->getZone(),
+                        'ProjectId' => $db->getProjectId(),
+                        'VpcId' => $db->getUniqVpcId(),
+                        'SubnetId' => $db->getUniqSubnetId(),
+                    ];
+                    
+                    $formattedData = $this->formatResourceData('cdb', $dbData);
+                    \Log::info("TencentCloud: 格式化后的CDB数据 #{$index}", $formattedData);
+                    
+                    $instances[] = $formattedData;
+                }
+            } else {
+                \Log::warning('TencentCloud: API返回的CDB集合为空');
             }
 
-            $this->logApiCall('getMysqlInstances', ['region' => $region], $instances);
+            \Log::info('TencentCloud: 最终返回CDB数量', ['count' => count($instances)]);
+            $this->logApiCall('getCdbInstances', ['region' => $region], $instances);
             return $instances;
         } catch (Exception $e) {
-            $this->handleApiException($e, 'getMysqlInstances', ['region' => $region]);
+            \Log::error('TencentCloud: getCdbInstances异常', [
+                'error' => $e->getMessage(),
+                'code' => $e->getCode(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ]);
+            $this->handleApiException($e, 'getCdbInstances', ['region' => $region]);
             return [];
         }
     }
@@ -296,31 +395,74 @@ class TencentCloudPlatform extends AbstractCloudPlatform
     /**
      * 获取Redis实例列表
      */
-    public function getRedisInstances(string $region = null): array
+    public function getRedisInstances(?string $region = null): array
     {
         try {
             $region = $region ?? $this->getConfig('region');
-            // 这里应该调用腾讯云Redis API
-            // 暂时返回模拟数据
+            $this->initializeClient();
+            
+            \Log::info('TencentCloud: 开始获取Redis实例列表', ['region' => $region]);
+            
+            // 调用腾讯云 Redis API 获取实例列表
+            $req = new \TencentCloud\Redis\V20180412\Models\DescribeInstancesRequest();
+            $req->setLimit(100);
+            
+            \Log::info('TencentCloud: 准备调用DescribeInstances API (Redis)');
+            $resp = $this->redisClient->DescribeInstances($req);
+            
             $instances = [];
-            for ($i = 1; $i <= 2; $i++) {
-                $instances[] = $this->formatResourceData('redis', [
-                    'InstanceId' => 'crs-tencent-' . $region . '-' . $i,
-                    'InstanceName' => 'Redis-Tencent-' . $i,
-                    'Status' => 2, // 2表示运行中
-                    'Type' => 2, // 2表示Redis2.8主从版
-                    'Size' => 1024,
-                    'RedisShardNum' => 1,
-                    'RedisReplicasNum' => 1,
-                    'Port' => 6379,
-                    'WanIp' => '203.0.115.' . ($i + 10),
-                    'CreateTime' => now()->subDays(rand(1, 30))->toISOString(),
-                ]);
+            $redisInstances = $resp->getInstanceSet();
+            
+            \Log::info('TencentCloud: Redis API调用成功', [
+                'total_count' => $resp->getTotalCount(),
+                'returned_count' => $redisInstances ? count($redisInstances) : 0
+            ]);
+            
+            if ($redisInstances) {
+                foreach ($redisInstances as $index => $redis) {
+                    \Log::info("TencentCloud: 处理Redis实例 #{$index}", [
+                        'InstanceId' => $redis->getInstanceId(),
+                        'InstanceName' => $redis->getInstanceName(),
+                        'Status' => $redis->getStatus()
+                    ]);
+                    
+                    $redisData = [
+                        'InstanceId' => $redis->getInstanceId(),
+                        'InstanceName' => $redis->getInstanceName(),
+                        'Status' => $redis->getStatus(),
+                        'Type' => $redis->getType(),
+                        'Size' => $redis->getSize(),
+                        'RedisShardNum' => $redis->getRedisShardNum(),
+                        'RedisReplicasNum' => $redis->getRedisReplicasNum(),
+                        'Port' => $redis->getPort(),
+                        'WanIp' => $redis->getWanIp(),
+                        'CreateTime' => $redis->getCreatetime(),
+                        'Region' => $region,
+                        'Zone' => $redis->getZoneId(),
+                        'ProjectId' => $redis->getProjectId(),
+                        'VpcId' => $redis->getVpcId(),
+                        'SubnetId' => $redis->getSubnetId(),
+                    ];
+                    
+                    $formattedData = $this->formatResourceData('redis', $redisData);
+                    \Log::info("TencentCloud: 格式化后的Redis数据 #{$index}", $formattedData);
+                    
+                    $instances[] = $formattedData;
+                }
+            } else {
+                \Log::warning('TencentCloud: API返回的Redis集合为空');
             }
 
+            \Log::info('TencentCloud: 最终返回Redis数量', ['count' => count($instances)]);
             $this->logApiCall('getRedisInstances', ['region' => $region], $instances);
             return $instances;
         } catch (Exception $e) {
+            \Log::error('TencentCloud: getRedisInstances异常', [
+                'error' => $e->getMessage(),
+                'code' => $e->getCode(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ]);
             $this->handleApiException($e, 'getRedisInstances', ['region' => $region]);
             return [];
         }
@@ -332,58 +474,69 @@ class TencentCloudPlatform extends AbstractCloudPlatform
     public function getDomains(array $filters = []): array
     {
         try {
-            // 这里应该调用腾讯云域名API
-            // 暂时返回模拟数据
-            $domains = [];
-            $domainNames = ['example-tencent.com', 'test-tencent.cn', 'demo-tencent.net'];
+            $this->initializeClient();
             
-            foreach ($domainNames as $index => $domainName) {
-                $domains[] = $this->formatResourceData('domain', [
-                    'DomainName' => $domainName,
-                    'Status' => 'ENABLE',
-                    'CreationDate' => now()->subDays(rand(30, 365))->toISOString(),
-                    'ExpirationDate' => now()->addDays(rand(30, 365))->toISOString(),
-                    'IsPremium' => false,
-                ]);
+            \Log::info('TencentCloud: 开始获取域名列表');
+            
+            // 调用腾讯云 Domain API 获取域名列表
+            $req = new \TencentCloud\Domain\V20180808\Models\DescribeDomainListRequest();
+            $req->setLimit(100);
+            $req->setOffset(0);
+            
+            \Log::info('TencentCloud: 准备调用DescribeDomainList API');
+            $resp = $this->domainClient->DescribeDomainList($req);
+            
+            $domains = [];
+            $domainList = $resp->getDomainList();
+            
+            \Log::info('TencentCloud: Domain API调用成功', [
+                'total_count' => $resp->getTotalCount(),
+                'returned_count' => $domainList ? count($domainList) : 0
+            ]);
+            
+            if ($domainList) {
+                foreach ($domainList as $index => $domain) {
+                    \Log::info("TencentCloud: 处理域名 #{$index}", [
+                        'DomainName' => $domain->getDomainName(),
+                        'Status' => $domain->getStatus(),
+                        'CreationDate' => $domain->getCreationDate()
+                    ]);
+                    
+                    $domainData = [
+                        'DomainName' => $domain->getDomainName(),
+                        'Status' => $domain->getStatus(),
+                        'CreationDate' => $domain->getCreationDate(),
+                        'ExpirationDate' => $domain->getExpirationDate(),
+                        'IsPremium' => $domain->getIsPremium(),
+                        'DnsStatus' => $domain->getDnsStatus(),
+                        'DomainNameAuditStatus' => $domain->getDomainNameAuditStatus(),
+                    ];
+                    
+                    $formattedData = $this->formatResourceData('domain', $domainData);
+                    \Log::info("TencentCloud: 格式化后的域名数据 #{$index}", $formattedData);
+                    
+                    $domains[] = $formattedData;
+                }
+            } else {
+                \Log::warning('TencentCloud: API返回的域名集合为空');
             }
 
+            \Log::info('TencentCloud: 最终返回域名数量', ['count' => count($domains)]);
             $this->logApiCall('getDomains', [], $domains);
             return $domains;
         } catch (Exception $e) {
+            \Log::error('TencentCloud: getDomains异常', [
+                'error' => $e->getMessage(),
+                'code' => $e->getCode(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ]);
             $this->handleApiException($e, 'getDomains');
             return [];
         }
     }
 
-    /**
-     * 获取资源详细信息
-     */
-    public function getResourceDetail(string $resourceType, string $resourceId, ?string $region = null): ?array
-    {
-        try {
-            $region = $region ?? $this->getConfig('region');
-            
-            // 这里应该调用具体的API获取资源详情
-            // 暂时返回模拟数据
-            $resourceData = [
-                'resource_id' => $resourceId,
-                'name' => ucfirst($resourceType) . '-' . $resourceId,
-                'status' => 'active',
-                'region' => $region,
-                'platform' => 'tencent',
-                'updated_at' => now()->toISOString(),
-            ];
 
-            return $this->formatResourceData($resourceType, $resourceData);
-        } catch (Exception $e) {
-            $this->handleApiException($e, 'getResourceDetail', [
-                'resource_type' => $resourceType,
-                'resource_id' => $resourceId,
-                'region' => $region
-            ]);
-            return null;
-        }
-    }
 
     /**
      * 获取资源监控信息
@@ -581,5 +734,111 @@ class TencentCloudPlatform extends AbstractCloudPlatform
         }
 
         return $metadata;
+    }
+
+    /**
+     * 获取资源详情
+     */
+    public function getResourceDetail(string $resourceType, string $resourceId, ?string $region = null): ?array
+    {
+        try {
+            $region = $region ?? $this->getConfig('region');
+            
+            // 根据资源类型调用相应的API获取详情
+            switch ($resourceType) {
+                case 'ecs':
+                    // 调用腾讯云CVM API获取实例详情
+                    $req = new \TencentCloud\Cvm\V20170312\Models\DescribeInstancesRequest();
+                    $req->setInstanceIds([$resourceId]);
+                    
+                    $resp = $this->cvmClient->DescribeInstances($req);
+                    $instances = $resp->getInstanceSet();
+                    
+                    if (!empty($instances)) {
+                        $instance = $instances[0];
+                        return [
+                            'InstanceId' => $instance->getInstanceId(),
+                            'InstanceName' => $instance->getInstanceName(),
+                            'InstanceState' => $instance->getInstanceState(),
+                            'InstanceType' => $instance->getInstanceType(),
+                            'CPU' => $instance->getCPU(),
+                            'Memory' => $instance->getMemory(),
+                            'CreatedTime' => $instance->getCreatedTime(),
+                            'PublicIpAddresses' => $instance->getPublicIpAddresses(),
+                            'PrivateIpAddresses' => $instance->getPrivateIpAddresses(),
+                            'ImageId' => $instance->getImageId(),
+                            'SystemDisk' => $instance->getSystemDisk(),
+                            'DataDisks' => $instance->getDataDisks(),
+                        ];
+                    }
+                    return null;
+                    
+                default:
+                    return null;
+            }
+        } catch (Exception $e) {
+            $this->handleApiException($e, 'getResourceDetail', [
+                'resource_type' => $resourceType,
+                'resource_id' => $resourceId,
+                'region' => $region
+            ]);
+            return null;
+        }
+    }
+
+    /**
+     * 根据资源类型获取资源
+     */
+    public function getResourcesByType(string $resourceType, array $config = []): array
+    {
+        try {
+            $region = $config['region'] ?? $this->getConfig('region');
+            
+            \Log::info('TencentCloud: getResourcesByType调用', [
+                'resource_type' => $resourceType,
+                'region' => $region,
+                'config' => $config
+            ]);
+            
+            switch ($resourceType) {
+                case 'ecs':
+                case 'cvm':
+                case 'tencent_cvm':
+                    return $this->getEcsInstances($region);
+                    
+                case 'clb':
+                case 'tencent_clb':
+                    return $this->getClbInstances($region);
+                    
+                case 'cdb':
+                case 'tencent_cdb':
+                    return $this->getCdbInstances($region);
+                    
+                case 'redis':
+                case 'tencent_redis':
+                    return $this->getRedisInstances($region);
+                    
+                case 'domain':
+                case 'tencent_domain':
+                    return $this->getDomains($config);
+                    
+                default:
+                    \Log::warning('TencentCloud: 不支持的资源类型', [
+                        'resource_type' => $resourceType
+                    ]);
+                    return [];
+            }
+        } catch (Exception $e) {
+            \Log::error('TencentCloud: getResourcesByType失败', [
+                'resource_type' => $resourceType,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            $this->handleApiException($e, 'getResourcesByType', [
+                'resource_type' => $resourceType,
+                'config' => $config
+            ]);
+            return [];
+        }
     }
 }

@@ -41,11 +41,11 @@
                     <form method="GET" action="{{ route('cloud.regions.index') }}" class="mb-3">
                         <div class="row">
                             <div class="col-md-3">
-                                <select name="platform_id" class="form-control">
-                                    <option value="">选择云平台</option>
-                                    @foreach($platforms as $platform)
-                                        <option value="{{ $platform->id }}" {{ request('platform_id') == $platform->id ? 'selected' : '' }}>
-                                            {{ $platform->name }} ({{ $platform->platform_type }})
+                                <select name="platform_type" class="form-control">
+                                    <option value="">选择平台类型</option>
+                                    @foreach($platformTypes as $key => $name)
+                                        <option value="{{ $key }}" {{ request('platform_type') == $key ? 'selected' : '' }}>
+                                            {{ $name }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -79,9 +79,11 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>云平台</th>
+                                    <th>平台类型</th>
                                     <th>可用区代码</th>
                                     <th>可用区名称</th>
+                                    <th>英文名称</th>
+                                    <th>排序</th>
                                     <th>状态</th>
                                     <th>创建时间</th>
                                     <th>操作</th>
@@ -92,10 +94,12 @@
                                     <tr>
                                         <td>{{ $region->id }}</td>
                                         <td>
-                                            <span class="badge badge-info">{{ $region->platform->name }}</span>
+                                            <span class="badge badge-info">{{ $region->platform_name }}</span>
                                         </td>
                                         <td><code>{{ $region->region_code }}</code></td>
                                         <td>{{ $region->region_name }}</td>
+                                        <td>{{ $region->region_name_en ?? '-' }}</td>
+                                        <td>{{ $region->sort_order }}</td>
                                         <td>
                                             @if($region->is_active)
                                                 <span class="badge badge-success">启用</span>
@@ -106,6 +110,9 @@
                                         <td>{{ $region->created_at->format('Y-m-d H:i:s') }}</td>
                                         <td>
                                             <div class="btn-group" role="group">
+                                                <a href="{{ route('cloud.regions.show', $region) }}" class="btn btn-sm btn-outline-info">
+                                                    <i class="fas fa-eye"></i> 查看
+                                                </a>
                                                 <a href="{{ route('cloud.regions.edit', $region) }}" class="btn btn-sm btn-outline-primary">
                                                     <i class="fas fa-edit"></i> 编辑
                                                 </a>
@@ -121,7 +128,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="7" class="text-center text-muted">暂无可用区数据</td>
+                                        <td colspan="9" class="text-center text-muted">暂无可用区数据</td>
                                     </tr>
                                 @endforelse
                             </tbody>

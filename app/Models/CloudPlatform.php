@@ -30,6 +30,11 @@ class CloudPlatform extends Model
         'access_key_secret',
     ];
 
+    protected $appends = [
+        'platform_name',
+        'status_name',
+    ];
+
     /**
      * 获取平台所属用户
      */
@@ -47,11 +52,27 @@ class CloudPlatform extends Model
     }
 
     /**
+     * 获取平台下的所有云资源 (别名方法)
+     */
+    public function cloudResources(): HasMany
+    {
+        return $this->hasMany(CloudResource::class, 'platform_id');
+    }
+
+    /**
      * 获取平台下的所有可用区
      */
     public function regions(): HasMany
     {
         return $this->hasMany(CloudRegion::class, 'platform_id');
+    }
+
+    /**
+     * 获取平台下的所有组件配置
+     */
+    public function components(): HasMany
+    {
+        return $this->hasMany(CloudPlatformComponent::class, 'platform_id');
     }
 
     /**

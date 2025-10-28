@@ -23,11 +23,11 @@ class CloudRegionController extends Controller
      */
     public function index(Request $request)
     {
-        $query = CloudRegion::with('platform');
+        $query = CloudRegion::query();
 
-        // 平台筛选
-        if ($request->filled('platform_id')) {
-            $query->where('platform_id', $request->platform_id);
+        // 平台类型筛选
+        if ($request->filled('platform_type')) {
+            $query->where('platform_type', $request->platform_type);
         }
 
         // 状态筛选
@@ -44,30 +44,18 @@ class CloudRegionController extends Controller
             });
         }
 
-        // 权限控制：非管理员只能看到自己的数据
-        $user = Auth::user();
-        $isAdmin = $user && ($user->id === 1 || (property_exists($user, 'username') && $user->username === 'admin'));
-        if (!$isAdmin) {
-            $query->whereHas('platform', function ($q) use ($user) {
-                $q->where('user_id', $user->id);
-            });
-        }
-
-        $regions = $query->orderBy('platform_id')
+        $regions = $query->orderBy('platform_type')
+                        ->orderBy('sort_order')
                         ->orderBy('region_code')
                         ->paginate(15);
 
         // 保持查询参数
         $regions->appends($request->query());
 
-        // 获取可用的云平台选项
-        $platformsQuery = CloudPlatform::select('id', 'name', 'platform_type');
-        if (!$isAdmin) {
-            $platformsQuery->where('user_id', $user->id);
-        }
-        $platforms = $platformsQuery->get();
+        // 获取可用的平台类型选项
+        $platformTypes = CloudRegion::getPlatformTypeOptions();
 
-        return view('cloud.regions.index', compact('regions', 'platforms'));
+        return view('cloud.regions.index', compact('regions', 'platformTypes'));
     }
 
     /**
@@ -75,16 +63,8 @@ class CloudRegionController extends Controller
      */
     public function create()
     {
-        $user = Auth::user();
-        $isAdmin = $user && ($user->id === 1 || (property_exists($user, 'username') && $user->username === 'admin'));
-        
-        $platformsQuery = CloudPlatform::select('id', 'name', 'platform_type');
-        if (!$isAdmin) {
-            $platformsQuery->where('user_id', $user->id);
-        }
-        $platforms = $platformsQuery->get();
-
-        return view('cloud.regions.create', compact('platforms'));
+        $platformTypes = CloudRegion::getPlatformTypeOptions();
+        return view('cloud.regions.create', compact('platformTypes'));
     }
 
     /**
@@ -93,39 +73,32 @@ class CloudRegionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'platform_id' => 'required|exists:cloud_platforms,id',
-            'region_code' => 'required|string|max:50',
-            'region_name' => 'required|string|max:100',
-            'endpoint' => 'nullable|url|max:255',
+            'platform_type' => 'required|string|in:huawei,alibaba,tencent',
+            'region_code' => 'required|string|max:100',
+            'region_name' => 'required|string|max:255',
+            'region_name_en' => 'nullable|string|max:255',
             'is_active' => 'required|boolean',
-            'description' => 'nullable|string|max:500',
+            'description' => 'nullable|string|max:1000',
+            'sort_order' => 'nullable|integer|min:0',
         ]);
 
-        // 权限检查：确保用户只能为自己的平台创建可用区
-        $platform = CloudPlatform::findOrFail($request->platform_id);
-        $user = Auth::user();
-        $isAdmin = $user && ($user->id === 1 || (property_exists($user, 'username') && $user->username === 'admin'));
-        
-        if (!$isAdmin && $platform->user_id !== $user->id) {
-            return back()->withErrors(['platform_id' => '您没有权限为该平台创建可用区'])->withInput();
-        }
-
-        // 检查是否已存在相同的平台和区域代码
-        $exists = CloudRegion::where('platform_id', $request->platform_id)
+        // 检查是否已存在相同的平台类型和区域代码
+        $exists = CloudRegion::where('platform_type', $request->platform_type)
                             ->where('region_code', $request->region_code)
                             ->exists();
 
         if ($exists) {
-            return back()->withErrors(['region_code' => '该平台下已存在相同的区域代码'])->withInput();
+            return back()->withErrors(['region_code' => '该平台类型下已存在相同的区域代码'])->withInput();
         }
 
         CloudRegion::create([
-            'platform_id' => $request->platform_id,
+            'platform_type' => $request->platform_type,
             'region_code' => $request->region_code,
             'region_name' => $request->region_name,
-            'endpoint' => $request->endpoint,
+            'region_name_en' => $request->region_name_en,
             'is_active' => $request->is_active,
             'description' => $request->description,
+            'sort_order' => $request->sort_order ?? 0,
         ]);
 
         return redirect()->route('cloud.regions.index')
@@ -137,16 +110,6 @@ class CloudRegionController extends Controller
      */
     public function show(CloudRegion $region)
     {
-        $region->load('platform');
-        
-        // 权限检查
-        $user = Auth::user();
-        $isAdmin = $user && ($user->id === 1 || (property_exists($user, 'username') && $user->username === 'admin'));
-        
-        if (!$isAdmin && $region->platform->user_id !== $user->id) {
-            abort(403, '您没有权限查看该可用区');
-        }
-
         return view('cloud.regions.show', compact('region'));
     }
 
@@ -155,23 +118,8 @@ class CloudRegionController extends Controller
      */
     public function edit(CloudRegion $region)
     {
-        $region->load('platform');
-        
-        // 权限检查
-        $user = Auth::user();
-        $isAdmin = $user && ($user->id === 1 || (property_exists($user, 'username') && $user->username === 'admin'));
-        
-        if (!$isAdmin && $region->platform->user_id !== $user->id) {
-            abort(403, '您没有权限编辑该可用区');
-        }
-
-        $platformsQuery = CloudPlatform::select('id', 'name', 'platform_type');
-        if (!$isAdmin) {
-            $platformsQuery->where('user_id', $user->id);
-        }
-        $platforms = $platformsQuery->get();
-
-        return view('cloud.regions.edit', compact('region', 'platforms'));
+        $platformTypes = CloudRegion::getPlatformTypeOptions();
+        return view('cloud.regions.edit', compact('region', 'platformTypes'));
     }
 
     /**
@@ -180,45 +128,33 @@ class CloudRegionController extends Controller
     public function update(Request $request, CloudRegion $region)
     {
         $request->validate([
-            'platform_id' => 'required|exists:cloud_platforms,id',
-            'region_code' => 'required|string|max:50',
-            'region_name' => 'required|string|max:100',
-            'endpoint' => 'nullable|url|max:255',
+            'platform_type' => 'required|string|in:huawei,alibaba,tencent',
+            'region_code' => 'required|string|max:100',
+            'region_name' => 'required|string|max:255',
+            'region_name_en' => 'nullable|string|max:255',
             'is_active' => 'required|boolean',
-            'description' => 'nullable|string|max:500',
+            'description' => 'nullable|string|max:1000',
+            'sort_order' => 'nullable|integer|min:0',
         ]);
 
-        // 权限检查
-        $user = Auth::user();
-        $isAdmin = $user && ($user->id === 1 || (property_exists($user, 'username') && $user->username === 'admin'));
-        
-        if (!$isAdmin && $region->platform->user_id !== $user->id) {
-            abort(403, '您没有权限编辑该可用区');
-        }
-
-        // 检查新平台的权限
-        $newPlatform = CloudPlatform::findOrFail($request->platform_id);
-        if (!$isAdmin && $newPlatform->user_id !== $user->id) {
-            return back()->withErrors(['platform_id' => '您没有权限选择该平台'])->withInput();
-        }
-
-        // 检查是否已存在相同的平台和区域代码（排除当前记录）
-        $exists = CloudRegion::where('platform_id', $request->platform_id)
+        // 检查是否已存在相同的平台类型和区域代码（排除当前记录）
+        $exists = CloudRegion::where('platform_type', $request->platform_type)
                             ->where('region_code', $request->region_code)
                             ->where('id', '!=', $region->id)
                             ->exists();
 
         if ($exists) {
-            return back()->withErrors(['region_code' => '该平台下已存在相同的区域代码'])->withInput();
+            return back()->withErrors(['region_code' => '该平台类型下已存在相同的区域代码'])->withInput();
         }
 
         $region->update([
-            'platform_id' => $request->platform_id,
+            'platform_type' => $request->platform_type,
             'region_code' => $request->region_code,
             'region_name' => $request->region_name,
-            'endpoint' => $request->endpoint,
+            'region_name_en' => $request->region_name_en,
             'is_active' => $request->is_active,
             'description' => $request->description,
+            'sort_order' => $request->sort_order ?? 0,
         ]);
 
         return redirect()->route('cloud.regions.index')
@@ -231,17 +167,6 @@ class CloudRegionController extends Controller
     public function destroy(CloudRegion $region)
     {
         try {
-            // 权限检查
-            $user = Auth::user();
-            $isAdmin = $user && ($user->id === 1 || (property_exists($user, 'username') && $user->username === 'admin'));
-            
-            if (!$isAdmin && $region->platform->user_id !== $user->id) {
-                return response()->json([
-                    'success' => false,
-                    'message' => '您没有权限删除该可用区'
-                ], 403);
-            }
-
             $region->delete();
             return response()->json([
                 'success' => true,
@@ -266,19 +191,7 @@ class CloudRegionController extends Controller
         ]);
 
         try {
-            $user = Auth::user();
-            $isAdmin = $user && ($user->id === 1 || (property_exists($user, 'username') && $user->username === 'admin'));
-            
-            $query = CloudRegion::whereIn('id', $request->ids);
-            
-            // 权限控制：非管理员只能删除自己的数据
-            if (!$isAdmin) {
-                $query->whereHas('platform', function ($q) use ($user) {
-                    $q->where('user_id', $user->id);
-                });
-            }
-            
-            $deleted = $query->delete();
+            $deleted = CloudRegion::whereIn('id', $request->ids)->delete();
             
             return response()->json([
                 'success' => true,

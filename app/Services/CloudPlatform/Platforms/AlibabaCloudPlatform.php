@@ -90,24 +90,58 @@ class AlibabaCloudPlatform extends AbstractCloudPlatform
     {
         try {
             $region = $region ?? $this->getConfig('region');
-            // 这里应该调用阿里云ECS API
-            // 暂时返回模拟数据
-            $instances = [];
+            
+            // 调用阿里云ECS API获取实例列表
+            $request = [
+                'RegionId' => $region,
+                'PageSize' => 100,
+                'PageNumber' => 1,
+            ];
+
+            // 这里应该使用真实的阿里云SDK调用
+            // 由于SDK可能未安装，先返回模拟数据，但格式按真实API返回
+            $mockInstances = [];
             for ($i = 1; $i <= 5; $i++) {
-                $instances[] = $this->formatResourceData('ecs', [
-                    'InstanceId' => 'i-alibaba-' . $region . '-' . $i,
+                $mockInstances[] = [
+                    'InstanceId' => 'i-alibaba-' . $region . '-' . str_pad($i, 3, '0', STR_PAD_LEFT),
                     'InstanceName' => 'ECS-Alibaba-' . $i,
-                    'Status' => 'Running',
+                    'Status' => $i % 2 == 0 ? 'Running' : 'Stopped',
                     'RegionId' => $region,
                     'InstanceType' => 'ecs.t5-lc1m1.small',
                     'Cpu' => 1,
                     'Memory' => 1024,
+                    'OSType' => 'linux',
+                    'OSName' => 'CentOS 7.6 64位',
+                    'ImageId' => 'centos_7_06_64_20G_alibase_20190711.vhd',
+                    'VpcAttributes' => [
+                        'VpcId' => 'vpc-' . $region . '-test',
+                        'VSwitchId' => 'vsw-' . $region . '-test'
+                    ],
+                    'SecurityGroupIds' => [
+                        'SecurityGroupId' => ['sg-' . $region . '-default']
+                    ],
+                    'PublicIpAddress' => [
+                        'IpAddress' => ['47.96.123.' . (100 + $i)]
+                    ],
+                    'InnerIpAddress' => [
+                        'IpAddress' => ['172.16.0.' . (10 + $i)]
+                    ],
+                    'InternetMaxBandwidthOut' => 5,
+                    'InstanceChargeType' => $i % 3 == 0 ? 'PrePaid' : 'PostPaid',
                     'CreationTime' => now()->subDays(rand(1, 30))->toISOString(),
-                ]);
+                    'ExpiredTime' => $i % 3 == 0 ? now()->addMonths(3)->toISOString() : null,
+                    'Tags' => [
+                        'Tag' => [
+                            ['Key' => 'Environment', 'Value' => 'Production'],
+                            ['Key' => 'Project', 'Value' => 'WebApp']
+                        ]
+                    ]
+                ];
             }
 
-            $this->logApiCall('getEcsInstances', ['region' => $region], $instances);
-            return $instances;
+            $this->logApiCall('getEcsInstances', ['region' => $region], $mockInstances);
+            return $mockInstances;
+            
         } catch (Exception $e) {
             $this->handleApiException($e, 'getEcsInstances', ['region' => $region]);
             return [];
@@ -405,6 +439,57 @@ class AlibabaCloudPlatform extends AbstractCloudPlatform
                     'address' => $rawData['Address'] ?? '',
                     'create_time' => $rawData['CreateTime'] ?? '',
                 ];
+                break;
+            default:
+                $metadata = [];
+        }
+
+        return $metadata;
+    }
+
+    /**
+     * 获取端点地址
+     */
+    private function getEndpoint(string $region): string
+    {
+        return "https://ecs.{$region}.aliyuncs.com";
+    }
+
+    /**
+     * 获取资源详情
+     */
+    public function getResourceDetail(string $resourceType, string $resourceId, ?string $region = null): ?array
+    {
+        try {
+            $region = $region ?? $this->getConfig('region');
+            
+            // 根据资源类型调用相应的API获取详情
+            switch ($resourceType) {
+                case 'ecs':
+                    // 这里应该调用阿里云ECS DescribeInstances API
+                    // 暂时返回模拟数据
+                    return [
+                        'InstanceId' => $resourceId,
+                        'InstanceName' => 'ECS详情-' . $resourceId,
+                        'Status' => 'Running',
+                        'RegionId' => $region,
+                        'InstanceType' => 'ecs.t5-lc1m1.small',
+                        'Cpu' => 1,
+                        'Memory' => 1024,
+                        'CreationTime' => now()->subDays(10)->toISOString(),
+                    ];
+                default:
+                    return null;
+            }
+        } catch (Exception $e) {
+            $this->handleApiException($e, 'getResourceDetail', [
+                'resource_type' => $resourceType,
+                'resource_id' => $resourceId,
+                'region' => $region
+            ]);
+            return null;
+        }
+    }
                 break;
             case 'cdb':
                 $metadata = [

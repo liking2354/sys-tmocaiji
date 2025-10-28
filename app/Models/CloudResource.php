@@ -46,6 +46,37 @@ class CloudResource extends Model
     }
 
     /**
+     * 获取资源所属区域（如果 CloudRegion 模型存在的话）
+     * 注意：当前 region 字段存储的是区域代码字符串，不是外键关系
+     */
+    public function regionModel(): BelongsTo
+    {
+        return $this->belongsTo(CloudRegion::class, 'region', 'region_code');
+    }
+
+    /**
+     * 获取区域名称（兼容处理）
+     */
+    public function getRegionNameAttribute(): string
+    {
+        // 如果有关联的 CloudRegion 记录，返回其名称
+        if ($this->relationLoaded('regionModel') && $this->regionModel) {
+            return $this->regionModel->region_name;
+        }
+        
+        // 尝试查找对应的区域记录
+        if ($this->region && class_exists(CloudRegion::class)) {
+            $regionModel = CloudRegion::where('region_code', $this->region)->first();
+            if ($regionModel) {
+                return $regionModel->region_name;
+            }
+        }
+        
+        // 否则返回原始的 region 字段值
+        return $this->region ?? 'Unknown';
+    }
+
+    /**
      * 获取资源类型的中文名称
      */
     public function getResourceTypeNameAttribute(): string

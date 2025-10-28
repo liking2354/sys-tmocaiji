@@ -9,9 +9,9 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="card-title">云平台管理</h3>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addPlatformModal">
+                    <a href="{{ route('cloud.platforms.create') }}" class="btn btn-primary">
                         <i class="fas fa-plus"></i> 添加云平台
-                    </button>
+                    </a>
                 </div>
                 <div class="card-body">
                     <!-- 搜索和筛选 -->
@@ -84,16 +84,19 @@
                                     <td>{{ $platform->created_at->format('Y-m-d H:i:s') }}</td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <button type="button" class="btn btn-sm btn-info" onclick="testConnection({{ $platform->id }})">
-                                                <i class="fas fa-plug"></i> 测试连接
+                                            <a href="{{ route('cloud.platforms.show', $platform) }}" class="btn btn-sm btn-primary" title="查看详情">
+                                                <i class="fas fa-eye"></i> 查看
+                                            </a>
+                                            <button type="button" class="btn btn-sm btn-info" onclick="testConnection({{ $platform->id }})" title="测试连接">
+                                                <i class="fas fa-plug"></i> 测试
                                             </button>
-                                            <button type="button" class="btn btn-sm btn-success" onclick="syncRegions({{ $platform->id }})">
-                                                <i class="fas fa-sync"></i> 同步可用区
+                                            <button type="button" class="btn btn-sm btn-success" onclick="syncRegions({{ $platform->id }})" title="同步可用区">
+                                                <i class="fas fa-sync"></i> 同步
                                             </button>
-                                            <button type="button" class="btn btn-sm btn-warning" onclick="editPlatform({{ $platform->id }})">
+                                            <a href="{{ route('cloud.platforms.edit', $platform) }}" class="btn btn-sm btn-warning" title="编辑配置">
                                                 <i class="fas fa-edit"></i> 编辑
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-danger" onclick="deletePlatform({{ $platform->id }})">
+                                            </a>
+                                            <button type="button" class="btn btn-sm btn-danger" onclick="deletePlatform({{ $platform->id }})" title="删除平台">
                                                 <i class="fas fa-trash"></i> 删除
                                             </button>
                                         </div>

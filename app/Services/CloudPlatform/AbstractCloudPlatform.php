@@ -24,6 +24,23 @@ abstract class AbstractCloudPlatform implements CloudPlatformInterface
     }
 
     /**
+     * 从CloudPlatform模型初始化
+     *
+     * @param \App\Models\CloudPlatform $cloudPlatform
+     * @return void
+     */
+    public function initializeFromModel(\App\Models\CloudPlatform $cloudPlatform): void
+    {
+        $this->config = [
+            'access_key_id' => $cloudPlatform->access_key_id,
+            'access_key_secret' => $cloudPlatform->access_key_secret,
+            'region' => $cloudPlatform->region,
+            'other_config' => $cloudPlatform->config, // 正确的字段名是config，不是other_config
+        ];
+        $this->initializeClient();
+    }
+
+    /**
      * 初始化客户端（由子类实现）
      *
      * @return void
@@ -80,6 +97,71 @@ abstract class AbstractCloudPlatform implements CloudPlatformInterface
         }
 
         return $resources;
+    }
+
+    /**
+     * 获取计算资源（通用方法）
+     *
+     * @param array $config 配置信息
+     * @return array
+     */
+    public function getComputeInstances(array $config = []): array
+    {
+        $region = $config['region'] ?? null;
+        return $this->getEcsInstances($region);
+    }
+
+    /**
+     * 获取数据库资源（通用方法）
+     *
+     * @param array $config 配置信息
+     * @return array
+     */
+    public function getDatabaseInstances(array $config = []): array
+    {
+        $region = $config['region'] ?? null;
+        return $this->getCdbInstances($region);
+    }
+
+    /**
+     * 获取网络资源（通用方法）
+     *
+     * @param array $config 配置信息
+     * @return array
+     */
+    public function getNetworkResources(array $config = []): array
+    {
+        $region = $config['region'] ?? null;
+        return $this->getClbInstances($region);
+    }
+
+    /**
+     * 根据资源类型获取资源（通用方法）
+     *
+     * @param string $resourceType 资源类型
+     * @param array $config 配置信息
+     * @return array
+     */
+    public function getResourcesByType(string $resourceType, array $config = []): array
+    {
+        $region = $config['region'] ?? null;
+        
+        switch ($resourceType) {
+            case 'ecs':
+            case 'cvm':
+                return $this->getEcsInstances($region);
+            case 'rds':
+            case 'cdb':
+                return $this->getCdbInstances($region);
+            case 'clb':
+            case 'slb':
+                return $this->getClbInstances($region);
+            case 'redis':
+                return $this->getRedisInstances($region);
+            default:
+                Log::warning("Unsupported resource type: {$resourceType}");
+                return [];
+        }
     }
 
     /**

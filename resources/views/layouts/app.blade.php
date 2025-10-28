@@ -13,7 +13,7 @@
     <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/all.min.css') }}" rel="stylesheet">
     <!-- Toastr CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/toastr.min.css') }}">
     @yield('styles')
     
     <style>
@@ -352,7 +352,12 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link pl-4 {{ request()->routeIs('cloud.resources.*') ? 'active' : '' }}" href="{{ route('cloud.resources.index') }}">
-                                        <i class="fas fa-cubes mr-2"></i> 云资源查询
+                                        <i class="fas fa-cubes mr-2"></i> 云资源管理
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link pl-4 {{ request()->routeIs('cloud.ecs.*') ? 'active' : '' }}" href="{{ route('cloud.ecs.index') }}">
+                                        <i class="fas fa-desktop mr-2"></i> ECS云服务器
                                     </a>
                                 </li>
                             </ul>
@@ -383,6 +388,11 @@
                                 <li class="nav-item">
                                     <a class="nav-link pl-4 {{ request()->routeIs('admin.operation-logs.*') ? 'active' : '' }}" href="{{ route('admin.operation-logs.index') }}">
                                         <i class="fas fa-list-alt mr-2"></i> 操作日志
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link pl-4 {{ request()->routeIs('admin.dict.*') ? 'active' : '' }}" href="{{ route('admin.dict.index') }}">
+                                        <i class="fas fa-book mr-2"></i> 字典管理
                                     </a>
                                 </li>
                             </ul>
@@ -422,7 +432,7 @@
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
     <!-- Toastr JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="{{ asset('assets/js/toastr.min.js') }}"></script>
     <script>
         $(document).ready(function() {
             // 侧边栏展开/收起功能
@@ -508,5 +518,6 @@
         });
     </script>
     @yield('scripts')
+    @stack('scripts')
 </body>
 </html>

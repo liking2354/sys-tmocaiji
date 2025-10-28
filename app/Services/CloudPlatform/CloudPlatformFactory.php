@@ -62,6 +62,39 @@ class CloudPlatformFactory
     }
 
     /**
+     * 从CloudPlatform模型创建云平台实例
+     *
+     * @param \App\Models\CloudPlatform $cloudPlatform
+     * @return CloudPlatformInterface
+     * @throws Exception
+     */
+    public static function createFromPlatform(\App\Models\CloudPlatform $cloudPlatform): CloudPlatformInterface
+    {
+        $platformType = strtolower(trim((string)$cloudPlatform->platform_type));
+
+        if ($platformType === '') {
+            throw new Exception("Unsupported cloud platform: empty platform_type");
+        }
+
+        if (!isset(self::$platformMap[$platformType])) {
+            throw new Exception("Unsupported cloud platform: {$platformType}");
+        }
+
+        $platformClass = self::$platformMap[$platformType];
+        
+        if (!class_exists($platformClass)) {
+            throw new Exception("Cloud platform class not found: {$platformClass}");
+        }
+
+        $platform = new $platformClass();
+        
+        // 直接传递CloudPlatform模型，让平台类自己处理配置
+        $platform->initializeFromModel($cloudPlatform);
+
+        return $platform;
+    }
+
+    /**
      * 获取支持的平台类型列表
      *
      * @return array

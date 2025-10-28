@@ -82,7 +82,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="region">默认区域 <span class="text-danger">*</span></label>
+                                    <label for="region">默认区域</label>
                                     <select class="form-control @error('region') is-invalid @enderror" 
                                             id="region" name="region">
                                         <option value="">请先选择平台类型</option>
@@ -90,7 +90,7 @@
                                     @error('region')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
-                                    <small class="form-text text-muted">选择平台类型后将自动加载可用区域</small>
+                                    <small class="form-text text-muted">可选项，用作主要操作区域。如不选择，系统将使用第一个可用区域。</small>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -119,6 +119,45 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                     <small class="form-text text-muted">请输入有效的JSON格式配置，如超时时间、重试次数等</small>
+                                </div>
+                                
+                                <!-- 华为云专用配置区域 -->
+                                <div id="huawei-config" class="mt-3" style="display: none;">
+                                    <div class="card border-info">
+                                        <div class="card-header bg-info text-white">
+                                            <h6 class="mb-0"><i class="fas fa-cloud"></i> 华为云区域配置</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-row">
+                                                <div class="col-md-6">
+                                                    <label for="huawei-region-select">选择区域</label>
+                                                    <select id="huawei-region-select" class="form-control">
+                                                        <option value="">请选择区域</option>
+                                                    </select>
+                                                    <small class="form-text text-muted">选择后将自动配置对应的Project ID</small>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label>&nbsp;</label>
+                                                    <div>
+                                                        <button type="button" class="btn btn-info btn-block" onclick="applyHuaweiConfig()">
+                                                            <i class="fas fa-magic"></i> 应用配置
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mt-3">
+                                                <div class="alert alert-info">
+                                                    <h6><i class="fas fa-info-circle"></i> 配置说明：</h6>
+                                                    <ul class="mb-0">
+                                                        <li>华为云需要配置Project ID才能正常访问资源</li>
+                                                        <li>每个区域对应不同的Project ID</li>
+                                                        <li>选择区域后点击"应用配置"将自动生成JSON配置</li>
+                                                        <li>生成的配置会自动填入上方的"其他配置"字段</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -169,6 +208,14 @@ $(document).ready(function() {
         
         regionSelect.html('<option value="">加载中...</option>');
         testBtn.prop('disabled', true);
+        
+        // 显示/隐藏华为云配置区域
+        if (platformType === 'huawei') {
+            $('#huawei-config').show();
+            loadHuaweiRegions();
+        } else {
+            $('#huawei-config').hide();
+        }
         
         if (!platformType) {
             regionSelect.html('<option value="">请先选择平台类型</option>');
@@ -329,6 +376,7 @@ function testConnection() {
         access_key_id: $('#access_key_id').val(),
         access_key_secret: $('#access_key_secret').val(),
         region: $('#region').val(),
+        config: $('#config').val(), // 添加config参数
         _token: $('input[name="_token"]').val()
     };
 
@@ -366,7 +414,7 @@ function togglePassword(fieldId) {
 // 表单验证
 function validateForm() {
     let isValid = true;
-    const requiredFields = ['name', 'platform_type', 'access_key_id', 'access_key_secret', 'region'];
+    const requiredFields = ['name', 'platform_type', 'access_key_id', 'access_key_secret'];
     
     requiredFields.forEach(field => {
         const element = document.getElementById(field);
@@ -398,6 +446,65 @@ function validateForm() {
     }
     
     return isValid;
+}
+
+// 华为云区域配置数据
+const huaweiRegions = {
+    "cn-north-1": { "project_id": "请填写华北-北京一的Project ID", "region_name": "华北-北京一" },
+    "cn-north-4": { "project_id": "07b37758028010f82fb7c0099dea07b3", "region_name": "华北-北京四" },
+    "cn-east-2": { "project_id": "076ff2363b80266a2f13c00900b40074", "region_name": "华东-上海二" },
+    "cn-east-3": { "project_id": "07e1b7d435800f922f41c009ce66505d", "region_name": "华东-上海一" },
+    "cn-south-1": { "project_id": "0861c7c0e880267d2fcbc009e8aa3eb8", "region_name": "华南-广州" },
+    "cn-southwest-2": { "project_id": "916d0ea2830f4be9b822f97758f7a01b", "region_name": "西南-贵阳一" },
+    "ap-southeast-1": { "project_id": "请填写亚太-香港的Project ID", "region_name": "亚太-香港" },
+    "ap-southeast-3": { "project_id": "请填写亚太-新加坡的Project ID", "region_name": "亚太-新加坡" },
+    "cn-north-9": { "project_id": "7468873636f34f29b81ee3767f27cf58", "region_name": "华北-乌兰察布一" },
+    "cn-south-4": { "project_id": "adc061ad79d845e987d1a96b29c372c4", "region_name": "华南-广州四" }
+};
+
+// 加载华为云区域选项
+function loadHuaweiRegions() {
+    const select = $('#huawei-region-select');
+    let options = '<option value="">请选择区域</option>';
+    
+    Object.keys(huaweiRegions).forEach(regionCode => {
+        const region = huaweiRegions[regionCode];
+        options += `<option value="${regionCode}">${regionCode} - ${region.region_name}</option>`;
+    });
+    
+    select.html(options);
+}
+
+// 应用华为云配置
+function applyHuaweiConfig() {
+    const selectedRegion = $('#huawei-region-select').val();
+    if (!selectedRegion) {
+        toastr.warning('请先选择一个区域');
+        return;
+    }
+    
+    const regionData = huaweiRegions[selectedRegion];
+    if (!regionData) {
+        toastr.error('选择的区域数据不存在');
+        return;
+    }
+    
+    // 生成JSON配置
+    const config = {
+        project_ids: {}
+    };
+    config.project_ids[selectedRegion] = {
+        project_id: regionData.project_id,
+        region_name: regionData.region_name
+    };
+    
+    // 填入配置字段
+    $('#config').val(JSON.stringify(config, null, 2));
+    
+    // 同时设置默认区域
+    $('#region').val(selectedRegion);
+    
+    toastr.success(`已应用 ${regionData.region_name} 的配置`);
 }
 </script>
 @endsection

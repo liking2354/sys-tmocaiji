@@ -31,16 +31,16 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="platform_id">云平台 <span class="text-danger">*</span></label>
-                                    <select name="platform_id" id="platform_id" class="form-control @error('platform_id') is-invalid @enderror" required>
-                                        <option value="">请选择云平台</option>
-                                        @foreach($platforms as $platform)
-                                            <option value="{{ $platform->id }}" {{ old('platform_id') == $platform->id ? 'selected' : '' }}>
-                                                {{ $platform->name }}
+                                    <label for="platform_type">平台类型 <span class="text-danger">*</span></label>
+                                    <select name="platform_type" id="platform_type" class="form-control @error('platform_type') is-invalid @enderror" required>
+                                        <option value="">请选择平台类型</option>
+                                        @foreach($platformTypes as $key => $name)
+                                            <option value="{{ $key }}" {{ old('platform_type') == $key ? 'selected' : '' }}>
+                                                {{ $name }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    @error('platform_id')
+                                    @error('platform_type')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -49,7 +49,7 @@
                                 <div class="form-group">
                                     <label for="region_code">可用区代码 <span class="text-danger">*</span></label>
                                     <input type="text" name="region_code" id="region_code" class="form-control @error('region_code') is-invalid @enderror" 
-                                           value="{{ old('region_code') }}" placeholder="例如：ap-beijing-1" required>
+                                           value="{{ old('region_code') }}" placeholder="例如：cn-north-1" required>
                                     @error('region_code')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -63,10 +63,34 @@
                                 <div class="form-group">
                                     <label for="region_name">可用区名称 <span class="text-danger">*</span></label>
                                     <input type="text" name="region_name" id="region_name" class="form-control @error('region_name') is-invalid @enderror" 
-                                           value="{{ old('region_name') }}" placeholder="例如：北京一区" required>
+                                           value="{{ old('region_name') }}" placeholder="例如：华北-北京一" required>
                                     @error('region_name')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="region_name_en">英文名称</label>
+                                    <input type="text" name="region_name_en" id="region_name_en" class="form-control @error('region_name_en') is-invalid @enderror" 
+                                           value="{{ old('region_name_en') }}" placeholder="例如：Beijing Zone 1">
+                                    @error('region_name_en')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="sort_order">排序</label>
+                                    <input type="number" name="sort_order" id="sort_order" class="form-control @error('sort_order') is-invalid @enderror" 
+                                           value="{{ old('sort_order', 0) }}" min="0" placeholder="0">
+                                    @error('sort_order')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <small class="form-text text-muted">数字越小排序越靠前</small>
                                 </div>
                             </div>
                             <div class="col-md-6">

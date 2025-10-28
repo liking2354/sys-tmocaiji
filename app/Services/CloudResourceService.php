@@ -22,18 +22,15 @@ class CloudResourceService
     public function syncPlatformResources(CloudPlatform $platform): array
     {
         try {
-            \Log::info('CloudResourceService: 开始同步平台资源', [
+            Log::info('CloudResourceService: 开始同步平台资源', [
                 'platform_id' => $platform->id,
                 'platform_name' => $platform->name,
                 'platform_type' => $platform->platform_type,
                 'region' => $platform->region
             ]);
 
-            $cloudPlatform = CloudPlatformFactory::create($platform->platform_type, [
-                'access_key_id' => $platform->access_key_id,
-                'access_key_secret' => $platform->access_key_secret,
-                'region' => $platform->region,
-            ]);
+            // 使用createFromPlatform方法，这样会正确处理config字段中的配置
+            $cloudPlatform = CloudPlatformFactory::createFromPlatform($platform);
 
             \Log::info('CloudResourceService: 云平台适配器创建成功');
 
@@ -423,11 +420,8 @@ class CloudResourceService
                 ];
             }
 
-            $cloudPlatform = CloudPlatformFactory::create($platformType, [
-                'access_key_id' => $platform->access_key_id,
-                'access_key_secret' => $platform->access_key_secret,
-                'region' => $platform->region,
-            ]);
+            // 使用createFromPlatform方法，这样会正确处理config字段中的配置
+            $cloudPlatform = CloudPlatformFactory::createFromPlatform($platform);
 
             $connected = $cloudPlatform->testConnection();
 
@@ -532,27 +526,24 @@ class CloudResourceService
                 'platform_type' => $platform->platform_type
             ]);
 
-            $cloudPlatform = CloudPlatformFactory::create($platform->platform_type, [
-                'access_key_id' => $platform->access_key_id,
-                'access_key_secret' => $platform->access_key_secret,
-                'region' => $platform->region,
-            ]);
+            // 使用createFromPlatform方法以正确处理配置
+            $cloudPlatform = CloudPlatformFactory::createFromPlatform($platform);
 
             $regions = $cloudPlatform->getRegions();
             $syncedCount = 0;
 
             foreach ($regions as $regionData) {
-                // 使用 updateOrCreate 避免重复数据
+                // 使用新的CloudRegion模型结构，只与平台类型关联
                 CloudRegion::updateOrCreate(
                     [
-                        'platform_id' => $platform->id,
+                        'platform_type' => $platform->platform_type,
                         'region_code' => $regionData['region_code'],
                     ],
                     [
                         'region_name' => $regionData['region_name'] ?? $regionData['region_code'],
                         'endpoint' => $regionData['endpoint'] ?? null,
                         'is_active' => ($regionData['status'] ?? 'active') === 'active',
-                        'description' => $regionData['description'] ?? null,
+                        'description' => "从{$platform->name}同步的区域信息",
                         'metadata' => $regionData['metadata'] ?? null,
                     ]
                 );
@@ -560,7 +551,7 @@ class CloudResourceService
             }
 
             \Log::info('可用区同步完成', [
-                'platform_id' => $platform->id,
+                'platform_type' => $platform->platform_type,
                 'synced_regions' => $syncedCount
             ]);
 
@@ -572,6 +563,7 @@ class CloudResourceService
         } catch (\Exception $e) {
             \Log::error('可用区同步失败', [
                 'platform_id' => $platform->id,
+                'platform_type' => $platform->platform_type,
                 'error' => $e->getMessage()
             ]);
             throw $e;
@@ -654,11 +646,8 @@ class CloudResourceService
         }
 
         try {
-            $cloudPlatform = CloudPlatformFactory::create($platform->platform_type, [
-                'access_key_id' => $platform->access_key_id,
-                'access_key_secret' => $platform->access_key_secret,
-                'region' => $platform->region,
-            ]);
+            // 使用createFromPlatform方法以正确处理配置
+            $cloudPlatform = CloudPlatformFactory::createFromPlatform($platform);
             return $cloudPlatform->getResourceDetail($resourceType, $resourceId);
         } catch (Exception $e) {
             \Log::error('Failed to get resource detail', [
@@ -691,11 +680,8 @@ class CloudResourceService
                 ];
             }
             
-            $cloudPlatform = CloudPlatformFactory::create($platform->platform_type, [
-                'access_key_id' => $platform->access_key_id,
-                'access_key_secret' => $platform->access_key_secret,
-                'region' => $platform->region,
-            ]);
+            // 使用createFromPlatform方法以正确处理配置
+            $cloudPlatform = CloudPlatformFactory::createFromPlatform($platform);
             
             // 获取最新的资源信息
             $resourceData = $cloudPlatform->getResourceDetail($resource->resource_type, $resource->resource_id);
@@ -778,11 +764,8 @@ class CloudResourceService
     public function getResourceMonitoring(CloudPlatform $platform, string $resourceType, string $resourceId)
     {
         try {
-            $cloudPlatform = CloudPlatformFactory::create($platform->platform_type, [
-                'access_key_id' => $platform->access_key_id,
-                'access_key_secret' => $platform->access_key_secret,
-                'region' => $platform->region,
-            ]);
+            // 使用createFromPlatform方法以正确处理配置
+            $cloudPlatform = CloudPlatformFactory::createFromPlatform($platform);
             return $cloudPlatform->getResourceMonitoring($resourceType, $resourceId);
         } catch (Exception $e) {
             \Log::error('Failed to get resource monitoring', [

@@ -75,7 +75,7 @@ class CloudPlatformController extends Controller
             'platform_type' => 'required|in:huawei,alibaba,tencent',
             'access_key_id' => 'required|string|max:255',
             'access_key_secret' => 'required|string|max:255',
-            'region' => 'required|string|max:255',
+            'region' => 'nullable|string|max:255',
             'config' => 'nullable|string',
         ]);
 
@@ -204,7 +204,7 @@ class CloudPlatformController extends Controller
             'name' => 'required|string|max:255',
             'access_key_id' => 'required|string|max:255',
             'access_key_secret' => 'nullable|string|max:255',
-            'region' => 'required|string|max:255',
+            'region' => 'nullable|string|max:255',
             'status' => 'required|in:active,inactive',
             'config' => 'nullable|string',
         ]);
@@ -412,7 +412,8 @@ class CloudPlatformController extends Controller
             'platform_type' => 'required|in:huawei,alibaba,tencent',
             'access_key_id' => 'required|string|max:255',
             'access_key_secret' => 'required|string|max:255',
-            'region' => 'required|string|max:255',
+            'region' => 'nullable|string|max:255',
+            'config' => 'nullable|string', // 添加config参数验证
         ]);
 
         try {
@@ -421,15 +422,24 @@ class CloudPlatformController extends Controller
                 'region' => $data['region'],
                 'has_access_key_id' => !empty($data['access_key_id']),
                 'has_access_key_secret' => !empty($data['access_key_secret']),
+                'has_config' => !empty($data['config']),
                 'user_id' => Auth::id(),
             ]);
 
-            // 直接通过工厂创建适配器，避免临时模型字段被忽略
-            $adapter = \App\Services\CloudPlatform\CloudPlatformFactory::create($data['platform_type'], [
+            // 创建临时CloudPlatform对象用于测试
+            $tempPlatform = new CloudPlatform([
+                'name' => $data['name'] ?? '测试配置',
+                'platform_type' => $data['platform_type'],
                 'access_key_id' => $data['access_key_id'],
                 'access_key_secret' => $data['access_key_secret'],
                 'region' => $data['region'],
+                'config' => $data['config'] ?? null, // 正确的字段名是config
+                'status' => 'active',
+                'user_id' => Auth::id(),
             ]);
+
+            // 通过工厂创建适配器
+            $adapter = \App\Services\CloudPlatform\CloudPlatformFactory::createFromPlatform($tempPlatform);
 
             $ok = $adapter->testConnection();
 
@@ -640,22 +650,22 @@ class CloudPlatformController extends Controller
      * 获取智能默认区域列表
      * 优先从数据库中的可用区管理获取，没有则返回默认数据
      */
-    public function getRegionsByPlatform(Request $request)
+    public function getRegionsByPlatform($platformType)
     {
-        $request->validate([
-            'platform_type' => 'required|in:huawei,alibaba,tencent'
-        ]);
-
-        $platformType = $request->platform_type;
+        // 验证平台类型
+        if (!in_array($platformType, ['huawei', 'alibaba', 'tencent'])) {
+            return response()->json([
+                'success' => false,
+                'message' => '不支持的平台类型'
+            ], 422);
+        }
 
         try {
             // 首先尝试从数据库中获取该平台类型的可用区
-            $dbRegions = \App\Models\CloudRegion::whereHas('platform', function ($query) use ($platformType) {
-                $query->where('platform_type', $platformType);
-            })
-            ->where('is_active', true)
-            ->select('region_code', 'region_name')
-            ->get();
+            $dbRegions = \App\Models\CloudRegion::byPlatformType($platformType)
+                ->active()
+                ->select('region_code', 'region_name')
+                ->get();
 
             // 如果数据库中有数据，使用数据库数据
             if ($dbRegions->isNotEmpty()) {
