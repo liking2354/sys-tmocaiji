@@ -13,7 +13,7 @@
     <link href="<?php echo e(asset('assets/css/bootstrap.min.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('assets/css/all.min.css')); ?>" rel="stylesheet">
     <!-- Toastr CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/toastr.min.css')); ?>">
     <?php echo $__env->yieldContent('styles'); ?>
     
     <style>
@@ -334,32 +334,6 @@
                             </ul>
                         </li>
                         
-                        <!-- 云资源管理菜单 -->
-                        <li class="nav-item">
-                            <a class="nav-link sidebar-submenu-toggle <?php echo e(request()->routeIs('cloud.*') ? 'active' : ''); ?>" href="javascript:void(0);">
-                                <i class="fas fa-cloud mr-2"></i> 云资源管理
-                                <i class="fas fa-chevron-down float-right mt-1"></i>
-                            </a>
-                            <ul class="sidebar-submenu" style="display: <?php echo e(request()->routeIs('cloud.*') ? 'block' : 'none'); ?>;">
-                                <li class="nav-item">
-                                    <a class="nav-link pl-4 <?php echo e(request()->routeIs('cloud.platforms.*') ? 'active' : ''); ?>" href="<?php echo e(route('cloud.platforms.index')); ?>">
-                                        <i class="fas fa-server mr-2"></i> 云平台管理
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link pl-4 <?php echo e(request()->routeIs('cloud.regions.*') ? 'active' : ''); ?>" href="<?php echo e(route('cloud.regions.index')); ?>">
-                                        <i class="fas fa-globe-asia mr-2"></i> 可用区管理
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link pl-4 <?php echo e(request()->routeIs('cloud.resources.*') ? 'active' : ''); ?>" href="<?php echo e(route('cloud.resources.index')); ?>">
-                                        <i class="fas fa-cubes mr-2"></i> 云资源查询
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        
-                        <!-- 系统管理菜单 -->
                         <li class="nav-item">
                             <a class="nav-link sidebar-submenu-toggle <?php echo e(request()->routeIs('admin.*') ? 'active' : ''); ?>" href="javascript:void(0);">
                                 <i class="fas fa-cogs mr-2"></i> 系统管理
@@ -386,7 +360,7 @@
                                         <i class="fas fa-list-alt mr-2"></i> 操作日志
                                     </a>
                                 </li>
-                            </ul>
+                                <li class="nav-item">
                         </li>
                     </ul>
                 </div>
@@ -425,7 +399,7 @@
     <script src="<?php echo e(asset('assets/js/jquery.min.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/bootstrap.bundle.min.js')); ?>"></script>
     <!-- Toastr JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="<?php echo e(asset('assets/js/toastr.min.js')); ?>"></script>
     <script>
         $(document).ready(function() {
             // 侧边栏展开/收起功能
@@ -453,18 +427,6 @@
                 // 基础设施菜单保持当前状态，不自动收起
                 if ($this.text().trim().includes('基础设施')) {
                     // 不做任何自动操作，保持HTML中设置的状态
-                }
-                // 云资源管理菜单根据当前路由决定是否展开
-                else if ($this.text().trim().includes('云资源管理')) {
-                    if (window.location.pathname.includes('/cloud/')) {
-                        $this.removeClass('collapsed');
-                        $submenu.show();
-                        $icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
-                    } else {
-                        $this.addClass('collapsed');
-                        $submenu.hide();
-                        $icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
-                    }
                 }
                 // 系统管理菜单根据当前路由决定是否展开
                 else if ($this.text().trim().includes('系统管理')) {
@@ -511,5 +473,6 @@
         });
     </script>
     <?php echo $__env->yieldContent('scripts'); ?>
+    <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
 </html><?php /**PATH /Users/tanli/Documents/php-code/sys-tmocaiji/resources/views/layouts/app.blade.php ENDPATH**/ ?>

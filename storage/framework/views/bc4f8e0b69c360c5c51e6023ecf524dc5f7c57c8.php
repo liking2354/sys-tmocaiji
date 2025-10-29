@@ -157,51 +157,12 @@
         <div class="col-lg-6 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                    <h6 class="m-0 font-weight-bold text-primary">系统状态概览</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">服务器状态分布</h6>
                     <span class="badge badge-success">运行正常</span>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-sm">
-                            <tbody>
-                                <tr>
-                                    <td><i class="fas fa-server text-primary mr-2"></i>服务器状态</td>
-                                    <td>
-                                        <div class="progress" style="height: 10px;">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: <?php echo e(($serverStatusStats['online'] / max(1, $serverCount)) * 100); ?>%"></div>
-                                        </div>
-                                        <small class="text-muted"><?php echo e($serverStatusStats['online']); ?>/<?php echo e($serverCount); ?> 在线</small>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><i class="fas fa-tasks text-warning mr-2"></i>采集任务</td>
-                                    <td>
-                                        <div class="progress" style="height: 10px;">
-                                            <div class="progress-bar bg-info" role="progressbar" style="width: 65%"></div>
-                                        </div>
-                                        <small class="text-muted"><?php echo e($taskCount ?? 0); ?> 个任务</small>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><i class="fas fa-memory text-info mr-2"></i>系统内存</td>
-                                    <td>
-                                        <div class="progress" style="height: 10px;">
-                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 45%"></div>
-                                        </div>
-                                        <small class="text-muted">45% 已使用</small>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><i class="fas fa-microchip text-danger mr-2"></i>CPU 使用率</td>
-                                    <td>
-                                        <div class="progress" style="height: 10px;">
-                                            <div class="progress-bar bg-danger" role="progressbar" style="width: 30%"></div>
-                                        </div>
-                                        <small class="text-muted">30% 已使用</small>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div style="position: relative; height: 300px;">
+                        <canvas id="serverStatusChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -251,6 +212,22 @@
                 </div>
                 <div class="card-footer text-center">
                     <a href="#" class="btn btn-sm btn-primary">查看所有活动</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 采集数据趋势 -->
+    <div class="row">
+        <div class="col-lg-12 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">采集数据趋势</h6>
+                </div>
+                <div class="card-body">
+                    <div style="position: relative; height: 300px;">
+                        <canvas id="dataCollectionChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -319,140 +296,149 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
     <script>
     $(document).ready(function() {
+        // 检查 Canvas 元素是否存在
+        var serverStatusElement = document.getElementById('serverStatusChart');
+        var dataCollectionElement = document.getElementById('dataCollectionChart');
+        
         // 服务器状态分布图表
-        var serverStatusCtx = document.getElementById('serverStatusChart').getContext('2d');
-        var serverStatusChart = new Chart(serverStatusCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['在线', '离线', '维护中', '未知'],
-                datasets: [{
-                    data: [<?php echo e($serverStatusStats['online']); ?>, <?php echo e($serverStatusStats['offline']); ?>, 2, 1],
-                    backgroundColor: [
-                        '#1cc88a', // 在线 - 绿色
-                        '#e74a3b', // 离线 - 红色
-                        '#f6c23e', // 维护中 - 黄色
-                        '#858796'  // 未知 - 灰色
-                    ],
-                    hoverBackgroundColor: [
-                        '#17a673',
-                        '#be3c2d',
-                        '#dda20a',
-                        '#6e7081'
-                    ],
-                    hoverBorderColor: "rgba(234, 236, 244, 1)",
-                }],
-            },
-            options: {
-                maintainAspectRatio: false,
-                tooltips: {
-                    backgroundColor: "rgb(255,255,255)",
-                    bodyFontColor: "#858796",
-                    borderColor: '#dddfeb',
-                    borderWidth: 1,
-                    xPadding: 15,
-                    yPadding: 15,
-                    displayColors: false,
-                    caretPadding: 10,
+        if (serverStatusElement) {
+            var serverStatusCtx = serverStatusElement.getContext('2d');
+            var serverStatusChart = new Chart(serverStatusCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['在线', '离线', '维护中', '未知'],
+                    datasets: [{
+                        data: [<?php echo e($serverStatusStats['online']); ?>, <?php echo e($serverStatusStats['offline']); ?>, 2, 1],
+                        backgroundColor: [
+                            '#1cc88a', // 在线 - 绿色
+                            '#e74a3b', // 离线 - 红色
+                            '#f6c23e', // 维护中 - 黄色
+                            '#858796'  // 未知 - 灰色
+                        ],
+                        hoverBackgroundColor: [
+                            '#17a673',
+                            '#be3c2d',
+                            '#dda20a',
+                            '#6e7081'
+                        ],
+                        hoverBorderColor: "rgba(234, 236, 244, 1)",
+                    }],
                 },
-                legend: {
-                    display: true,
-                    position: 'bottom'
+                options: {
+                    maintainAspectRatio: false,
+                    tooltips: {
+                        backgroundColor: "rgb(255,255,255)",
+                        bodyFontColor: "#858796",
+                        borderColor: '#dddfeb',
+                        borderWidth: 1,
+                        xPadding: 15,
+                        yPadding: 15,
+                        displayColors: false,
+                        caretPadding: 10,
+                    },
+                    legend: {
+                        display: true,
+                        position: 'bottom'
+                    },
+                    cutoutPercentage: 70,
                 },
-                cutoutPercentage: 70,
-            },
-        });
+            });
+        }
         
         // 采集数据趋势图表
-        var dataCollectionCtx = document.getElementById('dataCollectionChart').getContext('2d');
-        var dataCollectionChart = new Chart(dataCollectionCtx, {
-            type: 'line',
-            data: {
-                labels: ["1月", "2月", "3月", "4月", "5月", "6月", "7月"],
-                datasets: [{
-                    label: "采集数据量",
-                    lineTension: 0.3,
-                    backgroundColor: "rgba(78, 115, 223, 0.05)",
-                    borderColor: "rgba(78, 115, 223, 1)",
-                    pointRadius: 3,
-                    pointBackgroundColor: "rgba(78, 115, 223, 1)",
-                    pointBorderColor: "rgba(78, 115, 223, 1)",
-                    pointHoverRadius: 3,
-                    pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
-                    pointHoverBorderColor: "rgba(78, 115, 223, 1)",
-                    pointHitRadius: 10,
-                    pointBorderWidth: 2,
-                    data: [1250, 1900, 2800, 2400, 3100, 3500, 4200],
-                }],
-            },
-            options: {
-                maintainAspectRatio: false,
-                layout: {
-                    padding: {
-                        left: 10,
-                        right: 25,
-                        top: 25,
-                        bottom: 0
-                    }
-                },
-                scales: {
-                    xAxes: [{
-                        time: {
-                            unit: 'date'
-                        },
-                        gridLines: {
-                            display: false,
-                            drawBorder: false
-                        },
-                        ticks: {
-                            maxTicksLimit: 7
-                        }
+        if (dataCollectionElement) {
+            var dataCollectionCtx = dataCollectionElement.getContext('2d');
+            var dataCollectionChart = new Chart(dataCollectionCtx, {
+                type: 'line',
+                data: {
+                    labels: ["1月", "2月", "3月", "4月", "5月", "6月", "7月"],
+                    datasets: [{
+                        label: "采集数据量",
+                        lineTension: 0.3,
+                        backgroundColor: "rgba(78, 115, 223, 0.05)",
+                        borderColor: "rgba(78, 115, 223, 1)",
+                        pointRadius: 3,
+                        pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                        pointBorderColor: "rgba(78, 115, 223, 1)",
+                        pointHoverRadius: 3,
+                        pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                        pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                        pointHitRadius: 10,
+                        pointBorderWidth: 2,
+                        data: [1250, 1900, 2800, 2400, 3100, 3500, 4200],
                     }],
-                    yAxes: [{
-                        ticks: {
-                            maxTicksLimit: 5,
-                            padding: 10,
-                            callback: function(value, index, values) {
-                                return value;
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            left: 10,
+                            right: 25,
+                            top: 25,
+                            bottom: 0
+                        }
+                    },
+                    scales: {
+                        xAxes: [{
+                            time: {
+                                unit: 'date'
+                            },
+                            gridLines: {
+                                display: false,
+                                drawBorder: false
+                            },
+                            ticks: {
+                                maxTicksLimit: 7
                             }
-                        },
-                        gridLines: {
-                            color: "rgb(234, 236, 244)",
-                            zeroLineColor: "rgb(234, 236, 244)",
-                            drawBorder: false,
-                            borderDash: [2],
-                            zeroLineBorderDash: [2]
-                        }
-                    }],
-                },
-                legend: {
-                    display: false
-                },
-                tooltips: {
-                    backgroundColor: "rgb(255,255,255)",
-                    bodyFontColor: "#858796",
-                    titleMarginBottom: 10,
-                    titleFontColor: '#6e707e',
-                    titleFontSize: 14,
-                    borderColor: '#dddfeb',
-                    borderWidth: 1,
-                    xPadding: 15,
-                    yPadding: 15,
-                    displayColors: false,
-                    intersect: false,
-                    mode: 'index',
-                    caretPadding: 10,
-                    callbacks: {
-                        label: function(tooltipItem, chart) {
-                            var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-                            return datasetLabel + ': ' + tooltipItem.yLabel + ' 条';
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                maxTicksLimit: 5,
+                                padding: 10,
+                                callback: function(value, index, values) {
+                                    return value;
+                                }
+                            },
+                            gridLines: {
+                                color: "rgb(234, 236, 244)",
+                                zeroLineColor: "rgb(234, 236, 244)",
+                                drawBorder: false,
+                                borderDash: [2],
+                                zeroLineBorderDash: [2]
+                            }
+                        }],
+                    },
+                    legend: {
+                        display: false
+                    },
+                    tooltips: {
+                        backgroundColor: "rgb(255,255,255)",
+                        bodyFontColor: "#858796",
+                        titleMarginBottom: 10,
+                        titleFontColor: '#6e707e',
+                        titleFontSize: 14,
+                        borderColor: '#dddfeb',
+                        borderWidth: 1,
+                        xPadding: 15,
+                        yPadding: 15,
+                        displayColors: false,
+                        intersect: false,
+                        mode: 'index',
+                        caretPadding: 10,
+                        callbacks: {
+                            label: function(tooltipItem, chart) {
+                                var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                                return datasetLabel + ': ' + tooltipItem.yLabel + ' 条';
+                            }
                         }
                     }
                 }
-            }
-        });
+            });
+        }
     });
     </script>
     <?php $__env->stopPush(); ?>
 </div>
 <?php $__env->stopSection(); ?>
+
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/tanli/Documents/php-code/sys-tmocaiji/resources/views/dashboard.blade.php ENDPATH**/ ?>

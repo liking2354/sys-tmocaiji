@@ -333,37 +333,6 @@
                             </ul>
                         </li>
                         
-                        <!-- 云资源管理菜单 -->
-                        <li class="nav-item">
-                            <a class="nav-link sidebar-submenu-toggle {{ request()->routeIs('cloud.*') ? 'active' : '' }}" href="javascript:void(0);">
-                                <i class="fas fa-cloud mr-2"></i> 云资源管理
-                                <i class="fas fa-chevron-down float-right mt-1"></i>
-                            </a>
-                            <ul class="sidebar-submenu" style="display: {{ request()->routeIs('cloud.*') ? 'block' : 'none' }};">
-                                <li class="nav-item">
-                                    <a class="nav-link pl-4 {{ request()->routeIs('cloud.platforms.*') ? 'active' : '' }}" href="{{ route('cloud.platforms.index') }}">
-                                        <i class="fas fa-server mr-2"></i> 云平台管理
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link pl-4 {{ request()->routeIs('cloud.regions.*') ? 'active' : '' }}" href="{{ route('cloud.regions.index') }}">
-                                        <i class="fas fa-globe-asia mr-2"></i> 可用区管理
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link pl-4 {{ request()->routeIs('cloud.resources.*') ? 'active' : '' }}" href="{{ route('cloud.resources.index') }}">
-                                        <i class="fas fa-cubes mr-2"></i> 云资源管理
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link pl-4 {{ request()->routeIs('cloud.ecs.*') ? 'active' : '' }}" href="{{ route('cloud.ecs.index') }}">
-                                        <i class="fas fa-desktop mr-2"></i> ECS云服务器
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        
-                        <!-- 系统管理菜单 -->
                         <li class="nav-item">
                             <a class="nav-link sidebar-submenu-toggle {{ request()->routeIs('admin.*') ? 'active' : '' }}" href="javascript:void(0);">
                                 <i class="fas fa-cogs mr-2"></i> 系统管理
@@ -391,11 +360,6 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link pl-4 {{ request()->routeIs('admin.dict.*') ? 'active' : '' }}" href="{{ route('admin.dict.index') }}">
-                                        <i class="fas fa-book mr-2"></i> 字典管理
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
                     </ul>
                 </div>
@@ -460,18 +424,6 @@
                 // 基础设施菜单保持当前状态，不自动收起
                 if ($this.text().trim().includes('基础设施')) {
                     // 不做任何自动操作，保持HTML中设置的状态
-                }
-                // 云资源管理菜单根据当前路由决定是否展开
-                else if ($this.text().trim().includes('云资源管理')) {
-                    if (window.location.pathname.includes('/cloud/')) {
-                        $this.removeClass('collapsed');
-                        $submenu.show();
-                        $icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
-                    } else {
-                        $this.addClass('collapsed');
-                        $submenu.hide();
-                        $icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
-                    }
                 }
                 // 系统管理菜单根据当前路由决定是否展开
                 else if ($this.text().trim().includes('系统管理')) {

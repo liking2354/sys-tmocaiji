@@ -10,9 +10,6 @@ use App\Http\Controllers\TaskExecutionController;
 use App\Http\Controllers\CollectionHistoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataController;
-use App\Http\Controllers\CloudPlatformController;
-use App\Http\Controllers\CloudResourceController;
-use App\Http\Controllers\CloudRegionController;
 use App\Http\Controllers\ConfigTemplateController;
 use App\Http\Controllers\SystemChangeTaskController;
 
@@ -114,48 +111,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('data/cleanup', [DataController::class, 'showCleanupForm'])->name('data.cleanup.form');
     Route::post('data/cleanup', [DataController::class, 'cleanup'])->name('data.cleanup');
     
-    // 云资源管理
-    Route::prefix('cloud')->name('cloud.')->group(function () {
-        // 云平台管理
-        Route::resource('platforms', CloudPlatformController::class);
-        Route::post('platforms/{platform}/test-connection', [CloudPlatformController::class, 'testConnection'])->name('platforms.test-connection');
-        Route::post('platforms/{platform}/sync-regions', [CloudPlatformController::class, 'syncRegions'])->name('platforms.sync-regions');
-        Route::post('platforms/{platform}/sync-resources', [CloudPlatformController::class, 'syncResources'])->name('platforms.sync-resources');
-        // 创建/编辑页无模型测试连接接口
-        Route::post('platforms/test-connection', [CloudPlatformController::class, 'testConnectionConfig'])->name('platforms.test-connection-config');
-        Route::post('platforms/batch-action', [CloudPlatformController::class, 'batchAction'])->name('platforms.batch-action');
-        // 智能区域获取接口
-        Route::get('platforms/regions/{platform_type}', [CloudPlatformController::class, 'getRegionsByPlatform'])->name('platforms.regions-by-type');
-        
-        // 云资源管理
-        Route::resource('resources', CloudResourceController::class);
-        Route::post('resources/sync', [CloudResourceController::class, 'sync'])->name('resources.sync');
-        Route::post('resources/batch-delete', [CloudResourceController::class, 'batchDelete'])->name('resources.batch-delete');
-        Route::post('resources/cleanup', [CloudResourceController::class, 'cleanup'])->name('resources.cleanup');
-        Route::get('resources/search', [CloudResourceController::class, 'search'])->name('resources.search');
-        Route::get('resources/statistics', [CloudResourceController::class, 'statistics'])->name('resources.statistics');
-        Route::get('resources/platform-resource-types', [CloudResourceController::class, 'platformResourceTypes'])->name('resources.platform-resource-types');
-        Route::get('resources/export', [CloudResourceController::class, 'export'])->name('resources.export');
-        Route::post('resources/{cloudResource}/refresh', [CloudResourceController::class, 'refresh'])->name('resources.refresh');
-        Route::post('resources/batch-action', [CloudResourceController::class, 'batchAction'])->name('resources.batch-action');
-        Route::post('resources/sync-platform', [CloudResourceController::class, 'syncPlatformResources'])->name('resources.sync-platform');
-        Route::get('resources/{id}/detail', [CloudResourceController::class, 'detail'])->name('resources.detail');
-        Route::get('resources/{id}/monitoring', [CloudResourceController::class, 'monitoringModal'])->name('resources.monitoring-modal');
-        Route::get('resources/{cloudResource}/monitoring', [CloudResourceController::class, 'monitoring'])->name('resources.monitoring');
-        
-        // 进度同步相关路由
-        Route::post('resources/validate-connection', [CloudResourceController::class, 'validateConnection'])->name('resources.validate-connection');
-        Route::post('resources/get-sync-config', [CloudResourceController::class, 'getSyncConfig'])->name('resources.get-sync-config');
-        Route::post('resources/sync-with-progress', [CloudResourceController::class, 'syncWithProgress'])->name('resources.sync-with-progress');
-        Route::post('resources/sync-progress', [CloudResourceController::class, 'getSyncProgress'])->name('resources.sync-progress');
-        
-        // 可用区管理
-        Route::resource('regions', CloudRegionController::class);
-        Route::post('regions/sync-platform', [CloudRegionController::class, 'syncPlatformRegions'])->name('regions.sync-platform');
-        Route::post('regions/batch-delete', [CloudRegionController::class, 'batchDelete'])->name('regions.batch-delete');
-        Route::post('regions/clear-all', [CloudRegionController::class, 'clearAll'])->name('regions.clear-all');
-    });
-    
     // 系统变更管理
     Route::prefix('system-change')->name('system-change.')->group(function () {
         // 配置模板管理
@@ -190,38 +145,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('templates/variables', [SystemChangeTaskController::class, 'getTemplateVariables'])->name('templates.get-variables');
     });
     
-
-
     // 用户管理
     Route::prefix('admin')->name('admin.')->group(function () {
-        // 字典管理 - 重新设计的三级层次结构
-        Route::get('dict', [\App\Http\Controllers\DictController::class, 'index'])->name('dict.index');
-        Route::get('dict/categories', [\App\Http\Controllers\DictController::class, 'categories'])->name('dict.categories');
-        Route::post('dict/categories', [\App\Http\Controllers\DictController::class, 'storeCategory'])->name('dict.categories.store');
-        Route::put('dict/categories/{id}', [\App\Http\Controllers\DictController::class, 'updateCategory'])->name('dict.categories.update');
-        Route::delete('dict/categories/{id}', [\App\Http\Controllers\DictController::class, 'destroyCategory'])->name('dict.categories.destroy');
-        
-        // 字典项管理 - 支持三级层次
-        Route::get('dict/items', [\App\Http\Controllers\DictController::class, 'items'])->name('dict.items');
-        Route::post('dict/items', [\App\Http\Controllers\DictController::class, 'storeItem'])->name('dict.items.store');
-        Route::put('dict/items/{id}', [\App\Http\Controllers\DictController::class, 'updateItem'])->name('dict.items.update');
-        Route::delete('dict/items/{id}', [\App\Http\Controllers\DictController::class, 'destroyItem'])->name('dict.items.destroy');
-        
-        // 层次结构管理
-        Route::get('dict/hierarchy', [\App\Http\Controllers\DictController::class, 'hierarchy'])->name('dict.hierarchy');
-        Route::get('dict/tree-data', [\App\Http\Controllers\DictController::class, 'treeData'])->name('dict.tree-data');
-        Route::post('dict/move-item', [\App\Http\Controllers\DictController::class, 'moveItem'])->name('dict.move-item');
-        
-        // 平台筛选
-        Route::get('dict/platform-items', [\App\Http\Controllers\DictController::class, 'platformItems'])->name('dict.platform-items');
-        
-        // 数据初始化
-        Route::post('dict/init-basic-data', [\App\Http\Controllers\DictController::class, 'initBasicData'])->name('dict.init');
-        Route::post('dict/init-cloud-resources', [\App\Http\Controllers\DictController::class, 'initCloudResources'])->name('dict.init-cloud-resources');
-        
-        // 字典项详情
-        Route::get('dict/items/{id}', [\App\Http\Controllers\DictController::class, 'showItem'])->name('dict.items.show');
-        
         // 用户管理
         Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
         
@@ -237,18 +162,6 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('operation-logs', \App\Http\Controllers\Admin\OperationLogController::class)->only(['index', 'show']);
         Route::post('operation-logs/batch-delete', [\App\Http\Controllers\Admin\OperationLogController::class, 'batchDelete'])->name('operation-logs.batch-delete');
         Route::post('operation-logs/cleanup', [\App\Http\Controllers\Admin\OperationLogController::class, 'cleanup'])->name('operation-logs.cleanup');
-    });
-    
-    // 云资源管理路由
-    Route::prefix('cloud')->name('cloud.')->group(function () {
-        // ECS云服务器管理
-        Route::get('ecs', [\App\Http\Controllers\CloudEcsController::class, 'index'])->name('ecs.index');
-        Route::get('ecs/list', [\App\Http\Controllers\CloudEcsController::class, 'list'])->name('ecs.list');
-        Route::post('ecs/sync', [\App\Http\Controllers\CloudEcsController::class, 'sync'])->name('ecs.sync');
-        Route::post('ecs/batch-sync', [\App\Http\Controllers\CloudEcsController::class, 'batchSync'])->name('ecs.batch-sync');
-        Route::get('ecs/statistics', [\App\Http\Controllers\CloudEcsController::class, 'statistics'])->name('ecs.statistics');
-        Route::get('ecs/{id}', [\App\Http\Controllers\CloudEcsController::class, 'show'])->name('ecs.show');
-        Route::get('ecs/{id}/monitoring', [\App\Http\Controllers\CloudEcsController::class, 'monitoring'])->name('ecs.monitoring');
     });
     
     // 测试路由
