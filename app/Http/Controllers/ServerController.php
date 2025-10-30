@@ -1173,4 +1173,99 @@ class ServerController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * 下载导入模板
+     *
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function downloadTemplate()
+    {
+        try {
+            return Excel::download(
+                new \App\Exports\ServersImportTemplateExport(),
+                '服务器导入模板_' . date('Ymd_His') . '.xlsx'
+            );
+        } catch (\Exception $e) {
+            Log::error('下载导入模板失败: ' . $e->getMessage());
+            return redirect()->route('servers.index')
+                ->with('error', '下载模板失败: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * 下载全部查询数据
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function downloadAllFiltered(Request $request)
+    {
+        $format = $request->input('format', 'xlsx');
+        
+        // 构建查询
+        $query = Server::with('group');
+        
+        // 搜索条件
+        if ($request->has('search') && !empty($request->input('search'))) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('ip', 'like', "%{$search}%");
+            });
+        }
+        
+        // 分组筛选
+        if ($request->has('group_id') && !empty($request->input('group_id'))) {
+            $query->where('group_id', $request->input('group_id'));
+        }
+        
+        // 状态筛选
+        if ($request->has('status') && $request->input('status') !== '') {
+            $query->where('status', $request->input('status'));
+        }
+        
+        // 获取所有符合条件的服务器ID
+        $serverIds = $query->pluck('id')->toArray();
+        
+        if (empty($serverIds)) {
+            return redirect()->route('servers.index')
+                ->with('error', '没有符合条件的服务器数据');
+        }
+        
+        // 获取采集组件ID
+        $collectorIds = [];
+        $servers = Server::whereIn('id', $serverIds)->with('collectors')->get();
+        foreach ($servers as $server) {
+            foreach ($server->collectors as $collector) {
+                $collectorIds[$collector->id] = $collector->id;
+            }
+        }
+        
+        // 设置文件名
+        $fileExtension = $format === 'csv' ? 'csv' : 'xlsx';
+        $fileName = '服务器采集数据_全部_' . count($serverIds) . '台_' . date('Ymd_His') . '.' . $fileExtension;
+        
+        try {
+            $export = new ServersExport($serverIds, array_values($collectorIds));
+            
+            if ($format === 'csv') {
+                return Excel::download(
+                    $export,
+                    $fileName,
+                    \Maatwebsite\Excel\Excel::CSV,
+                    [
+                        'Content-Type' => 'text/csv; charset=UTF-8',
+                        'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
+                    ]
+                );
+            } else {
+                return Excel::download($export, $fileName);
+            }
+        } catch (\Exception $e) {
+            Log::error('下载全部查询数据失败: ' . $e->getMessage());
+            return redirect()->route('servers.index')
+                ->with('error', '下载数据失败: ' . $e->getMessage());
+        }
+    }
 }

@@ -8,9 +8,19 @@
             <a href="<?php echo e(route('servers.create')); ?>" class="btn btn-primary">
                 <i class="fas fa-plus"></i> 添加服务器
             </a>
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#importModal">
-                <i class="fas fa-file-import"></i> 批量导入
-            </button>
+            <div class="btn-group">
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#importModal">
+                    <i class="fas fa-file-import"></i> 批量导入
+                </button>
+                <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="sr-only">切换下拉菜单</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#" id="downloadTemplate">
+                        <i class="fas fa-download"></i> 下载导入模板
+                    </a>
+                </div>
+            </div>
             <button type="button" class="btn btn-warning" id="batchCollectionBtn" disabled>
                 <i class="fas fa-play"></i> 批量采集
             </button>
@@ -21,12 +31,24 @@
                 <button type="button" class="btn btn-success dropdown-toggle" id="downloadBtn" disabled data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-download"></i> 直接下载
                 </button>
-                <div class="dropdown-menu">
+                <div class="dropdown-menu dropdown-menu-right">
+                    <h6 class="dropdown-header">下载格式</h6>
                     <a class="dropdown-item" href="#" id="downloadExcel">
                         <i class="fas fa-file-excel"></i> 下载 Excel (.xlsx)
                     </a>
                     <a class="dropdown-item" href="#" id="downloadCsv">
                         <i class="fas fa-file-csv"></i> 下载 CSV (.csv)
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <h6 class="dropdown-header">下载范围</h6>
+                    <a class="dropdown-item" href="#" id="downloadSelected">
+                        <i class="fas fa-check-square"></i> 已勾选的数据
+                    </a>
+                    <a class="dropdown-item" href="#" id="downloadCurrentPage">
+                        <i class="fas fa-list"></i> 当前页数据
+                    </a>
+                    <a class="dropdown-item" href="#" id="downloadAllFiltered">
+                        <i class="fas fa-database"></i> 全部查询数据
                     </a>
                 </div>
             </div>
@@ -171,17 +193,23 @@
                         <input type="file" class="form-control-file" id="file" name="file" required accept=".xlsx,.xls,.csv">
                     </div>
                     <div class="alert alert-info">
-                        <h6>导入说明：</h6>
+                        <h6><i class="fas fa-info-circle"></i> 导入说明：</h6>
                         <p>请使用以下列标题的Excel文件：</p>
                         <ul>
-                            <li>name - 服务器名称（必填）</li>
-                            <li>group - 服务器分组（选填，不存在则自动创建）</li>
-                            <li>ip - IP地址（必填）</li>
-                            <li>port - 端口（选填，默认22）</li>
-                            <li>username - 用户名（必填）</li>
-                            <li>password - 密码（必填）</li>
-                            <li>verify_connection - 是否验证连接（选填，默认true）</li>
+                            <li><strong>name</strong> - 服务器名称（必填）</li>
+                            <li><strong>group</strong> - 服务器分组（选填，不存在则自动创建）</li>
+                            <li><strong>ip</strong> - IP地址（必填）</li>
+                            <li><strong>port</strong> - 端口（选填，默认22）</li>
+                            <li><strong>username</strong> - 用户名（必填）</li>
+                            <li><strong>password</strong> - 密码（必填）</li>
+                            <li><strong>verify_connection</strong> - 是否验证连接（选填，默认true）</li>
                         </ul>
+                        <hr>
+                        <p class="mb-0">
+                            <a href="<?php echo e(route('servers.download-template')); ?>" class="btn btn-sm btn-primary" target="_blank">
+                                <i class="fas fa-download"></i> 下载导入模板
+                            </a>
+                        </p>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -313,6 +341,162 @@
 
 <?php $__env->startSection('scripts'); ?>
 <script>
+    // ============ 全局函数定义 ============
+    
+    // 下载功能通用函数
+    function downloadServers(format, scope) {
+        var serverIds = [];
+        var fileName = '';
+        
+        // 根据scope确定要下载的服务器ID
+        if (scope === 'selected') {
+            // 已勾选的数据
+            serverIds = $('.server-checkbox:checked').map(function() {
+                return $(this).val();
+            }).get();
+            
+            if (serverIds.length === 0) {
+                alert('请至少选择一台服务器');
+                return false;
+            }
+            fileName = '服务器数据_已勾选_' + serverIds.length + '台';
+        } else if (scope === 'currentPage') {
+            // 当前页数据
+            serverIds = $('.server-checkbox').map(function() {
+                return $(this).val();
+            }).get();
+            
+            if (serverIds.length === 0) {
+                alert('当前页没有服务器数据');
+                return false;
+            }
+            fileName = '服务器数据_当前页_' + serverIds.length + '台';
+        } else if (scope === 'allFiltered') {
+            // 全部查询数据 - 需要调用后端API获取所有符合条件的数据
+            downloadAllFiltered(format);
+            return;
+        } else {
+            // 默认为已勾选
+            serverIds = $('.server-checkbox:checked').map(function() {
+                return $(this).val();
+            }).get();
+            
+            if (serverIds.length === 0) {
+                alert('请至少选择一台服务器');
+                return false;
+            }
+            fileName = '服务器数据_已勾选_' + serverIds.length + '台';
+        }
+        
+        // 创建临时表单
+        var tempForm = $('<form>', {
+            action: '<?php echo e(route("servers.download")); ?>',
+            method: 'POST',
+            style: 'display: none;',
+            target: '_blank'
+        });
+        
+        // 添加CSRF令牌
+        tempForm.append('<input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>">');
+        
+        // 添加格式参数
+        tempForm.append('<input type="hidden" name="format" value="' + format + '">');
+        
+        // 添加服务器ID
+        serverIds.forEach(function(serverId) {
+            tempForm.append('<input type="hidden" name="server_ids[]" value="' + serverId + '">');
+        });
+        
+        // 添加到body并提交
+        $('body').append(tempForm);
+        tempForm.submit();
+        
+        // 稍后移除临时表单
+        setTimeout(function() {
+            tempForm.remove();
+        }, 1000);
+    }
+    
+    // 下载全部查询数据
+    function downloadAllFiltered(format) {
+        // 获取当前搜索条件
+        var search = $('#search').val() || '';
+        var groupId = $('#group_id').val() || '';
+        var status = $('#status').val() || '';
+        
+        // 创建临时表单
+        var tempForm = $('<form>', {
+            action: '<?php echo e(route("servers.download-all-filtered")); ?>',
+            method: 'POST',
+            style: 'display: none;',
+            target: '_blank'
+        });
+        
+        // 添加CSRF令牌
+        tempForm.append('<input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>">');
+        
+        // 添加格式参数
+        tempForm.append('<input type="hidden" name="format" value="' + format + '">');
+        
+        // 添加搜索条件
+        if (search) tempForm.append('<input type="hidden" name="search" value="' + search + '">');
+        if (groupId) tempForm.append('<input type="hidden" name="group_id" value="' + groupId + '">');
+        if (status) tempForm.append('<input type="hidden" name="status" value="' + status + '">');
+        
+        // 添加到body并提交
+        $('body').append(tempForm);
+        tempForm.submit();
+        
+        // 稍后移除临时表单
+        setTimeout(function() {
+            tempForm.remove();
+        }, 1000);
+    }
+    
+    // 显示格式选择对话框
+    function showDownloadFormatDialog(scope) {
+        var scopeText = {
+            'selected': '已勾选的数据',
+            'currentPage': '当前页数据',
+            'allFiltered': '全部查询数据'
+        };
+        
+        var html = '<div class="alert alert-info mb-3">' +
+            '<i class="fas fa-info-circle"></i> 您将下载：<strong>' + scopeText[scope] + '</strong>' +
+            '</div>' +
+            '<div class="btn-group btn-block" role="group">' +
+            '<button type="button" class="btn btn-outline-primary" onclick="downloadServers(\'xlsx\', \'' + scope + '\'); $(\'#formatDialog\').modal(\'hide\');">' +
+            '<i class="fas fa-file-excel"></i> Excel (.xlsx)' +
+            '</button>' +
+            '<button type="button" class="btn btn-outline-primary" onclick="downloadServers(\'csv\', \'' + scope + '\'); $(\'#formatDialog\').modal(\'hide\');">' +
+            '<i class="fas fa-file-csv"></i> CSV (.csv)' +
+            '</button>' +
+            '</div>';
+        
+        // 如果对话框不存在，创建它
+        if ($('#formatDialog').length === 0) {
+            $('body').append(
+                '<div class="modal fade" id="formatDialog" tabindex="-1" role="dialog">' +
+                '<div class="modal-dialog" role="document">' +
+                '<div class="modal-content">' +
+                '<div class="modal-header">' +
+                '<h5 class="modal-title">选择下载格式</h5>' +
+                '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+                '<span aria-hidden="true">&times;</span>' +
+                '</button>' +
+                '</div>' +
+                '<div class="modal-body" id="formatDialogContent"></div>' +
+                '</div>' +
+                '</div>' +
+                '</div>'
+            );
+        }
+        
+        $('#formatDialogContent').html(html);
+        $('#formatDialog').modal('show');
+    }
+    
+    // ============ 文档就绪后的初始化 ============
     $(document).ready(function() {
         // 全选/取消全选
         $('#selectAll').change(function() {
@@ -337,56 +521,40 @@
             $('#selectAll').prop('checked', allChecked && checkedCount > 0);
         }
         
-        // 下载功能通用函数
-        function downloadServers(format) {
-            var serverIds = $('.server-checkbox:checked').map(function() {
-                return $(this).val();
-            }).get();
-            
-            if (serverIds.length === 0) {
-                alert('请至少选择一台服务器');
-                return false;
-            }
-            
-            // 创建临时表单
-            var tempForm = $('<form>', {
-                action: '<?php echo e(route("servers.download")); ?>',
-                method: 'POST',
-                style: 'display: none;',
-                target: '_blank'
-            });
-            
-            // 添加CSRF令牌
-            tempForm.append('<input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>">');
-            
-            // 添加格式参数
-            tempForm.append('<input type="hidden" name="format" value="' + format + '">');
-            
-            // 添加服务器ID
-            serverIds.forEach(function(serverId) {
-                tempForm.append('<input type="hidden" name="server_ids[]" value="' + serverId + '">');
-            });
-            
-            // 添加到body并提交
-            $('body').append(tempForm);
-            tempForm.submit();
-            
-            // 稍后移除临时表单
-            setTimeout(function() {
-                tempForm.remove();
-            }, 1000);
-        }
+        // 下载模板
+        $('#downloadTemplate').click(function(e) {
+            e.preventDefault();
+            window.location.href = '<?php echo e(route("servers.download-template")); ?>';
+        });
         
         // Excel下载点击事件
         $('#downloadExcel').click(function(e) {
             e.preventDefault();
-            downloadServers('xlsx');
+            downloadServers('xlsx', 'selected');
         });
         
         // CSV下载点击事件
         $('#downloadCsv').click(function(e) {
             e.preventDefault();
-            downloadServers('csv');
+            downloadServers('csv', 'selected');
+        });
+        
+        // 已勾选数据下载
+        $('#downloadSelected').click(function(e) {
+            e.preventDefault();
+            showDownloadFormatDialog('selected');
+        });
+        
+        // 当前页数据下载
+        $('#downloadCurrentPage').click(function(e) {
+            e.preventDefault();
+            showDownloadFormatDialog('currentPage');
+        });
+        
+        // 全部查询数据下载
+        $('#downloadAllFiltered').click(function(e) {
+            e.preventDefault();
+            showDownloadFormatDialog('allFiltered');
         });
         
         // 批量采集按钮点击事件
@@ -408,7 +576,6 @@
                 
                 $('#selectedServerCount').text(serverIds.length);
                 $('#selectedServerList').html(serverList);
-                // 将server_ids存储为数组，而不是JSON字符串
                 $('#selected_server_ids').val(serverIds.join(','));
                 
                 // 加载共同的采集组件
@@ -539,7 +706,6 @@
                     if (response.success) {
                         $('#batchModifyComponentsModal').modal('hide');
                         alert('批量修改组件成功！' + response.message);
-                        // 可选：刷新页面或更新显示
                         location.reload();
                     } else {
                         alert('修改失败：' + response.message);
@@ -594,7 +760,6 @@
                             $('#submitBatchCollection').prop('disabled', checkedCollectors === 0);
                         });
                     } else {
-                        // 没有共同采集组件时，显示所有可用采集组件供统一选择
                         $('#collectorsList').html('<div class="alert alert-warning mb-3">所选服务器没有共同的采集组件，您可以在下方选择采集组件进行批量关联</div>');
                         
                         // 加载所有采集组件
@@ -753,4 +918,5 @@
     });
 </script>
 <?php $__env->stopSection(); ?>
+
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/tanli/Documents/php-code/sys-tmocaiji/resources/views/servers/index.blade.php ENDPATH**/ ?>

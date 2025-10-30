@@ -41,9 +41,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('server-groups/batch-delete', [ServerGroupController::class, 'batchDelete'])->name('server-groups.batch-delete');
     Route::resource('server-groups', ServerGroupController::class);
     
-    // 服务器管理
-    Route::resource('servers', ServerController::class);
+    // 服务器管理 - 自定义路由必须放在资源路由之前
     Route::post('servers/import', [ServerController::class, 'import'])->name('servers.import');
+    Route::get('servers/download-template', [ServerController::class, 'downloadTemplate'])->name('servers.download-template');
+    Route::post('servers/download-all-filtered', [ServerController::class, 'downloadAllFiltered'])->name('servers.download-all-filtered');
+    Route::resource('servers', ServerController::class);
     Route::post('servers/verify', [ServerController::class, 'verifyConnection'])->name('servers.verify');
     Route::post('servers/system-info', [ServerController::class, 'getSystemInfo'])->name('servers.system-info');
     Route::post('servers/export', [ServerController::class, 'export'])->name('servers.export');
