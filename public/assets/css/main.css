@@ -1,0 +1,33 @@
+/* ============================================
+   主样式文件 - 导入所有样式
+   ============================================ */
+
+/* 第三方库 */
+@import url('./vendor/bootstrap.min.css');
+@import url('./vendor/all.min.css');
+@import url('./vendor/toastr.min.css');
+
+/* 公共样式 */
+@import url('./common/variables.css');
+@import url('./common/base.css');
+@import url('./common/layout.css');
+@import url('./common/utilities.css');
+@import url('./common/responsive.css');
+
+/* 组件样式 (待添加) */
+/* @import url('./components/buttons.css'); */
+/* @import url('./components/forms.css'); */
+/* @import url('./components/tables.css'); */
+/* @import url('./components/modals.css'); */
+/* @import url('./components/cards.css'); */
+/* @import url('./components/badges.css'); */
+/* @import url('./components/alerts.css'); */
+
+/* 功能模块样式 (待添加) */
+/* @import url('./modules/servers.css'); */
+/* @import url('./modules/collectors.css'); */
+/* @import url('./modules/tasks.css'); */
+/* @import url('./modules/system-change.css'); */
+/* @import url('./modules/admin.css'); */
+/* @import url('./modules/auth.css'); */
+/* @import url('./modules/data-cleanup.css'); */

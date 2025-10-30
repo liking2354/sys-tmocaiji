@@ -1,0 +1,149 @@
+/* ============================================
+   响应式设计 - 移动端、平板、桌面
+   ============================================ */
+
+/* 小屏幕 (手机) */
+@media (max-width: 576px) {
+    body {
+        font-size: 13px;
+    }
+    
+    h1 { font-size: 24px; }
+    h2 { font-size: 20px; }
+    h3 { font-size: 18px; }
+    h4 { font-size: 16px; }
+    h5 { font-size: 14px; }
+    h6 { font-size: 12px; }
+    
+    .main-content {
+        padding: var(--spacing-md);
+    }
+    
+    .card {
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    
+    table {
+        font-size: 12px;
+    }
+    
+    th, td {
+        padding: var(--spacing-sm);
+    }
+}
+
+/* 中等屏幕 (平板) */
+@media (min-width: 577px) and (max-width: 768px) {
+    body {
+        font-size: 13px;
+    }
+    
+    h1 { font-size: 26px; }
+    h2 { font-size: 22px; }
+    h3 { font-size: 19px; }
+    h4 { font-size: 17px; }
+    h5 { font-size: 15px; }
+    h6 { font-size: 13px; }
+    
+    .main-content {
+        padding: var(--spacing-lg);
+    }
+    
+    .btn {
+        padding: 7px 14px;
+        font-size: 13px;
+    }
+}
+
+/* 大屏幕 (桌面) */
+@media (min-width: 769px) {
+    body {
+        font-size: var(--font-size-base);
+    }
+    
+    h1 { font-size: 28px; }
+    h2 { font-size: 24px; }
+    h3 { font-size: 20px; }
+    h4 { font-size: 18px; }
+    h5 { font-size: 16px; }
+    h6 { font-size: 14px; }
+    
+    .main-content {
+        padding: var(--main-content-padding);
+    }
+    
+    .btn {
+        padding: 8px 16px;
+        font-size: var(--font-size-base);
+    }
+}
+
+/* 超大屏幕 (1200px+) */
+@media (min-width: 1200px) {
+    .container-lg {
+        max-width: 1140px;
+    }
+}
+
+/* 打印样式 */
+@media print {
+    body {
+        background-color: white;
+        padding-top: 0;
+    }
+    
+    .navbar,
+    .sidebar,
+    .sidebar-toggle,
+    .btn,
+    .no-print {
+        display: none !important;
+    }
+    
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 0;
+    }
+    
+    .card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+    
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+    
+    a[href]:after {
+        content: "";
+    }
+}
+
+/* 暗色模式支持 (可选) */
+@media (prefers-color-scheme: dark) {
+    /* 如果需要支持暗色模式，可以在这里添加样式 */
+}
+
+/* 高对比度模式 */
+@media (prefers-contrast: more) {
+    :root {
+        --primary-color: #0052cc;
+        --secondary-color: #1a1a1a;
+    }
+}
+
+/* 减少动画 */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
