@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Role;
+use App\Helpers\PaginationHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -15,9 +16,10 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::paginate(10);
+        $perPage = PaginationHelper::getPerPage($request, 10);
+        $users = User::paginate($perPage)->appends(PaginationHelper::getQueryParams($request));
         return view('admin.users.index', compact('users'));
     }
 

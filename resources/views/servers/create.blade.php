@@ -115,7 +115,7 @@
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-save"></i> 保存
                     </button>
-                    <button type="button" id="testConnectionBtn" class="btn btn-info">
+                    <button type="button" id="testConnectionBtn" class="btn btn-primary">
                         <i class="fas fa-plug"></i> 测试连接
                     </button>
                     <a href="{{ route('servers.index') }}" class="btn btn-secondary">

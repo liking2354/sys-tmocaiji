@@ -15,7 +15,7 @@
     <!-- 操作按钮 -->
     <div class="mb-4">
         <div class="d-flex gap-2 flex-wrap">
-            <a href="{{ route('system-change.templates.edit', $template) }}" class="btn btn-warning">
+            <a href="{{ route('system-change.templates.edit', $template) }}" class="btn btn-primary">
                 <i class="fas fa-edit"></i> 编辑模板
             </a>
             <a href="{{ route('system-change.templates.index') }}" class="btn btn-secondary">
@@ -26,8 +26,8 @@
 
     <div class="row">
         <div class="col-12">
-            <div class="card card-primary shadow-sm">
-                <div class="card-header bg-primary text-white">
+            <div class="card card-light-blue shadow-sm">
+                <div class="card-header">
                     <h5 class="mb-0">
                         <i class="fas fa-info-circle"></i> 基本信息
                     </h5>
@@ -303,11 +303,11 @@
                 </div>
 
                 <div class="card-footer">
-                    <a href="{{ route('system-change.templates.edit', $template) }}" class="btn btn-warning">
+                    <a href="{{ route('system-change.templates.edit', $template) }}" class="btn btn-primary">
                         <i class="fas fa-edit mr-1"></i>
                         编辑模板
                     </a>
-                    <button type="button" class="btn btn-info ml-2" onclick="duplicateTemplate()">
+                    <button type="button" class="btn btn-primary ml-2" onclick="duplicateTemplate()">
                         <i class="fas fa-copy mr-1"></i>
                         复制模板
                     </button>

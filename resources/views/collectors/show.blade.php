@@ -15,7 +15,7 @@
     <!-- 操作按钮 -->
     <div class="mb-4">
         <div class="d-flex gap-2 flex-wrap">
-            <a href="{{ route('collectors.edit', $collector) }}" class="btn btn-warning">
+            <a href="{{ route('collectors.edit', $collector) }}" class="btn btn-primary">
                 <i class="fas fa-edit"></i> 编辑组件
             </a>
             <a href="{{ route('collectors.index') }}" class="btn btn-secondary">

@@ -2,110 +2,142 @@
 
 <?php $__env->startSection('content'); ?>
 <div class="container-fluid">
+    <!-- 页面标题 -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>采集历史记录</h1>
+        <div>
+            <h1 class="mb-0">
+                <i class="fas fa-history text-primary"></i> 采集历史记录
+            </h1>
+            <small class="text-muted">查看所有采集任务的执行历史和结果</small>
+        </div>
     </div>
     
     <!-- 筛选条件 -->
-    <div class="card mb-4">
+    <div class="search-filter-card">
+        <div class="card-header">
+            <h5 class="mb-0">
+                <i class="fas fa-filter"></i> 筛选条件
+            </h5>
+        </div>
         <div class="card-body">
-            <form action="<?php echo e(route('collection-history.index')); ?>" method="GET" class="form-row align-items-center">
-                <div class="col-md-2 mb-2">
-                    <label for="server_id">服务器</label>
-                    <select class="form-control" id="server_id" name="server_id">
-                        <option value="">所有服务器</option>
-                        <?php $__currentLoopData = $servers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $server): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <option value="<?php echo e($server->id); ?>" <?php echo e(request('server_id') == $server->id ? 'selected' : ''); ?>>
-                                <?php echo e($server->name); ?> (<?php echo e($server->ip); ?>)
-                            </option>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                    </select>
-                </div>
-                <div class="col-md-2 mb-2">
-                    <label for="collector_id">采集组件</label>
-                    <select class="form-control" id="collector_id" name="collector_id">
-                        <option value="">所有组件</option>
-                        <?php $__currentLoopData = $collectors; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $collector): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <option value="<?php echo e($collector->id); ?>" <?php echo e(request('collector_id') == $collector->id ? 'selected' : ''); ?>>
-                                <?php echo e($collector->name); ?>
+            <form action="<?php echo e(route('collection-history.index')); ?>" method="GET">
+                <div class="search-row">
+                    <div>
+                        <label for="server_id">服务器</label>
+                        <select class="form-control" id="server_id" name="server_id">
+                            <option value="">所有服务器</option>
+                            <?php $__currentLoopData = $servers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $server): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($server->id); ?>" <?php echo e(request('server_id') == $server->id ? 'selected' : ''); ?>>
+                                    <?php echo e($server->name); ?> (<?php echo e($server->ip); ?>)
+                                </option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="collector_id">采集组件</label>
+                        <select class="form-control" id="collector_id" name="collector_id">
+                            <option value="">所有组件</option>
+                            <?php $__currentLoopData = $collectors; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $collector): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($collector->id); ?>" <?php echo e(request('collector_id') == $collector->id ? 'selected' : ''); ?>>
+                                    <?php echo e($collector->name); ?>
 
-                            </option>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                    </select>
+                                </option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="status">状态</label>
+                        <select class="form-control" id="status" name="status">
+                            <option value="">所有状态</option>
+                            <option value="2" <?php echo e(request('status') == '2' ? 'selected' : ''); ?>>成功</option>
+                            <option value="3" <?php echo e(request('status') == '3' ? 'selected' : ''); ?>>失败</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="col-md-2 mb-2">
-                    <label for="status">状态</label>
-                    <select class="form-control" id="status" name="status">
-                        <option value="">所有状态</option>
-                        <option value="2" <?php echo e(request('status') == '2' ? 'selected' : ''); ?>>成功</option>
-                        <option value="3" <?php echo e(request('status') == '3' ? 'selected' : ''); ?>>失败</option>
-                    </select>
+                <div class="search-row">
+                    <div>
+                        <label for="date_from">开始日期</label>
+                        <input type="date" class="form-control" id="date_from" name="date_from" value="<?php echo e(request('date_from')); ?>">
+                    </div>
+                    <div>
+                        <label for="date_to">结束日期</label>
+                        <input type="date" class="form-control" id="date_to" name="date_to" value="<?php echo e(request('date_to')); ?>">
+                    </div>
                 </div>
-                <div class="col-md-2 mb-2">
-                    <label for="date_from">开始日期</label>
-                    <input type="date" class="form-control" id="date_from" name="date_from" value="<?php echo e(request('date_from')); ?>">
-                </div>
-                <div class="col-md-2 mb-2">
-                    <label for="date_to">结束日期</label>
-                    <input type="date" class="form-control" id="date_to" name="date_to" value="<?php echo e(request('date_to')); ?>">
-                </div>
-                <div class="col-md-2 mb-2 align-self-end">
-                    <button type="submit" class="btn btn-primary btn-block">
+                <div class="button-row">
+                    <button type="submit" class="btn btn-primary">
                         <i class="fas fa-search"></i> 筛选
                     </button>
-                </div>
-            </form>
-            <div class="form-row mt-2">
-                <div class="col-md-2">
-                    <a href="<?php echo e(route('collection-history.index')); ?>" class="btn btn-secondary btn-block">
+                    <a href="<?php echo e(route('collection-history.index')); ?>" class="btn btn-secondary">
                         <i class="fas fa-sync"></i> 重置
                     </a>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
     
     <!-- 统计信息 -->
     <div class="row mb-4">
         <div class="col-md-3">
-            <div class="card bg-primary text-white">
+            <div class="card card-light-blue shadow-sm">
+                <div class="card-header text-dark">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-bar"></i> 总采集次数
+                    </h5>
+                </div>
                 <div class="card-body text-center">
-                    <h4><?php echo e($statistics['total']); ?></h4>
-                    <p class="mb-0">总采集次数</p>
+                    <h3 class="text-dark"><?php echo e($statistics['total']); ?></h3>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card bg-success text-white">
+            <div class="card card-light-blue shadow-sm">
+                <div class="card-header text-dark">
+                    <h5 class="mb-0">
+                        <i class="fas fa-check-circle"></i> 成功次数
+                    </h5>
+                </div>
                 <div class="card-body text-center">
-                    <h4><?php echo e($statistics['success']); ?></h4>
-                    <p class="mb-0">成功次数</p>
+                    <h3 class="text-dark"><?php echo e($statistics['success']); ?></h3>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card bg-danger text-white">
+            <div class="card card-light-blue shadow-sm">
+                <div class="card-header text-dark">
+                    <h5 class="mb-0">
+                        <i class="fas fa-times-circle"></i> 失败次数
+                    </h5>
+                </div>
                 <div class="card-body text-center">
-                    <h4><?php echo e($statistics['failed']); ?></h4>
-                    <p class="mb-0">失败次数</p>
+                    <h3 class="text-dark"><?php echo e($statistics['failed']); ?></h3>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card bg-info text-white">
+            <div class="card card-light-blue shadow-sm">
+                <div class="card-header text-dark">
+                    <h5 class="mb-0">
+                        <i class="fas fa-percentage"></i> 成功率
+                    </h5>
+                </div>
                 <div class="card-body text-center">
-                    <h4><?php echo e(number_format($statistics['success_rate'], 1)); ?>%</h4>
-                    <p class="mb-0">成功率</p>
+                    <h3 class="text-dark"><?php echo e(number_format($statistics['success_rate'], 1)); ?>%</h3>
                 </div>
             </div>
         </div>
     </div>
     
     <!-- 历史记录列表 -->
-    <div class="card">
-        <div class="card-body">
+    <div class="card card-light-blue shadow-sm">
+        <div class="card-header">
+            <h5 class="mb-0">
+                <i class="fas fa-list"></i> 历史记录列表
+            </h5>
+        </div>
+        <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-hover">
+                <table class="table table-striped table-light table-hover mb-0">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -156,7 +188,7 @@
                                 <td>
                                     <div class="btn-group" role="group">
                                         <?php if($history->hasResult()): ?>
-                                            <button type="button" class="btn btn-sm btn-info" onclick="viewResult(<?php echo e($history->id); ?>)">
+                                            <button type="button" class="btn btn-sm btn-primary" onclick="viewResult(<?php echo e($history->id); ?>)">
                                                 <i class="fas fa-eye"></i> 查看结果
                                             </button>
                                         <?php endif; ?>

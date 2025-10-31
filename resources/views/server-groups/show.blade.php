@@ -15,7 +15,7 @@
     <!-- 操作按钮 -->
     <div class="mb-4">
         <div class="d-flex gap-2 flex-wrap">
-            <a href="{{ route('server-groups.edit', $serverGroup) }}" class="btn btn-warning">
+            <a href="{{ route('server-groups.edit', $serverGroup) }}" class="btn btn-primary">
                 <i class="fas fa-edit"></i> 编辑分组
             </a>
             <a href="{{ route('server-groups.index') }}" class="btn btn-secondary">
@@ -27,8 +27,8 @@
     <div class="row">
         <!-- 基本信息卡片 -->
         <div class="col-md-4">
-            <div class="card card-primary shadow-sm mb-4">
-                <div class="card-header bg-primary text-white">
+            <div class="card card-light-blue shadow-sm mb-4">
+                <div class="card-header">
                     <h5 class="mb-0">
                         <i class="fas fa-info-circle"></i> 基本信息
                     </h5>
@@ -66,8 +66,8 @@
         
         <!-- 分组内的服务器卡片 -->
         <div class="col-md-8">
-            <div class="card card-primary shadow-sm">
-                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <div class="card card-light-blue shadow-sm">
+                <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">
                         <i class="fas fa-server"></i> 分组内的服务器
                     </h5>
@@ -107,10 +107,10 @@
                                             </td>
                                             <td>
                                                 <div class="btn-group btn-group-sm" role="group">
-                                                    <a href="{{ route('servers.show', $server) }}" class="btn btn-info" title="查看">
+                                                    <a href="{{ route('servers.show', $server) }}" class="btn btn-primary" title="查看">
                                                         <i class="fas fa-eye"></i>
                                                     </a>
-                                                    <a href="{{ route('servers.edit', $server) }}" class="btn btn-warning" title="编辑">
+                                                    <a href="{{ route('servers.edit', $server) }}" class="btn btn-primary" title="编辑">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
                                                 </div>

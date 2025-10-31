@@ -21,6 +21,9 @@
 @import './common/navbar-modern.css';
 @import './common/sidebar-modern.css';
 
+/* 主题颜色 */
+@import './common/theme-colors.css';
+
 /* 现代化响应式设计 */
 @import './common/responsive-modern.css';
 
@@ -33,6 +36,7 @@
 @import './components/badges.css';
 @import './components/alerts.css';
 @import './components/progress.css';
+@import './components/pagination.css';
 
 /* 功能模块样式 */
 @import './modules/servers.css';

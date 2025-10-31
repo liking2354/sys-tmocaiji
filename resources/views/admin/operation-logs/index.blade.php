@@ -2,24 +2,22 @@
 
 @section('content')
 <div class="container-fluid">
-    <!-- 页面标题 -->
-    <div class="mb-4">
-        <h1 class="mb-1">
-            <i class="fas fa-history text-primary"></i> 操作日志管理
-        </h1>
-        <p class="text-muted">查看和管理系统操作日志</p>
-    </div>
-    
-    <!-- 操作按钮 -->
-    <div class="mb-4">
+    <!-- 页面标题和操作按钮 -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="mb-0">
+                <i class="fas fa-history text-primary"></i> 操作日志管理
+            </h1>
+            <small class="text-muted">查看和管理系统操作日志</small>
+        </div>
         <div class="d-flex gap-2 flex-wrap">
-            <button type="button" class="btn btn-success" onclick="showExportModal()">
+            <button type="button" class="btn btn-primary btn-sm" onclick="showExportModal()">
                 <i class="fas fa-download"></i> 导出日志
             </button>
-            <button type="button" class="btn btn-warning" onclick="showCleanupModal()">
+            <button type="button" class="btn btn-primary btn-sm" onclick="showCleanupModal()">
                 <i class="fas fa-trash-alt"></i> 清理日志
             </button>
-            <button type="button" class="btn btn-danger" onclick="batchDelete()" id="batchDeleteBtn" style="display: none;">
+            <button type="button" class="btn btn-danger btn-sm" onclick="batchDelete()" id="batchDeleteBtn" style="display: none;">
                 <i class="fas fa-trash"></i> 批量删除
             </button>
         </div>
@@ -80,82 +78,75 @@
             </div>
 
             <!-- 搜索过滤表单 -->
-            <div class="card card-warning shadow-sm mb-4">
-                <div class="card-header bg-warning text-dark">
+            <div class="search-filter-card">
+                <div class="card-header">
                     <h5 class="mb-0">
                         <i class="fas fa-search"></i> 搜索过滤
-                        <button class="btn btn-sm btn-outline-secondary float-right" type="button" data-toggle="collapse" data-target="#searchForm" aria-expanded="{{ request()->hasAny(['start_date', 'end_date', 'action', 'user_id', 'ip', 'content']) ? 'true' : 'false' }}" aria-controls="searchForm" id="searchToggleBtn">
-                            <i class="fas fa-chevron-{{ request()->hasAny(['start_date', 'end_date', 'action', 'user_id', 'ip', 'content']) ? 'up' : 'down' }}" id="searchToggleIcon"></i>
-                        </button>
                     </h5>
                 </div>
-                <div class="collapse {{ request()->hasAny(['start_date', 'end_date', 'action', 'user_id', 'ip', 'content']) ? 'show' : '' }}" id="searchForm">
-                    <div class="card-body">
-                        <form method="GET" action="{{ route('admin.operation-logs.index') }}">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <label for="start_date" class="form-label">开始日期</label>
-                                    <input type="date" class="form-control" id="start_date" name="start_date" value="{{ request('start_date') }}">
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="end_date" class="form-label">结束日期</label>
-                                    <input type="date" class="form-control" id="end_date" name="end_date" value="{{ request('end_date') }}">
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="action" class="form-label">操作类型</label>
-                                    <select class="form-control" id="action" name="action">
-                                        <option value="">全部</option>
-                                        @foreach($actions as $action)
-                                            <option value="{{ $action }}" {{ request('action') == $action ? 'selected' : '' }}>
-                                                {{ $action }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="user_id" class="form-label">用户</label>
-                                    <select class="form-control" id="user_id" name="user_id">
-                                        <option value="">全部用户</option>
-                                        @foreach($users as $user)
-                                            <option value="{{ $user->id }}" {{ request('user_id') == $user->id ? 'selected' : '' }}>
-                                                {{ $user->username }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                <div class="card-body">
+                    <form method="GET" action="{{ route('admin.operation-logs.index') }}">
+                        <div class="search-row">
+                            <div>
+                                <label for="start_date">开始日期</label>
+                                <input type="date" class="form-control" id="start_date" name="start_date" value="{{ request('start_date') }}">
                             </div>
-                            <div class="row mt-3">
-                                <div class="col-md-4">
-                                    <label for="ip" class="form-label">IP地址</label>
-                                    <input type="text" class="form-control" id="ip" name="ip" value="{{ request('ip') }}" placeholder="输入IP地址">
-                                </div>
-                                <div class="col-md-5">
-                                    <label for="content" class="form-label">操作内容</label>
-                                    <input type="text" class="form-control" id="content" name="content" value="{{ request('content') }}" placeholder="搜索操作内容">
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">&nbsp;</label>
-                                    <div class="d-grid gap-2">
-                                        <button type="submit" class="btn btn-primary">
-                                            <i class="fas fa-search"></i> 搜索
-                                        </button>
-                                        <a href="{{ route('admin.operation-logs.index') }}" class="btn btn-secondary">
-                                            <i class="fas fa-undo"></i> 重置
-                                        </a>
-                                    </div>
-                                </div>
+                            <div>
+                                <label for="end_date">结束日期</label>
+                                <input type="date" class="form-control" id="end_date" name="end_date" value="{{ request('end_date') }}">
                             </div>
-                        </form>
-                    </div>
+                            <div>
+                                <label for="action">操作类型</label>
+                                <select class="form-control" id="action" name="action">
+                                    <option value="">全部</option>
+                                    @foreach($actions as $action)
+                                        <option value="{{ $action }}" {{ request('action') == $action ? 'selected' : '' }}>
+                                            {{ $action }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="search-row">
+                            <div>
+                                <label for="user_id">用户</label>
+                                <select class="form-control" id="user_id" name="user_id">
+                                    <option value="">全部用户</option>
+                                    @foreach($users as $user)
+                                        <option value="{{ $user->id }}" {{ request('user_id') == $user->id ? 'selected' : '' }}>
+                                            {{ $user->username }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
+                                <label for="ip">IP地址</label>
+                                <input type="text" class="form-control" id="ip" name="ip" value="{{ request('ip') }}" placeholder="输入IP地址">
+                            </div>
+                        </div>
+                        <div class="button-row">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search"></i> 搜索
+                            </button>
+                            <a href="{{ route('admin.operation-logs.index') }}" class="btn btn-secondary">
+                                <i class="fas fa-sync"></i> 重置
+                            </a>
+                        </div>
+                    </form>
                 </div>
             </div>
 
             <!-- 日志列表 -->
-            <div class="card">
-                <div class="card-body">
+            <div class="card card-light-blue shadow-sm">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-list"></i> 操作日志列表
+                    </h5>
+                </div>
+                <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-hover">
-                            <thead class="table-dark">
+                        <table class="table table-striped table-light table-hover mb-0">
+                            <thead>
                                 <tr>
                                     <th width="50" class="text-center">
                                         <input type="checkbox" id="selectAll" class="form-check-input">
@@ -186,7 +177,7 @@
                                         <td>{{ $log->ip }}</td>
                                         <td>{{ $log->created_at->format('Y-m-d H:i:s') }}</td>
                                         <td>
-                                            <a href="{{ route('admin.operation-logs.show', $log) }}" class="btn btn-sm btn-info">
+                                            <a href="{{ route('admin.operation-logs.show', $log) }}" class="btn btn-sm btn-primary">
                                                 <i class="fas fa-eye"></i>
                                             </a>
                                         </td>
@@ -204,13 +195,8 @@
                     </div>
 
                     <!-- 分页 -->
-                    <div class="d-flex justify-content-between align-items-center mt-3">
-                        <div>
-                            显示第 {{ $logs->firstItem() ?? 0 }} 到 {{ $logs->lastItem() ?? 0 }} 条，共 {{ $logs->total() }} 条记录
-                        </div>
-                        <div>
-                            {{ $logs->links() }}
-                        </div>
+                    <div class="d-flex justify-content-center mt-3 pb-3">
+                        {{ $logs->links() }}
                     </div>
                 </div>
             </div>
@@ -274,7 +260,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-success" onclick="confirmExport()">
+                <button type="button" class="btn btn-primary" onclick="confirmExport()">
                     <i class="fas fa-download"></i> 确认导出
                 </button>
             </div>

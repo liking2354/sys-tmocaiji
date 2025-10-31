@@ -7,16 +7,59 @@
     
     /* 主色调 */
     --primary-color: #0066cc;
+    --primary-color-rgb: 0, 102, 204;
     --primary-light: #e6f2ff;
     --primary-dark: #004499;
+    --primary-darker: #003366;
+    
+    /* 卡片头部颜色 */
+    --card-header-blue: #f0f7ff;
+    --card-header-purple: #f5f3ff;
+    --card-header-green: #f0fdf4;
+    --card-header-orange: #fffbf0;
+    --card-header-pink: #fdf2f8;
+    --card-header-cyan: #ecfdf5;
+    
+    /* 卡片颜色变体 */
+    --card-primary-bg: #f0f7ff;
+    --card-primary-border: #0066cc;
+    --card-primary-text: #0066cc;
+    --card-success-bg: #f0fdf4;
+    --card-success-border: #00cc99;
+    --card-success-text: #00cc99;
+    --card-warning-bg: #fffbf0;
+    --card-warning-border: #ffb800;
+    --card-warning-text: #ffb800;
+    --card-danger-bg: #fef2f2;
+    --card-danger-border: #ff6b6b;
+    --card-danger-text: #ff6b6b;
+    --card-info-bg: #f0f9ff;
+    --card-info-border: #0099ff;
+    --card-info-text: #0099ff;
     
     /* 辅助色 */
     --secondary-color: #2c3e50;
     --accent-color: #1abc9c;
     --success-color: #00cc99;
+    --success-color-rgb: 0, 204, 153;
+    --success-dark: #009966;
+    --success-darker: #007755;
+    --success-light: #ccf0e8;
     --warning-color: #ffb800;
+    --warning-color-rgb: 255, 184, 0;
+    --warning-dark: #cc9200;
+    --warning-darker: #997700;
+    --warning-light: #fff4cc;
     --danger-color: #ff6b6b;
+    --danger-color-rgb: 255, 107, 107;
+    --danger-dark: #ff5252;
+    --danger-darker: #bb4444;
+    --danger-light: #ffe0e0;
     --info-color: #0099ff;
+    --info-color-rgb: 0, 153, 255;
+    --info-dark: #0077cc;
+    --info-darker: #0055aa;
+    --info-light: #cce5ff;
     
     /* 中性色 */
     --gray-50: #f9fafb;

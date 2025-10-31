@@ -26,7 +26,7 @@
     <div class="variables-config-area">
         <div class="d-flex justify-content-between align-items-center mb-2">
             <label class="form-label required">变量配置</label>
-            <button type="button" class="btn btn-sm btn-outline-primary add-rule-variable">
+            <button type="button" class="btn btn-sm btn-secondary add-rule-variable">
                 <i class="fas fa-plus mr-1"></i>
                 添加变量
             </button>

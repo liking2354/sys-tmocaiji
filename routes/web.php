@@ -12,6 +12,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\ConfigTemplateController;
 use App\Http\Controllers\SystemChangeTaskController;
+use App\Http\Controllers\SettingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,11 @@ Route::post('servers/download', [ServerController::class, 'downloadServers'])->n
 Route::middleware(['auth'])->group(function () {
     // 首页仪表盘
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    
+    // 用户设置
+    Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
+    Route::get('api/theme-config', [SettingController::class, 'getThemeConfig'])->name('api.theme-config');
     
     // 服务器分组管理
     Route::post('server-groups/batch-delete', [ServerGroupController::class, 'batchDelete'])->name('server-groups.batch-delete');

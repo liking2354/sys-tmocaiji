@@ -72,13 +72,13 @@
 }
 
 .btn-primary:active:not(:disabled) {
-    background-color: #003366;
-    border-color: #003366;
+    background-color: var(--primary-darker);
+    border-color: var(--primary-darker);
     transform: translateY(0);
 }
 
 .btn-primary:focus {
-    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+    box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
 }
 
 /* Secondary 按钮 */
@@ -120,8 +120,8 @@
 }
 
 .btn-success:active:not(:disabled) {
-    background-color: #007755;
-    border-color: #007755;
+    background-color: var(--success-darker);
+    border-color: var(--success-darker);
     transform: translateY(0);
 }
 
@@ -144,8 +144,8 @@
 }
 
 .btn-warning:active:not(:disabled) {
-    background-color: #997700;
-    border-color: #997700;
+    background-color: var(--warning-darker);
+    border-color: var(--warning-darker);
     transform: translateY(0);
 }
 
@@ -168,8 +168,8 @@
 }
 
 .btn-danger:active:not(:disabled) {
-    background-color: #bb4444;
-    border-color: #bb4444;
+    background-color: var(--danger-darker);
+    border-color: var(--danger-darker);
     transform: translateY(0);
 }
 
@@ -192,8 +192,8 @@
 }
 
 .btn-info:active:not(:disabled) {
-    background-color: #0055aa;
-    border-color: #0055aa;
+    background-color: var(--info-darker);
+    border-color: var(--info-darker);
     transform: translateY(0);
 }
 
@@ -304,6 +304,19 @@
 .btn-group .btn:last-child {
     border-right: none;
     border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+}
+
+/* 处理 form 包裹的按钮 */
+.btn-group form:last-child .btn {
+    border-right: none;
+    border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+}
+
+.btn-group form .btn {
+    border-radius: 0;
+    box-shadow: none;
+    margin: 0;
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* 加载状态 */

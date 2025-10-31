@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ServerGroup;
+use App\Helpers\PaginationHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -23,7 +24,8 @@ class ServerGroupController extends Controller
             $query->where('name', 'like', '%' . $request->input('name') . '%');
         }
         
-        $groups = $query->paginate(15)->appends($request->except('page'));
+        $perPage = PaginationHelper::getPerPage($request, 10);
+        $groups = $query->paginate($perPage)->appends(PaginationHelper::getQueryParams($request));
         
         return view('server-groups.index', compact('groups'));
     }

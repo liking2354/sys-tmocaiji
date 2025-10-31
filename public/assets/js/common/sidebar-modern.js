@@ -26,7 +26,7 @@ const SidebarModern = (function() {
      * 初始化侧边栏切换按钮
      */
     function initToggle() {
-        const toggleBtn = document.getElementById('sidebar-toggle');
+        const toggleBtn = document.getElementById('sidebar-toggle-navbar');
         if (!toggleBtn) return;
         
         toggleBtn.addEventListener('click', function(e) {
@@ -43,7 +43,7 @@ const SidebarModern = (function() {
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
         const mainContent = document.querySelector('.main-content');
-        const toggleIcon = document.getElementById('toggle-icon');
+        const toggleIcon = document.getElementById('toggle-icon-navbar');
         
         if (!sidebar) return;
         
@@ -57,7 +57,8 @@ const SidebarModern = (function() {
             }
             if (toggleIcon) {
                 toggleIcon.classList.remove('fa-chevron-right');
-                toggleIcon.classList.add('fa-chevron-left');
+                toggleIcon.classList.add('fa-bars');
+                toggleIcon.style.transform = 'rotate(0deg)';
             }
             localStorage.setItem(STORAGE_KEY, 'false');
         } else {
@@ -67,8 +68,9 @@ const SidebarModern = (function() {
                 mainContent.classList.add('main-content-expanded');
             }
             if (toggleIcon) {
-                toggleIcon.classList.remove('fa-chevron-left');
+                toggleIcon.classList.remove('fa-bars');
                 toggleIcon.classList.add('fa-chevron-right');
+                toggleIcon.style.transform = 'rotate(0deg)';
             }
             localStorage.setItem(STORAGE_KEY, 'true');
         }
@@ -93,10 +95,12 @@ const SidebarModern = (function() {
             if (hasActiveChild) {
                 // 展开菜单
                 submenu.classList.remove('collapsed');
+                toggle.classList.add('active');
                 updateToggleIcon(toggle, true);
             } else {
                 // 收起菜单
                 submenu.classList.add('collapsed');
+                toggle.classList.remove('active');
                 updateToggleIcon(toggle, false);
             }
             
@@ -140,9 +144,11 @@ const SidebarModern = (function() {
         if (!icon) return;
         
         if (isOpen) {
+            toggle.classList.add('active');
             icon.classList.remove('fa-chevron-down');
             icon.classList.add('fa-chevron-up');
         } else {
+            toggle.classList.remove('active');
             icon.classList.remove('fa-chevron-up');
             icon.classList.add('fa-chevron-down');
         }
@@ -157,7 +163,7 @@ const SidebarModern = (function() {
         if (isCollapsed) {
             const sidebar = document.getElementById('sidebar');
             const mainContent = document.querySelector('.main-content');
-            const toggleIcon = document.getElementById('toggle-icon');
+            const toggleIcon = document.getElementById('toggle-icon-navbar');
             
             if (sidebar) {
                 sidebar.classList.add('sidebar-collapsed');
@@ -166,8 +172,9 @@ const SidebarModern = (function() {
                 mainContent.classList.add('main-content-expanded');
             }
             if (toggleIcon) {
-                toggleIcon.classList.remove('fa-chevron-left');
+                toggleIcon.classList.remove('fa-bars');
                 toggleIcon.classList.add('fa-chevron-right');
+                toggleIcon.style.transform = 'rotate(0deg)';
             }
         }
     }

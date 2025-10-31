@@ -4,14 +4,29 @@
 
 @section('content')
 <div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>创建服务器分组</h1>
-        <a href="{{ route('server-groups.index') }}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> 返回分组列表
-        </a>
+    <!-- 页面标题 -->
+    <div class="mb-4">
+        <h1 class="mb-1">
+            <i class="fas fa-layer-group text-primary"></i> 创建服务器分组
+        </h1>
+        <p class="text-muted">创建新的服务器分组，便于批量管理和配置变更</p>
     </div>
     
-    <div class="card">
+    <!-- 操作按钮 -->
+    <div class="mb-4">
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="{{ route('server-groups.index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> 返回分组列表
+            </a>
+        </div>
+    </div>
+    
+    <div class="card card-light-blue shadow-sm">
+        <div class="card-header">
+            <h5 class="mb-0">
+                <i class="fas fa-edit"></i> 分组信息
+            </h5>
+        </div>
         <div class="card-body">
             <form action="{{ route('server-groups.store') }}" method="POST">
                 @csrf
@@ -33,12 +48,14 @@
                 </div>
                 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> 保存
-                    </button>
-                    <a href="{{ route('server-groups.index') }}" class="btn btn-secondary">
-                        <i class="fas fa-times"></i> 取消
-                    </a>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> 保存
+                        </button>
+                        <a href="{{ route('server-groups.index') }}" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> 取消
+                        </a>
+                    </div>
                 </div>
             </form>
         </div>

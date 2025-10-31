@@ -21,8 +21,8 @@
     
     <div class="row">
         <div class="col-12">
-            <div class="card card-primary shadow-sm">
-                <div class="card-header bg-primary text-white">
+            <div class="card card-light-blue shadow-sm">
+                <div class="card-header">
                     <h5 class="mb-0">
                         <i class="fas fa-list"></i> 角色列表
                     </h5>
@@ -58,16 +58,12 @@
                                         <td>{{ $role->description ?: '-' }}</td>
                                         <td>
                                             <div class="btn-group btn-group-sm" role="group">
-                                                <a href="{{ route('admin.roles.edit', $role->id) }}" class="btn btn-warning" title="编辑">
+                                                <a href="{{ route('admin.roles.edit', $role->id) }}" class="btn btn-primary" title="编辑">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST" class="d-inline" onsubmit="return confirm('确定要删除该角色吗？')">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger" title="删除">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </form>
+                                                <button type="button" class="btn btn-danger" onclick="deleteRole({{ $role->id }})" title="删除">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
@@ -85,3 +81,7 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script src="{{ asset('assets/js/common/delete-handler.js') }}"></script>
+@endpush

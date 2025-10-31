@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\OperationLog;
 use App\Models\User;
+use App\Helpers\PaginationHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -45,7 +46,8 @@ class OperationLogController extends Controller
             $query->content($request->content);
         }
 
-        $logs = $query->paginate(20)->appends($request->query());
+        $perPage = PaginationHelper::getPerPage($request, 10);
+        $logs = $query->paginate($perPage)->appends(PaginationHelper::getQueryParams($request));
 
         // 获取所有用户用于筛选
         $users = User::select('id', 'username')->orderBy('username')->get();

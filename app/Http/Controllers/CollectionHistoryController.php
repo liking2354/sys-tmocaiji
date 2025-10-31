@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CollectionHistory;
 use App\Models\Server;
 use App\Models\Collector;
+use App\Helpers\PaginationHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 class CollectionHistoryController extends Controller
@@ -55,7 +56,8 @@ class CollectionHistoryController extends Controller
         $query->orderBy('created_at', 'desc');
 
         // 分页
-        $histories = $query->paginate(20);
+        $perPage = PaginationHelper::getPerPage($request, 10);
+        $histories = $query->paginate($perPage);
 
         // 获取筛选选项数据
         $servers = Server::select('id', 'name', 'ip')->orderBy('name')->get();

@@ -27,8 +27,8 @@
     <div class="row">
         <!-- 基本信息 -->
         <div class="col-md-6">
-            <div class="card card-primary shadow-sm">
-                <div class="card-header bg-primary text-white">
+            <div class="card card-light-blue shadow-sm">
+                <div class="card-header">
                     <h5 class="mb-0">
                         <i class="fas fa-info-circle"></i> 基本信息
                     </h5>
@@ -338,7 +338,7 @@
                                         <td>{{ $task->server_count ?? 0 }} 台</td>
                                         <td>{{ $task->created_at->format('Y-m-d H:i') }}</td>
                                         <td>
-                                            <a href="{{ route('system-change.tasks.show', $task) }}" class="btn btn-sm btn-outline-primary">
+                                            <a href="{{ route('system-change.tasks.show', $task) }}" class="btn btn-sm btn-secondary">
                                                 查看详情
                                             </a>
                                         </td>
@@ -350,7 +350,7 @@
                     
                     @if($template->changeTasks->count() > 10)
                         <div class="text-center mt-3">
-                            <a href="{{ route('system-change.tasks.index', ['template_id' => $template->id]) }}" class="btn btn-outline-secondary">
+                            <a href="{{ route('system-change.tasks.index', ['template_id' => $template->id]) }}" class="btn btn-secondarysecondary">
                                 查看全部使用记录
                             </a>
                         </div>

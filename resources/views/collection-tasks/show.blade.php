@@ -13,57 +13,57 @@
     </div>
 @else
 <div class="container-fluid">
-    <!-- 页面标题 -->
-    <div class="mb-4">
-        <h1 class="mb-1">
-            <i class="fas fa-tasks text-primary"></i> {{ $task->name ?? '采集任务详情' }}
-        </h1>
-        <p class="text-muted">查看和管理采集任务执行情况</p>
-    </div>
-    
-    <!-- 任务控制按钮 -->
-    <div class="mb-4">
-        <div class="d-flex gap-2 flex-wrap">
+    <!-- 页面标题和操作按钮 -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="mb-1">
+                <i class="fas fa-tasks text-primary"></i> {{ $task->name ?? '采集任务详情' }}
+            </h1>
+            <p class="text-muted mb-0">查看和管理采集任务执行情况</p>
+        </div>
+        
+        <!-- 任务控制按钮 -->
+        <div class="d-flex gap-2 flex-wrap justify-content-end">
             @if ($task->status == 0)
-                <button type="button" class="btn btn-success" onclick="executeTask('{{ $task->id }}')">
+                <button type="button" class="btn btn-primary btn-sm" onclick="executeTask('{{ $task->id }}')">
                     <i class="fas fa-play"></i> 开始执行
                 </button>
             @endif
             
             @if ($task->status == 1)
-                <button type="button" class="btn btn-danger" onclick="cancelTask('{{ $task->id }}')">
+                <button type="button" class="btn btn-danger btn-sm" onclick="cancelTask('{{ $task->id }}')">
                     <i class="fas fa-stop"></i> 取消任务
                 </button>
             @endif
             
             @if (in_array($task->status, [2, 3]))
-                <button type="button" class="btn btn-warning" onclick="resetTask('{{ $task->id }}')">
+                <button type="button" class="btn btn-primary btn-sm" onclick="resetTask('{{ $task->id }}')">
                     <i class="fas fa-redo"></i> 重置任务
                 </button>
             @endif
             
-            <button type="button" class="btn btn-info" onclick="refreshTaskStatus()">
+            <button type="button" class="btn btn-primary btn-sm" onclick="refreshTaskStatus()">
                 <i class="fas fa-sync"></i> 刷新状态
             </button>
             
-            <button type="button" class="btn btn-warning" onclick="detectTimeoutTasks()">
+            <button type="button" class="btn btn-primary btn-sm" onclick="detectTimeoutTasks()">
                 <i class="fas fa-clock"></i> 检测超时
             </button>
             
-            <a href="{{ route('collection-tasks.index') }}" class="btn btn-secondary">
-                <i class="fas fa-arrow-left"></i> 返回任务列表
+            <a href="{{ route('collection-tasks.index') }}" class="btn btn-secondary btn-sm">
+                <i class="fas fa-arrow-left"></i> 返回
             </a>
         </div>
     </div>
     
     <!-- 任务基本信息 -->
-    <div class="card card-primary shadow-sm mb-4">
-        <div class="card-header bg-primary text-white">
+    <div class="card shadow-sm mb-4">
+        <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">
-                    <i class="fas fa-info-circle"></i> 任务基本信息
+                    <i class="fas fa-info-circle text-primary"></i> 任务基本信息
                 </h5>
-                <span id="lastUpdateTime" class="badge badge-light">最后更新: {{ now()->format('H:i:s') }}</span>
+                <span id="lastUpdateTime" class="badge badge-secondary">最后更新: {{ now()->format('H:i:s') }}</span>
             </div>
         </div>
         <div class="card-body">
@@ -85,7 +85,7 @@
                         <tr>
                             <th>任务类型:</th>
                             <td>
-                                <span class="badge badge-{{ $task->type === 'single' ? 'info' : 'primary' }}">
+                                <span class="badge bg-{{ $task->type === 'single' ? 'info' : 'primary' }}">
                                     {{ $task->typeText }}
                                 </span>
                             </td>
@@ -136,13 +136,13 @@
     
     <!-- 实时任务进度 -->
     <div class="card mb-4">
-        <div class="card-header bg-info text-white">
-            <h5 class="mb-0">
-                <i class="fas fa-chart-line"></i> 实时任务进度
-                <span class="float-right">
-                    <small id="progressUpdateTime">更新时间: {{ now()->format('H:i:s') }}</small>
-                </span>
-            </h5>
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-chart-line text-info"></i> 实时任务进度
+                </h5>
+                <small id="progressUpdateTime" class="text-muted">更新时间: {{ now()->format('H:i:s') }}</small>
+            </div>
         </div>
         <div class="card-body">
             <div class="row">
@@ -160,12 +160,14 @@
                     <!-- 执行日志 -->
                     <div class="card">
                         <div class="card-header">
-                            <h6 class="mb-0">
-                                <i class="fas fa-list"></i> 执行日志
-                                <button class="btn btn-sm btn-outline-secondary float-right" onclick="clearExecutionLog()">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0">
+                                    <i class="fas fa-list"></i> 执行日志
+                                </h6>
+                                <button class="btn btn-sm btn-secondary" onclick="clearExecutionLog()">
                                     <i class="fas fa-trash"></i> 清空
                                 </button>
-                            </h6>
+                            </div>
                         </div>
                         <div class="card-body p-2">
                             <div id="executionLog" style="height: 200px; overflow-y: auto; background: #f8f9fa; padding: 10px; font-family: monospace; font-size: 12px;">
@@ -225,10 +227,10 @@
     
     <!-- 任务详情列表 -->
     <div class="card">
-        <div class="card-header bg-success text-white">
+        <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">
-                    <i class="fas fa-list-alt"></i> 执行详情
+                    <i class="fas fa-list-alt text-success"></i> 执行详情
                 </h5>
                 <div>
                     <select id="statusFilter" class="form-control form-control-sm" style="width: auto; display: inline-block;">
@@ -239,7 +241,7 @@
                         <option value="3">失败</option>
                         <option value="4">超时</option>
                     </select>
-                    <button type="button" class="btn btn-light btn-sm ml-2" onclick="refreshDetails()">
+                    <button type="button" class="btn btn-secondarysecondary btn-sm ml-2" onclick="refreshDetails()">
                         <i class="fas fa-sync"></i> 刷新
                     </button>
                 </div>
@@ -267,7 +269,7 @@
                                     <small class="text-muted">{{ $detail->server->ip }}</small>
                                 </td>
                                 <td>
-                                    <span class="badge badge-{{ $detail->collector->type === 'script' ? 'info' : 'warning' }}">
+                                    <span class="badge bg-{{ $detail->collector->type === 'script' ? 'info' : 'warning' }}">
                                         {{ $detail->collector->name }}
                                     </span><br>
                                     <small class="text-muted">{{ $detail->collector->code }}</small>
@@ -280,7 +282,7 @@
                                 <td class="completed-at">{{ $detail->completed_at ? $detail->completed_at->format('H:i:s') : '-' }}</td>
                                 <td>
                                     @if ($detail->hasResult())
-                                        <button type="button" class="btn btn-sm btn-info" onclick="viewResult('{{ $detail->id }}')">
+                                        <button type="button" class="btn btn-sm btn-primary" onclick="viewResult('{{ $detail->id }}')">
                                             <i class="fas fa-eye"></i> 查看结果
                                         </button>
                                     @endif
@@ -290,7 +292,7 @@
                                         </button>
                                     @endif
                                     @if (in_array($detail->status, [3, 4])) {{-- 失败或超时状态可以重新执行 --}}
-                                        <button type="button" class="btn btn-sm btn-warning" onclick="retryTaskDetail('{{ $detail->id }}')">
+                                        <button type="button" class="btn btn-sm btn-primary" onclick="retryTaskDetail('{{ $detail->id }}')">
                                             <i class="fas fa-redo"></i> 重新执行
                                         </button>
                                     @endif
@@ -369,7 +371,7 @@
                 <div class="mb-4">
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <span class="font-weight-bold">总体进度</span>
-                        <span id="progressPercentage" class="badge badge-info">0%</span>
+                        <span id="progressPercentage" class="badge bg-info">0%</span>
                     </div>
                     <div class="progress" style="height: 25px;">
                         <div id="overallProgressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-info" 
@@ -395,7 +397,7 @@
                         <h6 class="font-weight-bold mb-0">
                             <i class="fas fa-terminal"></i> 执行日志
                         </h6>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearProgressLog()">
+                        <button type="button" class="btn btn-sm btn-secondary" onclick="clearProgressLog()">
                             <i class="fas fa-trash"></i> 清空
                         </button>
                     </div>
@@ -405,7 +407,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" id="progressRetryBtn" class="btn btn-warning" onclick="retryExecution()" style="display: none;">
+                <button type="button" id="progressRetryBtn" class="btn btn-primary" onclick="retryExecution()" style="display: none;">
                     <i class="fas fa-redo"></i> 重试
                 </button>
                 <button type="button" id="progressCloseBtn" class="btn btn-secondary" onclick="closeProgressModal()" disabled>

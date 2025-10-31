@@ -11,6 +11,14 @@
     
     <!-- Styles -->
     <link href="<?php echo e(asset('assets/css/main.css')); ?>" rel="stylesheet">
+    <link href="<?php echo e(asset('assets/css/common/search-filter.css')); ?>" rel="stylesheet">
+    <link href="<?php echo e(asset('assets/css/common/theme-components.css')); ?>" rel="stylesheet">
+    
+    <!-- 主题配置 -->
+    <?php if(auth()->guard()->check()): ?>
+        <meta name="theme-config-url" content="<?php echo e(route('api.theme-config')); ?>">
+    <?php endif; ?>
+    
     <?php echo $__env->yieldContent('styles'); ?>
     <?php echo $__env->yieldPushContent('styles'); ?>
 </head>
@@ -32,6 +40,15 @@
 
             <!-- 右侧菜单 -->
             <div class="navbar-nav ml-auto d-flex align-items-center">
+                <!-- 侧边栏切换按钮 (导航栏版本) -->
+                <?php if(auth()->guard()->check()): ?>
+                <div class="navbar-sidebar-toggle" id="navbar-sidebar-toggle">
+                    <button class="btn-sidebar-toggle" id="sidebar-toggle-navbar" title="切换侧边栏">
+                        <i class="fas fa-bars" id="toggle-icon-navbar"></i>
+                    </button>
+                </div>
+                <?php endif; ?>
+
                 <!-- 通知中心 -->
                 <div class="navbar-notifications nav-item" id="navbar-notifications">
                     <a class="nav-link" href="javascript:void(0);">
@@ -65,7 +82,7 @@
                                 <i class="fas fa-user-circle"></i>
                                 <span>个人资料</span>
                             </a>
-                            <a class="dropdown-item" href="javascript:void(0);">
+                            <a class="dropdown-item" href="<?php echo e(route('settings.index')); ?>">
                                 <i class="fas fa-cog"></i>
                                 <span>设置</span>
                             </a>
@@ -97,9 +114,6 @@
         <?php if(auth()->guard()->check()): ?>
             <!-- 现代化侧边栏 -->
             <aside class="sidebar" id="sidebar">
-                <div class="sidebar-toggle" id="sidebar-toggle">
-                    <i class="fas fa-chevron-left" id="toggle-icon"></i>
-                </div>
                 <nav class="sidebar-nav">
                     <ul class="nav">
                         <!-- 仪表盘 -->
@@ -260,6 +274,9 @@
     <script src="<?php echo e(asset('assets/js/common/notifications.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/common/api.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/common/layout.js')); ?>"></script>
+    
+    <!-- 主题切换脚本 -->
+    <script src="<?php echo e(asset('assets/js/common/theme-switcher.js')); ?>"></script>
     
     <!-- 现代化导航栏和侧边栏脚本 -->
     <script src="<?php echo e(asset('assets/js/common/navbar-modern.js')); ?>"></script>

@@ -193,7 +193,7 @@ function getArrayPreview($array, $maxItems = 3) {
     <!-- 操作按钮 -->
     <div class="mb-4">
         <div class="d-flex gap-2 flex-wrap">
-            <a href="{{ route('servers.edit', $server) }}" class="btn btn-warning">
+            <a href="{{ route('servers.edit', $server) }}" class="btn btn-primary">
                 <i class="fas fa-edit"></i> 编辑服务器
             </a>
             <a href="{{ route('servers.index') }}" class="btn btn-secondary">
@@ -203,8 +203,8 @@ function getArrayPreview($array, $maxItems = 3) {
     </div>
     
     <!-- 第一层：服务器基本信息 -->
-    <div class="card card-primary shadow-sm mb-4">
-        <div class="card-header bg-primary text-white">
+    <div class="card card-light-blue shadow-sm mb-4">
+        <div class="card-header">
             <h5 class="mb-0">
                 <i class="fas fa-info-circle"></i> 基本信息
             </h5>
@@ -280,7 +280,7 @@ function getArrayPreview($array, $maxItems = 3) {
             </div>
         </div>
         <div class="card-footer">
-            <button type="button" id="testConnectionBtn" class="btn btn-info btn-sm">
+            <button type="button" id="testConnectionBtn" class="btn btn-primary btn-sm">
                 <i class="fas fa-plug"></i> 测试连接
             </button>
             <a href="{{ route('servers.console', $server) }}" class="btn btn-dark btn-sm">
@@ -290,12 +290,12 @@ function getArrayPreview($array, $maxItems = 3) {
     </div>
     
     <!-- 系统信息 -->
-    <div class="card mt-4">
-        <div class="card-header bg-primary text-white">
+    <div class="card card-light-blue mt-4">
+        <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">系统信息</h5>
                 <div>
-                    <button type="button" class="btn btn-info btn-sm" id="toggleSystemInfoBtn">
+                    <button type="button" class="btn btn-primary btn-sm" id="toggleSystemInfoBtn">
                         <i class="fas fa-chevron-down"></i> 展开详情
                     </button>
                 </div>
@@ -347,15 +347,15 @@ function getArrayPreview($array, $maxItems = 3) {
     </div>
     
     <!-- 第二层：采集组件信息（选项卡） -->
-    <div class="card mt-4">
-        <div class="card-header bg-primary text-white">
+    <div class="card card-light-blue mt-4">
+        <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">采集信息</h5>
                 <div>
-                    <button type="button" class="btn btn-success btn-sm" id="executeAllCollectorsBtn">
+                    <button type="button" class="btn btn-primary btn-sm" id="executeAllCollectorsBtn">
                         <i class="fas fa-play"></i> 执行所有采集组件
                     </button>
-                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#collectionHistoryModal">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#collectionHistoryModal">
                         <i class="fas fa-history"></i> 查看采集历史
                     </button>
                     <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#installCollectorModal">
@@ -420,7 +420,7 @@ function getArrayPreview($array, $maxItems = 3) {
                                         @else
                                             <form action="{{ route('servers.collectors.install', [$server, $collector]) }}" method="POST" class="d-inline">
                                                 @csrf
-                                                <button type="submit" class="btn btn-success btn-sm">
+                                                <button type="submit" class="btn btn-primary btn-sm">
                                                     <i class="fas fa-download"></i> 安装组件
                                                 </button>
                                             </form>
@@ -429,7 +429,7 @@ function getArrayPreview($array, $maxItems = 3) {
                                         <span class="badge badge-light">脚本类组件无需安装</span>
                                     @endif
                                     
-                                    <button type="button" class="btn btn-warning btn-sm" onclick="executeSingleCollector({{ $collector->id }})">
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="executeSingleCollector({{ $collector->id }})">
                                         <i class="fas fa-play"></i> 执行采集
                                     </button>
                                     
@@ -482,16 +482,16 @@ function getArrayPreview($array, $maxItems = 3) {
                                                         <div class="row">
                                                             <div class="col-md-7">
                                                                 <div class="btn-group btn-group-sm" role="group">
-                                                                    <button type="button" class="btn btn-outline-primary" onclick="expandAllResults('{{ $collector->id }}')">
+                                                                    <button type="button" class="btn btn-primary" onclick="expandAllResults('{{ $collector->id }}')">
                                                                         <i class="fas fa-expand-alt"></i> 全部展开
                                                                     </button>
-                                                                    <button type="button" class="btn btn-outline-secondary" onclick="collapseAllResults('{{ $collector->id }}')">
+                                                                    <button type="button" class="btn btn-secondarysecondary" onclick="collapseAllResults('{{ $collector->id }}')">
                                                                         <i class="fas fa-compress-alt"></i> 全部折叠
                                                                     </button>
-                                                                    <button type="button" class="btn btn-outline-success" onclick="copyResultData('{{ $collector->id }}')">
+                                                                    <button type="button" class="btn btn-secondarysuccess" onclick="copyResultData('{{ $collector->id }}')">
                                                                         <i class="fas fa-copy"></i> 复制JSON
                                                                     </button>
-                                                                    <button type="button" class="btn btn-outline-info" onclick="showDataStats('{{ $collector->id }}')">
+                                                                    <button type="button" class="btn btn-secondaryinfo" onclick="showDataStats('{{ $collector->id }}')">
                                                                         <i class="fas fa-chart-bar"></i> 数据统计
                                                                     </button>
                                                                 </div>
@@ -500,7 +500,7 @@ function getArrayPreview($array, $maxItems = 3) {
                                                                 <div class="input-group input-group-sm">
                                                                     <input type="text" class="form-control" placeholder="搜索字段或值..." onkeyup="filterResults('{{ $collector->id }}', this.value)" id="search-{{ $collector->id }}">
                                                                     <div class="input-group-append">
-                                                                        <button class="btn btn-outline-secondary" type="button" onclick="clearSearch('{{ $collector->id }}')">
+                                                                        <button class="btn btn-secondarysecondary" type="button" onclick="clearSearch('{{ $collector->id }}')">
                                                                             <i class="fas fa-times"></i>
                                                                         </button>
                                                                         <span class="input-group-text"><i class="fas fa-search"></i></span>
@@ -615,7 +615,7 @@ function getArrayPreview($array, $maxItems = 3) {
                                 </div>
                                 <form action="{{ route('servers.collectors.install', [$server, $collector]) }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="btn btn-success btn-sm">
+                                    <button type="submit" class="btn btn-primary btn-sm">
                                         <i class="fas fa-download"></i> 安装
                                     </button>
                                 </form>

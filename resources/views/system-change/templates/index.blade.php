@@ -4,21 +4,19 @@
 
 @section('content')
 <div class="container-fluid">
-    <!-- 页面标题 -->
-    <div class="mb-4">
-        <h1 class="mb-1">
-            <i class="fas fa-file-code text-primary"></i> 配置模板管理
-        </h1>
-        <p class="text-muted">管理和配置系统变更模板</p>
-    </div>
-    
-    <!-- 操作按钮 -->
-    <div class="mb-4">
+    <!-- 页面标题和操作按钮 -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="mb-0">
+                <i class="fas fa-file-code text-primary"></i> 配置模板管理
+            </h1>
+            <small class="text-muted">管理和配置系统变更模板</small>
+        </div>
         <div class="d-flex gap-2 flex-wrap">
-            <a href="{{ route('system-change.templates.create') }}" class="btn btn-primary">
+            <a href="{{ route('system-change.templates.create') }}" class="btn btn-primary btn-sm">
                 <i class="fas fa-plus"></i> 新增模板
             </a>
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#importModal">
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#importModal">
                 <i class="fas fa-upload"></i> 导入模板
             </button>
         </div>
@@ -27,46 +25,44 @@
     <div class="row">
         <div class="col-12">
             <!-- 搜索筛选卡片 -->
-            <div class="card card-warning shadow-sm mb-4">
-                <div class="card-header bg-warning text-dark">
+            <div class="search-filter-card">
+                <div class="card-header">
                     <h5 class="mb-0">
                         <i class="fas fa-filter"></i> 搜索和筛选
                     </h5>
                 </div>
                 <div class="card-body">
-                    <form method="GET" class="form-row align-items-end">
-                        <div class="col-md-4 mb-2">
-                            <label for="search">搜索</label>
-                            <div class="input-group">
+                    <form method="GET">
+                        <div class="search-row">
+                            <div>
+                                <label for="search">搜索</label>
                                 <input type="text" name="search" class="form-control" placeholder="搜索模板名称或描述..." 
                                        value="{{ request('search') }}">
-                                <div class="input-group-append">
-                                    <button class="btn btn-warning" type="submit">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                </div>
+                            </div>
+                            <div>
+                                <label for="status">状态</label>
+                                <select name="status" class="form-control">
+                                    <option value="">全部状态</option>
+                                    <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>启用</option>
+                                    <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>禁用</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="col-md-3 mb-2">
-                            <label for="status">状态</label>
-                            <select name="status" class="form-control" onchange="this.form.submit();">
-                                <option value="">全部状态</option>
-                                <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>启用</option>
-                                <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>禁用</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2 mb-2">
-                            <a href="{{ route('system-change.templates.index') }}" class="btn btn-secondary btn-block">
-                                    <i class="fas fa-undo mr-1"></i>
-                                    重置
-                                </a>
-                            </div>
+                        <div class="button-row">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search"></i> 搜索
+                            </button>
+                            <a href="{{ route('system-change.templates.index') }}" class="btn btn-secondary">
+                                <i class="fas fa-sync"></i> 重置
+                            </a>
                         </div>
                     </form>
+                </div>
+            </div>
 
             <!-- 模板列表卡片 -->
-            <div class="card card-primary shadow-sm">
-                <div class="card-header bg-primary text-white">
+            <div class="card card-light-blue shadow-sm">
+                <div class="card-header">
                     <h5 class="mb-0">
                         <i class="fas fa-list"></i> 模板列表
                     </h5>
@@ -116,41 +112,26 @@
                                     <td>
                                         <div class="btn-group btn-group-sm">
                                             <a href="{{ route('system-change.templates.show', $template) }}" 
-                                               class="btn btn-info" title="查看">
+                                               class="btn btn-primary" title="查看">
                                                 <i class="fas fa-eye"></i>
                                             </a>
                                             <a href="{{ route('system-change.templates.edit', $template) }}" 
-                                               class="btn btn-warning" title="编辑">
+                                               class="btn btn-primary" title="编辑">
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                             <a href="{{ route('system-change.templates.export', $template) }}" 
-                                               class="btn btn-success" title="导出">
+                                               class="btn btn-primary" title="导出">
                                                 <i class="fas fa-download"></i>
                                             </a>
-                                            <form method="POST" action="{{ route('system-change.templates.duplicate', $template) }}" 
-                                                  style="display: inline;">
-                                                @csrf
-                                                <button type="submit" class="btn btn-secondary" title="复制">
-                                                    <i class="fas fa-copy"></i>
-                                                </button>
-                                            </form>
-                                            <form method="POST" action="{{ route('system-change.templates.toggle-status', $template) }}" 
-                                                  style="display: inline;">
-                                                @csrf
-                                                <button type="submit" class="btn {{ $template->is_active ? 'btn-secondary' : 'btn-success' }}" 
-                                                        title="{{ $template->is_active ? '禁用' : '启用' }}">
-                                                    <i class="fas fa-{{ $template->is_active ? 'pause' : 'play' }}"></i>
-                                                </button>
-                                            </form>
-                                            <form method="POST" action="{{ route('system-change.templates.destroy', $template) }}" 
-                                                  style="display: inline;" 
-                                                  onsubmit="return confirm('确定要删除这个模板吗？')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger" title="删除">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </form>
+                                            <button type="button" class="btn btn-secondary" onclick="duplicateTemplate({{ $template->id }})" title="复制">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
+                                            <button type="button" class="btn {{ $template->is_active ? 'btn-secondary' : 'btn-primary' }}" onclick="toggleTemplateStatus({{ $template->id }})" title="{{ $template->is_active ? '禁用' : '启用' }}">
+                                                <i class="fas fa-{{ $template->is_active ? 'pause' : 'play' }}"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-danger" onclick="deleteTemplate({{ $template->id }})" title="删除">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -196,7 +177,7 @@
                             <li>文件大小不超过2MB</li>
                             <li>如果不知道格式，请先下载样例模板</li>
                         </ul>
-                        <a href="{{ route('system-change.templates.download-sample') }}" class="btn btn-sm btn-outline-primary">
+                        <a href="{{ route('system-change.templates.download-sample') }}" class="btn btn-sm btn-secondary">
                             <i class="fas fa-download"></i> 下载样例模板
                         </a>
                     </div>
@@ -220,3 +201,27 @@
 </div>
 @endsection
 
+@push('scripts')
+<script src="{{ asset('assets/js/common/delete-handler.js') }}"></script>
+<script>
+    // 复制模板
+    function duplicateTemplate(templateId) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `{{ route('system-change.templates.duplicate', '') }}/${templateId}`;
+        form.innerHTML = `<input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]').getAttribute('content')}">`;
+        document.body.appendChild(form);
+        form.submit();
+    }
+    
+    // 切换模板状态
+    function toggleTemplateStatus(templateId) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `{{ route('system-change.templates.toggle-status', '') }}/${templateId}`;
+        form.innerHTML = `<input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]').getAttribute('content')}">`;
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+@endpush

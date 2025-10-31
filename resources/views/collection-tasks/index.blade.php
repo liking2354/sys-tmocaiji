@@ -7,7 +7,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h1 class="mb-0">
-                <i class="fas fa-tasks text-warning"></i> 采集任务管理
+                <i class="fas fa-tasks text-primary"></i> 采集任务管理
             </h1>
             <small class="text-muted">管理和监控数据采集任务</small>
         </div>
@@ -15,7 +15,7 @@
             <a href="{{ route('servers.index') }}" class="btn btn-primary btn-sm">
                 <i class="fas fa-plus"></i> 创建批量任务
             </a>
-            <button type="button" class="btn btn-success btn-sm" id="batchExecuteBtn">
+            <button type="button" class="btn btn-primary btn-sm" id="batchExecuteBtn">
                 <i class="fas fa-play"></i> 立即执行
             </button>
             <button type="button" class="btn btn-danger btn-sm" id="batchDeleteBtn" disabled>
@@ -45,43 +45,43 @@
     </script>
     
     <!-- 筛选条件 -->
-    <div class="card card-warning mb-4 shadow-sm">
-        <div class="card-header bg-warning text-white">
+    <div class="search-filter-card">
+        <div class="card-header">
             <h5 class="mb-0">
                 <i class="fas fa-filter"></i> 搜索和筛选
             </h5>
         </div>
         <div class="card-body">
-            <form action="{{ route('collection-tasks.index') }}" method="GET" class="form-row align-items-end">
-                <div class="col-md-3 mb-2">
-                    <label for="status" class="font-weight-bold">任务状态</label>
-                    <select class="form-control form-control-sm" id="status" name="status">
-                        <option value="">所有状态</option>
-                        <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>未开始</option>
-                        <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>进行中</option>
-                        <option value="2" {{ request('status') == '2' ? 'selected' : '' }}>已完成</option>
-                        <option value="3" {{ request('status') == '3' ? 'selected' : '' }}>失败</option>
-                    </select>
+            <form action="{{ route('collection-tasks.index') }}" method="GET">
+                <div class="search-row">
+                    <div>
+                        <label for="status">任务状态</label>
+                        <select class="form-control" id="status" name="status">
+                            <option value="">所有状态</option>
+                            <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>未开始</option>
+                            <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>进行中</option>
+                            <option value="2" {{ request('status') == '2' ? 'selected' : '' }}>已完成</option>
+                            <option value="3" {{ request('status') == '3' ? 'selected' : '' }}>失败</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="type">任务类型</label>
+                        <select class="form-control" id="type" name="type">
+                            <option value="">所有类型</option>
+                            <option value="single" {{ request('type') == 'single' ? 'selected' : '' }}>单服务器</option>
+                            <option value="batch" {{ request('type') == 'batch' ? 'selected' : '' }}>批量服务器</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="search">搜索</label>
+                        <input type="text" class="form-control" id="search" name="search" placeholder="任务名称" value="{{ request('search') }}">
+                    </div>
                 </div>
-                <div class="col-md-3 mb-2">
-                    <label for="type" class="font-weight-bold">任务类型</label>
-                    <select class="form-control form-control-sm" id="type" name="type">
-                        <option value="">所有类型</option>
-                        <option value="single" {{ request('type') == 'single' ? 'selected' : '' }}>单服务器</option>
-                        <option value="batch" {{ request('type') == 'batch' ? 'selected' : '' }}>批量服务器</option>
-                    </select>
-                </div>
-                <div class="col-md-3 mb-2">
-                    <label for="search" class="font-weight-bold">搜索</label>
-                    <input type="text" class="form-control form-control-sm" id="search" name="search" placeholder="任务名称" value="{{ request('search') }}">
-                </div>
-                <div class="col-md-2 mb-2">
-                    <button type="submit" class="btn btn-warning btn-sm btn-block">
+                <div class="button-row">
+                    <button type="submit" class="btn btn-primary">
                         <i class="fas fa-search"></i> 筛选
                     </button>
-                </div>
-                <div class="col-md-1 mb-2">
-                    <a href="{{ route('collection-tasks.index') }}" class="btn btn-secondary btn-sm btn-block">
+                    <a href="{{ route('collection-tasks.index') }}" class="btn btn-secondary">
                         <i class="fas fa-sync"></i> 重置
                     </a>
                 </div>
@@ -90,8 +90,8 @@
     </div>
     
     <!-- 任务列表 -->
-    <div class="card card-warning shadow-sm">
-        <div class="card-header bg-warning text-white">
+    <div class="card card-light-blue shadow-sm">
+        <div class="card-header">
             <h5 class="mb-0">
                 <i class="fas fa-list"></i> 采集任务列表
             </h5>
@@ -127,7 +127,7 @@
                                         <label class="custom-control-label" for="task_{{ $task->id }}"></label>
                                     </div>
                                 </td>
-                                <td><span class="badge badge-light">{{ $task->id }}</span></td>
+                                <td><span class="badge bg-light text-dark">{{ $task->id }}</span></td>
                                 <td>
                                     <a href="{{ route('collection-tasks.show', $task) }}" class="text-decoration-none font-weight-bold">
                                         {{ $task->name }}
@@ -144,18 +144,18 @@
                                 <td>
                                     @switch($task->status)
                                         @case(0)
-                                            <span class="badge badge-secondary">{{ $task->statusText }}</span>
+                                            <span class="badge bg-secondary">{{ $task->statusText }}</span>
                                             @break
                                         @case(1)
-                                            <span class="badge badge-warning">
+                                            <span class="badge bg-warning">
                                                 <i class="fas fa-spinner fa-spin"></i> {{ $task->statusText }}
                                             </span>
                                             @break
                                         @case(2)
-                                            <span class="badge badge-success">{{ $task->statusText }}</span>
+                                            <span class="badge bg-success">{{ $task->statusText }}</span>
                                             @break
                                         @case(3)
-                                            <span class="badge badge-danger">{{ $task->statusText }}</span>
+                                            <span class="badge bg-danger">{{ $task->statusText }}</span>
                                             @break
                                     @endswitch
                                 </td>
@@ -189,11 +189,11 @@
                                 <td><small class="text-muted">{{ $task->created_at->format('Y-m-d H:i') }}</small></td>
                                 <td>
                                     <div class="btn-group btn-group-sm" role="group">
-                                        <a href="{{ route('collection-tasks.show', $task) }}" class="btn btn-info" title="查看详情">
+                                        <a href="{{ route('collection-tasks.show', $task) }}" class="btn btn-primary" title="查看详情">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         @if ($task->status === 2 && $task->error_count > 0)
-                                            <button type="button" class="btn btn-warning" onclick="retryTask('{{ $task->id }}')" title="重试">
+                                            <button type="button" class="btn btn-primary" onclick="retryTask('{{ $task->id }}')" title="重试">
                                                 <i class="fas fa-redo"></i>
                                             </button>
                                         @endif
@@ -208,13 +208,9 @@
                                             </button>
                                         @endif
                                         @if (!$task->isRunning())
-                                            <form action="{{ route('collection-tasks.destroy', $task) }}" method="POST" class="d-inline" onsubmit="return confirm('确定要删除该任务吗？')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger" title="删除">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </form>
+                                            <button type="button" class="btn btn-danger" onclick="deleteCollectionTask({{ $task->id }})" title="删除">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
                                         @endif
                                     </div>
                                 </td>
@@ -488,9 +484,7 @@
             });
         });
     });
-</script>
-@push('scripts')
-<script>
+    
     window.csrfToken = '{{ csrf_token() }}';
     window.collectionTasksRetryRoute = '{{ route("collection-tasks.retry", ":id") }}';
     window.collectionTasksCancelRoute = '{{ route("collection-tasks.cancel", ":id") }}';
@@ -499,4 +493,5 @@
     window.collectionTasksTriggerRoute = '{{ url("collection-tasks") }}/{{ ":id" }}/trigger';
 </script>
 <script src="{{ asset('assets/js/modules/collection-tasks.js') }}"></script>
+<script src="{{ asset('assets/js/common/delete-handler.js') }}"></script>
 @endpush

@@ -849,24 +849,28 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // 为所有特殊值添加点击复制功能
-    document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('special-ip') || 
-            e.target.classList.contains('special-mac') || 
-            e.target.classList.contains('special-port')) {
-            
-            const text = e.target.textContent;
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(text).then(() => {
-                    const originalBg = e.target.style.backgroundColor;
-                    e.target.style.backgroundColor = '#28a745';
-                    e.target.style.color = 'white';
-                    
-                    setTimeout(() => {
-                        e.target.style.backgroundColor = originalBg;
-                        e.target.style.color = '';
-                    }, 500);
-                });
+    // 只在主内容区域监听，避免与导航栏冲突
+    const mainContent = document.getElementById('main-content');
+    if (mainContent) {
+        mainContent.addEventListener('click', function(e) {
+            if (e.target.classList.contains('special-ip') || 
+                e.target.classList.contains('special-mac') || 
+                e.target.classList.contains('special-port')) {
+                
+                const text = e.target.textContent;
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(text).then(() => {
+                        const originalBg = e.target.style.backgroundColor;
+                        e.target.style.backgroundColor = '#28a745';
+                        e.target.style.color = 'white';
+                        
+                        setTimeout(() => {
+                            e.target.style.backgroundColor = originalBg;
+                            e.target.style.color = '';
+                        }, 500);
+                    });
+                }
             }
-        }
-    });
+        });
+    }
 });

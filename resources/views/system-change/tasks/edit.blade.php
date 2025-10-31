@@ -23,8 +23,8 @@
     
     <div class="row">
         <div class="col-12">
-            <div class="card card-primary shadow-sm">
-                <div class="card-header bg-primary text-white">
+            <div class="card card-light-blue shadow-sm">
+                <div class="card-header">
                     <h5 class="mb-0">
                         <i class="fas fa-edit"></i> 编辑表单
                     </h5>

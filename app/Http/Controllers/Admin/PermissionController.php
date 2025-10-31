@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Permission;
+use App\Helpers\PaginationHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -14,9 +15,10 @@ class PermissionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $permissions = Permission::paginate(15);
+        $perPage = PaginationHelper::getPerPage($request, 10);
+        $permissions = Permission::paginate($perPage)->appends(PaginationHelper::getQueryParams($request));
         return view('admin.permissions.index', compact('permissions'));
     }
 

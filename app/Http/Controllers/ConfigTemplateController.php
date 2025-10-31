@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ConfigTemplate;
+use App\Helpers\PaginationHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -32,7 +33,8 @@ class ConfigTemplateController extends Controller
             $query->where('template_type', $request->type);
         }
         
-        $templates = $query->orderBy('created_at', 'desc')->paginate(15);
+        $perPage = PaginationHelper::getPerPage($request, 10);
+        $templates = $query->orderBy('created_at', 'desc')->paginate($perPage)->appends(PaginationHelper::getQueryParams($request));
         
         return view('system-change.templates.index', compact('templates'));
     }

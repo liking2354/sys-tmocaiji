@@ -15,7 +15,7 @@
     <!-- 操作按钮 -->
     <div class="mb-4">
         <div class="d-flex gap-2 flex-wrap">
-            <a href="{{ route('system-change.templates.show', $template) }}" class="btn btn-info">
+            <a href="{{ route('system-change.templates.show', $template) }}" class="btn btn-primary">
                 <i class="fas fa-eye"></i> 查看详情
             </a>
             <a href="{{ route('system-change.templates.index') }}" class="btn btn-secondary">
@@ -26,8 +26,8 @@
 
     <div class="row">
         <div class="col-12">
-            <div class="card card-primary shadow-sm">
-                <div class="card-header bg-primary text-white">
+            <div class="card card-light-blue shadow-sm">
+                <div class="card-header">
                     <h5 class="mb-0">
                         <i class="fas fa-edit"></i> 编辑表单
                     </h5>
@@ -156,7 +156,7 @@
                                 </h5>
                                 <div class="card-tools">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-success dropdown-toggle" data-toggle="dropdown">
+                                        <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
                                             <i class="fas fa-plus mr-1"></i>
                                             添加规则
                                         </button>
@@ -207,7 +207,7 @@
                                     配置预览
                                 </h5>
                                 <div class="card-tools">
-                                    <button type="button" class="btn btn-sm btn-info" id="preview-btn">
+                                    <button type="button" class="btn btn-sm btn-primary" id="preview-btn">
                                         <i class="fas fa-sync mr-1"></i>
                                         刷新预览
                                     </button>
@@ -233,7 +233,7 @@
                             <i class="fas fa-save mr-1"></i>
                             更新模板
                         </button>
-                        <button type="button" class="btn btn-info ml-2" id="preview-config-btn">
+                        <button type="button" class="btn btn-primary ml-2" id="preview-config-btn">
                             <i class="fas fa-eye mr-1"></i>
                             预览配置
                         </button>

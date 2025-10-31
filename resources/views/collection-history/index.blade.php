@@ -5,131 +5,133 @@
 @section('content')
 <div class="container-fluid">
     <!-- 页面标题 -->
-    <div class="mb-4">
-        <h1 class="mb-1">
-            <i class="fas fa-history text-info"></i> 采集历史记录
-        </h1>
-        <p class="text-muted">查看所有采集任务的执行历史和结果</p>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="mb-0">
+                <i class="fas fa-history text-primary"></i> 采集历史记录
+            </h1>
+            <small class="text-muted">查看所有采集任务的执行历史和结果</small>
+        </div>
     </div>
     
     <!-- 筛选条件 -->
-    <div class="card card-warning shadow-sm mb-4">
-        <div class="card-header bg-warning text-dark">
+    <div class="search-filter-card">
+        <div class="card-header">
             <h5 class="mb-0">
                 <i class="fas fa-filter"></i> 筛选条件
             </h5>
         </div>
         <div class="card-body">
-            <form action="{{ route('collection-history.index') }}" method="GET" class="form-row align-items-center">
-                <div class="col-md-2 mb-2">
-                    <label for="server_id">服务器</label>
-                    <select class="form-control" id="server_id" name="server_id">
-                        <option value="">所有服务器</option>
-                        @foreach ($servers as $server)
-                            <option value="{{ $server->id }}" {{ request('server_id') == $server->id ? 'selected' : '' }}>
-                                {{ $server->name }} ({{ $server->ip }})
-                            </option>
-                        @endforeach
-                    </select>
+            <form action="{{ route('collection-history.index') }}" method="GET">
+                <div class="search-row">
+                    <div>
+                        <label for="server_id">服务器</label>
+                        <select class="form-control" id="server_id" name="server_id">
+                            <option value="">所有服务器</option>
+                            @foreach ($servers as $server)
+                                <option value="{{ $server->id }}" {{ request('server_id') == $server->id ? 'selected' : '' }}>
+                                    {{ $server->name }} ({{ $server->ip }})
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label for="collector_id">采集组件</label>
+                        <select class="form-control" id="collector_id" name="collector_id">
+                            <option value="">所有组件</option>
+                            @foreach ($collectors as $collector)
+                                <option value="{{ $collector->id }}" {{ request('collector_id') == $collector->id ? 'selected' : '' }}>
+                                    {{ $collector->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label for="status">状态</label>
+                        <select class="form-control" id="status" name="status">
+                            <option value="">所有状态</option>
+                            <option value="2" {{ request('status') == '2' ? 'selected' : '' }}>成功</option>
+                            <option value="3" {{ request('status') == '3' ? 'selected' : '' }}>失败</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="col-md-2 mb-2">
-                    <label for="collector_id">采集组件</label>
-                    <select class="form-control" id="collector_id" name="collector_id">
-                        <option value="">所有组件</option>
-                        @foreach ($collectors as $collector)
-                            <option value="{{ $collector->id }}" {{ request('collector_id') == $collector->id ? 'selected' : '' }}>
-                                {{ $collector->name }}
-                            </option>
-                        @endforeach
-                    </select>
+                <div class="search-row">
+                    <div>
+                        <label for="date_from">开始日期</label>
+                        <input type="date" class="form-control" id="date_from" name="date_from" value="{{ request('date_from') }}">
+                    </div>
+                    <div>
+                        <label for="date_to">结束日期</label>
+                        <input type="date" class="form-control" id="date_to" name="date_to" value="{{ request('date_to') }}">
+                    </div>
                 </div>
-                <div class="col-md-2 mb-2">
-                    <label for="status">状态</label>
-                    <select class="form-control" id="status" name="status">
-                        <option value="">所有状态</option>
-                        <option value="2" {{ request('status') == '2' ? 'selected' : '' }}>成功</option>
-                        <option value="3" {{ request('status') == '3' ? 'selected' : '' }}>失败</option>
-                    </select>
-                </div>
-                <div class="col-md-2 mb-2">
-                    <label for="date_from">开始日期</label>
-                    <input type="date" class="form-control" id="date_from" name="date_from" value="{{ request('date_from') }}">
-                </div>
-                <div class="col-md-2 mb-2">
-                    <label for="date_to">结束日期</label>
-                    <input type="date" class="form-control" id="date_to" name="date_to" value="{{ request('date_to') }}">
-                </div>
-                <div class="col-md-2 mb-2 align-self-end">
-                    <button type="submit" class="btn btn-primary btn-block">
+                <div class="button-row">
+                    <button type="submit" class="btn btn-primary">
                         <i class="fas fa-search"></i> 筛选
                     </button>
-                </div>
-            </form>
-            <div class="form-row mt-2">
-                <div class="col-md-2">
-                    <a href="{{ route('collection-history.index') }}" class="btn btn-secondary btn-block">
+                    <a href="{{ route('collection-history.index') }}" class="btn btn-secondary">
                         <i class="fas fa-sync"></i> 重置
                     </a>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
     
     <!-- 统计信息 -->
     <div class="row mb-4">
         <div class="col-md-3">
-            <div class="card card-primary shadow-sm">
-                <div class="card-header bg-primary text-white">
+            <div class="card card-light-blue shadow-sm">
+                <div class="card-header text-dark">
                     <h5 class="mb-0">
                         <i class="fas fa-chart-bar"></i> 总采集次数
                     </h5>
                 </div>
                 <div class="card-body text-center">
-                    <h3 class="text-primary">{{ $statistics['total'] }}</h3>
+                    <h3 class="text-dark">{{ $statistics['total'] }}</h3>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card card-success shadow-sm">
-                <div class="card-header bg-success text-white">
+            <div class="card card-light-blue shadow-sm">
+                <div class="card-header text-dark">
                     <h5 class="mb-0">
                         <i class="fas fa-check-circle"></i> 成功次数
                     </h5>
                 </div>
                 <div class="card-body text-center">
-                    <h3 class="text-success">{{ $statistics['success'] }}</h3>
+                    <h3 class="text-dark">{{ $statistics['success'] }}</h3>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card card-danger shadow-sm">
-                <div class="card-header bg-danger text-white">
+            <div class="card card-light-blue shadow-sm">
+                <div class="card-header text-dark">
                     <h5 class="mb-0">
                         <i class="fas fa-times-circle"></i> 失败次数
                     </h5>
                 </div>
                 <div class="card-body text-center">
-                    <h3 class="text-danger">{{ $statistics['failed'] }}</h3>
+                    <h3 class="text-dark">{{ $statistics['failed'] }}</h3>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card card-info shadow-sm">
-                <div class="card-header bg-info text-white">
+            <div class="card card-light-blue shadow-sm">
+                <div class="card-header text-dark">
                     <h5 class="mb-0">
                         <i class="fas fa-percentage"></i> 成功率
                     </h5>
                 </div>
                 <div class="card-body text-center">
-                    <h3 class="text-info">{{ number_format($statistics['success_rate'], 1) }}%</h3>
+                    <h3 class="text-dark">{{ number_format($statistics['success_rate'], 1) }}%</h3>
                 </div>
             </div>
         </div>
     </div>
     
     <!-- 历史记录列表 -->
-    <div class="card card-info shadow-sm">
-        <div class="card-header bg-info text-white">
+    <div class="card card-light-blue shadow-sm">
+        <div class="card-header">
             <h5 class="mb-0">
                 <i class="fas fa-list"></i> 历史记录列表
             </h5>
@@ -186,7 +188,7 @@
                                 <td>
                                     <div class="btn-group" role="group">
                                         @if ($history->hasResult())
-                                            <button type="button" class="btn btn-sm btn-info" onclick="viewResult({{ $history->id }})">
+                                            <button type="button" class="btn btn-sm btn-primary" onclick="viewResult({{ $history->id }})">
                                                 <i class="fas fa-eye"></i> 查看结果
                                             </button>
                                         @endif

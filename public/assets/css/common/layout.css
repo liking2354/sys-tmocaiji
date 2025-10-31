@@ -7,7 +7,6 @@
     display: flex;
     flex-direction: row;
     min-height: 100vh;
-    padding-top: var(--navbar-height);
 }
 
 /* 导航栏 - 由 navbar-modern.css 处理 */
@@ -28,7 +27,9 @@
 }
 
 .main-content-full {
-    margin-left: 0;
+    margin-left: 0 !important;
+    padding: 0 !important;
+    background-color: transparent !important;
 }
 
 /* 容器 */

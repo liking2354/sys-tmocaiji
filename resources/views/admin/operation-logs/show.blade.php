@@ -1,24 +1,38 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="card">
-                <div class="card-header">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span><i class="fas fa-eye"></i> 操作日志详情</span>
-                        <a href="{{ route('admin.operation-logs.index') }}" class="btn btn-secondary btn-sm">
-                            <i class="fas fa-arrow-left"></i> 返回列表
-                        </a>
-                    </div>
+<div class="container-fluid">
+    <!-- 页面标题 -->
+    <div class="mb-4">
+        <h1 class="mb-1">
+            <i class="fas fa-eye text-primary"></i> 操作日志详情
+        </h1>
+        <p class="text-muted">查看操作日志的详细信息</p>
+    </div>
+    
+    <!-- 操作按钮 -->
+    <div class="mb-4">
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="{{ route('admin.operation-logs.index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> 返回列表
+            </a>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-primary shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle"></i> 日志详情
+                    </h5>
                 </div>
 
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="card h-100">
-                                <div class="card-header bg-primary text-white">
+                            <div class="card card-info shadow-sm h-100">
+                                <div class="card-header bg-info text-white">
                                     <h6 class="mb-0"><i class="fas fa-info-circle"></i> 基本信息</h6>
                                 </div>
                                 <div class="card-body">
@@ -53,7 +67,7 @@
                                             <td><strong>IP地址:</strong></td>
                                             <td>
                                                 <code>{{ $operationLog->ip }}</code>
-                                                <button class="btn btn-sm btn-outline-secondary ms-2" onclick="copyToClipboard('{{ $operationLog->ip }}')">
+                                                <button class="btn btn-sm btn-secondary ms-2" onclick="copyToClipboard('{{ $operationLog->ip }}')">
                                                     <i class="fas fa-copy"></i>
                                                 </button>
                                             </td>
@@ -80,7 +94,7 @@
                         </div>
 
                         <div class="col-md-6">
-                            <div class="card h-100">
+                            <div class="card card-success shadow-sm h-100">
                                 <div class="card-header bg-success text-white">
                                     <h6 class="mb-0"><i class="fas fa-file-alt"></i> 操作内容</h6>
                                 </div>
@@ -89,7 +103,7 @@
                                         <pre class="mb-0" style="white-space: pre-wrap; word-wrap: break-word;">{{ $operationLog->content }}</pre>
                                     </div>
                                     <div class="mt-3">
-                                        <button class="btn btn-sm btn-outline-primary" onclick="copyToClipboard(`{{ addslashes($operationLog->content) }}`)">
+                                        <button class="btn btn-sm btn-secondary" onclick="copyToClipboard(`{{ addslashes($operationLog->content) }}`)">
                                             <i class="fas fa-copy"></i> 复制内容
                                         </button>
                                         <span class="text-muted ms-2">
@@ -104,8 +118,8 @@
                     @if($operationLog->user)
                     <div class="row mt-4">
                         <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-header bg-info text-white">
+                            <div class="card card-warning shadow-sm">
+                                <div class="card-header bg-warning text-dark">
                                     <h6 class="mb-0"><i class="fas fa-user"></i> 用户详细信息</h6>
                                 </div>
                                 <div class="card-body">
@@ -172,8 +186,8 @@
                     <!-- 相关操作日志 -->
                     <div class="row mt-4">
                         <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-header bg-warning text-dark">
+                            <div class="card card-secondary shadow-sm">
+                                <div class="card-header bg-secondary text-white">
                                     <h6 class="mb-0"><i class="fas fa-history"></i> 相关操作记录</h6>
                                 </div>
                                 <div class="card-body">
@@ -189,8 +203,8 @@
 
                                     @if($relatedLogs->count() > 0)
                                         <div class="table-responsive">
-                                            <table class="table table-sm table-hover">
-                                                <thead class="table-light">
+                                            <table class="table table-striped table-light table-hover table-sm mb-0">
+                                                <thead>
                                                     <tr>
                                                         <th>时间</th>
                                                         <th>操作类型</th>
@@ -217,9 +231,11 @@
                                                             </td>
                                                             <td><code>{{ $log->ip }}</code></td>
                                                             <td>
-                                                                <a href="{{ route('admin.operation-logs.show', $log->id) }}" class="btn btn-sm btn-outline-info">
-                                                                    <i class="fas fa-eye"></i>
-                                                                </a>
+                                                                <div class="btn-group btn-group-sm" role="group">
+                                                                    <a href="{{ route('admin.operation-logs.show', $log->id) }}" class="btn btn-primary" title="查看">
+                                                                        <i class="fas fa-eye"></i>
+                                                                    </a>
+                                                                </div>
                                                             </td>
                                                         </tr>
                                                     @endforeach
@@ -240,23 +256,23 @@
                     <!-- 操作按钮 -->
                     <div class="row mt-4">
                         <div class="col-md-12">
-                            <div class="d-flex justify-content-between">
+                            <div class="d-flex justify-content-between flex-wrap gap-2">
                                 <div>
                                     <a href="{{ route('admin.operation-logs.index') }}" class="btn btn-secondary">
                                         <i class="fas fa-arrow-left"></i> 返回列表
                                     </a>
                                 </div>
-                                <div>
+                                <div class="d-flex gap-2 flex-wrap">
                                     @if($operationLog->user_id)
-                                        <a href="{{ route('admin.operation-logs.index', ['user_id' => $operationLog->user_id]) }}" class="btn btn-info">
-                                            <i class="fas fa-filter"></i> 查看该用户所有日志
+                                        <a href="{{ route('admin.operation-logs.index', ['user_id' => $operationLog->user_id]) }}" class="btn btn-primary">
+                                            <i class="fas fa-filter"></i> 该用户日志
                                         </a>
                                     @endif
                                     <a href="{{ route('admin.operation-logs.index', ['action' => $operationLog->action]) }}" class="btn btn-primary">
-                                        <i class="fas fa-filter"></i> 查看同类操作
+                                        <i class="fas fa-filter"></i> 同类操作
                                     </a>
-                                    <a href="{{ route('admin.operation-logs.index', ['ip' => $operationLog->ip]) }}" class="btn btn-warning">
-                                        <i class="fas fa-filter"></i> 查看同IP操作
+                                    <a href="{{ route('admin.operation-logs.index', ['ip' => $operationLog->ip]) }}" class="btn btn-primary">
+                                        <i class="fas fa-filter"></i> 同IP操作
                                     </a>
                                 </div>
                             </div>

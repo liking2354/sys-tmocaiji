@@ -5,7 +5,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h1 class="mb-0">
-                <i class="fas fa-tasks text-warning"></i> 采集任务管理
+                <i class="fas fa-tasks text-primary"></i> 采集任务管理
             </h1>
             <small class="text-muted">管理和监控数据采集任务</small>
         </div>
@@ -13,7 +13,7 @@
             <a href="<?php echo e(route('servers.index')); ?>" class="btn btn-primary btn-sm">
                 <i class="fas fa-plus"></i> 创建批量任务
             </a>
-            <button type="button" class="btn btn-success btn-sm" id="batchExecuteBtn">
+            <button type="button" class="btn btn-primary btn-sm" id="batchExecuteBtn">
                 <i class="fas fa-play"></i> 立即执行
             </button>
             <button type="button" class="btn btn-danger btn-sm" id="batchDeleteBtn" disabled>
@@ -44,43 +44,43 @@
     </script>
     
     <!-- 筛选条件 -->
-    <div class="card card-warning mb-4 shadow-sm">
-        <div class="card-header bg-warning text-white">
+    <div class="search-filter-card">
+        <div class="card-header">
             <h5 class="mb-0">
                 <i class="fas fa-filter"></i> 搜索和筛选
             </h5>
         </div>
         <div class="card-body">
-            <form action="<?php echo e(route('collection-tasks.index')); ?>" method="GET" class="form-row align-items-end">
-                <div class="col-md-3 mb-2">
-                    <label for="status" class="font-weight-bold">任务状态</label>
-                    <select class="form-control form-control-sm" id="status" name="status">
-                        <option value="">所有状态</option>
-                        <option value="0" <?php echo e(request('status') == '0' ? 'selected' : ''); ?>>未开始</option>
-                        <option value="1" <?php echo e(request('status') == '1' ? 'selected' : ''); ?>>进行中</option>
-                        <option value="2" <?php echo e(request('status') == '2' ? 'selected' : ''); ?>>已完成</option>
-                        <option value="3" <?php echo e(request('status') == '3' ? 'selected' : ''); ?>>失败</option>
-                    </select>
+            <form action="<?php echo e(route('collection-tasks.index')); ?>" method="GET">
+                <div class="search-row">
+                    <div>
+                        <label for="status">任务状态</label>
+                        <select class="form-control" id="status" name="status">
+                            <option value="">所有状态</option>
+                            <option value="0" <?php echo e(request('status') == '0' ? 'selected' : ''); ?>>未开始</option>
+                            <option value="1" <?php echo e(request('status') == '1' ? 'selected' : ''); ?>>进行中</option>
+                            <option value="2" <?php echo e(request('status') == '2' ? 'selected' : ''); ?>>已完成</option>
+                            <option value="3" <?php echo e(request('status') == '3' ? 'selected' : ''); ?>>失败</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="type">任务类型</label>
+                        <select class="form-control" id="type" name="type">
+                            <option value="">所有类型</option>
+                            <option value="single" <?php echo e(request('type') == 'single' ? 'selected' : ''); ?>>单服务器</option>
+                            <option value="batch" <?php echo e(request('type') == 'batch' ? 'selected' : ''); ?>>批量服务器</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="search">搜索</label>
+                        <input type="text" class="form-control" id="search" name="search" placeholder="任务名称" value="<?php echo e(request('search')); ?>">
+                    </div>
                 </div>
-                <div class="col-md-3 mb-2">
-                    <label for="type" class="font-weight-bold">任务类型</label>
-                    <select class="form-control form-control-sm" id="type" name="type">
-                        <option value="">所有类型</option>
-                        <option value="single" <?php echo e(request('type') == 'single' ? 'selected' : ''); ?>>单服务器</option>
-                        <option value="batch" <?php echo e(request('type') == 'batch' ? 'selected' : ''); ?>>批量服务器</option>
-                    </select>
-                </div>
-                <div class="col-md-3 mb-2">
-                    <label for="search" class="font-weight-bold">搜索</label>
-                    <input type="text" class="form-control form-control-sm" id="search" name="search" placeholder="任务名称" value="<?php echo e(request('search')); ?>">
-                </div>
-                <div class="col-md-2 mb-2">
-                    <button type="submit" class="btn btn-warning btn-sm btn-block">
+                <div class="button-row">
+                    <button type="submit" class="btn btn-primary">
                         <i class="fas fa-search"></i> 筛选
                     </button>
-                </div>
-                <div class="col-md-1 mb-2">
-                    <a href="<?php echo e(route('collection-tasks.index')); ?>" class="btn btn-secondary btn-sm btn-block">
+                    <a href="<?php echo e(route('collection-tasks.index')); ?>" class="btn btn-secondary">
                         <i class="fas fa-sync"></i> 重置
                     </a>
                 </div>
@@ -89,8 +89,8 @@
     </div>
     
     <!-- 任务列表 -->
-    <div class="card card-warning shadow-sm">
-        <div class="card-header bg-warning text-white">
+    <div class="card card-light-blue shadow-sm">
+        <div class="card-header">
             <h5 class="mb-0">
                 <i class="fas fa-list"></i> 采集任务列表
             </h5>
@@ -126,7 +126,7 @@
                                         <label class="custom-control-label" for="task_<?php echo e($task->id); ?>"></label>
                                     </div>
                                 </td>
-                                <td><span class="badge badge-light"><?php echo e($task->id); ?></span></td>
+                                <td><span class="badge bg-light text-dark"><?php echo e($task->id); ?></span></td>
                                 <td>
                                     <a href="<?php echo e(route('collection-tasks.show', $task)); ?>" class="text-decoration-none font-weight-bold">
                                         <?php echo e($task->name); ?>
@@ -145,19 +145,19 @@
                                 <td>
                                     <?php switch($task->status):
                                         case (0): ?>
-                                            <span class="badge badge-secondary"><?php echo e($task->statusText); ?></span>
+                                            <span class="badge bg-secondary"><?php echo e($task->statusText); ?></span>
                                             <?php break; ?>
                                         <?php case (1): ?>
-                                            <span class="badge badge-warning">
+                                            <span class="badge bg-warning">
                                                 <i class="fas fa-spinner fa-spin"></i> <?php echo e($task->statusText); ?>
 
                                             </span>
                                             <?php break; ?>
                                         <?php case (2): ?>
-                                            <span class="badge badge-success"><?php echo e($task->statusText); ?></span>
+                                            <span class="badge bg-success"><?php echo e($task->statusText); ?></span>
                                             <?php break; ?>
                                         <?php case (3): ?>
-                                            <span class="badge badge-danger"><?php echo e($task->statusText); ?></span>
+                                            <span class="badge bg-danger"><?php echo e($task->statusText); ?></span>
                                             <?php break; ?>
                                     <?php endswitch; ?>
                                 </td>
@@ -193,11 +193,11 @@
                                 <td><small class="text-muted"><?php echo e($task->created_at->format('Y-m-d H:i')); ?></small></td>
                                 <td>
                                     <div class="btn-group btn-group-sm" role="group">
-                                        <a href="<?php echo e(route('collection-tasks.show', $task)); ?>" class="btn btn-info" title="查看详情">
+                                        <a href="<?php echo e(route('collection-tasks.show', $task)); ?>" class="btn btn-primary" title="查看详情">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         <?php if($task->status === 2 && $task->error_count > 0): ?>
-                                            <button type="button" class="btn btn-warning" onclick="retryTask('<?php echo e($task->id); ?>')" title="重试">
+                                            <button type="button" class="btn btn-primary" onclick="retryTask('<?php echo e($task->id); ?>')" title="重试">
                                                 <i class="fas fa-redo"></i>
                                             </button>
                                         <?php endif; ?>
@@ -212,13 +212,9 @@
                                             </button>
                                         <?php endif; ?>
                                         <?php if(!$task->isRunning()): ?>
-                                            <form action="<?php echo e(route('collection-tasks.destroy', $task)); ?>" method="POST" class="d-inline" onsubmit="return confirm('确定要删除该任务吗？')">
-                                                <?php echo csrf_field(); ?>
-                                                <?php echo method_field('DELETE'); ?>
-                                                <button type="submit" class="btn btn-danger" title="删除">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </form>
+                                            <button type="button" class="btn btn-danger" onclick="deleteCollectionTask(<?php echo e($task->id); ?>)" title="删除">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
                                         <?php endif; ?>
                                     </div>
                                 </td>
@@ -493,9 +489,7 @@
             });
         });
     });
-</script>
-<?php $__env->startPush('scripts'); ?>
-<script>
+    
     window.csrfToken = '<?php echo e(csrf_token()); ?>';
     window.collectionTasksRetryRoute = '<?php echo e(route("collection-tasks.retry", ":id")); ?>';
     window.collectionTasksCancelRoute = '<?php echo e(route("collection-tasks.cancel", ":id")); ?>';
@@ -504,6 +498,7 @@
     window.collectionTasksTriggerRoute = '<?php echo e(url("collection-tasks")); ?>/<?php echo e(":id"); ?>/trigger';
 </script>
 <script src="<?php echo e(asset('assets/js/modules/collection-tasks.js')); ?>"></script>
+<script src="<?php echo e(asset('assets/js/common/delete-handler.js')); ?>"></script>
 <?php $__env->stopPush(); ?>
 
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/tanli/Documents/php-code/sys-tmocaiji/resources/views/collection-tasks/index.blade.php ENDPATH**/ ?>

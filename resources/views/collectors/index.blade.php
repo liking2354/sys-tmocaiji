@@ -7,17 +7,50 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h1 class="mb-0">
-                <i class="fas fa-cube text-info"></i> 采集组件管理
+                <i class="fas fa-cube text-primary"></i> 采集组件管理
             </h1>
             <small class="text-muted">管理和配置数据采集组件</small>
         </div>
-        <a href="{{ route('collectors.create') }}" class="btn btn-info btn-sm">
+        <a href="{{ route('collectors.create') }}" class="btn btn-primary btn-sm">
             <i class="fas fa-plus"></i> 新建采集组件
         </a>
     </div>
     
-    <div class="card card-info shadow-sm">
-        <div class="card-header bg-info text-white">
+    <!-- 搜索和筛选卡片 -->
+    <div class="search-filter-card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">
+                <i class="fas fa-filter"></i> 搜索和筛选
+            </h5>
+        </div>
+        <div class="card-body">
+            <form method="GET" action="{{ route('collectors.index') }}">
+                <div class="search-row">
+                    <div>
+                        <label for="name">组件名称</label>
+                        <input type="text" name="name" class="form-control" id="name" placeholder="搜索组件名称..." 
+                               value="{{ request('name') }}">
+                    </div>
+                    <div>
+                        <label for="code">组件代码</label>
+                        <input type="text" name="code" class="form-control" id="code" placeholder="搜索组件代码..." 
+                               value="{{ request('code') }}">
+                    </div>
+                </div>
+                <div class="button-row">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search"></i> 搜索
+                    </button>
+                    <a href="{{ route('collectors.index') }}" class="btn btn-secondary">
+                        <i class="fas fa-sync"></i> 重置
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card card-light-blue shadow-sm">
+        <div class="card-header">
             <h5 class="mb-0">
                 <i class="fas fa-list"></i> 采集组件列表
             </h5>
@@ -44,7 +77,7 @@
                                 <td><strong>{{ $collector->name }}</strong></td>
                                 <td><code>{{ $collector->code }}</code></td>
                                 <td>
-                                    <span class="badge badge-{{ $collector->type === 'script' ? 'info' : 'warning' }}">
+                                    <span class="badge badge-{{ $collector->type === 'script' ? 'primary' : 'secondary' }}">
                                         {{ $collector->typeName }}
                                     </span>
                                 </td>
@@ -59,19 +92,15 @@
                                 <td><small class="text-muted">{{ $collector->created_at->format('Y-m-d H:i') }}</small></td>
                                 <td>
                                     <div class="btn-group btn-group-sm" role="group">
-                                        <a href="{{ route('collectors.show', $collector) }}" class="btn btn-info" title="查看详情">
+                                        <a href="{{ route('collectors.show', $collector) }}" class="btn btn-primary" title="查看详情">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <a href="{{ route('collectors.edit', $collector) }}" class="btn btn-warning" title="编辑">
+                                        <a href="{{ route('collectors.edit', $collector) }}" class="btn btn-primary" title="编辑">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <form action="{{ route('collectors.destroy', $collector) }}" method="POST" class="d-inline" onsubmit="return confirm('确定要删除该采集组件吗？')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger" title="删除">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
+                                        <button type="button" class="btn btn-danger" onclick="deleteCollector({{ $collector->id }})" title="删除">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -94,3 +123,7 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script src="{{ asset('assets/js/common/delete-handler.js') }}"></script>
+@endpush

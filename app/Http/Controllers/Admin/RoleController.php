@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\Permission;
+use App\Helpers\PaginationHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -15,9 +16,10 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $roles = Role::paginate(10);
+        $perPage = PaginationHelper::getPerPage($request, 10);
+        $roles = Role::paginate($perPage)->appends(PaginationHelper::getQueryParams($request));
         return view('admin.roles.index', compact('roles'));
     }
 

@@ -4,20 +4,30 @@
 
 @section('content')
 <div class="container-fluid">
+    <!-- 页面标题 -->
+    <div class="mb-4">
+        <h1 class="mb-1">
+            <i class="fas fa-plus text-primary"></i> 创建配置模板
+        </h1>
+        <p class="text-muted">创建新的系统配置模板</p>
+    </div>
+    
+    <!-- 操作按钮 -->
+    <div class="mb-4">
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="{{ route('system-change.templates.index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> 返回列表
+            </a>
+        </div>
+    </div>
+    
     <div class="row">
         <div class="col-12">
-            <div class="card">
+            <div class="card card-light-blue shadow-sm">
                 <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="fas fa-plus mr-2"></i>
-                        创建配置模板
-                    </h3>
-                    <div class="card-tools">
-                        <a href="{{ route('system-change.templates.index') }}" class="btn btn-default btn-sm">
-                            <i class="fas fa-arrow-left mr-1"></i>
-                            返回列表
-                        </a>
-                    </div>
+                    <h5 class="mb-0">
+                        <i class="fas fa-edit"></i> 模板表单
+                    </h5>
                 </div>
 
                 <form method="POST" action="{{ route('system-change.templates.store') }}">
@@ -80,18 +90,17 @@
                     </div>
 
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save mr-1"></i>
-                            保存模板
-                        </button>
-                        <button type="button" class="btn btn-info ml-2" id="preview-btn">
-                            <i class="fas fa-eye mr-1"></i>
-                            预览配置
-                        </button>
-                        <a href="{{ route('system-change.templates.index') }}" class="btn btn-default ml-2">
-                            <i class="fas fa-times mr-1"></i>
-                            取消
-                        </a>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> 保存模板
+                            </button>
+                            <button type="button" class="btn btn-primary" id="preview-btn">
+                                <i class="fas fa-eye"></i> 预览配置
+                            </button>
+                            <a href="{{ route('system-change.templates.index') }}" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> 取消
+                            </a>
+                        </div>
                     </div>
                 </form>
             </div>

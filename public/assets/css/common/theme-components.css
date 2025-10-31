@@ -1,0 +1,534 @@
+/* ============================================
+   主题组件样式 - 支持主题切换
+   ============================================ */
+
+/* ========== 卡片组件 ========== */
+
+/* 主色卡片 */
+.card-primary {
+    border-left: 4px solid var(--primary-color);
+}
+
+.card-primary .card-header {
+    background-color: var(--card-primary-bg);
+    border-bottom-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.card-primary .card-header h5,
+.card-primary .card-header h6 {
+    color: var(--primary-color);
+}
+
+/* 成功卡片 */
+.card-success {
+    border-left: 4px solid var(--success-color);
+}
+
+.card-success .card-header {
+    background-color: var(--card-success-bg);
+    border-bottom-color: var(--success-color);
+    color: var(--success-color);
+}
+
+.card-success .card-header h5,
+.card-success .card-header h6 {
+    color: var(--success-color);
+}
+
+/* 警告卡片 */
+.card-warning {
+    border-left: 4px solid var(--warning-color);
+}
+
+.card-warning .card-header {
+    background-color: var(--card-warning-bg);
+    border-bottom-color: var(--warning-color);
+    color: var(--warning-color);
+}
+
+.card-warning .card-header h5,
+.card-warning .card-header h6 {
+    color: var(--warning-color);
+}
+
+/* 危险卡片 */
+.card-danger {
+    border-left: 4px solid var(--danger-color);
+}
+
+.card-danger .card-header {
+    background-color: var(--card-danger-bg);
+    border-bottom-color: var(--danger-color);
+    color: var(--danger-color);
+}
+
+.card-danger .card-header h5,
+.card-danger .card-header h6 {
+    color: var(--danger-color);
+}
+
+/* 信息卡片 */
+.card-info {
+    border-left: 4px solid var(--info-color);
+}
+
+.card-info .card-header {
+    background-color: var(--card-info-bg);
+    border-bottom-color: var(--info-color);
+    color: var(--info-color);
+}
+
+.card-info .card-header h5,
+.card-info .card-header h6 {
+    color: var(--info-color);
+}
+
+/* 浅蓝色卡片 */
+.card-light-blue {
+    border-left: 4px solid var(--primary-color);
+}
+
+.card-light-blue .card-header {
+    background-color: var(--card-primary-bg);
+    border-bottom-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.card-light-blue .card-header h5,
+.card-light-blue .card-header h6 {
+    color: var(--primary-color);
+}
+
+/* ========== 徽章组件 ========== */
+
+.badge-primary {
+    background-color: var(--primary-color);
+    color: #ffffff;
+}
+
+.badge-success {
+    background-color: var(--success-color);
+    color: #ffffff;
+}
+
+.badge-warning {
+    background-color: var(--warning-color);
+    color: #ffffff;
+}
+
+.badge-danger {
+    background-color: var(--danger-color);
+    color: #ffffff;
+}
+
+.badge-info {
+    background-color: var(--info-color);
+    color: #ffffff;
+}
+
+/* 浅色徽章 */
+.badge-primary-light {
+    background-color: rgba(var(--primary-color-rgb), 0.1);
+    color: var(--primary-color);
+}
+
+.badge-success-light {
+    background-color: rgba(var(--success-color-rgb), 0.1);
+    color: var(--success-color);
+}
+
+.badge-warning-light {
+    background-color: rgba(var(--warning-color-rgb), 0.1);
+    color: var(--warning-color);
+}
+
+.badge-danger-light {
+    background-color: rgba(var(--danger-color-rgb), 0.1);
+    color: var(--danger-color);
+}
+
+.badge-info-light {
+    background-color: rgba(var(--info-color-rgb), 0.1);
+    color: var(--info-color);
+}
+
+.badge-light {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.badge-secondary {
+    background-color: var(--gray-500);
+    color: #ffffff;
+}
+
+/* ========== 进度条组件 ========== */
+
+.progress-bar-primary {
+    background-color: var(--primary-color);
+}
+
+.progress-bar-success {
+    background-color: var(--success-color);
+}
+
+.progress-bar-warning {
+    background-color: var(--warning-color);
+}
+
+.progress-bar-danger {
+    background-color: var(--danger-color);
+}
+
+.progress-bar-info {
+    background-color: var(--info-color);
+}
+
+/* ========== 按钮组件 ========== */
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+.btn-primary:focus {
+    box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
+}
+
+.btn-success {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+    color: #ffffff;
+}
+
+.btn-success:hover {
+    background-color: var(--success-dark);
+    border-color: var(--success-dark);
+}
+
+.btn-success:focus {
+    box-shadow: 0 0 0 3px rgba(var(--success-color-rgb), 0.1);
+}
+
+.btn-warning {
+    background-color: var(--warning-color);
+    border-color: var(--warning-color);
+    color: #ffffff;
+}
+
+.btn-warning:hover {
+    background-color: var(--warning-dark);
+    border-color: var(--warning-dark);
+}
+
+.btn-warning:focus {
+    box-shadow: 0 0 0 3px rgba(var(--warning-color-rgb), 0.1);
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    border-color: var(--danger-color);
+    color: #ffffff;
+}
+
+.btn-danger:hover {
+    background-color: var(--danger-dark);
+    border-color: var(--danger-dark);
+}
+
+.btn-danger:focus {
+    box-shadow: 0 0 0 3px rgba(var(--danger-color-rgb), 0.1);
+}
+
+.btn-info {
+    background-color: var(--info-color);
+    border-color: var(--info-color);
+    color: #ffffff;
+}
+
+.btn-info:hover {
+    background-color: var(--info-dark);
+    border-color: var(--info-dark);
+}
+
+.btn-info:focus {
+    box-shadow: 0 0 0 3px rgba(var(--info-color-rgb), 0.1);
+}
+
+/* ========== 表格组件 ========== */
+
+.table-primary {
+    background-color: rgba(var(--primary-color-rgb), 0.05);
+}
+
+.table-primary th {
+    background-color: var(--primary-color);
+    color: #ffffff;
+}
+
+.table-success {
+    background-color: rgba(var(--success-color-rgb), 0.05);
+}
+
+.table-success th {
+    background-color: var(--success-color);
+    color: #ffffff;
+}
+
+.table-warning {
+    background-color: rgba(var(--warning-color-rgb), 0.05);
+}
+
+.table-warning th {
+    background-color: var(--warning-color);
+    color: #ffffff;
+}
+
+.table-danger {
+    background-color: rgba(var(--danger-color-rgb), 0.05);
+}
+
+.table-danger th {
+    background-color: var(--danger-color);
+    color: #ffffff;
+}
+
+.table-info {
+    background-color: rgba(var(--info-color-rgb), 0.05);
+}
+
+.table-info th {
+    background-color: var(--info-color);
+    color: #ffffff;
+}
+
+/* ========== 警告框组件 ========== */
+
+.alert-primary {
+    background-color: rgba(var(--primary-color-rgb), 0.1);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.alert-success {
+    background-color: rgba(var(--success-color-rgb), 0.1);
+    border-color: var(--success-color);
+    color: var(--success-color);
+}
+
+.alert-warning {
+    background-color: rgba(var(--warning-color-rgb), 0.1);
+    border-color: var(--warning-color);
+    color: var(--warning-color);
+}
+
+.alert-danger {
+    background-color: rgba(var(--danger-color-rgb), 0.1);
+    border-color: var(--danger-color);
+    color: var(--danger-color);
+}
+
+.alert-info {
+    background-color: rgba(var(--info-color-rgb), 0.1);
+    border-color: var(--info-color);
+    color: var(--info-color);
+}
+
+/* ========== 标签组件 ========== */
+
+.label-primary {
+    background-color: var(--primary-color);
+    color: #ffffff;
+}
+
+.label-success {
+    background-color: var(--success-color);
+    color: #ffffff;
+}
+
+.label-warning {
+    background-color: var(--warning-color);
+    color: #ffffff;
+}
+
+.label-danger {
+    background-color: var(--danger-color);
+    color: #ffffff;
+}
+
+.label-info {
+    background-color: var(--info-color);
+    color: #ffffff;
+}
+
+/* ========== 统计卡片 ========== */
+
+.stat-card {
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--card-shadow);
+    transition: var(--transition-default);
+}
+
+.stat-card:hover {
+    box-shadow: var(--hover-shadow);
+    transform: translateY(-2px);
+}
+
+.stat-card-primary {
+    border-left: 4px solid var(--primary-color);
+}
+
+.stat-card-primary .stat-value {
+    color: var(--primary-color);
+}
+
+.stat-card-success {
+    border-left: 4px solid var(--success-color);
+}
+
+.stat-card-success .stat-value {
+    color: var(--success-color);
+}
+
+.stat-card-warning {
+    border-left: 4px solid var(--warning-color);
+}
+
+.stat-card-warning .stat-value {
+    color: var(--warning-color);
+}
+
+.stat-card-danger {
+    border-left: 4px solid var(--danger-color);
+}
+
+.stat-card-danger .stat-value {
+    color: var(--danger-color);
+}
+
+.stat-card-info {
+    border-left: 4px solid var(--info-color);
+}
+
+.stat-card-info .stat-value {
+    color: var(--info-color);
+}
+
+/* ========== 主题特定样式 ========== */
+
+/* 紫色主题 */
+.theme-purple .card-header {
+    background-color: #f5f3ff;
+}
+
+/* 绿色主题 */
+.theme-green .card-header {
+    background-color: #f0fdf4;
+}
+
+/* 橙色主题 */
+.theme-orange .card-header {
+    background-color: #fffbf0;
+}
+
+/* 粉色主题 */
+.theme-pink .card-header {
+    background-color: #fdf2f8;
+}
+
+/* 青色主题 */
+.theme-cyan .card-header {
+    background-color: #ecfdf5;
+}
+
+/* ========== 背景颜色类 ========== */
+
+.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.bg-success {
+    background-color: var(--success-color) !important;
+}
+
+.bg-warning {
+    background-color: var(--warning-color) !important;
+}
+
+.bg-danger {
+    background-color: var(--danger-color) !important;
+}
+
+.bg-info {
+    background-color: var(--info-color) !important;
+}
+
+.bg-light {
+    background-color: var(--bg-secondary) !important;
+}
+
+.bg-dark {
+    background-color: var(--gray-800) !important;
+}
+
+/* ========== 文字颜色类 ========== */
+
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.text-success {
+    color: var(--success-color) !important;
+}
+
+.text-warning {
+    color: var(--warning-color) !important;
+}
+
+.text-danger {
+    color: var(--danger-color) !important;
+}
+
+.text-info {
+    color: var(--info-color) !important;
+}
+
+.text-muted {
+    color: var(--text-secondary) !important;
+}
+
+.text-dark {
+    color: var(--text-primary) !important;
+}
+
+/* ========== 边框颜色类 ========== */
+
+.border-primary {
+    border-color: var(--primary-color) !important;
+}
+
+.border-success {
+    border-color: var(--success-color) !important;
+}
+
+.border-warning {
+    border-color: var(--warning-color) !important;
+}
+
+.border-danger {
+    border-color: var(--danger-color) !important;
+}
+
+.border-info {
+    border-color: var(--info-color) !important;
+}

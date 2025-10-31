@@ -1,0 +1,230 @@
+/**
+ * 搜索和筛选卡片统一样式
+ */
+
+/* 搜索卡片容器 */
+.search-filter-card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 0.25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--card-shadow);
+}
+
+.search-filter-card .card-header {
+    background-color: var(--card-primary-bg) !important;
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.75rem 1.25rem;
+}
+
+.search-filter-card .card-header h5 {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.search-filter-card .card-header i {
+    color: var(--primary-color);
+    margin-right: 0.5rem;
+}
+
+.search-filter-card .card-body {
+    padding: 1.25rem;
+}
+
+/* 表单行间距 */
+.search-filter-card .form-row {
+    gap: 0.75rem;
+}
+
+.search-filter-card .form-row > div {
+    display: flex;
+    flex-direction: column;
+}
+
+/* 标签样式 */
+.search-filter-card label {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+}
+
+/* 输入框和下拉框统一大小 */
+.search-filter-card .form-control,
+.search-filter-card .form-control-sm {
+    height: 2.375rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.25rem;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.search-filter-card .form-control:focus,
+.search-filter-card .form-control-sm:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(var(--primary-color-rgb), 0.25);
+}
+
+/* 按钮统一大小 */
+.search-filter-card .btn {
+    height: 2.375rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 0.25rem;
+    white-space: nowrap;
+}
+
+.search-filter-card .btn-sm {
+    height: 2.375rem;
+    padding: 0.5rem 0.75rem;
+}
+
+.search-filter-card .btn-block {
+    width: 100%;
+}
+
+/* 按钮颜色调整 */
+.search-filter-card .btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.search-filter-card .btn-primary:hover {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+.search-filter-card .btn-secondary {
+    background-color: var(--gray-500);
+    border-color: var(--gray-500);
+    color: white;
+}
+
+.search-filter-card .btn-secondary:hover {
+    background-color: var(--gray-600);
+    border-color: var(--gray-600);
+}
+
+/* 输入组样式 */
+.search-filter-card .input-group {
+    display: flex;
+    gap: 0;
+}
+
+.search-filter-card .input-group .form-control {
+    flex: 1;
+    border-radius: 0.25rem 0 0 0.25rem;
+}
+
+.search-filter-card .input-group-append .btn {
+    border-radius: 0 0.25rem 0.25rem 0;
+    border-left: 0;
+}
+
+/* 搜索条件行 - 每行3列 */
+.search-filter-card .search-row {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.search-filter-card .search-row > div {
+    flex: 0 0 calc(33.333% - 0.5rem);
+    display: flex;
+    flex-direction: column;
+}
+
+/* 占位符 - 用于对齐 */
+.search-filter-card .search-row > div.placeholder {
+    flex: 0 0 calc(33.333% - 0.5rem);
+    display: none;
+}
+
+/* 按钮容器 - 与搜索条件同行 */
+.search-filter-card .search-row > .button-container {
+    flex: 0 0 auto;
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin-left: auto;
+    width: auto;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+}
+
+/* 按钮行 - 单独起一行，右对齐 */
+.search-filter-card .button-row {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+    justify-content: flex-end;
+}
+
+.search-filter-card .button-row .btn {
+    flex: 0 0 auto;
+    min-width: 100px;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .search-filter-card .form-row > div {
+        margin-bottom: 0.75rem;
+    }
+    
+    .search-filter-card .btn-block {
+        width: 100%;
+    }
+    
+    .search-filter-card .search-row {
+        flex-direction: column;
+    }
+    
+    .search-filter-card .search-row > div {
+        width: 100%;
+        flex: 1 !important;
+    }
+    
+    .search-filter-card .search-row > .button-container {
+        flex: 1 !important;
+        width: 100%;
+        flex-direction: column;
+    }
+    
+    .search-filter-card .button-row {
+        flex-direction: column;
+    }
+    
+    .search-filter-card .button-row .btn {
+        max-width: 100%;
+        width: 100%;
+    }
+}
+
+/* 对齐辅助类 */
+.align-self-end {
+    align-self: flex-end;
+}
+
+.align-items-end {
+    align-items: flex-end;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+/* 操作按钮统一样式 */
+.page-actions {
+    margin-bottom: 1.5rem;
+}
+
+.page-actions .d-flex {
+    gap: 0.5rem;
+}

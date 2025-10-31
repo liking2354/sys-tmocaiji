@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Collector;
+use App\Helpers\PaginationHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
@@ -33,9 +34,23 @@ class CollectorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $collectors = Collector::paginate(15);
+        $perPage = PaginationHelper::getPerPage($request, 10);
+        
+        $query = Collector::query();
+        
+        // 按组件名称搜索
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->input('name') . '%');
+        }
+        
+        // 按组件代码搜索
+        if ($request->filled('code')) {
+            $query->where('code', 'like', '%' . $request->input('code') . '%');
+        }
+        
+        $collectors = $query->paginate($perPage)->appends(PaginationHelper::getQueryParams($request));
         
         return view('collectors.index', compact('collectors'));
     }

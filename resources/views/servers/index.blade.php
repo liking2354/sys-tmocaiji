@@ -15,90 +15,58 @@
             <a href="{{ route('servers.create') }}" class="btn btn-primary btn-sm">
                 <i class="fas fa-plus"></i> 添加服务器
             </a>
-            <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#importModal">
-                    <i class="fas fa-file-import"></i> 批量导入
-                </button>
-                <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="sr-only">切换下拉菜单</span>
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#" id="downloadTemplate">
-                        <i class="fas fa-download"></i> 下载导入模板
-                    </a>
-                </div>
-            </div>
-            <button type="button" class="btn btn-warning btn-sm" id="batchCollectionBtn" disabled>
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#batchImportModal">
+                <i class="fas fa-file-import"></i> 批量导入
+            </button>
+            <button type="button" class="btn btn-primary btn-sm" id="batchCollectionBtn" disabled>
                 <i class="fas fa-play"></i> 批量采集
             </button>
-            <button type="button" class="btn btn-info btn-sm" id="batchModifyComponentsBtn" disabled>
+            <button type="button" class="btn btn-primary btn-sm" id="batchModifyComponentsBtn" disabled>
                 <i class="fas fa-cogs"></i> 批量修改组件
             </button>
-            <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-success dropdown-toggle" id="downloadBtn" disabled data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-download"></i> 直接下载
-                </button>
-                <div class="dropdown-menu dropdown-menu-right">
-                    <h6 class="dropdown-header">下载格式</h6>
-                    <a class="dropdown-item" href="#" id="downloadExcel">
-                        <i class="fas fa-file-excel"></i> 下载 Excel (.xlsx)
-                    </a>
-                    <a class="dropdown-item" href="#" id="downloadCsv">
-                        <i class="fas fa-file-csv"></i> 下载 CSV (.csv)
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <h6 class="dropdown-header">下载范围</h6>
-                    <a class="dropdown-item" href="#" id="downloadSelected">
-                        <i class="fas fa-check-square"></i> 已勾选的数据
-                    </a>
-                    <a class="dropdown-item" href="#" id="downloadCurrentPage">
-                        <i class="fas fa-list"></i> 当前页数据
-                    </a>
-                    <a class="dropdown-item" href="#" id="downloadAllFiltered">
-                        <i class="fas fa-database"></i> 全部查询数据
-                    </a>
-                </div>
-            </div>
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#downloadModal">
+                <i class="fas fa-download"></i> 直接下载
+            </button>
         </div>
     </div>
     
     <!-- 搜索和筛选 -->
-    <div class="card card-warning mb-4 shadow-sm">
-        <div class="card-header bg-warning text-dark">
+    <div class="search-filter-card">
+        <div class="card-header">
             <h5 class="mb-0">
                 <i class="fas fa-filter"></i> 搜索和筛选
             </h5>
         </div>
         <div class="card-body">
-            <form action="{{ route('servers.index') }}" method="GET" class="form-row align-items-end">
-                <div class="col-md-3 mb-2">
-                    <label for="search" class="font-weight-bold">搜索</label>
-                    <input type="text" class="form-control form-control-sm" id="search" name="search" placeholder="服务器名称或IP" value="{{ request('search') }}">
+            <form action="{{ route('servers.index') }}" method="GET">
+                <div class="search-row">
+                    <div>
+                        <label for="search">搜索</label>
+                        <input type="text" class="form-control" id="search" name="search" placeholder="服务器名称或IP" value="{{ request('search') }}">
+                    </div>
+                    <div>
+                        <label for="group_id">服务器分组</label>
+                        <select class="form-control" id="group_id" name="group_id">
+                            <option value="">所有分组</option>
+                            @foreach ($groups as $group)
+                                <option value="{{ $group->id }}" {{ request('group_id') == $group->id ? 'selected' : '' }}>{{ $group->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label for="status">服务器状态</label>
+                        <select class="form-control" id="status" name="status">
+                            <option value="">全部状态</option>
+                            <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>在线</option>
+                            <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>离线</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="col-md-3 mb-2">
-                    <label for="group_id" class="font-weight-bold">服务器分组</label>
-                    <select class="form-control form-control-sm" id="group_id" name="group_id">
-                        <option value="">所有分组</option>
-                        @foreach ($groups as $group)
-                            <option value="{{ $group->id }}" {{ request('group_id') == $group->id ? 'selected' : '' }}>{{ $group->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-2 mb-2">
-                    <label for="status" class="font-weight-bold">服务器状态</label>
-                    <select class="form-control form-control-sm" id="status" name="status">
-                        <option value="">全部状态</option>
-                        <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>在线</option>
-                        <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>离线</option>
-                    </select>
-                </div>
-                <div class="col-md-2 mb-2">
-                    <button type="submit" class="btn btn-warning btn-sm btn-block">
+                <div class="button-row">
+                    <button type="submit" class="btn btn-primary">
                         <i class="fas fa-search"></i> 搜索
                     </button>
-                </div>
-                <div class="col-md-2 mb-2">
-                    <a href="{{ route('servers.index') }}" class="btn btn-secondary btn-sm btn-block">
+                    <a href="{{ route('servers.index') }}" class="btn btn-secondary">
                         <i class="fas fa-sync"></i> 重置
                     </a>
                 </div>
@@ -107,8 +75,8 @@
     </div>
     
     <!-- 服务器列表 -->
-    <div class="card card-primary shadow-sm">
-        <div class="card-header bg-primary text-white">
+    <div class="card card-light-blue shadow-sm">
+        <div class="card-header">
             <h5 class="mb-0">
                 <i class="fas fa-list"></i> 服务器列表
             </h5>
@@ -159,19 +127,15 @@
                                     <td><small class="text-muted">{{ $server->lastCollectionTime ? $server->lastCollectionTime->format('Y-m-d H:i') : '未采集' }}</small></td>
                                     <td>
                                         <div class="btn-group btn-group-sm" role="group">
-                                            <a href="{{ route('servers.show', $server) }}" class="btn btn-info" title="查看详情">
+                                            <a href="{{ route('servers.show', $server) }}" class="btn btn-primary" title="查看详情">
                                                 <i class="fas fa-eye"></i>
                                             </a>
-                                            <a href="{{ route('servers.edit', $server) }}" class="btn btn-warning" title="编辑">
+                                            <a href="{{ route('servers.edit', $server) }}" class="btn btn-primary" title="编辑">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <form action="{{ route('servers.destroy', $server) }}" method="POST" class="d-inline" onsubmit="return confirm('确定要删除该服务器吗？')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger" title="删除">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </form>
+                                            <button type="button" class="btn btn-danger" onclick="deleteServer({{ $server->id }})" title="删除">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -195,10 +159,10 @@
 </div>
 
 <!-- 导入模态框 -->
-<div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
+<div class="modal fade" id="batchImportModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header bg-success text-white border-0">
+            <div class="modal-header bg-primary text-white border-0">
                 <h5 class="modal-title" id="importModalLabel">
                     <i class="fas fa-file-import"></i> 批量导入服务器
                 </h5>
@@ -236,7 +200,7 @@
                 </div>
                 <div class="modal-footer border-0">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                    <button type="submit" class="btn btn-success">
+                    <button type="submit" class="btn btn-primary">
                         <i class="fas fa-upload"></i> 导入
                     </button>
                 </div>
@@ -245,15 +209,61 @@
     </div>
 </div>
 
+<!-- 直接下载模态框 -->
+<div class="modal fade" id="downloadModal" tabindex="-1" role="dialog" aria-labelledby="downloadModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-primary text-white border-0">
+                <h5 class="modal-title" id="downloadModalLabel">
+                    <i class="fas fa-download"></i> 直接下载
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="font-weight-bold">下载格式</label>
+                    <div class="btn-group btn-group-block" role="group" style="display: flex; gap: 10px;">
+                        <button type="button" class="btn btn-primary flex-grow-1" id="downloadFormatExcel">
+                            <i class="fas fa-file-excel"></i> Excel (.xlsx)
+                        </button>
+                        <button type="button" class="btn btn-primary flex-grow-1" id="downloadFormatCsv">
+                            <i class="fas fa-file-csv"></i> CSV (.csv)
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-bold">下载范围</label>
+                    <div class="list-group">
+                        <button type="button" class="list-group-item list-group-item-action text-left" id="downloadScopeSelected">
+                            <i class="fas fa-check-square"></i> 已勾选的数据
+                        </button>
+                        <button type="button" class="list-group-item list-group-item-action text-left" id="downloadScopeCurrentPage">
+                            <i class="fas fa-list"></i> 当前页数据
+                        </button>
+                        <button type="button" class="list-group-item list-group-item-action text-left" id="downloadScopeAllFiltered">
+                            <i class="fas fa-database"></i> 全部查询数据
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- 批量修改组件模态框 -->
 <div class="modal fade" id="batchModifyComponentsModal" tabindex="-1" role="dialog" aria-labelledby="batchModifyComponentsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header bg-info text-white border-0">
+            <div class="modal-header border-0">
                 <h5 class="modal-title" id="batchModifyComponentsModalLabel">
-                    <i class="fas fa-cogs"></i> 批量修改组件
+                    <i class="fas fa-cogs text-primary"></i> 批量修改组件
                 </h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -262,13 +272,13 @@
                     @csrf
                     <input type="hidden" id="selected_server_ids_modify" name="server_ids" value="">
                     
-                    <div class="alert alert-info border-0">
+                    <div class="alert alert-info border-0 mb-3">
                         <i class="fas fa-info-circle"></i>
                         已选择 <span id="selectedServerCountModify" class="font-weight-bold">0</span> 个服务器，请选择要关联的采集组件：
                     </div>
                     
                     <div class="form-group">
-                        <label class="font-weight-bold">操作类型：</label>
+                        <label class="font-weight-bold mb-2">操作类型：</label>
                         <div class="custom-control custom-radio mb-2">
                             <input class="custom-control-input" type="radio" name="operation_type" id="operationReplace" value="replace" checked>
                             <label class="custom-control-label" for="operationReplace">
@@ -290,14 +300,8 @@
                     </div>
                     
                     <div class="form-group">
-                        <label class="font-weight-bold">采集组件：</label>
-                        <div class="custom-control custom-checkbox mb-3 pb-2 border-bottom">
-                            <input class="custom-control-input" type="checkbox" id="selectAllComponents">
-                            <label class="custom-control-label" for="selectAllComponents">
-                                <strong>全选/取消全选</strong>
-                            </label>
-                        </div>
-                        <div class="row" id="componentsContainer">
+                        <label class="font-weight-bold mb-2">采集组件：</label>
+                        <div id="componentsContainer" class="collectors-container border rounded bg-light">
                             <!-- 采集组件列表将通过AJAX加载 -->
                         </div>
                     </div>
@@ -305,7 +309,7 @@
             </div>
             <div class="modal-footer border-0">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-info" id="submitBatchModifyComponents">
+                <button type="button" class="btn btn-primary" id="submitBatchModifyComponents">
                     <i class="fas fa-save"></i> 确认修改
                 </button>
             </div>
@@ -317,7 +321,7 @@
 <div class="modal fade" id="batchCollectionModal" tabindex="-1" role="dialog" aria-labelledby="batchCollectionModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header bg-warning text-white border-0">
+            <div class="modal-header bg-primary text-white border-0">
                 <h5 class="modal-title" id="batchCollectionModalLabel">
                     <i class="fas fa-play-circle"></i> 批量采集
                 </h5>
@@ -349,7 +353,7 @@
                     
                     <div class="form-group">
                         <label class="font-weight-bold">采集组件</label>
-                        <div id="collectorsList" class="border rounded p-3 bg-light">
+                        <div id="collectorsList" class="collectors-container border rounded bg-light">
                             <div class="text-muted text-center">
                                 <i class="fas fa-spinner fa-spin"></i> 正在加载共同的采集组件...
                             </div>
@@ -358,7 +362,7 @@
                 </div>
                 <div class="modal-footer border-0">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                    <button type="submit" class="btn btn-warning" id="submitBatchCollection" disabled>
+                    <button type="submit" class="btn btn-primary" id="submitBatchCollection" disabled>
                         <i class="fas fa-play"></i> 开始采集
                     </button>
                 </div>
@@ -372,6 +376,22 @@
 @push('scripts')
 <script>
     // ============ 全局函数定义 ============
+    
+    // 初始化采集组件 tooltip
+    function initComponentTooltips() {
+        // 初始化所有带有 data-bs-toggle="tooltip" 的元素
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+            try {
+                // 尝试使用 Bootstrap 5 的 Tooltip
+                if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                    new bootstrap.Tooltip(tooltipTriggerEl);
+                }
+            } catch(e) {
+                console.log('Tooltip initialization error:', e);
+            }
+        });
+    }
     
     // 下载功能通用函数
     function downloadServers(format, scope) {
@@ -483,8 +503,8 @@
         }, 1000);
     }
     
-    // 显示格式选择对话框
-    function showDownloadFormatDialog(scope) {
+    // 显示格式选择对话框 - 已移至模态框
+    function showDownloadFormatDialog_deprecated(scope) {
         var scopeText = {
             'selected': '已勾选的数据',
             'currentPage': '当前页数据',
@@ -495,10 +515,10 @@
             '<i class="fas fa-info-circle"></i> 您将下载：<strong>' + scopeText[scope] + '</strong>' +
             '</div>' +
             '<div class="btn-group btn-block" role="group">' +
-            '<button type="button" class="btn btn-outline-primary" onclick="downloadServers(\'xlsx\', \'' + scope + '\'); $(\'#formatDialog\').modal(\'hide\');">' +
+            '<button type="button" class="btn btn-primary" onclick="downloadServers(\'xlsx\', \'' + scope + '\'); $(\'#formatDialog\').modal(\'hide\');">' +
             '<i class="fas fa-file-excel"></i> Excel (.xlsx)' +
             '</button>' +
-            '<button type="button" class="btn btn-outline-primary" onclick="downloadServers(\'csv\', \'' + scope + '\'); $(\'#formatDialog\').modal(\'hide\');">' +
+            '<button type="button" class="btn btn-primary" onclick="downloadServers(\'csv\', \'' + scope + '\'); $(\'#formatDialog\').modal(\'hide\');">' +
             '<i class="fas fa-file-csv"></i> CSV (.csv)' +
             '</button>' +
             '</div>';
@@ -528,6 +548,7 @@
     
     // ============ 文档就绪后的初始化 ============
     $(document).ready(function() {
+        
         // 全选/取消全选
         $('#selectAll').change(function() {
             $('.server-checkbox').prop('checked', $(this).prop('checked'));
@@ -542,7 +563,8 @@
         // 更新按钮状态的函数
         function updateButtonStates() {
             var checkedCount = $('.server-checkbox:checked').length;
-            $('#downloadBtn').prop('disabled', checkedCount === 0);
+            
+            // 更新其他按钮状态
             $('#batchCollectionBtn').prop('disabled', checkedCount === 0);
             $('#batchModifyComponentsBtn').prop('disabled', checkedCount === 0);
             
@@ -551,40 +573,42 @@
             $('#selectAll').prop('checked', allChecked && checkedCount > 0);
         }
         
-        // 下载模板
-        $('#downloadTemplate').click(function(e) {
-            e.preventDefault();
-            window.location.href = '{{ route("servers.download-template") }}';
+        // 直接下载模态框 - 格式选择
+        var downloadFormat = 'xlsx';
+        var downloadScope = 'selected';
+        
+        $('#downloadFormatExcel').click(function() {
+            downloadFormat = 'xlsx';
+            $(this).addClass('active').siblings().removeClass('active');
         });
         
-        // Excel下载点击事件
-        $('#downloadExcel').click(function(e) {
-            e.preventDefault();
-            downloadServers('xlsx', 'selected');
+        $('#downloadFormatCsv').click(function() {
+            downloadFormat = 'csv';
+            $(this).addClass('active').siblings().removeClass('active');
         });
         
-        // CSV下载点击事件
-        $('#downloadCsv').click(function(e) {
-            e.preventDefault();
-            downloadServers('csv', 'selected');
+        // 下载范围选择
+        $('#downloadScopeSelected').click(function() {
+            downloadScope = 'selected';
+            var checkedCount = $('.server-checkbox:checked').length;
+            if (checkedCount === 0) {
+                alert('请先选择要下载的服务器');
+                return;
+            }
+            downloadServers(downloadFormat, downloadScope);
+            $('#downloadModal').modal('hide');
         });
         
-        // 已勾选数据下载
-        $('#downloadSelected').click(function(e) {
-            e.preventDefault();
-            showDownloadFormatDialog('selected');
+        $('#downloadScopeCurrentPage').click(function() {
+            downloadScope = 'currentPage';
+            downloadServers(downloadFormat, downloadScope);
+            $('#downloadModal').modal('hide');
         });
         
-        // 当前页数据下载
-        $('#downloadCurrentPage').click(function(e) {
-            e.preventDefault();
-            showDownloadFormatDialog('currentPage');
-        });
-        
-        // 全部查询数据下载
-        $('#downloadAllFiltered').click(function(e) {
-            e.preventDefault();
-            showDownloadFormatDialog('allFiltered');
+        $('#downloadScopeAllFiltered').click(function() {
+            downloadScope = 'allFiltered';
+            downloadServers(downloadFormat, downloadScope);
+            $('#downloadModal').modal('hide');
         });
         
         // 批量采集按钮点击事件
@@ -647,9 +671,25 @@
             }
         });
         
+        // 初始化采集组件 tooltip
+        function initComponentTooltips() {
+            // 初始化所有带有 data-bs-toggle="tooltip" 的元素
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+                try {
+                    // 尝试使用 Bootstrap 5 的 Tooltip
+                    if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                        new bootstrap.Tooltip(tooltipTriggerEl);
+                    }
+                } catch(e) {
+                    console.log('Tooltip initialization error:', e);
+                }
+            });
+        }
+        
         // 加载所有采集组件
         function loadAllComponents() {
-            $('#componentsContainer').html('<div class="col-12"><div class="text-muted"><i class="fas fa-spinner fa-spin"></i> 正在加载采集组件...</div></div>');
+            $('#componentsContainer').html('<div class="text-muted text-center p-3"><i class="fas fa-spinner fa-spin"></i> 正在加载采集组件...</div>');
             
             $.ajax({
                 url: '{{ route("api.collectors.all") }}',
@@ -660,47 +700,48 @@
                 },
                 success: function(response) {
                     if (response.success && response.data.length > 0) {
-                        var html = '';
+                        var html = '<div class="collectors-grid">';
                         response.data.forEach(function(collector) {
-                            html += '<div class="col-md-6 mb-2">';
-                            html += '<div class="form-check">';
-                            html += '<input class="form-check-input component-checkbox" type="checkbox" name="collector_ids[]" value="' + collector.id + '" id="component_' + collector.id + '">';
+                            var fullName = collector.name + ' (' + collector.code + ')';
+                            var nameTitle = fullName.length > 40 ? fullName : '';
+                            var descTitle = collector.description && collector.description.length > 60 ? collector.description : '';
+                            
+                            html += '<div class="collector-item">';
                             html += '<label class="form-check-label" for="component_' + collector.id + '">';
-                            html += '<strong>' + collector.name + '</strong> (' + collector.code + ')';
+                            html += '<input class="form-check-input component-checkbox" type="checkbox" name="collector_ids[]" value="' + collector.id + '" id="component_' + collector.id + '">';
+                            html += '<div class="collector-content">';
+                            html += '<span class="collector-name" ' + (nameTitle ? 'data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="' + nameTitle.replace(/"/g, '&quot;') + '"' : '') + '>' + fullName + '</span>';
                             if (collector.description) {
-                                html += '<br><small class="text-muted">' + collector.description + '</small>';
+                                html += '<div class="collector-description"><small class="text-muted" ' + (descTitle ? 'data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="' + descTitle.replace(/"/g, '&quot;') + '"' : '') + '>' + collector.description + '</small></div>';
                             }
+                            html += '</div>';
                             html += '</label>';
                             html += '</div>';
-                            html += '</div>';
                         });
+                        html += '</div>';
                         $('#componentsContainer').html(html);
+                        
+                        // 初始化 tooltip
+                        initComponentTooltips();
                         
                         // 监听组件选择变化
                         $('.component-checkbox').change(function() {
                             updateSelectAllComponents();
                         });
                         
-                        // 全选/取消全选功能
-                        $('#selectAllComponents').change(function() {
-                            $('.component-checkbox').prop('checked', $(this).prop('checked'));
-                        });
-                        
                     } else {
-                        $('#componentsContainer').html('<div class="col-12"><div class="alert alert-warning">没有可用的采集组件</div></div>');
+                        $('#componentsContainer').html('<div class="alert alert-warning mb-0">没有可用的采集组件</div>');
                     }
                 },
                 error: function(xhr) {
-                    $('#componentsContainer').html('<div class="col-12"><div class="alert alert-danger">加载采集组件失败：' + xhr.responseText + '</div></div>');
+                    $('#componentsContainer').html('<div class="alert alert-danger mb-0">加载采集组件失败：' + xhr.responseText + '</div>');
                 }
             });
         }
         
-        // 更新全选组件复选框状态
+        // 更新全选组件复选框状态（如果需要）
         function updateSelectAllComponents() {
-            var totalComponents = $('.component-checkbox').length;
-            var checkedComponents = $('.component-checkbox:checked').length;
-            $('#selectAllComponents').prop('checked', totalComponents > 0 && checkedComponents === totalComponents);
+            // 此函数保留以兼容现有代码，但在新的采集组件样式中不需要全选功能
         }
         
         // 批量修改组件表单提交
@@ -753,6 +794,22 @@
             });
         });
         
+        // 初始化采集组件 tooltip
+        function initCollectorTooltips() {
+            // 初始化所有带有 data-bs-toggle="tooltip" 的元素
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+                try {
+                    // 尝试使用 Bootstrap 5 的 Tooltip
+                    if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                        new bootstrap.Tooltip(tooltipTriggerEl);
+                    }
+                } catch(e) {
+                    console.log('Tooltip initialization error:', e);
+                }
+            });
+        }
+        
         // 加载共同的采集组件
         function loadCommonCollectors(serverIds) {
             $('#collectorsList').html('<div class="text-muted"><i class="fas fa-spinner fa-spin"></i> 正在加载共同的采集组件...</div>');
@@ -770,19 +827,29 @@
                 },
                 success: function(response) {
                     if (response.success && response.data.length > 0) {
-                        var html = '';
+                        var html = '<div class="collectors-grid">';
                         response.data.forEach(function(collector) {
-                            html += '<div class="form-check">';
-                            html += '<input class="form-check-input collector-checkbox" type="checkbox" name="collector_ids[]" value="' + collector.id + '" id="collector_' + collector.id + '">';
+                            var fullName = collector.name + ' (' + collector.code + ')';
+                            var nameTitle = fullName.length > 40 ? fullName : '';
+                            var descTitle = collector.description && collector.description.length > 60 ? collector.description : '';
+                            
+                            html += '<div class="collector-item">';
                             html += '<label class="form-check-label" for="collector_' + collector.id + '">';
-                            html += collector.name + ' (' + collector.code + ')';
+                            html += '<input class="form-check-input collector-checkbox" type="checkbox" name="collector_ids[]" value="' + collector.id + '" id="collector_' + collector.id + '">';
+                            html += '<div class="collector-content">';
+                            html += '<span class="collector-name" ' + (nameTitle ? 'data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="' + nameTitle.replace(/"/g, '&quot;') + '"' : '') + '>' + fullName + '</span>';
                             if (collector.description) {
-                                html += '<br><small class="text-muted">' + collector.description + '</small>';
+                                html += '<div class="collector-description"><small class="text-muted" ' + (descTitle ? 'data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="' + descTitle.replace(/"/g, '&quot;') + '"' : '') + '>' + collector.description + '</small></div>';
                             }
+                            html += '</div>';
                             html += '</label>';
                             html += '</div>';
                         });
+                        html += '</div>';
                         $('#collectorsList').html(html);
+                        
+                        // 初始化 tooltip
+                        initCollectorTooltips();
                         
                         // 监听采集组件选择变化
                         $('.collector-checkbox').change(function() {
@@ -803,28 +870,39 @@
                             success: function(response) {
                                 if (response.success && response.data.length > 0) {
                                     var html = '<div class="form-group">';
-                                    html += '<div class="custom-control custom-checkbox mb-2">';
+                                    html += '<div class="custom-control custom-checkbox mb-3">';
                                     html += '<input type="checkbox" class="custom-control-input" id="linkCollectors" name="link_collectors" checked>';
                                     html += '<label class="custom-control-label" for="linkCollectors">将选择的采集组件关联到未安装该组件的服务器</label>';
                                     html += '</div>';
                                     html += '</div>';
                                     
                                     html += '<div class="form-group">';
-                                    html += '<label>可用采集组件：</label>';
+                                    html += '<label class="font-weight-bold">可用采集组件：</label>';
+                                    html += '<div class="collectors-grid">';
                                     response.data.forEach(function(collector) {
-                                        html += '<div class="form-check">';
-                                        html += '<input class="form-check-input collector-checkbox" type="checkbox" name="collector_ids[]" value="' + collector.id + '" id="collector_' + collector.id + '">';
+                                        var fullName = collector.name + ' (' + collector.code + ')';
+                                        var nameTitle = fullName.length > 40 ? fullName : '';
+                                        var descTitle = collector.description && collector.description.length > 60 ? collector.description : '';
+                                        
+                                        html += '<div class="collector-item">';
                                         html += '<label class="form-check-label" for="collector_' + collector.id + '">';
-                                        html += collector.name + ' (' + collector.code + ')';
+                                        html += '<input class="form-check-input collector-checkbox" type="checkbox" name="collector_ids[]" value="' + collector.id + '" id="collector_' + collector.id + '">';
+                                        html += '<div class="collector-content">';
+                                        html += '<span class="collector-name" ' + (nameTitle ? 'data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="' + nameTitle.replace(/"/g, '&quot;') + '"' : '') + '>' + fullName + '</span>';
                                         if (collector.description) {
-                                            html += '<br><small class="text-muted">' + collector.description + '</small>';
+                                            html += '<div class="collector-description"><small class="text-muted" ' + (descTitle ? 'data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="' + descTitle.replace(/"/g, '&quot;') + '"' : '') + '>' + collector.description + '</small></div>';
                                         }
+                                        html += '</div>';
                                         html += '</label>';
                                         html += '</div>';
                                     });
                                     html += '</div>';
+                                    html += '</div>';
                                     
-                                    $('#collectorsList').append(html);
+                                    $('#collectorsList').html(html);
+                                    
+                                    // 初始化 tooltip
+                                    initCollectorTooltips();
                                     
                                     // 监听采集组件选择变化
                                     $('.collector-checkbox').change(function() {
@@ -832,11 +910,11 @@
                                         $('#submitBatchCollection').prop('disabled', checkedCollectors === 0);
                                     });
                                 } else {
-                                    $('#collectorsList').append('<div class="alert alert-danger">没有可用的采集组件</div>');
+                                    $('#collectorsList').html('<div class="alert alert-danger">没有可用的采集组件</div>');
                                 }
                             },
                             error: function(xhr) {
-                                $('#collectorsList').append('<div class="alert alert-danger">加载采集组件失败：' + xhr.responseText + '</div>');
+                                $('#collectorsList').html('<div class="alert alert-danger">加载采集组件失败：' + xhr.responseText + '</div>');
                             }
                         });
                     }
@@ -962,4 +1040,5 @@
     window.collectionTasksShowRoute = '{{ route("collection-tasks.show", ":id") }}';
 </script>
 <script src="{{ asset('assets/js/modules/servers.js') }}"></script>
+<script src="{{ asset('assets/js/common/delete-handler.js') }}"></script>
 @endpush

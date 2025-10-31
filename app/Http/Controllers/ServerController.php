@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Server;
 use App\Models\ServerGroup;
 use App\Models\Collector;
+use App\Helpers\PaginationHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use phpseclib3\Net\SSH2;
@@ -67,7 +68,8 @@ class ServerController extends Controller
             $query->where('status', $request->input('status'));
         }
         
-        $servers = $query->orderBy('id', 'desc')->paginate(10)->appends(request()->query());
+        $perPage = PaginationHelper::getPerPage($request, 10);
+        $servers = $query->orderBy('id', 'desc')->paginate($perPage)->appends(PaginationHelper::getQueryParams($request));
         $groups = ServerGroup::all();
         
         return view('servers.index', compact('servers', 'groups'));

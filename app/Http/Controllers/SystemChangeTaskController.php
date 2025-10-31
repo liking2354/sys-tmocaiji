@@ -6,6 +6,7 @@ use App\Models\SystemChangeTask;
 use App\Models\ConfigTemplate;
 use App\Models\ServerGroup;
 use App\Models\Server;
+use App\Helpers\PaginationHelper;
 use App\Services\SystemChangeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -57,7 +58,8 @@ class SystemChangeTaskController extends Controller
             }
         }
         
-        $tasks = $query->orderBy('created_at', 'desc')->paginate(15);
+        $perPage = PaginationHelper::getPerPage($request, 10);
+        $tasks = $query->orderBy('created_at', 'desc')->paginate($perPage)->appends(PaginationHelper::getQueryParams($request));
         
         // 获取服务器分组列表（用于筛选）
         $serverGroups = ServerGroup::orderBy('name')->get();

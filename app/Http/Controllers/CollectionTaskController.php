@@ -6,6 +6,7 @@ use App\Models\CollectionTask;
 use App\Models\TaskDetail;
 use App\Models\Server;
 use App\Models\Collector;
+use App\Helpers\PaginationHelper;
 use App\Services\CollectionService;
 use App\Services\TaskExecutionService;
 use App\Services\TaskTimeoutService;
@@ -80,7 +81,8 @@ class CollectionTaskController extends Controller
             $query->where('type', $request->input('type'));
         }
         
-        $tasks = $query->orderBy('created_at', 'desc')->paginate(15);
+        $perPage = PaginationHelper::getPerPage($request, 10);
+        $tasks = $query->orderBy('created_at', 'desc')->paginate($perPage)->appends(PaginationHelper::getQueryParams($request));
         
         return view('collection-tasks.index', compact('tasks'));
     }

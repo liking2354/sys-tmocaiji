@@ -43,7 +43,7 @@
 .form-control:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+    box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
     background-color: var(--bg-primary);
 }
 
@@ -89,7 +89,7 @@
 .form-select:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+    box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
 }
 
 .form-select:disabled {
@@ -125,7 +125,7 @@
 
 .form-check-input:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+    box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
 }
 
 .form-check-input:checked {
@@ -140,6 +140,7 @@
 
 .form-check-label {
     margin: 0;
+    margin-left: 0.5rem;
     cursor: pointer;
     font-size: var(--font-size-sm);
     color: var(--text-primary);

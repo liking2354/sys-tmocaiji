@@ -59,7 +59,7 @@
                                 <h6 class="alert-heading mb-1" id="executionResultTitle"></h6>
                                 <p id="executionResultMessage" class="mb-0"></p>
                             </div>
-                            <button class="btn btn-sm btn-outline-secondary ml-2" type="button" id="executionResultToggleBtn" onclick="toggleResultDetails()">
+                            <button class="btn btn-sm btn-secondary ml-2" type="button" id="executionResultToggleBtn" onclick="toggleResultDetails()">
                                 <i class="fas fa-chevron-down" id="executionResultToggleIcon"></i>
                             </button>
                         </div>

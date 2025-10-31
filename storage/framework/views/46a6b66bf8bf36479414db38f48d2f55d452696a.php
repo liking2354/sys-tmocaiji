@@ -6,7 +6,7 @@
     <div class="row mb-4">
         <div class="col-12">
             <h2 class="mb-1">
-                <i class="fas fa-trash-alt mr-2"></i>数据清理
+                <i class="fas fa-trash-alt text-primary mr-2"></i>数据清理
             </h2>
             <p class="text-muted">清理过期或不需要的数据，释放存储空间</p>
         </div>
@@ -15,7 +15,7 @@
     <!-- 数据统计部分 -->
     <div class="row mb-4">
         <div class="col-12">
-            <div class="card card-info shadow-sm">
+            <div class="search-filter-card">
                 <div class="card-header bg-info text-white">
                     <h5 class="mb-0"><i class="fas fa-chart-pie mr-2"></i>数据统计</h5>
                 </div>
@@ -57,9 +57,9 @@
     <!-- 清理条件部分 -->
     <div class="row">
         <div class="col-12">
-            <div class="card card-warning shadow-sm">
-                <div class="card-header bg-warning text-white">
-                    <h5 class="mb-0"><i class="fas fa-filter mr-2"></i>清理条件</h5>
+            <div class="search-filter-card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-filter"></i> 清理条件</h5>
                 </div>
                 <div class="card-body" id="cleanupConditions">
                     <form action="<?php echo e(route('data.cleanup')); ?>" method="POST" id="cleanupForm">
@@ -84,7 +84,7 @@
                                                 <div class="mb-2 server-group" data-group-id="<?php echo e($group->id); ?>">
                                                     <h6 class="d-flex justify-content-between align-items-center">
                                                         <span><?php echo e($group->name ?? '无分组'); ?> (<?php echo e($group->servers->count()); ?>)</span>
-                                                        <button type="button" class="btn btn-sm btn-outline-secondary toggle-group-servers" data-group-id="<?php echo e($group->id); ?>">
+                                                        <button type="button" class="btn btn-sm btn-secondary toggle-group-servers" data-group-id="<?php echo e($group->id); ?>">
                                                             <i class="fas fa-chevron-down"></i>
                                                         </button>
                                                     </h6>

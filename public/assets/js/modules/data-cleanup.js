@@ -1,6 +1,11 @@
 /**
  * 数据清理模块
  * 功能：数据清理、批量操作、选择管理
+ * 
+ * 设计原则：
+ * 1. 不使用 $(document).on() 事件委托，避免事件冒泡到 document 级别
+ * 2. 直接在元素上绑定事件，保证事件隔离
+ * 3. 防止与导航栏事件处理器冲突
  */
 
 $(document).ready(function() {
@@ -21,16 +26,20 @@ $(document).ready(function() {
         updateCollectorCount();
     });
     
-    // 动态绑定单个服务器复选框变化事件
-    $(document).on('change', '.server-checkbox', function() {
-        updateServerCount();
-        updateServerSelectAllState();
+    // 单个服务器复选框变化事件 - 直接在元素上绑定
+    document.querySelectorAll('.server-checkbox').forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            updateServerCount();
+            updateServerSelectAllState();
+        });
     });
     
-    // 动态绑定单个采集组件复选框变化事件
-    $(document).on('change', '.collector-checkbox', function() {
-        updateCollectorCount();
-        updateCollectorSelectAllState();
+    // 单个采集组件复选框变化事件 - 直接在元素上绑定
+    document.querySelectorAll('.collector-checkbox').forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            updateCollectorCount();
+            updateCollectorSelectAllState();
+        });
     });
     
     // 服务器组展开/收起功能
@@ -73,6 +82,22 @@ $(document).ready(function() {
     
     // 初始化数据存储占用图表
     initializeStorageChart();
+    
+    // 日期输入框变化事件 - 直接在元素上绑定
+    var startDateInput = document.getElementById('start_date');
+    var endDateInput = document.getElementById('end_date');
+    
+    if (startDateInput) {
+        startDateInput.addEventListener('change', function() {
+            updateDateRange();
+        });
+    }
+    
+    if (endDateInput) {
+        endDateInput.addEventListener('change', function() {
+            updateDateRange();
+        });
+    }
 });
 
 /**
@@ -165,8 +190,3 @@ function initializeStorageChart() {
         }
     });
 }
-
-// 绑定日期输入框变化事件
-$(document).on('change', '#start_date, #end_date', function() {
-    updateDateRange();
-});

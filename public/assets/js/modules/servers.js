@@ -3,6 +3,22 @@
  * 处理服务器列表页面的所有交互逻辑
  */
 
+// 初始化采集组件 tooltip
+function initCollectorTooltips() {
+    // 初始化所有带有 data-bs-toggle="tooltip" 的元素
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+        try {
+            // 尝试使用 Bootstrap 5 的 Tooltip
+            if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+                new bootstrap.Tooltip(tooltipTriggerEl);
+            }
+        } catch(e) {
+            console.log('Tooltip initialization error:', e);
+        }
+    });
+}
+
 // 下载功能通用函数
 function downloadServers(format, scope) {
     var serverIds = [];
@@ -170,7 +186,7 @@ function updateServerButtonStates() {
 
 // 加载所有采集组件
 function loadAllComponents() {
-    $('#componentsContainer').html('<div class="col-12"><div class="text-muted"><i class="fas fa-spinner fa-spin"></i> 正在加载采集组件...</div></div>');
+    $('#componentsContainer').html('<div class="text-muted text-center p-3"><i class="fas fa-spinner fa-spin"></i> 正在加载采集组件...</div>');
     
     $.ajax({
         url: window.apiCollectorsAllRoute,
@@ -181,38 +197,41 @@ function loadAllComponents() {
         },
         success: function(response) {
             if (response.success && response.data.length > 0) {
-                var html = '';
+                var html = '<div class="collectors-grid">';
                 response.data.forEach(function(collector) {
-                    html += '<div class="col-md-6 mb-2">';
-                    html += '<div class="form-check">';
-                    html += '<input class="form-check-input component-checkbox" type="checkbox" name="collector_ids[]" value="' + collector.id + '" id="component_' + collector.id + '">';
+                    var fullName = collector.name + ' (' + collector.code + ')';
+                    var nameTitle = fullName.length > 40 ? fullName : '';
+                    var descTitle = collector.description && collector.description.length > 60 ? collector.description : '';
+                    
+                    html += '<div class="collector-item">';
                     html += '<label class="form-check-label" for="component_' + collector.id + '">';
-                    html += '<strong>' + collector.name + '</strong> (' + collector.code + ')';
+                    html += '<input class="form-check-input component-checkbox" type="checkbox" name="collector_ids[]" value="' + collector.id + '" id="component_' + collector.id + '">';
+                    html += '<div class="collector-content">';
+                    html += '<span class="collector-name" ' + (nameTitle ? 'data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="' + nameTitle.replace(/"/g, '&quot;') + '"' : '') + '>' + fullName + '</span>';
                     if (collector.description) {
-                        html += '<br><small class="text-muted">' + collector.description + '</small>';
+                        html += '<div class="collector-description"><small class="text-muted" ' + (descTitle ? 'data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="' + descTitle.replace(/"/g, '&quot;') + '"' : '') + '>' + collector.description + '</small></div>';
                     }
+                    html += '</div>';
                     html += '</label>';
                     html += '</div>';
-                    html += '</div>';
                 });
+                html += '</div>';
                 $('#componentsContainer').html(html);
+                
+                // 初始化 tooltip
+                initCollectorTooltips();
                 
                 // 监听组件选择变化
                 $('.component-checkbox').change(function() {
                     updateSelectAllComponents();
                 });
                 
-                // 全选/取消全选功能
-                $('#selectAllComponents').change(function() {
-                    $('.component-checkbox').prop('checked', $(this).prop('checked'));
-                });
-                
             } else {
-                $('#componentsContainer').html('<div class="col-12"><div class="alert alert-warning">没有可用的采集组件</div></div>');
+                $('#componentsContainer').html('<div class="alert alert-warning mb-0">没有可用的采集组件</div>');
             }
         },
         error: function(xhr) {
-            $('#componentsContainer').html('<div class="col-12"><div class="alert alert-danger">加载采集组件失败：' + xhr.responseText + '</div></div>');
+            $('#componentsContainer').html('<div class="alert alert-danger mb-0">加载采集组件失败：' + xhr.responseText + '</div>');
         }
     });
 }
@@ -241,19 +260,29 @@ function loadCommonCollectors(serverIds) {
         },
         success: function(response) {
             if (response.success && response.data.length > 0) {
-                var html = '';
+                var html = '<div class="collectors-grid">';
                 response.data.forEach(function(collector) {
-                    html += '<div class="form-check">';
-                    html += '<input class="form-check-input collector-checkbox" type="checkbox" name="collector_ids[]" value="' + collector.id + '" id="collector_' + collector.id + '">';
+                    var fullName = collector.name + ' (' + collector.code + ')';
+                    var nameTitle = fullName.length > 40 ? fullName : '';
+                    var descTitle = collector.description && collector.description.length > 60 ? collector.description : '';
+                    
+                    html += '<div class="collector-item">';
                     html += '<label class="form-check-label" for="collector_' + collector.id + '">';
-                    html += collector.name + ' (' + collector.code + ')';
+                    html += '<input class="form-check-input collector-checkbox" type="checkbox" name="collector_ids[]" value="' + collector.id + '" id="collector_' + collector.id + '">';
+                    html += '<div class="collector-content">';
+                    html += '<span class="collector-name" ' + (nameTitle ? 'data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="' + nameTitle.replace(/"/g, '&quot;') + '"' : '') + '>' + fullName + '</span>';
                     if (collector.description) {
-                        html += '<br><small class="text-muted">' + collector.description + '</small>';
+                        html += '<div class="collector-description"><small class="text-muted" ' + (descTitle ? 'data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="' + descTitle.replace(/"/g, '&quot;') + '"' : '') + '>' + collector.description + '</small></div>';
                     }
+                    html += '</div>';
                     html += '</label>';
                     html += '</div>';
                 });
+                html += '</div>';
                 $('#collectorsList').html(html);
+                
+                // 初始化 tooltip
+                initCollectorTooltips();
                 
                 // 监听采集组件选择变化
                 $('.collector-checkbox').change(function() {
@@ -281,21 +310,32 @@ function loadCommonCollectors(serverIds) {
                             html += '</div>';
                             
                             html += '<div class="form-group">';
-                            html += '<label>可用采集组件：</label>';
+                            html += '<label class="font-weight-bold">可用采集组件：</label>';
+                            html += '<div class="collectors-grid">';
                             response.data.forEach(function(collector) {
-                                html += '<div class="form-check">';
-                                html += '<input class="form-check-input collector-checkbox" type="checkbox" name="collector_ids[]" value="' + collector.id + '" id="collector_' + collector.id + '">';
+                                var fullName = collector.name + ' (' + collector.code + ')';
+                                var nameTitle = fullName.length > 40 ? fullName : '';
+                                var descTitle = collector.description && collector.description.length > 60 ? collector.description : '';
+                                
+                                html += '<div class="collector-item">';
                                 html += '<label class="form-check-label" for="collector_' + collector.id + '">';
-                                html += collector.name + ' (' + collector.code + ')';
+                                html += '<input class="form-check-input collector-checkbox" type="checkbox" name="collector_ids[]" value="' + collector.id + '" id="collector_' + collector.id + '">';
+                                html += '<div class="collector-content">';
+                                html += '<span class="collector-name" ' + (nameTitle ? 'data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="' + nameTitle.replace(/"/g, '&quot;') + '"' : '') + '>' + fullName + '</span>';
                                 if (collector.description) {
-                                    html += '<br><small class="text-muted">' + collector.description + '</small>';
+                                    html += '<div class="collector-description"><small class="text-muted" ' + (descTitle ? 'data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="' + descTitle.replace(/"/g, '&quot;') + '"' : '') + '>' + collector.description + '</small></div>';
                                 }
+                                html += '</div>';
                                 html += '</label>';
                                 html += '</div>';
                             });
                             html += '</div>';
+                            html += '</div>';
                             
                             $('#collectorsList').append(html);
+                            
+                            // 初始化 tooltip
+                            initCollectorTooltips();
                             
                             // 监听采集组件选择变化
                             $('.collector-checkbox').change(function() {
@@ -320,6 +360,15 @@ function loadCommonCollectors(serverIds) {
 
 // 初始化服务器管理模块
 $(document).ready(function() {
+    // 模态框焦点管理 - 解决 aria-hidden 警告
+    $('.modal').on('hide.bs.modal', function () {
+        $(this).find(':focus').blur();
+    });
+    
+    $('.modal').on('shown.bs.modal', function () {
+        $(this).find('input, select, textarea, button').filter(':visible').first().focus();
+    });
+    
     // 全选/取消全选
     $('#selectAll').change(function() {
         $('.server-checkbox').prop('checked', $(this).prop('checked'));

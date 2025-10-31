@@ -3,7 +3,9 @@
 <?php $__env->startSection('content'); ?>
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>系统仪表盘</h1>
+        <h1>
+            <i class="fas fa-chart-line text-primary"></i> 系统仪表盘
+        </h1>
         <div>
             <span class="badge badge-pill badge-primary p-2">
                 <i class="fas fa-clock mr-1"></i> <?php echo e(date('Y-m-d H:i')); ?>
@@ -61,7 +63,7 @@
                         </div>
                     </div>
                     <div class="mt-4">
-                        <a href="<?php echo e(route('server-groups.index')); ?>" class="btn btn-success btn-sm btn-block">
+                        <a href="<?php echo e(route('server-groups.index')); ?>" class="btn btn-primary btn-sm btn-block">
                             <i class="fas fa-arrow-right mr-1"></i> 管理分组
                         </a>
                     </div>
@@ -85,7 +87,7 @@
                         </div>
                     </div>
                     <div class="mt-4">
-                        <a href="<?php echo e(route('collectors.index')); ?>" class="btn btn-info btn-sm btn-block">
+                        <a href="<?php echo e(route('collectors.index')); ?>" class="btn btn-primary btn-sm btn-block">
                             <i class="fas fa-arrow-right mr-1"></i> 管理组件
                         </a>
                     </div>
@@ -109,7 +111,7 @@
                         </div>
                     </div>
                     <div class="mt-4">
-                        <a href="<?php echo e(route('collection-tasks.index')); ?>" class="btn btn-warning btn-sm btn-block">
+                        <a href="<?php echo e(route('collection-tasks.index')); ?>" class="btn btn-primary btn-sm btn-block">
                             <i class="fas fa-arrow-right mr-1"></i> 管理任务
                         </a>
                     </div>

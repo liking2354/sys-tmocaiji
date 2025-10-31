@@ -99,21 +99,12 @@ const Layout = (function() {
     
     /**
      * 初始化导航栏
+     * 注意：导航栏下拉菜单现由 dropdown-manager.js 处理
+     * 本函数已禁用以避免冲突
      */
     function initNavbar() {
-        // 导航栏下拉菜单
-        $(document).off('click.navbar-dropdown').on('click.navbar-dropdown', '.navbar-nav .dropdown-toggle', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            $(this).next('.dropdown-menu').toggle();
-        });
-        
-        // 点击其他地方关闭下拉菜单
-        $(document).off('click.navbar-close').on('click.navbar-close', function(e) {
-            if (!$(e.target).closest('.navbar-nav').length) {
-                $('.dropdown-menu').hide();
-            }
-        });
+        // 导航栏下拉菜单处理已移至 dropdown-manager.js
+        console.log('[Layout] 导航栏初始化已禁用，由 DropdownManager 处理');
     }
     
     /**

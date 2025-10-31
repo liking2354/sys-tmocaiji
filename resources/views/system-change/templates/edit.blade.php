@@ -31,8 +31,8 @@
         <div class="row">
             <!-- 基本信息 -->
             <div class="col-md-4">
-                <div class="card card-primary shadow-sm">
-                    <div class="card-header bg-primary text-white">
+                <div class="card card-light-blue shadow-sm">
+                    <div class="card-header">
                         <h5 class="mb-0">
                             <i class="fas fa-info-circle"></i> 基本信息
                         </h5>
@@ -70,7 +70,7 @@
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-save"></i> 保存模板
                             </button>
-                            <button type="button" class="btn btn-outline-info" id="preview-btn">
+                            <button type="button" class="btn btn-secondaryinfo" id="preview-btn">
                                 <i class="fas fa-eye"></i> 预览配置
                             </button>
                         </div>
@@ -81,7 +81,7 @@
                 <div class="card mt-3">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h6 class="card-title mb-0">模板变量</h6>
-                        <button type="button" class="btn btn-sm btn-outline-primary" id="add-variable-btn">
+                        <button type="button" class="btn btn-sm btn-secondary" id="add-variable-btn">
                             <i class="fas fa-plus"></i> 添加变量
                         </button>
                     </div>
@@ -110,7 +110,7 @@
                                                        value="{{ $variable['description'] ?? '' }}">
                                             </div>
                                             <div class="col-2">
-                                                <button type="button" class="btn btn-sm btn-outline-danger remove-variable-btn w-100">
+                                                <button type="button" class="btn btn-sm btn-danger remove-variable-btn w-100">
                                                     <i class="fas fa-times"></i>
                                                 </button>
                                             </div>
@@ -132,10 +132,10 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0">配置项设置</h5>
                         <div>
-                            <button type="button" class="btn btn-sm btn-outline-success" id="add-config-item-btn">
+                            <button type="button" class="btn btn-sm btn-primary" id="add-config-item-btn">
                                 <i class="fas fa-plus"></i> 添加配置项
                             </button>
-                            <button type="button" class="btn btn-sm btn-outline-info" id="format-json-btn">
+                            <button type="button" class="btn btn-sm btn-primary" id="format-json-btn">
                                 <i class="fas fa-code"></i> 格式化JSON
                             </button>
                         </div>
@@ -224,7 +224,7 @@ $(document).ready(function() {
                                'placeholder="说明">' +
                     '</div>' +
                     '<div class="col-2">' +
-                        '<button type="button" class="btn btn-sm btn-outline-danger remove-variable-btn w-100">' +
+                        '<button type="button" class="btn btn-sm btn-danger remove-variable-btn w-100">' +
                             '<i class="fas fa-times"></i>' +
                         '</button>' +
                     '</div>' +
@@ -267,9 +267,9 @@ $(document).ready(function() {
         try {
             const config = JSON.parse($('#config_items').val());
             $('#config_items').val(JSON.stringify(config, null, 2));
-            $(this).removeClass('btn-outline-info').addClass('btn-success');
+            $(this).removeClass('btn-primary').addClass('btn-primary');
             setTimeout(() => {
-                $(this).removeClass('btn-success').addClass('btn-outline-info');
+                $(this).removeClass('btn-primary').addClass('btn-primary');
             }, 1000);
         } catch (e) {
             alert('JSON格式错误: ' + e.message);

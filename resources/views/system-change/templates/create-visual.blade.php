@@ -23,8 +23,8 @@
 
     <div class="row">
         <div class="col-12">
-            <div class="card card-primary shadow-sm">
-                <div class="card-header bg-primary text-white">
+            <div class="card card-light-blue shadow-sm">
+                <div class="card-header">
                     <h5 class="mb-0">
                         <i class="fas fa-edit"></i> 创建表单
                     </h5>
@@ -114,7 +114,7 @@
                                 </h5>
                                 <div class="card-tools">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-success dropdown-toggle" data-toggle="dropdown">
+                                        <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
                                             <i class="fas fa-plus mr-1"></i>
                                             添加规则
                                         </button>
@@ -153,7 +153,7 @@
                                     配置预览
                                 </h5>
                                 <div class="card-tools">
-                                    <button type="button" class="btn btn-sm btn-info" id="preview-btn">
+                                    <button type="button" class="btn btn-sm btn-primary" id="preview-btn">
                                         <i class="fas fa-sync mr-1"></i>
                                         刷新预览
                                     </button>
@@ -179,7 +179,7 @@
                             <i class="fas fa-save mr-1"></i>
                             保存模板
                         </button>
-                        <button type="button" class="btn btn-info ml-2" id="preview-config-btn">
+                        <button type="button" class="btn btn-primary ml-2" id="preview-config-btn">
                             <i class="fas fa-eye mr-1"></i>
                             预览配置
                         </button>
@@ -263,7 +263,7 @@
         <div class="variables-config-area">
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <label class="form-label required">变量配置</label>
-                <button type="button" class="btn btn-sm btn-outline-primary add-rule-variable">
+                <button type="button" class="btn btn-sm btn-secondary add-rule-variable">
                     <i class="fas fa-plus mr-1"></i>
                     添加变量
                 </button>
@@ -327,7 +327,7 @@
         <div class="variables-config-area">
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <label class="form-label required">变量配置</label>
-                <button type="button" class="btn btn-sm btn-outline-primary add-rule-variable">
+                <button type="button" class="btn btn-sm btn-secondary add-rule-variable">
                     <i class="fas fa-plus mr-1"></i>
                     添加变量
                 </button>

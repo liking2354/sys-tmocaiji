@@ -19,12 +19,12 @@
                 <i class="fas fa-arrow-left"></i> 返回列表
             </a>
             @if(in_array($task->status, ['draft', 'pending']))
-            <button type="button" class="btn btn-success" onclick="executeTaskWithProgress({{ $task->id }})">
+            <button type="button" class="btn btn-primary" onclick="executeTaskWithProgress({{ $task->id }})">
                 <i class="fas fa-play"></i> 执行任务
             </button>
             @endif
             @if($task->status === 'failed')
-            <button type="button" class="btn btn-warning" onclick="executeTaskWithProgress({{ $task->id }})">
+            <button type="button" class="btn btn-primary" onclick="executeTaskWithProgress({{ $task->id }})">
                 <i class="fas fa-redo"></i> 重新执行
             </button>
             @endif
@@ -38,8 +38,8 @@
     
     <div class="row">
         <div class="col-12">
-            <div class="card card-primary shadow-sm">
-                <div class="card-header bg-primary text-white">
+            <div class="card card-light-blue shadow-sm">
+                <div class="card-header">
                     <h5 class="mb-0">
                         <i class="fas fa-info-circle"></i> 基本信息
                     </h5>
@@ -186,10 +186,10 @@
                                         $hasRevertableDetails = $task->taskDetails->where('status', 'completed')->where('is_reverted', false)->whereNotNull('original_content')->count() > 0;
                                     @endphp
                                     @if($hasRevertableDetails)
-                                        <button type="button" class="btn btn-warning btn-sm" onclick="revertAllTask({{ $task->id }})">
+                                        <button type="button" class="btn btn-primary btn-sm" onclick="revertAllTask({{ $task->id }})">
                                             <i class="fas fa-undo"></i> 还原整个任务
                                         </button>
-                                        <button type="button" class="btn btn-outline-warning btn-sm" onclick="batchRevertSelected()" id="batchRevertBtn" style="display: none;">
+                                        <button type="button" class="btn btn-secondarywarning btn-sm" onclick="batchRevertSelected()" id="batchRevertBtn" style="display: none;">
                                             <i class="fas fa-undo"></i> 批量还原选中
                                         </button>
                                     @endif
@@ -296,7 +296,7 @@
                                             </td>
                                             <td>
                                                 @if($detail->execution_log)
-                                                    <button type="button" class="btn btn-sm btn-outline-info" 
+                                                    <button type="button" class="btn btn-sm btn-primary" 
                                                             data-toggle="modal" 
                                                             data-target="#resultModal{{ $detail->id }}">
                                                         查看日志
@@ -305,7 +305,7 @@
                                                     <span class="text-success">执行成功</span>
                                                 @elseif($detail->status === 'failed')
                                                     @if($detail->error_message)
-                                                        <button type="button" class="btn btn-sm btn-outline-danger" 
+                                                        <button type="button" class="btn btn-sm btn-danger" 
                                                                 data-toggle="modal" 
                                                                 data-target="#resultModal{{ $detail->id }}">
                                                             查看错误
@@ -319,13 +319,13 @@
                                             </td>
                                             <td>
                                                 @if($detail->canRevert())
-                                                    <button type="button" class="btn btn-sm btn-warning" 
+                                                    <button type="button" class="btn btn-sm btn-primary" 
                                                             onclick="revertTaskDetail({{ $detail->id }})"
                                                             title="还原此变更">
                                                         <i class="fas fa-undo"></i> 还原
                                                     </button>
                                                 @elseif($detail->is_reverted && $detail->revert_log)
-                                                    <button type="button" class="btn btn-sm btn-outline-info" 
+                                                    <button type="button" class="btn btn-sm btn-primary" 
                                                             data-toggle="modal" 
                                                             data-target="#revertLogModal{{ $detail->id }}"
                                                             title="查看还原日志">

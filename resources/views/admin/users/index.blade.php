@@ -6,7 +6,7 @@
     <div class="row mb-4">
         <div class="col-12">
             <h2 class="mb-1">
-                <i class="fas fa-users mr-2"></i>用户管理
+                <i class="fas fa-users text-primary mr-2"></i>用户管理
             </h2>
             <p class="text-muted">管理系统用户账户和权限</p>
         </div>
@@ -25,8 +25,8 @@
             @endif
 
             <!-- 用户列表卡片 -->
-            <div class="card card-primary shadow-sm">
-                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <div class="card card-light-blue shadow-sm">
+                <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">
                         <i class="fas fa-list mr-2"></i>用户列表
                     </h5>
@@ -82,16 +82,12 @@
                                     </td>
                                     <td>
                                         <div class="btn-group btn-group-sm" role="group">
-                                            <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-info" title="编辑">
+                                            <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-primary" title="编辑">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="display: inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger" title="删除" onclick="return confirm('确定要删除该用户吗？')">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </form>
+                                            <button type="button" class="btn btn-danger" onclick="deleteUser({{ $user->id }})" title="删除">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -101,10 +97,8 @@
                     </div>
 
                     <!-- 分页 -->
-                    <div class="card-footer bg-light">
-                        <div class="d-flex justify-content-center">
-                            {{ $users->links() }}
-                        </div>
+                    <div class="card-footer bg-light d-flex justify-content-center">
+                        {{ $users->links() }}
                     </div>
                 </div>
             </div>
@@ -112,3 +106,7 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script src="{{ asset('assets/js/common/delete-handler.js') }}"></script>
+@endpush

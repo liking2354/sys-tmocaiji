@@ -65,7 +65,7 @@
                                 <i class="fas fa-sign-in-alt mr-2"></i>立即登录
                             </a>
                         @endauth
-                        <a href="/test/cloud-resources" class="btn btn-outline-light btn-lg">
+                        <a href="/test/cloud-resources" class="btn btn-secondarylight btn-lg">
                             <i class="fas fa-play mr-2"></i>功能演示
                         </a>
                     </div>

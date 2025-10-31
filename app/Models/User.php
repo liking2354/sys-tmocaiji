@@ -21,6 +21,8 @@ class User extends Authenticatable
         'password',
         'status',
         'last_login_time',
+        'theme_color',
+        'sidebar_style',
     ];
 
     /**
