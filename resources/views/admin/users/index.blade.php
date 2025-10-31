@@ -1,64 +1,110 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span>用户管理</span>
-                        <a href="{{ route('admin.users.create') }}" class="btn btn-primary btn-sm">添加用户</a>
-                    </div>
+<div class="container-fluid">
+    <!-- 页面标题 -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="mb-1">
+                <i class="fas fa-users mr-2"></i>用户管理
+            </h2>
+            <p class="text-muted">管理系统用户账户和权限</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <!-- 成功提示 -->
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                    <i class="fas fa-check-circle mr-2"></i>{{ session('success') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
+            <!-- 用户列表卡片 -->
+            <div class="card card-primary shadow-sm">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="fas fa-list mr-2"></i>用户列表
+                    </h5>
+                    <a href="{{ route('admin.users.create') }}" class="btn btn-light btn-sm">
+                        <i class="fas fa-plus mr-1"></i>添加用户
+                    </a>
                 </div>
 
-                <div class="card-body">
-                    @if (session('success'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>用户名</th>
-                                <th>邮箱</th>
-                                <th>状态</th>
-                                <th>角色</th>
-                                <th>最后登录时间</th>
-                                <th>操作</th>
-                            </tr>
-                        </thead>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 5%;">ID</th>
+                                    <th style="width: 15%;">用户名</th>
+                                    <th style="width: 20%;">邮箱</th>
+                                    <th style="width: 10%;">状态</th>
+                                    <th style="width: 15%;">角色</th>
+                                    <th style="width: 20%;">最后登录时间</th>
+                                    <th style="width: 15%;">操作</th>
+                                </tr>
+                            </thead>
                         <tbody>
                             @foreach ($users as $user)
                                 <tr>
                                     <td>{{ $user->id }}</td>
-                                    <td>{{ $user->username }}</td>
+                                    <td>
+                                        <strong>{{ $user->username }}</strong>
+                                    </td>
                                     <td>{{ $user->email }}</td>
-                                    <td>{{ $user->status ? '启用' : '禁用' }}</td>
+                                    <td>
+                                        @if($user->status)
+                                            <span class="badge badge-success">
+                                                <i class="fas fa-check-circle mr-1"></i>启用
+                                            </span>
+                                        @else
+                                            <span class="badge badge-secondary">
+                                                <i class="fas fa-times-circle mr-1"></i>禁用
+                                            </span>
+                                        @endif
+                                    </td>
                                     <td>
                                         @foreach ($user->roles as $role)
-                                            <span class="badge bg-primary">{{ $role->name }}</span>
+                                            <span class="badge badge-primary">{{ $role->name }}</span>
                                         @endforeach
                                     </td>
-                                    <td>{{ $user->last_login_time ? $user->last_login_time->format('Y-m-d H:i:s') : '未登录' }}</td>
                                     <td>
-                                        <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm btn-info">编辑</a>
-                                        <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="display: inline-block;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('确定要删除该用户吗？')">删除</button>
-                                        </form>
+                                        @if($user->last_login_time)
+                                            <small>{{ $user->last_login_time->format('Y-m-d H:i') }}</small>
+                                        @else
+                                            <small class="text-muted">未登录</small>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-info" title="编辑">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="display: inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger" title="删除" onclick="return confirm('确定要删除该用户吗？')">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+                    </div>
 
-                    <div class="d-flex justify-content-center">
-                        {{ $users->links() }}
+                    <!-- 分页 -->
+                    <div class="card-footer bg-light">
+                        <div class="d-flex justify-content-center">
+                            {{ $users->links() }}
+                        </div>
                     </div>
                 </div>
             </div>

@@ -4,20 +4,22 @@
 
 @section('content')
 <div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>数据清理</h1>
-        <a href="{{ route('dashboard') }}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> 返回仪表盘
-        </a>
-    </div>
-    
-    <!-- 数据统计部分 - 第一层 -->
+    <!-- 页面标题 -->
     <div class="row mb-4">
         <div class="col-12">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h2 class="mb-1">
+                <i class="fas fa-trash-alt mr-2"></i>数据清理
+            </h2>
+            <p class="text-muted">清理过期或不需要的数据，释放存储空间</p>
+        </div>
+    </div>
+    
+    <!-- 数据统计部分 -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card card-info shadow-sm">
+                <div class="card-header bg-info text-white">
                     <h5 class="mb-0"><i class="fas fa-chart-pie mr-2"></i>数据统计</h5>
-                    <span class="badge badge-light">实时数据</span>
                 </div>
                 <div class="card-body py-4">
                     <div class="row">
@@ -54,17 +56,14 @@
         </div>
     </div>
     
-    <!-- 清理条件部分 - 第二层 -->
+    <!-- 清理条件部分 -->
     <div class="row">
         <div class="col-12">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <div class="card card-warning shadow-sm">
+                <div class="card-header bg-warning text-white">
                     <h5 class="mb-0"><i class="fas fa-filter mr-2"></i>清理条件</h5>
-                    <button class="btn btn-sm btn-light" type="button" data-toggle="collapse" data-target="#cleanupConditions" aria-expanded="true">
-                        <i class="fas fa-chevron-up"></i>
-                    </button>
                 </div>
-                <div class="card-body collapse show" id="cleanupConditions">
+                <div class="card-body" id="cleanupConditions">
                     <form action="{{ route('data.cleanup') }}" method="POST" id="cleanupForm">
                         @csrf
                         
@@ -227,10 +226,12 @@
 <!-- 确认模态框 -->
 <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title" id="confirmModalLabel">确认清理数据</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <div class="modal-content shadow-lg">
+            <div class="modal-header bg-danger text-white border-0">
+                <h5 class="modal-title" id="confirmModalLabel">
+                    <i class="fas fa-exclamation-circle mr-2"></i>确认清理数据
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>

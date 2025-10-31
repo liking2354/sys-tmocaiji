@@ -4,33 +4,27 @@
 
 @section('content')
 <div class="container-fluid">
+    <!-- 页面标题 -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="mb-1">
+                <i class="fas fa-tasks mr-2"></i>系统变更任务
+            </h2>
+            <p class="text-muted">管理和执行系统配置变更任务</p>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="fas fa-tasks mr-2"></i>
-                        配置任务
-                    </h3>
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-danger btn-sm mr-2" id="batchDeleteBtn" style="display: none;" onclick="batchDelete()">
-                            <i class="fas fa-trash mr-1"></i>
-                            批量删除
-                        </button>
-                        <button type="button" class="btn btn-info btn-sm mr-2" onclick="refreshProgress()">
-                            <i class="fas fa-sync-alt mr-1"></i>
-                            刷新进度
-                        </button>
-                        <a href="{{ route('system-change.tasks.create') }}" class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus mr-1"></i>
-                            创建任务
-                        </a>
-                    </div>
+            <!-- 筛选卡片 -->
+            <div class="card card-warning shadow-sm mb-4">
+                <div class="card-header bg-warning text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-filter mr-2"></i>筛选条件
+                    </h5>
                 </div>
-
                 <div class="card-body">
-                    <!-- 搜索筛选 -->
-                    <form method="GET" class="mb-3">
+                    <form method="GET" class="mb-0">
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="input-group">
@@ -65,32 +59,55 @@
                                 </select>
                             </div>
                             <div class="col-md-2">
-                                <a href="{{ route('system-change.tasks.index') }}" class="btn btn-default">
-                                    <i class="fas fa-undo mr-1"></i>
-                                    重置
+                                <a href="{{ route('system-change.tasks.index') }}" class="btn btn-outline-secondary btn-block">
+                                    <i class="fas fa-undo mr-1"></i>重置
                                 </a>
+                            </div>
+                            <div class="col-md-3 text-right">
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <button type="button" class="btn btn-danger" id="batchDeleteBtn" style="display: none;" onclick="batchDelete()" title="批量删除">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-info" onclick="refreshProgress()" title="刷新进度">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                    <a href="{{ route('system-change.tasks.create') }}" class="btn btn-primary" title="创建任务">
+                                        <i class="fas fa-plus"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </form>
+                </div>
+            </div>
 
+            <!-- 任务列表卡片 -->
+            <div class="card card-primary shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-list mr-2"></i>任务列表
+                    </h5>
+                </div>
+
+                <div class="card-body p-0">
                     <!-- 任务列表 -->
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped">
-                            <thead>
+                        <table class="table table-hover table-striped mb-0">
+                            <thead class="table-light">
                                 <tr>
-                                    <th width="3%">
+                                    <th style="width: 3%;">
                                         <input type="checkbox" id="selectAll" onchange="toggleSelectAll()">
                                     </th>
-                                    <th width="5%">ID</th>
+                                    <th style="width: 5%;">ID</th>
                                     <th>任务名称</th>
-                                    <th width="12%">服务器分组</th>
-                                    <th width="8%">服务器数</th>
-                                    <th width="8%">模板数</th>
-                                    <th width="8%">执行进度</th>
-                                    <th width="8%">状态</th>
-                                    <th width="10%">执行时间</th>
-                                    <th width="12%">创建时间</th>
-                                    <th width="15%">操作</th>
+                                    <th style="width: 12%;">服务器分组</th>
+                                    <th style="width: 8%;">服务器数</th>
+                                    <th style="width: 8%;">模板数</th>
+                                    <th style="width: 8%;">执行进度</th>
+                                    <th style="width: 8%;">状态</th>
+                                    <th style="width: 10%;">执行时间</th>
+                                    <th style="width: 12%;">创建时间</th>
+                                    <th style="width: 15%;">操作</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -143,43 +160,43 @@
                                     </td>
                                     <td>{{ $task->created_at->format('Y-m-d H:i') }}</td>
                                     <td>
-                                        <div class="btn-group-vertical btn-group-sm">
+                                        <div class="btn-group btn-group-sm" role="group">
                                             <a href="{{ route('system-change.tasks.show', $task) }}" 
-                                               class="btn btn-info btn-xs mb-1" title="查看详情">
-                                                <i class="fas fa-eye mr-1"></i>详情
+                                               class="btn btn-info" title="查看详情">
+                                                <i class="fas fa-eye"></i>
                                             </a>
                                             
                                             @if($task->canExecute())
-                                                <button type="button" class="btn btn-success btn-xs mb-1" 
+                                                <button type="button" class="btn btn-success" 
                                                         onclick="executeTask({{ $task->id }})" title="执行任务">
-                                                    <i class="fas fa-play mr-1"></i>执行
+                                                    <i class="fas fa-play"></i>
                                                 </button>
                                             @endif
                                             
                                             @if($task->canPause())
-                                                <button type="button" class="btn btn-warning btn-xs mb-1" 
+                                                <button type="button" class="btn btn-warning" 
                                                         onclick="pauseTask({{ $task->id }})" title="暂停任务">
-                                                    <i class="fas fa-pause mr-1"></i>暂停
+                                                    <i class="fas fa-pause"></i>
                                                 </button>
                                             @endif
                                             
                                             @if($task->canCancel())
-                                                <button type="button" class="btn btn-danger btn-xs mb-1" 
+                                                <button type="button" class="btn btn-danger" 
                                                         onclick="cancelTask({{ $task->id }})" title="取消任务">
-                                                    <i class="fas fa-stop mr-1"></i>取消
+                                                    <i class="fas fa-stop"></i>
                                                 </button>
                                             @endif
                                             
                                             @if($task->status === 'pending')
                                                 <a href="{{ route('system-change.tasks.edit', $task) }}" 
-                                                   class="btn btn-warning btn-xs mb-1" title="编辑">
-                                                    <i class="fas fa-edit mr-1"></i>编辑
+                                                   class="btn btn-warning" title="编辑">
+                                                    <i class="fas fa-edit"></i>
                                                 </a>
                                             @endif
                                             
-                                            <button type="button" class="btn btn-secondary btn-xs mb-1" 
+                                            <button type="button" class="btn btn-secondary" 
                                                     onclick="duplicateTask({{ $task->id }})" title="复制任务">
-                                                <i class="fas fa-copy mr-1"></i>复制
+                                                <i class="fas fa-copy"></i>
                                             </button>
                                             
                                             @if($task->status === 'pending')
@@ -188,8 +205,8 @@
                                                       onsubmit="return confirm('确定要删除这个任务吗？')">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-xs" title="删除">
-                                                        <i class="fas fa-trash mr-1"></i>删除
+                                                    <button type="submit" class="btn btn-danger" title="删除">
+                                                        <i class="fas fa-trash"></i>
                                                     </button>
                                                 </form>
                                             @endif
@@ -208,9 +225,13 @@
                         </table>
                     </div>
 
+                    </div>
+
                     <!-- 分页 -->
-                    <div class="d-flex justify-content-center">
-                        {{ $tasks->appends(request()->query())->links() }}
+                    <div class="card-footer bg-light">
+                        <div class="d-flex justify-content-center">
+                            {{ $tasks->appends(request()->query())->links() }}
+                        </div>
                     </div>
                 </div>
             </div>
