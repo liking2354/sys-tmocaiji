@@ -182,9 +182,17 @@ function getArrayPreview($array, $maxItems = 3) {
 
 @section('content')
 <div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>服务器详情</h1>
-        <div>
+    <!-- 页面标题 -->
+    <div class="mb-4">
+        <h1 class="mb-1">
+            <i class="fas fa-server text-primary"></i> {{ $server->name }}
+        </h1>
+        <p class="text-muted">查看和管理服务器详情信息</p>
+    </div>
+    
+    <!-- 操作按钮 -->
+    <div class="mb-4">
+        <div class="d-flex gap-2 flex-wrap">
             <a href="{{ route('servers.edit', $server) }}" class="btn btn-warning">
                 <i class="fas fa-edit"></i> 编辑服务器
             </a>
@@ -195,9 +203,11 @@ function getArrayPreview($array, $maxItems = 3) {
     </div>
     
     <!-- 第一层：服务器基本信息 -->
-    <div class="card mb-4">
+    <div class="card card-primary shadow-sm mb-4">
         <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">基本信息</h5>
+            <h5 class="mb-0">
+                <i class="fas fa-info-circle"></i> 基本信息
+            </h5>
         </div>
         <div class="card-body">
             <div class="row">

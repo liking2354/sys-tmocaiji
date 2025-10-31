@@ -13,10 +13,17 @@
     </div>
 @else
 <div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>采集任务详情</h1>
-        <div>
-            <!-- 任务控制按钮 -->
+    <!-- 页面标题 -->
+    <div class="mb-4">
+        <h1 class="mb-1">
+            <i class="fas fa-tasks text-primary"></i> {{ $task->name ?? '采集任务详情' }}
+        </h1>
+        <p class="text-muted">查看和管理采集任务执行情况</p>
+    </div>
+    
+    <!-- 任务控制按钮 -->
+    <div class="mb-4">
+        <div class="d-flex gap-2 flex-wrap">
             @if ($task->status == 0)
                 <button type="button" class="btn btn-success" onclick="executeTask('{{ $task->id }}')">
                     <i class="fas fa-play"></i> 开始执行
@@ -50,12 +57,14 @@
     </div>
     
     <!-- 任务基本信息 -->
-    <div class="card mb-4">
+    <div class="card card-primary shadow-sm mb-4">
         <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">
-                <i class="fas fa-info-circle"></i> 任务基本信息
-                <span class="float-right" id="lastUpdateTime">最后更新: {{ now()->format('H:i:s') }}</span>
-            </h5>
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-info-circle"></i> 任务基本信息
+                </h5>
+                <span id="lastUpdateTime" class="badge badge-light">最后更新: {{ now()->format('H:i:s') }}</span>
+            </div>
         </div>
         <div class="card-body">
             <div class="row">

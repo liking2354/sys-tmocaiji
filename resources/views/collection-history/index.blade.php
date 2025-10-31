@@ -4,12 +4,21 @@
 
 @section('content')
 <div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>采集历史记录</h1>
+    <!-- 页面标题 -->
+    <div class="mb-4">
+        <h1 class="mb-1">
+            <i class="fas fa-history text-info"></i> 采集历史记录
+        </h1>
+        <p class="text-muted">查看所有采集任务的执行历史和结果</p>
     </div>
     
     <!-- 筛选条件 -->
-    <div class="card mb-4">
+    <div class="card card-warning shadow-sm mb-4">
+        <div class="card-header bg-warning text-dark">
+            <h5 class="mb-0">
+                <i class="fas fa-filter"></i> 筛选条件
+            </h5>
+        </div>
         <div class="card-body">
             <form action="{{ route('collection-history.index') }}" method="GET" class="form-row align-items-center">
                 <div class="col-md-2 mb-2">
@@ -69,44 +78,65 @@
     <!-- 统计信息 -->
     <div class="row mb-4">
         <div class="col-md-3">
-            <div class="card bg-primary text-white">
+            <div class="card card-primary shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-bar"></i> 总采集次数
+                    </h5>
+                </div>
                 <div class="card-body text-center">
-                    <h4>{{ $statistics['total'] }}</h4>
-                    <p class="mb-0">总采集次数</p>
+                    <h3 class="text-primary">{{ $statistics['total'] }}</h3>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card bg-success text-white">
+            <div class="card card-success shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-check-circle"></i> 成功次数
+                    </h5>
+                </div>
                 <div class="card-body text-center">
-                    <h4>{{ $statistics['success'] }}</h4>
-                    <p class="mb-0">成功次数</p>
+                    <h3 class="text-success">{{ $statistics['success'] }}</h3>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card bg-danger text-white">
+            <div class="card card-danger shadow-sm">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-times-circle"></i> 失败次数
+                    </h5>
+                </div>
                 <div class="card-body text-center">
-                    <h4>{{ $statistics['failed'] }}</h4>
-                    <p class="mb-0">失败次数</p>
+                    <h3 class="text-danger">{{ $statistics['failed'] }}</h3>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card bg-info text-white">
+            <div class="card card-info shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-percentage"></i> 成功率
+                    </h5>
+                </div>
                 <div class="card-body text-center">
-                    <h4>{{ number_format($statistics['success_rate'], 1) }}%</h4>
-                    <p class="mb-0">成功率</p>
+                    <h3 class="text-info">{{ number_format($statistics['success_rate'], 1) }}%</h3>
                 </div>
             </div>
         </div>
     </div>
     
     <!-- 历史记录列表 -->
-    <div class="card">
-        <div class="card-body">
+    <div class="card card-info shadow-sm">
+        <div class="card-header bg-info text-white">
+            <h5 class="mb-0">
+                <i class="fas fa-list"></i> 历史记录列表
+            </h5>
+        </div>
+        <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-hover">
+                <table class="table table-striped table-light table-hover mb-0">
                     <thead>
                         <tr>
                             <th>ID</th>

@@ -63,8 +63,8 @@
     </div>
     
     <!-- 搜索和筛选 -->
-    <div class="card card-primary mb-4 shadow-sm">
-        <div class="card-header bg-primary text-white">
+    <div class="card card-warning mb-4 shadow-sm">
+        <div class="card-header bg-warning text-dark">
             <h5 class="mb-0">
                 <i class="fas fa-filter"></i> 搜索和筛选
             </h5>
@@ -93,7 +93,7 @@
                     </select>
                 </div>
                 <div class="col-md-2 mb-2">
-                    <button type="submit" class="btn btn-primary btn-sm btn-block">
+                    <button type="submit" class="btn btn-warning btn-sm btn-block">
                         <i class="fas fa-search"></i> 搜索
                     </button>
                 </div>
@@ -116,8 +116,8 @@
         <div class="card-body p-0">
                 @csrf
                 <div class="table-responsive">
-                    <table class="table table-hover table-striped mb-0">
-                        <thead class="table-light">
+                    <table class="table table-striped table-light table-hover mb-0">
+                        <thead>
                             <tr>
                                 <th style="width: 40px;">
                                     <div class="form-check">

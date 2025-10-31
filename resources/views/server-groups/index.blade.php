@@ -4,10 +4,18 @@
 
 @section('content')
 <div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>服务器分组管理</h1>
-        <div>
-            <button type="button" class="btn btn-danger me-2" id="batch-delete-btn" disabled>
+    <!-- 页面标题 -->
+    <div class="mb-4">
+        <h1 class="mb-1">
+            <i class="fas fa-layer-group text-primary"></i> 服务器分组管理
+        </h1>
+        <p class="text-muted">管理和组织服务器分组，便于批量操作和配置变更</p>
+    </div>
+    
+    <!-- 操作按钮 -->
+    <div class="mb-4">
+        <div class="d-flex gap-2 flex-wrap">
+            <button type="button" class="btn btn-danger" id="batch-delete-btn" disabled>
                 <i class="fas fa-trash"></i> 批量删除
             </button>
             <a href="{{ route('server-groups.create') }}" class="btn btn-primary">
@@ -16,15 +24,21 @@
         </div>
     </div>
     
-    <div class="card mb-4">
+    <!-- 搜索和筛选卡片 -->
+    <div class="card card-warning mb-4 shadow-sm">
+        <div class="card-header bg-warning text-dark">
+            <h5 class="mb-0">
+                <i class="fas fa-filter"></i> 搜索和筛选
+            </h5>
+        </div>
         <div class="card-body">
             <form action="{{ route('server-groups.index') }}" method="GET" class="row align-items-end">
                 <div class="col-md-4 mb-2">
-                    <label for="name">分组名称</label>
+                    <label for="name" class="font-weight-bold">分组名称</label>
                     <input type="text" name="name" id="name" class="form-control" value="{{ request('name') }}" placeholder="输入分组名称搜索">
                 </div>
                 <div class="col-md-4 mb-2">
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-warning">
                         <i class="fas fa-search"></i> 搜索
                     </button>
                     <a href="{{ route('server-groups.index') }}" class="btn btn-secondary">
@@ -35,15 +49,21 @@
         </div>
     </div>
     
-    <div class="card">
+    <!-- 分组列表卡片 -->
+    <div class="card card-primary shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+                <i class="fas fa-list"></i> 分组列表
+            </h5>
+        </div>
         <div class="card-body">
             <form id="batch-form" action="{{ route('server-groups.batch-delete') }}" method="POST">
                 @csrf
                 <div class="table-responsive">
-                    <table class="table table-hover">
+                    <table class="table table-striped table-light table-hover">
                         <thead>
                             <tr>
-                                <th>
+                                <th style="width: 40px;">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="select-all">
                                     </div>
@@ -56,49 +76,52 @@
                                 <th>操作</th>
                             </tr>
                         </thead>
-                    <tbody>
-                        @forelse ($groups as $group)
-                            <tr>
-                                <td>
-                                    <div class="form-check">
-                                        <input class="form-check-input group-checkbox" type="checkbox" name="group_ids[]" value="{{ $group->id }}">
-                                    </div>
-                                </td>
-                                <td>{{ $group->id }}</td>
-                                <td>{{ $group->name }}</td>
-                                <td>{{ $group->description }}</td>
-                                <td>{{ $group->servers_count }}</td>
-                                <td>{{ $group->created_at->format('Y-m-d H:i') }}</td>
-                                <td>
-                                    <div class="btn-group" role="group">
-                                        <a href="{{ route('server-groups.show', $group) }}" class="btn btn-sm btn-info">
-                                            <i class="fas fa-eye"></i> 查看
-                                        </a>
-                                        <a href="{{ route('server-groups.edit', $group) }}" class="btn btn-sm btn-warning">
-                                            <i class="fas fa-edit"></i> 编辑
-                                        </a>
-                                        <button type="button" class="btn btn-sm btn-success" 
-                                                onclick="createChangeTask({{ $group->id }}, {{ json_encode($group->name) }})"
-                                                title="创建配置变更任务">
-                                            <i class="fas fa-cogs"></i> 配置变更
-                                        </button>
-                                        <form action="{{ route('server-groups.destroy', $group) }}" method="POST" class="d-inline" onsubmit="return confirm('确定要删除该分组吗？')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger">
-                                                <i class="fas fa-trash"></i> 删除
+                        <tbody>
+                            @forelse ($groups as $group)
+                                <tr>
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input group-checkbox" type="checkbox" name="group_ids[]" value="{{ $group->id }}">
+                                        </div>
+                                    </td>
+                                    <td>{{ $group->id }}</td>
+                                    <td><strong>{{ $group->name }}</strong></td>
+                                    <td>{{ $group->description ?: '-' }}</td>
+                                    <td><span class="badge badge-info">{{ $group->servers_count }}</span></td>
+                                    <td>{{ $group->created_at->format('Y-m-d H:i') }}</td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <a href="{{ route('server-groups.show', $group) }}" class="btn btn-info" title="查看">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{{ route('server-groups.edit', $group) }}" class="btn btn-warning" title="编辑">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-success" 
+                                                    onclick="createChangeTask({{ $group->id }}, {{ json_encode($group->name) }})"
+                                                    title="创建配置变更任务">
+                                                <i class="fas fa-cogs"></i>
                                             </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="7" class="text-center py-3">暂无服务器分组</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                                            <form action="{{ route('server-groups.destroy', $group) }}" method="POST" class="d-inline" onsubmit="return confirm('确定要删除该分组吗？')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger" title="删除">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="7" class="text-center py-4">
+                                        <i class="fas fa-inbox text-muted" style="font-size: 2rem;"></i>
+                                        <p class="text-muted mt-2">暂无服务器分组</p>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
                 
                 <div class="d-flex justify-content-center mt-3">

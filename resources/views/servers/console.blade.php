@@ -4,19 +4,29 @@
 
 @section('content')
 <div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>服务器控制台 - {{ $server->name }}</h1>
-        <div>
+    <!-- 页面标题 -->
+    <div class="mb-4">
+        <h1 class="mb-1">
+            <i class="fas fa-terminal text-primary"></i> 服务器控制台
+        </h1>
+        <p class="text-muted">远程执行命令和管理服务器</p>
+    </div>
+    
+    <!-- 操作按钮 -->
+    <div class="mb-4">
+        <div class="d-flex gap-2 flex-wrap">
             <a href="{{ route('servers.show', $server) }}" class="btn btn-secondary">
                 <i class="fas fa-arrow-left"></i> 返回服务器详情
             </a>
         </div>
     </div>
     
-    <div class="card">
+    <div class="card card-primary shadow-sm">
         <div class="card-header bg-dark text-white">
             <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0"><i class="fas fa-terminal"></i> {{ $server->username }} {{ $server->ip }}</h5>
+                <h5 class="mb-0">
+                    <i class="fas fa-terminal"></i> {{ $server->username }}@{{ $server->ip }}
+                </h5>
                 <span class="badge badge-light">SSH端口: {{ $server->port }}</span>
             </div>
         </div>

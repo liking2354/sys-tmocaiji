@@ -4,9 +4,17 @@
 
 @section('content')
 <div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>采集组件详情</h1>
-        <div>
+    <!-- 页面标题 -->
+    <div class="mb-4">
+        <h1 class="mb-1">
+            <i class="fas fa-cube text-info"></i> {{ $collector->name }}
+        </h1>
+        <p class="text-muted">查看和管理采集组件详情</p>
+    </div>
+    
+    <!-- 操作按钮 -->
+    <div class="mb-4">
+        <div class="d-flex gap-2 flex-wrap">
             <a href="{{ route('collectors.edit', $collector) }}" class="btn btn-warning">
                 <i class="fas fa-edit"></i> 编辑组件
             </a>
@@ -18,9 +26,11 @@
     
     <div class="row">
         <div class="col-md-4">
-            <div class="card mb-4">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">基本信息</h5>
+            <div class="card card-info shadow-sm mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle"></i> 基本信息
+                    </h5>
                 </div>
                 <div class="card-body">
                     <table class="table table-borderless">
@@ -76,9 +86,11 @@
                 </div>
             </div>
             
-            <div class="card mb-4">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">部署信息</h5>
+            <div class="card card-warning shadow-sm mb-4">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">
+                        <i class="fas fa-cogs"></i> 部署信息
+                    </h5>
                 </div>
                 <div class="card-body">
                     @if ($collector->deployment_config)
@@ -118,10 +130,12 @@
                 </div>
             </div>
             
-            <div class="card">
-                <div class="card-header bg-primary text-white">
+            <div class="card card-success shadow-sm">
+                <div class="card-header bg-success text-white">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">关联的服务器</h5>
+                        <h5 class="mb-0">
+                            <i class="fas fa-server"></i> 关联的服务器
+                        </h5>
                         <span class="badge badge-light">{{ $installedServers->count() }}</span>
                     </div>
                 </div>
@@ -159,9 +173,11 @@
         </div>
         
         <div class="col-md-8">
-            <div class="card">
+            <div class="card card-primary shadow-sm">
                 <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">{{ $collector->isScriptType() ? '采集脚本内容' : '程序文件信息' }}</h5>
+                    <h5 class="mb-0">
+                        <i class="fas fa-code"></i> {{ $collector->isScriptType() ? '采集脚本内容' : '程序文件信息' }}
+                    </h5>
                 </div>
                 <div class="card-body">
                     @if ($collector->isScriptType())
@@ -186,9 +202,11 @@
                 </div>
             </div>
             
-            <div class="card mt-4">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">组件使用说明</h5>
+            <div class="card card-info shadow-sm mt-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-book"></i> 组件使用说明
+                    </h5>
                 </div>
                 <div class="card-body">
                     <div class="alert alert-info">

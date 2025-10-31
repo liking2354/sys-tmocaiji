@@ -4,14 +4,29 @@
 
 @section('content')
 <div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>编辑采集组件</h1>
-        <a href="{{ route('collectors.index') }}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> 返回组件列表
-        </a>
+    <!-- 页面标题 -->
+    <div class="mb-4">
+        <h1 class="mb-1">
+            <i class="fas fa-cube text-info"></i> 编辑采集组件
+        </h1>
+        <p class="text-muted">修改采集组件的配置和脚本内容</p>
     </div>
     
-    <div class="card">
+    <!-- 操作按钮 -->
+    <div class="mb-4">
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="{{ route('collectors.index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> 返回组件列表
+            </a>
+        </div>
+    </div>
+    
+    <div class="card card-info shadow-sm">
+        <div class="card-header bg-info text-white">
+            <h5 class="mb-0">
+                <i class="fas fa-edit"></i> 编辑表单
+            </h5>
+        </div>
         <div class="card-body">
             <form action="{{ route('collectors.update', $collector) }}" method="POST" enctype="multipart/form-data">
                 @csrf

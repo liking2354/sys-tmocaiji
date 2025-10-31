@@ -4,14 +4,24 @@
 
 @section('content')
 <div class="container-fluid">
+    <!-- 页面标题 -->
+    <div class="mb-4">
+        <h1 class="mb-1">
+            <i class="fas fa-file-export text-primary"></i> 导出确认
+        </h1>
+        <p class="text-muted">选择要导出的服务器和采集组件数据</p>
+    </div>
+    
     <div class="row">
         <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">导出确认</h3>
+            <div class="card card-primary shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle"></i> 导出信息
+                    </h5>
                 </div>
                 <div class="card-body">
-                    <div class="alert alert-info">
+                    <div class="alert alert-info mb-4">
                         <i class="fas fa-info-circle"></i> 您已选择 <strong>{{ count($servers) }}</strong> 台服务器进行导出。请选择要导出的采集组件数据。
                     </div>
                     
@@ -25,9 +35,11 @@
                         
                         <div class="row mb-4">
                             <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-header bg-light">
-                                        <h5 class="mb-0">选择要导出的采集组件数据</h5>
+                                <div class="card card-info shadow-sm">
+                                    <div class="card-header bg-info text-white">
+                                        <h5 class="mb-0">
+                                            <i class="fas fa-cube"></i> 选择要导出的采集组件数据
+                                        </h5>
                                     </div>
                                     <div class="card-body">
                                         <div class="form-group">
@@ -66,13 +78,15 @@
                         
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-header bg-light">
-                                        <h5 class="mb-0">选中的服务器</h5>
+                                <div class="card card-warning shadow-sm">
+                                    <div class="card-header bg-warning text-dark">
+                                        <h5 class="mb-0">
+                                            <i class="fas fa-server"></i> 选中的服务器
+                                        </h5>
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="table table-bordered table-hover">
+                                            <table class="table table-striped table-light table-hover">
                                                 <thead>
                                                     <tr>
                                                         <th>ID</th>
@@ -119,9 +133,11 @@
                         <!-- 格式选择 -->
                         <div class="row mt-4">
                             <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-header bg-light">
-                                        <h5 class="mb-0">选择导出格式</h5>
+                                <div class="card card-success shadow-sm">
+                                    <div class="card-header bg-success text-white">
+                                        <h5 class="mb-0">
+                                            <i class="fas fa-file-export"></i> 选择导出格式
+                                        </h5>
                                     </div>
                                     <div class="card-body">
                                         <div class="form-group">
