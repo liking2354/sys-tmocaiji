@@ -16,24 +16,28 @@
     <!-- 统计卡片 -->
     <div class="row mb-4">
         <div class="col-md-3 mb-3">
-            <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card card-primary shadow-sm h-100">
                 <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">服务器总数</div>
-                            <div class="h3 mb-0 font-weight-bold text-gray-800">{{ $serverCount }}</div>
-                            <div class="mt-2 text-xs">
-                                <span class="text-success mr-2"><i class="fas fa-circle"></i> 在线: {{ $serverStatusStats['online'] }}</span>
-                                <span class="text-danger"><i class="fas fa-circle"></i> 离线: {{ $serverStatusStats['offline'] }}</span>
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <div class="text-muted small font-weight-bold text-uppercase mb-2">服务器总数</div>
+                            <div class="h2 mb-0 font-weight-bold">{{ $serverCount }}</div>
+                            <div class="mt-3 small">
+                                <span class="badge badge-success mr-2">
+                                    <i class="fas fa-circle"></i> 在线: {{ $serverStatusStats['online'] }}
+                                </span>
+                                <span class="badge badge-danger">
+                                    <i class="fas fa-circle"></i> 离线: {{ $serverStatusStats['offline'] }}
+                                </span>
                             </div>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-server fa-2x text-gray-300"></i>
+                        <div>
+                            <i class="fas fa-server fa-3x text-primary opacity-50"></i>
                         </div>
                     </div>
-                    <div class="mt-3">
-                        <a href="{{ route('servers.index') }}" class="btn btn-sm btn-primary btn-block">
-                            <i class="fas fa-arrow-right"></i> 管理服务器
+                    <div class="mt-4">
+                        <a href="{{ route('servers.index') }}" class="btn btn-primary btn-sm btn-block">
+                            <i class="fas fa-arrow-right mr-1"></i> 管理服务器
                         </a>
                     </div>
                 </div>
@@ -41,23 +45,23 @@
         </div>
         
         <div class="col-md-3 mb-3">
-            <div class="card border-left-success shadow h-100 py-2">
+            <div class="card card-success shadow-sm h-100">
                 <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">服务器分组</div>
-                            <div class="h3 mb-0 font-weight-bold text-gray-800">{{ $groupCount }}</div>
-                            <div class="mt-2 text-xs text-gray-600">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <div class="text-muted small font-weight-bold text-uppercase mb-2">服务器分组</div>
+                            <div class="h2 mb-0 font-weight-bold">{{ $groupCount }}</div>
+                            <div class="mt-3 small text-muted">
                                 有效组织和管理您的服务器
                             </div>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-layer-group fa-2x text-gray-300"></i>
+                        <div>
+                            <i class="fas fa-layer-group fa-3x text-success opacity-50"></i>
                         </div>
                     </div>
-                    <div class="mt-3">
-                        <a href="{{ route('server-groups.index') }}" class="btn btn-sm btn-success btn-block">
-                            <i class="fas fa-arrow-right"></i> 管理分组
+                    <div class="mt-4">
+                        <a href="{{ route('server-groups.index') }}" class="btn btn-success btn-sm btn-block">
+                            <i class="fas fa-arrow-right mr-1"></i> 管理分组
                         </a>
                     </div>
                 </div>
@@ -65,23 +69,23 @@
         </div>
         
         <div class="col-md-3 mb-3">
-            <div class="card border-left-info shadow h-100 py-2">
+            <div class="card card-info shadow-sm h-100">
                 <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">采集组件</div>
-                            <div class="h3 mb-0 font-weight-bold text-gray-800">{{ $collectorCount }}</div>
-                            <div class="mt-2 text-xs text-gray-600">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <div class="text-muted small font-weight-bold text-uppercase mb-2">采集组件</div>
+                            <div class="h2 mb-0 font-weight-bold">{{ $collectorCount }}</div>
+                            <div class="mt-3 small text-muted">
                                 用于数据采集的可用组件
                             </div>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-plug fa-2x text-gray-300"></i>
+                        <div>
+                            <i class="fas fa-plug fa-3x text-info opacity-50"></i>
                         </div>
                     </div>
-                    <div class="mt-3">
-                        <a href="{{ route('collectors.index') }}" class="btn btn-sm btn-info btn-block">
-                            <i class="fas fa-arrow-right"></i> 管理组件
+                    <div class="mt-4">
+                        <a href="{{ route('collectors.index') }}" class="btn btn-info btn-sm btn-block">
+                            <i class="fas fa-arrow-right mr-1"></i> 管理组件
                         </a>
                     </div>
                 </div>
@@ -89,23 +93,23 @@
         </div>
         
         <div class="col-md-3 mb-3">
-            <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card card-warning shadow-sm h-100">
                 <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">采集任务</div>
-                            <div class="h3 mb-0 font-weight-bold text-gray-800">{{ $taskCount ?? 0 }}</div>
-                            <div class="mt-2 text-xs text-gray-600">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <div class="text-muted small font-weight-bold text-uppercase mb-2">采集任务</div>
+                            <div class="h2 mb-0 font-weight-bold">{{ $taskCount ?? 0 }}</div>
+                            <div class="mt-3 small text-muted">
                                 数据采集任务管理
                             </div>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-tasks fa-2x text-gray-300"></i>
+                        <div>
+                            <i class="fas fa-tasks fa-3x text-warning opacity-50"></i>
                         </div>
                     </div>
-                    <div class="mt-3">
-                        <a href="{{ route('collection-tasks.index') }}" class="btn btn-sm btn-warning btn-block">
-                            <i class="fas fa-arrow-right"></i> 管理任务
+                    <div class="mt-4">
+                        <a href="{{ route('collection-tasks.index') }}" class="btn btn-warning btn-sm btn-block">
+                            <i class="fas fa-arrow-right mr-1"></i> 管理任务
                         </a>
                     </div>
                 </div>

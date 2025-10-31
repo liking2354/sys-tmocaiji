@@ -221,7 +221,7 @@
 </div>
 @endsection
 
-@section('scripts')
+@push('scripts')
 <script>
     $(document).ready(function() {
         // 自动刷新进行中的任务
@@ -471,4 +471,14 @@
         });
     });
 </script>
-@endsection
+@push('scripts')
+<script>
+    window.csrfToken = '{{ csrf_token() }}';
+    window.collectionTasksRetryRoute = '{{ route("collection-tasks.retry", ":id") }}';
+    window.collectionTasksCancelRoute = '{{ route("collection-tasks.cancel", ":id") }}';
+    window.collectionTasksTriggerBatchRoute = '{{ route("collection-tasks.trigger-batch", ":id") }}';
+    window.collectionTasksBatchDestroyRoute = '{{ route("collection-tasks.batch-destroy") }}';
+    window.collectionTasksTriggerRoute = '{{ url("collection-tasks") }}/{{ ":id" }}/trigger';
+</script>
+<script src="{{ asset('assets/js/modules/collection-tasks.js') }}"></script>
+@endpush

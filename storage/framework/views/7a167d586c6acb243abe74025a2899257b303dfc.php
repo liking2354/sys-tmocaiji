@@ -339,7 +339,7 @@
 
 <?php $__env->stopSection(); ?>
 
-<?php $__env->startSection('scripts'); ?>
+<?php $__env->startPush('scripts'); ?>
 <script>
     // ============ 全局函数定义 ============
     
@@ -917,6 +917,21 @@
         updateButtonStates();
     });
 </script>
-<?php $__env->stopSection(); ?>
+<?php $__env->stopPush(); ?>
+
+<?php $__env->startPush('scripts'); ?>
+<script>
+    // 设置全局变量供 servers.js 使用
+    window.csrfToken = '<?php echo e(csrf_token()); ?>';
+    window.serversDownloadRoute = '<?php echo e(route("servers.download")); ?>';
+    window.serversDownloadAllFilteredRoute = '<?php echo e(route("servers.download-all-filtered")); ?>';
+    window.serversDownloadTemplateRoute = '<?php echo e(route("servers.download-template")); ?>';
+    window.apiCollectorsAllRoute = '<?php echo e(route("api.collectors.all")); ?>';
+    window.apiServersCommonCollectorsRoute = '<?php echo e(route("api.servers.common-collectors")); ?>';
+    window.apiServersBatchAssociateCollectorsRoute = '<?php echo e(route("api.servers.batch-associate-collectors")); ?>';
+    window.collectionTasksShowRoute = '<?php echo e(route("collection-tasks.show", ":id")); ?>';
+</script>
+<script src="<?php echo e(asset('assets/js/modules/servers.js')); ?>"></script>
+<?php $__env->stopPush(); ?>
 
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/tanli/Documents/php-code/sys-tmocaiji/resources/views/servers/index.blade.php ENDPATH**/ ?>

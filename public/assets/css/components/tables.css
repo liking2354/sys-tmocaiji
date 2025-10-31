@@ -1,0 +1,378 @@
+/* ============================================
+   表格组件样式
+   ============================================ */
+
+/* 基础表格 */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: var(--font-size-sm);
+}
+
+.table thead {
+    background-color: var(--bg-secondary);
+    border-bottom: 2px solid var(--border-color);
+}
+
+.table thead th {
+    padding: var(--spacing-md);
+    text-align: left;
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    vertical-align: middle;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.table tbody td {
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+}
+
+.table tbody tr {
+    transition: var(--transition-default);
+}
+
+.table tbody tr:hover {
+    background-color: var(--bg-secondary);
+}
+
+.table tfoot {
+    background-color: var(--bg-secondary);
+    border-top: 2px solid var(--border-color);
+}
+
+.table tfoot td {
+    padding: var(--spacing-md);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+    border-top: 1px solid var(--border-color);
+}
+
+/* 表格容器 */
+.table-container {
+    overflow-x: auto;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--card-shadow);
+}
+
+.table-container table {
+    margin: 0;
+}
+
+/* 表格条纹 */
+.table-striped tbody tr:nth-child(odd) {
+    background-color: var(--bg-secondary);
+}
+
+.table-striped tbody tr:nth-child(odd):hover {
+    background-color: var(--bg-tertiary);
+}
+
+/* 表格边框 */
+.table-bordered {
+    border: 1px solid var(--border-color);
+}
+
+.table-bordered thead th {
+    border: 1px solid var(--border-color);
+}
+
+.table-bordered tbody td {
+    border: 1px solid var(--border-color);
+}
+
+.table-bordered tfoot td {
+    border: 1px solid var(--border-color);
+}
+
+/* 表格紧凑 */
+.table-sm thead th,
+.table-sm tbody td,
+.table-sm tfoot td {
+    padding: var(--spacing-sm);
+    font-size: var(--font-size-xs);
+}
+
+/* 表格宽松 */
+.table-lg thead th,
+.table-lg tbody td,
+.table-lg tfoot td {
+    padding: var(--spacing-lg);
+    font-size: var(--font-size-base);
+}
+
+/* 表格颜色变体 */
+
+.table-primary tbody tr:hover {
+    background-color: var(--primary-light);
+}
+
+.table-success tbody tr:hover {
+    background-color: var(--success-light);
+}
+
+.table-warning tbody tr:hover {
+    background-color: var(--warning-light);
+}
+
+.table-danger tbody tr:hover {
+    background-color: var(--danger-light);
+}
+
+.table-info tbody tr:hover {
+    background-color: var(--info-light);
+}
+
+/* 表格行颜色 */
+
+.table tbody tr.table-primary {
+    background-color: var(--primary-light);
+}
+
+.table tbody tr.table-success {
+    background-color: var(--success-light);
+}
+
+.table tbody tr.table-warning {
+    background-color: var(--warning-light);
+}
+
+.table tbody tr.table-danger {
+    background-color: var(--danger-light);
+}
+
+.table tbody tr.table-info {
+    background-color: var(--info-light);
+}
+
+/* 表格单元格颜色 */
+
+.table td.table-primary,
+.table th.table-primary {
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+.table td.table-success,
+.table th.table-success {
+    background-color: var(--success-light);
+    color: var(--success-dark);
+}
+
+.table td.table-warning,
+.table th.table-warning {
+    background-color: var(--warning-light);
+    color: var(--warning-dark);
+}
+
+.table td.table-danger,
+.table th.table-danger {
+    background-color: var(--danger-light);
+    color: var(--danger-dark);
+}
+
+.table td.table-info,
+.table th.table-info {
+    background-color: var(--info-light);
+    color: var(--info-dark);
+}
+
+/* 表格排序 */
+
+.table-sortable thead th {
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    padding-right: 24px;
+}
+
+.table-sortable thead th:hover {
+    background-color: var(--bg-tertiary);
+}
+
+.table-sortable thead th.sortable::after {
+    content: '';
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3e%3cpath fill='%236b7280' d='M3 2l3-2 3 2M3 10l3 2 3-2'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    opacity: 0.5;
+}
+
+.table-sortable thead th.sort-asc::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3e%3cpath fill='%230066cc' d='M6 0l3 4H3z'/%3e%3c/svg%3e");
+    opacity: 1;
+}
+
+.table-sortable thead th.sort-desc::after {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3e%3cpath fill='%230066cc' d='M6 12l3-4H3z'/%3e%3c/svg%3e");
+    opacity: 1;
+}
+
+/* 表格操作列 */
+
+.table-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: center;
+    justify-content: center;
+}
+
+.table-actions .btn {
+    padding: 4px 8px;
+    font-size: var(--font-size-xs);
+    margin: 0;
+}
+
+.table-actions .btn-icon {
+    width: 32px;
+    height: 32px;
+}
+
+/* 表格选择 */
+
+.table-selectable tbody tr {
+    cursor: pointer;
+}
+
+.table-selectable tbody tr.selected {
+    background-color: var(--primary-light);
+}
+
+.table-selectable tbody tr.selected:hover {
+    background-color: var(--primary-light);
+}
+
+.table-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--primary-color);
+}
+
+/* 表格展开行 */
+
+.table-expandable tbody tr.expandable {
+    cursor: pointer;
+}
+
+.table-expandable tbody tr.expandable:hover {
+    background-color: var(--bg-secondary);
+}
+
+.table-expandable tbody tr.expandable td:first-child::before {
+    content: '▶';
+    display: inline-block;
+    margin-right: var(--spacing-sm);
+    transition: transform var(--transition-normal);
+}
+
+.table-expandable tbody tr.expandable.expanded td:first-child::before {
+    transform: rotate(90deg);
+}
+
+.table-expandable tbody tr.expanded-content {
+    display: none;
+}
+
+.table-expandable tbody tr.expandable.expanded + tr.expanded-content {
+    display: table-row;
+}
+
+.table-expandable tbody tr.expanded-content td {
+    padding: var(--spacing-md);
+    background-color: var(--bg-secondary);
+}
+
+/* 表格加载状态 */
+
+.table-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.table-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border-color);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+/* 表格空状态 */
+
+.table-empty {
+    text-align: center;
+    padding: var(--spacing-lg);
+    color: var(--text-secondary);
+}
+
+.table-empty i {
+    font-size: 48px;
+    color: var(--text-tertiary);
+    margin-bottom: var(--spacing-md);
+    display: block;
+}
+
+.table-empty p {
+    margin: 0;
+}
+
+/* 响应式设计 */
+
+@media (max-width: 768px) {
+    .table-container {
+        overflow-x: auto;
+    }
+    
+    .table {
+        font-size: var(--font-size-xs);
+    }
+    
+    .table thead th,
+    .table tbody td,
+    .table tfoot td {
+        padding: var(--spacing-sm);
+    }
+    
+    .table-actions {
+        flex-direction: column;
+        gap: var(--spacing-xs);
+    }
+}
+
+@media (max-width: 576px) {
+    .table-container {
+        border-radius: 0;
+    }
+    
+    .table {
+        font-size: 12px;
+    }
+    
+    .table thead th,
+    .table tbody td,
+    .table tfoot td {
+        padding: 8px;
+    }
+    
+    .table-actions .btn {
+        padding: 2px 4px;
+        font-size: 10px;
+    }
+}

@@ -226,7 +226,7 @@
 </div>
 <?php $__env->stopSection(); ?>
 
-<?php $__env->startSection('scripts'); ?>
+<?php $__env->startPush('scripts'); ?>
 <script>
     $(document).ready(function() {
         // 自动刷新进行中的任务
@@ -476,6 +476,16 @@
         });
     });
 </script>
-<?php $__env->stopSection(); ?>
+<?php $__env->startPush('scripts'); ?>
+<script>
+    window.csrfToken = '<?php echo e(csrf_token()); ?>';
+    window.collectionTasksRetryRoute = '<?php echo e(route("collection-tasks.retry", ":id")); ?>';
+    window.collectionTasksCancelRoute = '<?php echo e(route("collection-tasks.cancel", ":id")); ?>';
+    window.collectionTasksTriggerBatchRoute = '<?php echo e(route("collection-tasks.trigger-batch", ":id")); ?>';
+    window.collectionTasksBatchDestroyRoute = '<?php echo e(route("collection-tasks.batch-destroy")); ?>';
+    window.collectionTasksTriggerRoute = '<?php echo e(url("collection-tasks")); ?>/<?php echo e(":id"); ?>/trigger';
+</script>
+<script src="<?php echo e(asset('assets/js/modules/collection-tasks.js')); ?>"></script>
+<?php $__env->stopPush(); ?>
 
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/tanli/Documents/php-code/sys-tmocaiji/resources/views/collection-tasks/index.blade.php ENDPATH**/ ?>

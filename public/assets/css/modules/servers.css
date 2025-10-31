@@ -1,0 +1,27 @@
+/**
+ * 服务器管理模块样式
+ * 功能：服务器列表、详情、创建、编辑页面的样式
+ */
+
+/* JSON 格式化显示 */
+.json-formatter {
+    background-color: #f8f9fa;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    padding: 10px;
+    max-height: 500px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    font-family: monospace;
+    font-size: 13px;
+}
+
+/* 导航标签页 */
+.nav-tabs .nav-link {
+    color: #495057;
+}
+
+.nav-tabs .nav-link.active {
+    font-weight: bold;
+    color: #007bff;
+}

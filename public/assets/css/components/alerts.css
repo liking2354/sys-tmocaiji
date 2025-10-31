@@ -1,0 +1,22 @@
+/* ============================================
+   提示框组件样式
+   ============================================ */
+
+/* 基础提示框 */
+.alert {
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    border: 1px solid transparent;
+    border-radius: var(--border-radius-md);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    animation: slideInDown 0.3s ease-out;
+}
+
+.alert:last-child {
+    margin-bottom: 0;
+}
+
+.alert-icon {
+    flex-shrink: 0;\n    font-size: var(--font-size-lg);\n    margin-top: 2px;\n}\n\n.alert-content {\n    flex: 1;\n}\n\n.alert-title {\n    font-weight: var(--font-weight-semibold);\n    margin: 0 0 var(--spacing-xs) 0;\n    font-size: var(--font-size-sm);\n}\n\n.alert-message {\n    margin: 0;\n    font-size: var(--font-size-sm);\n    line-height: var(--line-height-normal);\n}\n\n.alert-close {\n    flex-shrink: 0;\n    cursor: pointer;\n    opacity: 0.7;\n    transition: opacity var(--transition-normal);\n    font-size: 20px;\n    line-height: 1;\n    color: inherit;\n    background: none;\n    border: none;\n    padding: 0;\n}\n\n.alert-close:hover {\n    opacity: 1;\n}\n\n/* 提示框颜色变体 */\n\n.alert-primary {\n    background-color: var(--primary-light);\n    color: var(--primary-dark);\n    border-color: var(--primary-color);\n}\n\n.alert-primary .alert-icon {\n    color: var(--primary-color);\n}\n\n.alert-success {\n    background-color: var(--success-light);\n    color: var(--success-dark);\n    border-color: var(--success-color);\n}\n\n.alert-success .alert-icon {\n    color: var(--success-color);\n}\n\n.alert-warning {\n    background-color: var(--warning-light);\n    color: var(--warning-dark);\n    border-color: var(--warning-color);\n}\n\n.alert-warning .alert-icon {\n    color: var(--warning-color);\n}\n\n.alert-danger {\n    background-color: var(--danger-light);\n    color: var(--danger-dark);\n    border-color: var(--danger-color);\n}\n\n.alert-danger .alert-icon {\n    color: var(--danger-color);\n}\n\n.alert-info {\n    background-color: var(--info-light);\n    color: var(--info-dark);\n    border-color: var(--info-color);\n}\n\n.alert-info .alert-icon {\n    color: var(--info-color);\n}\n\n/* 提示框大小变体 */\n\n.alert-sm {\n    padding: var(--spacing-sm);\n    font-size: var(--font-size-xs);\n}\n\n.alert-sm .alert-icon {\n    font-size: var(--font-size-base);\n}\n\n.alert-lg {\n    padding: var(--spacing-lg);\n    font-size: var(--font-size-base);\n}\n\n.alert-lg .alert-icon {\n    font-size: var(--font-size-2xl);\n}\n\n/* 提示框轮廓 */\n\n.alert-outline-primary {\n    background-color: transparent;\n    color: var(--primary-color);\n    border: 2px solid var(--primary-color);\n}\n\n.alert-outline-success {\n    background-color: transparent;\n    color: var(--success-color);\n    border: 2px solid var(--success-color);\n}\n\n.alert-outline-warning {\n    background-color: transparent;\n    color: var(--warning-color);\n    border: 2px solid var(--warning-color);\n}\n\n.alert-outline-danger {\n    background-color: transparent;\n    color: var(--danger-color);\n    border: 2px solid var(--danger-color);\n}\n\n.alert-outline-info {\n    background-color: transparent;\n    color: var(--info-color);\n    border: 2px solid var(--info-color);\n}\n\n/* 提示框列表 */\n\n.alert-list {\n    display: flex;\n    flex-direction: column;\n    gap: var(--spacing-md);\n}\n\n/* 提示框动画 */\n\n@keyframes slideInDown {\n    from {\n        transform: translateY(-20px);\n        opacity: 0;\n    }\n    to {\n        transform: translateY(0);\n        opacity: 1;\n    }\n}\n\n@keyframes slideOutUp {\n    from {\n        transform: translateY(0);\n        opacity: 1;\n    }\n    to {\n        transform: translateY(-20px);\n        opacity: 0;\n    }\n}\n\n.alert.alert-dismissing {\n    animation: slideOutUp 0.3s ease-out forwards;\n}\n\n/* 响应式设计 */\n\n@media (max-width: 576px) {\n    .alert {\n        padding: var(--spacing-sm);\n        font-size: var(--font-size-xs);\n    }\n    \n    .alert-icon {\n        font-size: var(--font-size-base);\n    }\n}\n

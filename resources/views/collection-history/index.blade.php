@@ -229,6 +229,14 @@
 </div>
 @endsection
 
+@push('scripts')
+<script>
+    // 设置全局变量 - API 基础路由
+    window.apiBaseUrl = '{{ url("/api/public/collection-history") }}';
+</script>
+<script src="{{ asset('assets/js/modules/collection-history.js') }}"></script>
+@endpush
+
 @section('scripts')
 <script>
 // 查看结果
@@ -236,8 +244,11 @@ function viewResult(historyId) {
     $('#resultModal').modal('show');
     $('#resultContent').html('<div class="text-center"><i class="fas fa-spinner fa-spin"></i> 加载中...</div>');
     
+    // 构建 API URL
+    var url = window.apiBaseUrl + '/' + historyId + '/result';
+    
     $.ajax({
-        url: '{{ route("api.public.collection-history.result", ":id") }}'.replace(':id', historyId),
+        url: url,
         type: 'GET',
         success: function(response) {
             if (response.success) {
@@ -278,4 +289,5 @@ function viewError(historyId, errorMessage) {
     font-size: 13px;
 }
 </style>
+
 @endsection

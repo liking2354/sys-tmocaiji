@@ -1,0 +1,335 @@
+/* ============================================
+   卡片组件样式
+   ============================================ */
+
+/* 基础卡片 */
+.card {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    transition: var(--transition-default);
+}
+
+.card:hover {
+    box-shadow: var(--hover-shadow);
+    transform: translateY(-2px);
+}
+
+/* 卡片头部 */
+.card-header {
+    padding: var(--spacing-md);
+    background-color: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-header h5,
+.card-header h6 {
+    margin: 0;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+.card-header-title {
+    flex: 1;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+.card-header-action {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: center;
+}
+
+.card-header-action .btn {
+    padding: 4px 8px;
+    font-size: var(--font-size-xs);
+}
+
+/* 卡片内容 */
+.card-body {
+    padding: var(--spacing-md);
+    color: var(--text-secondary);
+    line-height: var(--line-height-normal);
+}
+
+.card-body p {
+    margin: 0 0 var(--spacing-md) 0;
+}
+
+.card-body p:last-child {
+    margin-bottom: 0;
+}
+
+/* 卡片底部 */
+.card-footer {
+    padding: var(--spacing-md);
+    background-color: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.card-footer .btn {
+    margin: 0;
+}
+
+/* 卡片图片 */
+.card-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
+    object-fit: cover;
+}
+
+.card-img-top {
+    border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
+}
+
+.card-img-bottom {
+    border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
+}
+
+.card-img-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: var(--spacing-md);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    border-radius: var(--border-radius-md);
+}
+
+/* 卡片文本 */
+.card-title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    margin: 0 0 var(--spacing-sm) 0;
+}
+
+.card-subtitle {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    margin: 0 0 var(--spacing-md) 0;
+}
+
+.card-text {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* 卡片链接 */
+.card-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: var(--transition-default);
+}
+
+.card-link:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+/* 卡片列表 */
+.card-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.card-list-item {
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-list-item:last-child {
+    border-bottom: none;
+}
+
+.card-list-item-title {
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+}
+
+.card-list-item-subtitle {
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+    margin-top: var(--spacing-xs);
+}
+
+/* 卡片颜色变体 */
+
+.card-primary {
+    border-left: 4px solid var(--primary-color);
+}
+
+.card-primary .card-header {
+    background-color: var(--primary-light);
+    border-bottom-color: var(--primary-color);
+}
+
+.card-success {
+    border-left: 4px solid var(--success-color);
+}
+
+.card-success .card-header {
+    background-color: var(--success-light);
+    border-bottom-color: var(--success-color);
+}
+
+.card-warning {
+    border-left: 4px solid var(--warning-color);
+}
+
+.card-warning .card-header {
+    background-color: var(--warning-light);
+    border-bottom-color: var(--warning-color);
+}
+
+.card-danger {
+    border-left: 4px solid var(--danger-color);
+}
+
+.card-danger .card-header {
+    background-color: var(--danger-light);
+    border-bottom-color: var(--danger-color);
+}
+
+.card-info {
+    border-left: 4px solid var(--info-color);
+}
+
+.card-info .card-header {
+    background-color: var(--info-light);
+    border-bottom-color: var(--info-color);
+}
+
+/* 卡片大小变体 */
+
+.card-sm {
+    border-radius: var(--border-radius-sm);
+}
+
+.card-sm .card-header,
+.card-sm .card-body,
+.card-sm .card-footer {
+    padding: var(--spacing-sm);
+}
+
+.card-lg {
+    border-radius: var(--border-radius-lg);
+}
+
+.card-lg .card-header,
+.card-lg .card-body,
+.card-lg .card-footer {
+    padding: var(--spacing-lg);
+}
+
+/* 卡片网格 */
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.card-grid.card-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.card-grid.card-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.card-grid.card-grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* 卡片组 */
+
+.card-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.card-group.card-group-horizontal {
+    flex-direction: row;
+}
+
+/* 卡片加载状态 */
+
+.card.card-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.card.card-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border-color);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+/* 响应式设计 */
+
+@media (max-width: 768px) {
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .card-grid.card-grid-2,
+    .card-grid.card-grid-3,
+    .card-grid.card-grid-4 {
+        grid-template-columns: 1fr;
+    }
+    
+    .card-group.card-group-horizontal {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 576px) {
+    .card-header,
+    .card-body,
+    .card-footer {
+        padding: var(--spacing-sm);
+    }
+    
+    .card-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .card-footer .btn {
+        width: 100%;
+    }
+}

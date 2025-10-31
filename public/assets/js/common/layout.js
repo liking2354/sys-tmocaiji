@@ -5,12 +5,24 @@
 const Layout = (function() {
     'use strict';
     
+    // 防止重复初始化
+    let initialized = false;
+    
     /**
      * 初始化侧边栏
      */
     function initSidebar() {
+        // 防止重复初始化
+        if (initialized) {
+            return;
+        }
+        initialized = true;
+        
         // 侧边栏展开/收起功能
-        $('#sidebar-toggle').click(function() {
+        $('#sidebar').off('click', '#sidebar-toggle').on('click', '#sidebar-toggle', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
             $('#sidebar').toggleClass('sidebar-collapsed');
             $('#main-content').toggleClass('main-content-expanded');
             
@@ -25,50 +37,56 @@ const Layout = (function() {
             localStorage.setItem('sidebar-collapsed', $('#sidebar').hasClass('sidebar-collapsed'));
         });
         
-        // 菜单初始化逻辑
+        // 初始化所有子菜单的展开/收起状态
         $('.sidebar-submenu-toggle').each(function() {
             const $this = $(this);
             const $submenu = $this.next('.sidebar-submenu');
-            const $icon = $this.find('.fas.float-right');
+            const $icon = $this.find('.submenu-icon');
             
-            // 基础设施菜单保持当前状态
-            if ($this.text().trim().includes('基础设施')) {
-                // 不做任何自动操作，保持HTML中设置的状态
-            }
-            // 系统管理菜单根据当前路由决定是否展开
-            else if ($this.text().trim().includes('系统管理')) {
-                if (window.location.pathname.includes('/admin/')) {
-                    $this.removeClass('collapsed');
-                    $submenu.show();
-                    $icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
-                } else {
-                    $this.addClass('collapsed');
-                    $submenu.hide();
-                    $icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
-                }
+            // 检查是否有 active 子菜单项
+            const hasActiveChild = $submenu.find('.nav-link.active').length > 0;
+            
+            // 移除内联样式，使用 collapsed 类控制
+            $submenu.removeAttr('style');
+            
+            if (hasActiveChild) {
+                // 如果有 active 子菜单项，展开菜单
+                $submenu.removeClass('collapsed');
+                $icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+            } else {
+                // 否则收起菜单
+                $submenu.addClass('collapsed');
+                $icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
             }
         });
         
-        // 子菜单展开/收起功能
-        $('.sidebar-submenu-toggle').click(function(e) {
+        // 子菜单展开/收起功能 - 使用 event.target 精确判断
+        $(document).off('click.sidebar-toggle').on('click.sidebar-toggle', '.sidebar-submenu-toggle', function(e) {
+            // 只处理点击在菜单项本身或其直接子元素（图标、文字）上的情况
+            // 不处理点击在子菜单内的情况
+            const $target = $(e.target);
+            
+            // 如果点击的是子菜单内的链接，则不处理
+            if ($target.closest('.sidebar-submenu').length > 0) {
+                return;
+            }
+            
             e.preventDefault();
-            const $this = $(this);
-            const $submenu = $this.next('.sidebar-submenu');
-            const $icon = $this.find('.fas.float-right');
+            e.stopPropagation();
             
-            $this.toggleClass('collapsed');
-            $submenu.slideToggle(300);
+            const $menuItem = $(this);
+            const $submenu = $menuItem.next('.sidebar-submenu');
+            const $icon = $menuItem.find('.submenu-icon');
             
-            if ($this.hasClass('collapsed')) {
+            // 切换 collapsed 类
+            $submenu.toggleClass('collapsed');
+            
+            // 切换图标
+            if ($submenu.hasClass('collapsed')) {
                 $icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
             } else {
                 $icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
             }
-        });
-        
-        // 阻止子菜单项点击时触发父菜单收起
-        $('.sidebar-submenu .nav-link').click(function(e) {
-            e.stopPropagation();
         });
         
         // 页面加载时恢复侧边栏状态
@@ -84,13 +102,14 @@ const Layout = (function() {
      */
     function initNavbar() {
         // 导航栏下拉菜单
-        $('.navbar-nav .dropdown-toggle').click(function(e) {
+        $(document).off('click.navbar-dropdown').on('click.navbar-dropdown', '.navbar-nav .dropdown-toggle', function(e) {
             e.preventDefault();
+            e.stopPropagation();
             $(this).next('.dropdown-menu').toggle();
         });
         
         // 点击其他地方关闭下拉菜单
-        $(document).click(function(e) {
+        $(document).off('click.navbar-close').on('click.navbar-close', function(e) {
             if (!$(e.target).closest('.navbar-nav').length) {
                 $('.dropdown-menu').hide();
             }
@@ -102,7 +121,7 @@ const Layout = (function() {
      */
     function initAlerts() {
         // 关闭提示信息
-        $('.alert .close').click(function() {
+        $(document).off('click.alert-close').on('click.alert-close', '.alert .close', function() {
             $(this).closest('.alert').fadeOut(300, function() {
                 $(this).remove();
             });

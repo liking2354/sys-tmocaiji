@@ -1,5 +1,5 @@
 /* ============================================
-   基础样式 - 全局元素
+   基础样式 - 全局元素（现代化）
    ============================================ */
 
 * {
@@ -8,34 +8,61 @@
 
 html {
     scroll-behavior: smooth;
+    font-size: 16px;
 }
 
 body {
-    background-color: var(--light-bg);
+    background-color: var(--bg-secondary);
     font-family: var(--font-family);
     padding-top: var(--navbar-height);
     font-size: var(--font-size-base);
-    color: var(--dark-text);
-    line-height: 1.6;
+    color: var(--text-primary);
+    line-height: var(--line-height-normal);
+    transition: background-color var(--transition-normal);
 }
 
 /* 标题样式 */
 h1, h2, h3, h4, h5, h6 {
     font-weight: var(--font-weight-bold);
-    color: var(--dark-text);
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-md);
+    line-height: var(--line-height-tight);
+}
+
+h1 { 
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--spacing-lg);
+}
+
+h2 { 
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--spacing-lg);
+}
+
+h3 { 
+    font-size: var(--font-size-xl);
     margin-bottom: var(--spacing-md);
 }
 
-h1 { font-size: 28px; }
-h2 { font-size: 24px; }
-h3 { font-size: 20px; }
-h4 { font-size: 18px; }
-h5 { font-size: 16px; }
-h6 { font-size: 14px; }
+h4 { 
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-md);
+}
+
+h5 { 
+    font-size: var(--font-size-base);
+    margin-bottom: var(--spacing-sm);
+}
+
+h6 { 
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--spacing-sm);
+}
 
 /* 段落样式 */
 p {
     margin-bottom: var(--spacing-md);
+    color: var(--text-secondary);
 }
 
 /* 链接样式 */
@@ -43,28 +70,44 @@ a {
     color: var(--primary-color);
     text-decoration: none;
     transition: var(--transition-default);
+    font-weight: var(--font-weight-medium);
 }
 
 a:hover {
-    color: #2980b9;
-    text-decoration: underline;
+    color: var(--primary-dark);
+    text-decoration: none;
+}
+
+a:focus {
+    outline: 2px solid var(--primary-light);
+    outline-offset: 2px;
 }
 
 /* 代码样式 */
 code, pre {
-    background-color: #f5f5f5;
-    border-radius: var(--border-radius-sm);
-    font-family: 'Courier New', monospace;
+    background-color: var(--bg-tertiary);
+    border-radius: var(--border-radius-md);
+    font-family: var(--font-family-mono);
+    border: 1px solid var(--border-color);
 }
 
 code {
-    padding: 2px 6px;
+    padding: var(--spacing-xs) var(--spacing-sm);
     font-size: 0.9em;
+    color: var(--danger-color);
 }
 
 pre {
     padding: var(--spacing-md);
     overflow-x: auto;
+    line-height: var(--line-height-relaxed);
+}
+
+pre code {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    color: var(--text-primary);
 }
 
 /* 列表样式 */
@@ -75,6 +118,7 @@ ul, ol {
 
 li {
     margin-bottom: var(--spacing-sm);
+    color: var(--text-secondary);
 }
 
 /* 表格样式 */
@@ -82,6 +126,10 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: var(--spacing-lg);
+    background-color: var(--bg-primary);
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
 }
 
 th, td {
@@ -91,12 +139,21 @@ th, td {
 }
 
 th {
-    background-color: #f8f9fa;
-    font-weight: var(--font-weight-bold);
+    background-color: var(--bg-tertiary);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+td {
+    color: var(--text-secondary);
 }
 
 tr:hover {
-    background-color: rgba(52, 152, 219, 0.05);
+    background-color: var(--primary-light);
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
 }
 
 /* 水平线 */

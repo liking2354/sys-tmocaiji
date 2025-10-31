@@ -1,0 +1,174 @@
+/**
+ * 数据清理模块样式
+ * 功能：数据清理页面的样式
+ */
+
+/* 清理操作卡片 */
+.cleanup-card {
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    margin-bottom: 1rem;
+    background-color: #fff;
+}
+
+.cleanup-card-header {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.cleanup-card-header h5 {
+    margin: 0;
+    color: #212529;
+    font-weight: 600;
+}
+
+.cleanup-card-body {
+    padding: 1rem;
+}
+
+/* 清理操作描述 */
+.cleanup-description {
+    color: #6c757d;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+}
+
+/* 清理操作按钮 */
+.cleanup-btn {
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    border-radius: 0.25rem;
+    transition: all 0.3s ease;
+}
+
+.cleanup-btn-danger {
+    background-color: #dc3545;
+    color: white;
+    border: 1px solid #dc3545;
+}
+
+.cleanup-btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+.cleanup-btn-warning {
+    background-color: #ffc107;
+    color: #212529;
+    border: 1px solid #ffc107;
+}
+
+.cleanup-btn-warning:hover {
+    background-color: #e0a800;
+    border-color: #d39e00;
+}
+
+/* 清理进度 */
+.cleanup-progress {
+    margin-top: 1rem;
+}
+
+.cleanup-progress-bar {
+    height: 25px;
+    background: linear-gradient(90deg, #dc3545, #c82333);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 0.25rem;
+}
+
+/* 清理结果 */
+.cleanup-result {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.cleanup-result-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.cleanup-result-item:last-child {
+    border-bottom: none;
+}
+
+.cleanup-result-label {
+    font-weight: 600;
+    color: #495057;
+}
+
+.cleanup-result-value {
+    color: #212529;
+}
+
+/* 清理警告 */
+.cleanup-warning {
+    background-color: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    color: #856404;
+}
+
+.cleanup-warning strong {
+    font-weight: 600;
+}
+
+/* 清理确认对话框 */
+.cleanup-confirm {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    color: #721c24;
+}
+
+.cleanup-confirm strong {
+    font-weight: 600;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .cleanup-card {
+        margin-bottom: 0.75rem;
+    }
+    
+    .cleanup-card-header,
+    .cleanup-card-body {
+        padding: 0.75rem;
+    }
+    
+    .cleanup-card-header h5 {
+        font-size: 1rem;
+    }
+    
+    .cleanup-description {
+        font-size: 0.8rem;
+    }
+    
+    .cleanup-btn {
+        width: 100%;
+        padding: 0.75rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .cleanup-result-item {
+        flex-direction: column;
+        padding: 0.75rem 0;
+    }
+    
+    .cleanup-result-label {
+        margin-bottom: 0.25rem;
+    }
+}

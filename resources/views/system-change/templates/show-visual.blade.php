@@ -317,66 +317,14 @@
 </div>
 @endsection
 
-@push('styles')
-<style>
-.rule-display {
-    background-color: #f8f9fa;
-}
 
-.rule-display h6 {
-    color: #495057;
-    margin-bottom: 1rem;
-}
 
-.info-box {
-    margin-bottom: 1rem;
-}
-
-pre code {
-    font-size: 0.875rem;
-    white-space: pre-wrap;
-    word-break: break-all;
-}
-</style>
-@endpush
-
-@section('scripts')
+@push('scripts')
 <script>
-function duplicateTemplate() {
-    if (confirm('确定要复制这个模板吗？')) {
-        $.post('{{ route("system-change.templates.duplicate", $template) }}', {
-            _token: '{{ csrf_token() }}'
-        }).done(function(response) {
-            if (response.success) {
-                alert('模板复制成功！');
-                window.location.href = response.redirect_url;
-            } else {
-                alert('复制失败：' + response.message);
-            }
-        }).fail(function() {
-            alert('复制失败，请稍后重试');
-        });
-    }
-}
-
-function toggleStatus() {
-    const currentStatus = {{ $template->is_active ? 'true' : 'false' }};
-    const action = currentStatus ? '禁用' : '启用';
-    
-    if (confirm('确定要' + action + '这个模板吗？')) {
-        $.post('{{ route("system-change.templates.toggle-status", $template) }}', {
-            _token: '{{ csrf_token() }}'
-        }).done(function(response) {
-            if (response.success) {
-                alert(action + '成功！');
-                location.reload();
-            } else {
-                alert(action + '失败：' + response.message);
-            }
-        }).fail(function() {
-            alert(action + '失败，请稍后重试');
-        });
-    }
-}
+    window.duplicateTemplateUrl = '{{ route("system-change.templates.duplicate", $template) }}';
+    window.toggleStatusUrl = '{{ route("system-change.templates.toggle-status", $template) }}';
+    window.csrfToken = '{{ csrf_token() }}';
+    window.templateIsActive = {{ $template->is_active ? 'true' : 'false' }};
 </script>
-@endsection
+<script src="{{ asset('assets/js/modules/system-change-templates-show.js') }}"></script>
+@endpush

@@ -5,12 +5,17 @@
 @section('content')
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>服务器管理</h1>
         <div>
-            <a href="{{ route('servers.create') }}" class="btn btn-primary">
+            <h1 class="mb-0">
+                <i class="fas fa-server text-primary"></i> 服务器管理
+            </h1>
+            <small class="text-muted">管理和监控所有服务器</small>
+        </div>
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="{{ route('servers.create') }}" class="btn btn-primary btn-sm">
                 <i class="fas fa-plus"></i> 添加服务器
             </a>
-            <div class="btn-group">
+            <div class="btn-group btn-group-sm" role="group">
                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#importModal">
                     <i class="fas fa-file-import"></i> 批量导入
                 </button>
@@ -23,13 +28,13 @@
                     </a>
                 </div>
             </div>
-            <button type="button" class="btn btn-warning" id="batchCollectionBtn" disabled>
+            <button type="button" class="btn btn-warning btn-sm" id="batchCollectionBtn" disabled>
                 <i class="fas fa-play"></i> 批量采集
             </button>
-            <button type="button" class="btn btn-info" id="batchModifyComponentsBtn" disabled>
+            <button type="button" class="btn btn-info btn-sm" id="batchModifyComponentsBtn" disabled>
                 <i class="fas fa-cogs"></i> 批量修改组件
             </button>
-            <div class="btn-group">
+            <div class="btn-group btn-group-sm" role="group">
                 <button type="button" class="btn btn-success dropdown-toggle" id="downloadBtn" disabled data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-download"></i> 直接下载
                 </button>
@@ -58,16 +63,21 @@
     </div>
     
     <!-- 搜索和筛选 -->
-    <div class="card mb-4">
+    <div class="card card-primary mb-4 shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+                <i class="fas fa-filter"></i> 搜索和筛选
+            </h5>
+        </div>
         <div class="card-body">
-            <form action="{{ route('servers.index') }}" method="GET" class="form-row align-items-center">
+            <form action="{{ route('servers.index') }}" method="GET" class="form-row align-items-end">
                 <div class="col-md-3 mb-2">
-                    <label for="search">搜索</label>
-                    <input type="text" class="form-control" id="search" name="search" placeholder="服务器名称或IP" value="{{ request('search') }}">
+                    <label for="search" class="font-weight-bold">搜索</label>
+                    <input type="text" class="form-control form-control-sm" id="search" name="search" placeholder="服务器名称或IP" value="{{ request('search') }}">
                 </div>
                 <div class="col-md-3 mb-2">
-                    <label for="group_id">服务器分组</label>
-                    <select class="form-control" id="group_id" name="group_id">
+                    <label for="group_id" class="font-weight-bold">服务器分组</label>
+                    <select class="form-control form-control-sm" id="group_id" name="group_id">
                         <option value="">所有分组</option>
                         @foreach ($groups as $group)
                             <option value="{{ $group->id }}" {{ request('group_id') == $group->id ? 'selected' : '' }}>{{ $group->name }}</option>
@@ -75,20 +85,20 @@
                     </select>
                 </div>
                 <div class="col-md-2 mb-2">
-                    <label for="status">服务器状态</label>
-                    <select class="form-control" id="status" name="status">
+                    <label for="status" class="font-weight-bold">服务器状态</label>
+                    <select class="form-control form-control-sm" id="status" name="status">
                         <option value="">全部状态</option>
                         <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>在线</option>
                         <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>离线</option>
                     </select>
                 </div>
-                <div class="col-md-2 mb-2 align-self-end">
-                    <button type="submit" class="btn btn-primary btn-block">
+                <div class="col-md-2 mb-2">
+                    <button type="submit" class="btn btn-primary btn-sm btn-block">
                         <i class="fas fa-search"></i> 搜索
                     </button>
                 </div>
-                <div class="col-md-2 mb-2 align-self-end">
-                    <a href="{{ route('servers.index') }}" class="btn btn-secondary btn-block">
+                <div class="col-md-2 mb-2">
+                    <a href="{{ route('servers.index') }}" class="btn btn-secondary btn-sm btn-block">
                         <i class="fas fa-sync"></i> 重置
                     </a>
                 </div>
@@ -97,27 +107,32 @@
     </div>
     
     <!-- 服务器列表 -->
-    <div class="card">
-        <div class="card-body">
+    <div class="card card-primary shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+                <i class="fas fa-list"></i> 服务器列表
+            </h5>
+        </div>
+        <div class="card-body p-0">
                 @csrf
                 <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
+                    <table class="table table-hover table-striped mb-0">
+                        <thead class="table-light">
                             <tr>
-                                <th>
+                                <th style="width: 40px;">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="selectAll">
                                     </div>
                                 </th>
-                                <th>ID</th>
+                                <th style="width: 60px;">ID</th>
                                 <th>名称</th>
                                 <th>分组</th>
                                 <th>IP地址</th>
-                                <th>端口</th>
-                                <th>状态</th>
+                                <th style="width: 60px;">端口</th>
+                                <th style="width: 80px;">状态</th>
                                 <th>最后检查时间</th>
                                 <th>最后采集时间</th>
-                                <th>操作</th>
+                                <th style="width: 150px;">操作</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -128,33 +143,33 @@
                                             <input class="form-check-input server-checkbox" type="checkbox" name="server_ids[]" value="{{ $server->id }}">
                                         </div>
                                     </td>
-                                    <td>{{ $server->id }}</td>
-                                    <td>{{ $server->name }}</td>
-                                    <td>{{ $server->group->name ?? '无分组' }}</td>
-                                    <td>{{ $server->ip }}</td>
+                                    <td><span class="badge badge-light">{{ $server->id }}</span></td>
+                                    <td><strong>{{ $server->name }}</strong></td>
+                                    <td><span class="badge badge-info">{{ $server->group->name ?? '无分组' }}</span></td>
+                                    <td><code>{{ $server->ip }}</code></td>
                                     <td>{{ $server->port }}</td>
                                     <td>
                                         @if ($server->status == 1)
-                                            <span class="badge badge-success">在线</span>
+                                            <span class="badge badge-success"><i class="fas fa-circle"></i> 在线</span>
                                         @else
-                                            <span class="badge badge-danger">离线</span>
+                                            <span class="badge badge-danger"><i class="fas fa-circle"></i> 离线</span>
                                         @endif
                                     </td>
-                                    <td>{{ $server->last_check_time ? $server->last_check_time->format('Y-m-d H:i') : '未检查' }}</td>
-                                    <td>{{ $server->lastCollectionTime ? $server->lastCollectionTime->format('Y-m-d H:i') : '未采集' }}</td>
+                                    <td><small class="text-muted">{{ $server->last_check_time ? $server->last_check_time->format('Y-m-d H:i') : '未检查' }}</small></td>
+                                    <td><small class="text-muted">{{ $server->lastCollectionTime ? $server->lastCollectionTime->format('Y-m-d H:i') : '未采集' }}</small></td>
                                     <td>
-                                        <div class="btn-group" role="group">
-                                            <a href="{{ route('servers.show', $server) }}" class="btn btn-sm btn-info">
-                                                <i class="fas fa-eye"></i> 查看
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <a href="{{ route('servers.show', $server) }}" class="btn btn-info" title="查看详情">
+                                                <i class="fas fa-eye"></i>
                                             </a>
-                                            <a href="{{ route('servers.edit', $server) }}" class="btn btn-sm btn-warning">
-                                                <i class="fas fa-edit"></i> 编辑
+                                            <a href="{{ route('servers.edit', $server) }}" class="btn btn-warning" title="编辑">
+                                                <i class="fas fa-edit"></i>
                                             </a>
                                             <form action="{{ route('servers.destroy', $server) }}" method="POST" class="d-inline" onsubmit="return confirm('确定要删除该服务器吗？')">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger">
-                                                    <i class="fas fa-trash"></i> 删除
+                                                <button type="submit" class="btn btn-danger" title="删除">
+                                                    <i class="fas fa-trash"></i>
                                                 </button>
                                             </form>
                                         </div>
@@ -162,14 +177,17 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="10" class="text-center py-3">暂无服务器</td>
+                                    <td colspan="10" class="text-center py-4">
+                                        <i class="fas fa-inbox text-muted" style="font-size: 2rem;"></i>
+                                        <p class="text-muted mt-2">暂无服务器</p>
+                                    </td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
                 </div>
             
-            <div class="d-flex justify-content-center mt-3">
+            <div class="d-flex justify-content-center mt-3 pb-3">
                 {{ $servers->links() }}
             </div>
         </div>
@@ -179,10 +197,12 @@
 <!-- 导入模态框 -->
 <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="importModalLabel">批量导入服务器</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-success text-white border-0">
+                <h5 class="modal-title" id="importModalLabel">
+                    <i class="fas fa-file-import"></i> 批量导入服务器
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -190,13 +210,14 @@
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="file">选择Excel文件</label>
+                        <label for="file" class="font-weight-bold">选择Excel文件</label>
                         <input type="file" class="form-control-file" id="file" name="file" required accept=".xlsx,.xls,.csv">
+                        <small class="form-text text-muted">支持 .xlsx, .xls, .csv 格式</small>
                     </div>
-                    <div class="alert alert-info">
-                        <h6><i class="fas fa-info-circle"></i> 导入说明：</h6>
-                        <p>请使用以下列标题的Excel文件：</p>
-                        <ul>
+                    <div class="alert alert-info border-0">
+                        <h6 class="font-weight-bold"><i class="fas fa-info-circle"></i> 导入说明：</h6>
+                        <p class="mb-2">请使用以下列标题的Excel文件：</p>
+                        <ul class="mb-0 small">
                             <li><strong>name</strong> - 服务器名称（必填）</li>
                             <li><strong>group</strong> - 服务器分组（选填，不存在则自动创建）</li>
                             <li><strong>ip</strong> - IP地址（必填）</li>
@@ -205,7 +226,7 @@
                             <li><strong>password</strong> - 密码（必填）</li>
                             <li><strong>verify_connection</strong> - 是否验证连接（选填，默认true）</li>
                         </ul>
-                        <hr>
+                        <hr class="my-2">
                         <p class="mb-0">
                             <a href="{{ route('servers.download-template') }}" class="btn btn-sm btn-primary" target="_blank">
                                 <i class="fas fa-download"></i> 下载导入模板
@@ -213,9 +234,11 @@
                         </p>
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer border-0">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                    <button type="submit" class="btn btn-primary">导入</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-upload"></i> 导入
+                    </button>
                 </div>
             </form>
         </div>
@@ -225,10 +248,12 @@
 <!-- 批量修改组件模态框 -->
 <div class="modal fade" id="batchModifyComponentsModal" tabindex="-1" role="dialog" aria-labelledby="batchModifyComponentsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="batchModifyComponentsModalLabel">批量修改组件</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-info text-white border-0">
+                <h5 class="modal-title" id="batchModifyComponentsModalLabel">
+                    <i class="fas fa-cogs"></i> 批量修改组件
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -237,38 +262,38 @@
                     @csrf
                     <input type="hidden" id="selected_server_ids_modify" name="server_ids" value="">
                     
-                    <div class="alert alert-info">
+                    <div class="alert alert-info border-0">
                         <i class="fas fa-info-circle"></i>
-                        已选择 <span id="selectedServerCountModify">0</span> 个服务器，请选择要关联的采集组件：
+                        已选择 <span id="selectedServerCountModify" class="font-weight-bold">0</span> 个服务器，请选择要关联的采集组件：
                     </div>
                     
                     <div class="form-group">
-                        <label>操作类型：</label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="operation_type" id="operationReplace" value="replace" checked>
-                            <label class="form-check-label" for="operationReplace">
+                        <label class="font-weight-bold">操作类型：</label>
+                        <div class="custom-control custom-radio mb-2">
+                            <input class="custom-control-input" type="radio" name="operation_type" id="operationReplace" value="replace" checked>
+                            <label class="custom-control-label" for="operationReplace">
                                 <strong>替换</strong> - 清除现有关联，只保留选中的组件
                             </label>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="operation_type" id="operationAdd" value="add">
-                            <label class="form-check-label" for="operationAdd">
+                        <div class="custom-control custom-radio mb-2">
+                            <input class="custom-control-input" type="radio" name="operation_type" id="operationAdd" value="add">
+                            <label class="custom-control-label" for="operationAdd">
                                 <strong>添加</strong> - 在现有关联基础上添加选中的组件
                             </label>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="operation_type" id="operationRemove" value="remove">
-                            <label class="form-check-label" for="operationRemove">
+                        <div class="custom-control custom-radio">
+                            <input class="custom-control-input" type="radio" name="operation_type" id="operationRemove" value="remove">
+                            <label class="custom-control-label" for="operationRemove">
                                 <strong>移除</strong> - 从现有关联中移除选中的组件
                             </label>
                         </div>
                     </div>
                     
                     <div class="form-group">
-                        <label>采集组件：</label>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" id="selectAllComponents">
-                            <label class="form-check-label" for="selectAllComponents">
+                        <label class="font-weight-bold">采集组件：</label>
+                        <div class="custom-control custom-checkbox mb-3 pb-2 border-bottom">
+                            <input class="custom-control-input" type="checkbox" id="selectAllComponents">
+                            <label class="custom-control-label" for="selectAllComponents">
                                 <strong>全选/取消全选</strong>
                             </label>
                         </div>
@@ -278,9 +303,9 @@
                     </div>
                 </form>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer border-0">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" id="submitBatchModifyComponents">
+                <button type="button" class="btn btn-info" id="submitBatchModifyComponents">
                     <i class="fas fa-save"></i> 确认修改
                 </button>
             </div>
@@ -291,10 +316,12 @@
 <!-- 批量采集模态框 -->
 <div class="modal fade" id="batchCollectionModal" tabindex="-1" role="dialog" aria-labelledby="batchCollectionModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="batchCollectionModalLabel">批量采集</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-warning text-white border-0">
+                <h5 class="modal-title" id="batchCollectionModalLabel">
+                    <i class="fas fa-play-circle"></i> 批量采集
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -302,34 +329,36 @@
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="task_name">任务名称</label>
-                        <input type="text" class="form-control" id="task_name" name="name" required>
+                        <label for="task_name" class="font-weight-bold">任务名称</label>
+                        <input type="text" class="form-control" id="task_name" name="name" required placeholder="输入任务名称">
                     </div>
                     <div class="form-group">
-                        <label for="task_description">任务描述</label>
-                        <textarea class="form-control" id="task_description" name="description" rows="2" placeholder="可选"></textarea>
+                        <label for="task_description" class="font-weight-bold">任务描述</label>
+                        <textarea class="form-control" id="task_description" name="description" rows="2" placeholder="可选，输入任务描述"></textarea>
                     </div>
                     
                     <div class="form-group">
-                        <label>选中的服务器 (<span id="selectedServerCount">0</span> 台)</label>
-                        <div id="selectedServerList" class="border rounded p-2 bg-light" style="max-height: 150px; overflow-y: auto;">
-                            <div class="text-muted">请先选择服务器</div>
+                        <label class="font-weight-bold">选中的服务器 (<span id="selectedServerCount" class="badge badge-warning">0</span> 台)</label>
+                        <div id="selectedServerList" class="border rounded p-3 bg-light" style="max-height: 150px; overflow-y: auto;">
+                            <div class="text-muted text-center">
+                                <i class="fas fa-inbox"></i> 请先选择服务器
+                            </div>
                         </div>
                         <input type="hidden" id="selected_server_ids" name="server_ids">
                     </div>
                     
                     <div class="form-group">
-                        <label>采集组件</label>
-                        <div id="collectorsList">
-                            <div class="text-muted">
+                        <label class="font-weight-bold">采集组件</label>
+                        <div id="collectorsList" class="border rounded p-3 bg-light">
+                            <div class="text-muted text-center">
                                 <i class="fas fa-spinner fa-spin"></i> 正在加载共同的采集组件...
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer border-0">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                    <button type="submit" class="btn btn-primary" id="submitBatchCollection" disabled>
+                    <button type="submit" class="btn btn-warning" id="submitBatchCollection" disabled>
                         <i class="fas fa-play"></i> 开始采集
                     </button>
                 </div>
@@ -340,7 +369,7 @@
 
 @endsection
 
-@section('scripts')
+@push('scripts')
 <script>
     // ============ 全局函数定义 ============
     
@@ -918,4 +947,19 @@
         updateButtonStates();
     });
 </script>
-@endsection
+@endpush
+
+@push('scripts')
+<script>
+    // 设置全局变量供 servers.js 使用
+    window.csrfToken = '{{ csrf_token() }}';
+    window.serversDownloadRoute = '{{ route("servers.download") }}';
+    window.serversDownloadAllFilteredRoute = '{{ route("servers.download-all-filtered") }}';
+    window.serversDownloadTemplateRoute = '{{ route("servers.download-template") }}';
+    window.apiCollectorsAllRoute = '{{ route("api.collectors.all") }}';
+    window.apiServersCommonCollectorsRoute = '{{ route("api.servers.common-collectors") }}';
+    window.apiServersBatchAssociateCollectorsRoute = '{{ route("api.servers.batch-associate-collectors") }}';
+    window.collectionTasksShowRoute = '{{ route("collection-tasks.show", ":id") }}';
+</script>
+<script src="{{ asset('assets/js/modules/servers.js') }}"></script>
+@endpush

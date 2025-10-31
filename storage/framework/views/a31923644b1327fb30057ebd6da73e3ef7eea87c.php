@@ -230,6 +230,14 @@
 </div>
 <?php $__env->stopSection(); ?>
 
+<?php $__env->startPush('scripts'); ?>
+<script>
+    // 设置全局变量 - API 基础路由
+    window.apiBaseUrl = '<?php echo e(url("/api/public/collection-history")); ?>';
+</script>
+<script src="<?php echo e(asset('assets/js/modules/collection-history.js')); ?>"></script>
+<?php $__env->stopPush(); ?>
+
 <?php $__env->startSection('scripts'); ?>
 <script>
 // 查看结果
@@ -237,8 +245,11 @@ function viewResult(historyId) {
     $('#resultModal').modal('show');
     $('#resultContent').html('<div class="text-center"><i class="fas fa-spinner fa-spin"></i> 加载中...</div>');
     
+    // 构建 API URL
+    var url = window.apiBaseUrl + '/' + historyId + '/result';
+    
     $.ajax({
-        url: '<?php echo e(route("api.public.collection-history.result", ":id")); ?>'.replace(':id', historyId),
+        url: url,
         type: 'GET',
         success: function(response) {
             if (response.success) {
@@ -279,6 +290,7 @@ function viewError(historyId, errorMessage) {
     font-size: 13px;
 }
 </style>
+
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/tanli/Documents/php-code/sys-tmocaiji/resources/views/collection-history/index.blade.php ENDPATH**/ ?>

@@ -1,0 +1,275 @@
+/**
+ * 采集器模块样式
+ * 功能：采集器管理、采集任务、采集历史等页面的样式
+ */
+
+/* 代码显示 */
+pre code {
+    font-size: 0.875rem;
+    white-space: pre-wrap;
+    word-break: break-all;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    display: block;
+    overflow-x: auto;
+}
+
+/* 采集器卡片 */
+.collector-card {
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    margin-bottom: 1rem;
+    background-color: #fff;
+    transition: all 0.3s ease;
+}
+
+.collector-card:hover {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.collector-card-header {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.collector-card-header h5 {
+    margin: 0;
+    color: #212529;
+    font-weight: 600;
+}
+
+.collector-card-body {
+    padding: 1rem;
+}
+
+.collector-card-footer {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-top: 1px solid #dee2e6;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+/* 采集器状态 */
+.collector-status {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.collector-status.installed {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.collector-status.not-installed {
+    background-color: #e2e3e5;
+    color: #383d41;
+}
+
+.collector-status.error {
+    background-color: #f8d7da;
+    color: #842029;
+}
+
+/* 采集任务卡片 */
+.collection-task-card {
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    margin-bottom: 1rem;
+    background-color: #fff;
+}
+
+.collection-task-card-header {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.collection-task-card-header h5 {
+    margin: 0;
+    color: #212529;
+    font-weight: 600;
+}
+
+.collection-task-card-body {
+    padding: 1rem;
+}
+
+/* 采集历史 */
+.collection-history-item {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.collection-history-item-info {
+    flex: 1;
+}
+
+.collection-history-item-time {
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+.collection-history-item-status {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-left: 1rem;
+}
+
+.collection-history-item-status.success {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.collection-history-item-status.failed {
+    background-color: #f8d7da;
+    color: #842029;
+}
+
+.collection-history-item-status.running {
+    background-color: #cfe2ff;
+    color: #084298;
+}
+
+/* 采集结果 */
+.collection-result {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.collection-result-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.collection-result-item:last-child {
+    border-bottom: none;
+}
+
+.collection-result-label {
+    font-weight: 600;
+    color: #495057;
+}
+
+.collection-result-value {
+    color: #212529;
+    font-family: monospace;
+    font-size: 0.875rem;
+}
+
+/* 采集进度 */
+.collection-progress {
+    margin-top: 1rem;
+}
+
+.collection-progress-bar {
+    height: 25px;
+    background: linear-gradient(90deg, #0d6efd, #0b5ed7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 0.25rem;
+}
+
+/* 采集日志 */
+.collection-log {
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.875rem;
+    max-height: 400px;
+    overflow-y: auto;
+    line-height: 1.5;
+}
+
+.collection-log-line {
+    margin-bottom: 0.25rem;
+}
+
+.collection-log-error {
+    color: #f48771;
+}
+
+.collection-log-success {
+    color: #89d185;
+}
+
+.collection-log-warning {
+    color: #dcdcaa;
+}
+
+.collection-log-info {
+    color: #9cdcfe;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .collector-card-footer {
+        flex-direction: column;
+    }
+    
+    .collector-card-footer button {
+        width: 100%;
+    }
+    
+    .collection-task-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .collection-task-card-header h5 {
+        margin-bottom: 0.5rem;
+    }
+    
+    .collection-history-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .collection-history-item-status {
+        margin-left: 0;
+        margin-top: 0.5rem;
+    }
+    
+    .collection-result-item {
+        flex-direction: column;
+    }
+    
+    .collection-result-label {
+        margin-bottom: 0.25rem;
+    }
+    
+    .collection-log {
+        max-height: 300px;
+        font-size: 0.75rem;
+    }
+}

@@ -1,0 +1,370 @@
+/* ============================================
+   按钮组件样式
+   ============================================ */
+
+/* 基础按钮样式 */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    padding: 10px 16px;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    font-family: var(--font-family);
+    border: 1px solid transparent;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    transition: var(--transition-default);
+    text-decoration: none;
+    white-space: nowrap;
+    user-select: none;
+    outline: none;
+    box-shadow: var(--button-shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* 按钮大小变体 */
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: var(--font-size-xs);
+    border-radius: var(--border-radius-sm);
+}
+
+.btn-lg {
+    padding: 12px 20px;
+    font-size: var(--font-size-base);
+    border-radius: var(--border-radius-lg);
+}
+
+.btn-block {
+    display: flex;
+    width: 100%;
+}
+
+/* 按钮类型变体 */
+
+/* Primary 按钮 */
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+    box-shadow: var(--hover-shadow);
+    transform: translateY(-2px);
+}
+
+.btn-primary:active:not(:disabled) {
+    background-color: #003366;
+    border-color: #003366;
+    transform: translateY(0);
+}
+
+.btn-primary:focus {
+    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+}
+
+/* Secondary 按钮 */
+.btn-secondary {
+    background-color: var(--gray-200);
+    color: var(--text-primary);
+    border-color: var(--gray-200);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background-color: var(--gray-300);
+    border-color: var(--gray-300);
+    box-shadow: var(--hover-shadow);
+    transform: translateY(-2px);
+}
+
+.btn-secondary:active:not(:disabled) {
+    background-color: var(--gray-400);
+    border-color: var(--gray-400);
+    transform: translateY(0);
+}
+
+.btn-secondary:focus {
+    box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.1);
+}
+
+/* Success 按钮 */
+.btn-success {
+    background-color: var(--success-color);
+    color: white;
+    border-color: var(--success-color);
+}
+
+.btn-success:hover:not(:disabled) {
+    background-color: var(--success-dark);
+    border-color: var(--success-dark);
+    box-shadow: var(--hover-shadow);
+    transform: translateY(-2px);
+}
+
+.btn-success:active:not(:disabled) {
+    background-color: #007755;
+    border-color: #007755;
+    transform: translateY(0);
+}
+
+.btn-success:focus {
+    box-shadow: 0 0 0 3px rgba(0, 204, 153, 0.1);
+}
+
+/* Warning 按钮 */
+.btn-warning {
+    background-color: var(--warning-color);
+    color: white;
+    border-color: var(--warning-color);
+}
+
+.btn-warning:hover:not(:disabled) {
+    background-color: var(--warning-dark);
+    border-color: var(--warning-dark);
+    box-shadow: var(--hover-shadow);
+    transform: translateY(-2px);
+}
+
+.btn-warning:active:not(:disabled) {
+    background-color: #997700;
+    border-color: #997700;
+    transform: translateY(0);
+}
+
+.btn-warning:focus {
+    box-shadow: 0 0 0 3px rgba(255, 184, 0, 0.1);
+}
+
+/* Danger 按钮 */
+.btn-danger {
+    background-color: var(--danger-color);
+    color: white;
+    border-color: var(--danger-color);
+}
+
+.btn-danger:hover:not(:disabled) {
+    background-color: var(--danger-dark);
+    border-color: var(--danger-dark);
+    box-shadow: var(--hover-shadow);
+    transform: translateY(-2px);
+}
+
+.btn-danger:active:not(:disabled) {
+    background-color: #bb4444;
+    border-color: #bb4444;
+    transform: translateY(0);
+}
+
+.btn-danger:focus {
+    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+}
+
+/* Info 按钮 */
+.btn-info {
+    background-color: var(--info-color);
+    color: white;
+    border-color: var(--info-color);
+}
+
+.btn-info:hover:not(:disabled) {
+    background-color: var(--info-dark);
+    border-color: var(--info-dark);
+    box-shadow: var(--hover-shadow);
+    transform: translateY(-2px);
+}
+
+.btn-info:active:not(:disabled) {
+    background-color: #0055aa;
+    border-color: #0055aa;
+    transform: translateY(0);
+}
+
+.btn-info:focus {
+    box-shadow: 0 0 0 3px rgba(0, 153, 255, 0.1);
+}
+
+/* 轮廓按钮 */
+
+.btn-outline-primary {
+    background-color: transparent;
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover:not(:disabled) {
+    background-color: var(--primary-light);
+    border-color: var(--primary-dark);
+    color: var(--primary-dark);
+}
+
+.btn-outline-primary:active:not(:disabled) {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-outline-secondary {
+    background-color: transparent;
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+.btn-outline-secondary:hover:not(:disabled) {
+    background-color: var(--bg-secondary);
+    border-color: var(--text-primary);
+}
+
+.btn-outline-secondary:active:not(:disabled) {
+    background-color: var(--text-primary);
+    color: white;
+}
+
+.btn-outline-success {
+    background-color: transparent;
+    color: var(--success-color);
+    border-color: var(--success-color);
+}
+
+.btn-outline-success:hover:not(:disabled) {
+    background-color: var(--success-light);
+    border-color: var(--success-dark);
+    color: var(--success-dark);
+}
+
+.btn-outline-danger {
+    background-color: transparent;
+    color: var(--danger-color);
+    border-color: var(--danger-color);
+}
+
+.btn-outline-danger:hover:not(:disabled) {
+    background-color: var(--danger-light);
+    border-color: var(--danger-dark);
+    color: var(--danger-dark);
+}
+
+/* 文本按钮 */
+
+.btn-text {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: none;
+    box-shadow: none;
+    padding: 8px 12px;
+}
+
+.btn-text:hover:not(:disabled) {
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+.btn-text:active:not(:disabled) {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* 按钮组 */
+
+.btn-group {
+    display: inline-flex;
+    gap: 0;
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    box-shadow: var(--button-shadow);
+}
+
+.btn-group .btn {
+    border-radius: 0;
+    box-shadow: none;
+    margin: 0;
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-group .btn:first-child {
+    border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
+}
+
+.btn-group .btn:last-child {
+    border-right: none;
+    border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+}
+
+/* 加载状态 */
+
+.btn.btn-loading {
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+.btn.btn-loading::after {
+    content: '';
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 图标按钮 */
+
+.btn-icon {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: var(--border-radius-full);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-icon.btn-sm {
+    width: 32px;
+    height: 32px;
+}
+
+.btn-icon.btn-lg {
+    width: 48px;
+    height: 48px;
+}
+
+.btn-icon i {
+    font-size: var(--font-size-lg);
+}
+
+/* 响应式设计 */
+
+@media (max-width: 576px) {
+    .btn {
+        padding: 8px 12px;
+        font-size: var(--font-size-xs);
+    }
+    
+    .btn-block {
+        width: 100%;
+    }
+}

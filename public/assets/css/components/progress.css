@@ -1,0 +1,178 @@
+/* ============================================
+   进度条组件样式
+   ============================================ */
+
+/* 基础进度条 */
+.progress {
+    display: flex;
+    height: 8px;
+    overflow: hidden;
+    background-color: var(--bg-secondary);
+    border-radius: var(--border-radius-full);
+    box-shadow: var(--shadow-sm);
+}
+
+.progress-bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    white-space: nowrap;
+    transition: width var(--transition-normal);
+    font-size: 12px;
+    font-weight: var(--font-weight-semibold);
+}
+
+/* 进度条大小变体 */
+
+.progress-sm {
+    height: 4px;
+}
+
+.progress-lg {
+    height: 16px;
+}
+
+.progress-lg .progress-bar {
+    font-size: 14px;
+    line-height: 16px;
+}
+
+/* 进度条颜色变体 */
+
+.progress-bar-primary {
+    background-color: var(--primary-color);
+}
+
+.progress-bar-secondary {
+    background-color: var(--gray-500);
+}
+
+.progress-bar-success {
+    background-color: var(--success-color);
+}
+
+.progress-bar-warning {
+    background-color: var(--warning-color);
+}
+
+.progress-bar-danger {
+    background-color: var(--danger-color);
+}
+
+.progress-bar-info {
+    background-color: var(--info-color);
+}
+
+/* 进度条条纹 */
+
+.progress-bar-striped {
+    background-image: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.15) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.15) 50%,
+        rgba(255, 255, 255, 0.15) 75%,
+        transparent 75%,
+        transparent
+    );
+    background-size: 16px 16px;
+}
+
+.progress-bar-striped.progress-bar-animated {
+    animation: progress-bar-stripes 1s linear infinite;
+}
+
+@keyframes progress-bar-stripes {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 16px 0;
+    }
+}
+
+/* 进度条标签 */
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-xs);
+    font-size: var(--font-size-sm);
+    color: var(--text-primary);
+}
+
+.progress-label-text {
+    font-weight: var(--font-weight-medium);
+}
+
+.progress-label-value {
+    color: var(--text-secondary);
+}
+
+/* 进度条容器 */
+
+.progress-container {
+    margin-bottom: var(--spacing-md);
+}
+
+.progress-container:last-child {
+    margin-bottom: 0;
+}
+
+/* 进度条组 */
+
+.progress-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+/* 进度条堆叠 */
+
+.progress-stacked {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.progress-stacked .progress {
+    margin: 0;
+}
+
+/* 进度步骤 */
+
+.progress-steps {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+}
+
+.progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    position: relative;
+}
+
+.progress-step-number {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-sm);
+    transition: var(--transition-default);\n    z-index: 2;\n}\n\n.progress-step.active .progress-step-number {\n    background-color: var(--primary-color);\n    border-color: var(--primary-color);\n    color: white;\n}\n\n.progress-step.completed .progress-step-number {\n    background-color: var(--success-color);\n    border-color: var(--success-color);\n    color: white;\n}\n\n.progress-step-label {\n    font-size: var(--font-size-sm);\n    color: var(--text-secondary);\n    text-align: center;\n}\n\n.progress-step.active .progress-step-label {\n    color: var(--primary-color);\n    font-weight: var(--font-weight-semibold);\n}\n\n.progress-step.completed .progress-step-label {\n    color: var(--success-color);\n}\n\n.progress-step-line {\n    position: absolute;\n    top: 16px;\n    left: 50%;\n    right: -50%;\n    height: 2px;\n    background-color: var(--border-color);\n    z-index: 1;\n}\n\n.progress-step:last-child .progress-step-line {\n    display: none;\n}\n\n.progress-step.completed .progress-step-line {\n    background-color: var(--success-color);\n}\n\n/* 响应式设计 */\n\n@media (max-width: 576px) {\n    .progress {\n        height: 6px;\n    }\n    \n    .progress-lg {\n        height: 12px;\n    }\n    \n    .progress-steps {\n        gap: var(--spacing-sm);\n    }\n    \n    .progress-step-number {\n        width: 28px;\n        height: 28px;\n        font-size: 12px;\n    }\n    \n    .progress-step-label {\n        font-size: 11px;\n    }\n}\n

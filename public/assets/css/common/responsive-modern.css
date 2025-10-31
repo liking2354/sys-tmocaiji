@@ -1,0 +1,338 @@
+/* ============================================
+   现代化响应式设计
+   ============================================ */
+
+/* ========== 超大屏幕 (≥1400px) ========== */
+
+@media (min-width: 1400px) {
+    .main-content {
+        max-width: 1400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* ========== 大屏幕 (≥1200px) ========== */
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1200px;
+    }
+}
+
+/* ========== 中等屏幕 (≥992px) ========== */
+
+@media (min-width: 992px) {
+    .sidebar {
+        width: var(--sidebar-width);
+    }
+    
+    .main-content {
+        margin-left: var(--sidebar-width);
+    }
+    
+    .main-content.main-content-expanded {
+        margin-left: var(--sidebar-collapsed-width);
+    }
+}
+
+/* ========== 平板设备 (768px - 991px) ========== */
+
+@media (max-width: 991px) {
+    .sidebar {
+        width: var(--sidebar-collapsed-width);
+    }
+    
+    .sidebar .nav-link span {
+        display: none;
+    }
+    
+    .sidebar-submenu {
+        display: none !important;
+    }
+    
+    .main-content {
+        margin-left: var(--sidebar-collapsed-width);
+    }
+    
+    .main-content.main-content-expanded {
+        margin-left: var(--sidebar-collapsed-width);
+    }
+    
+    .navbar-search {
+        min-width: 150px !important;
+    }
+    
+    .navbar-user-name {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    /* 导航栏调整 */
+    .navbar {
+        padding: 0 var(--spacing-md);
+    }
+    
+    .navbar-brand {
+        font-size: var(--font-size-base);
+    }
+    
+    .navbar-nav {
+        gap: var(--spacing-sm) !important;
+    }
+    
+    .navbar-nav .nav-link {
+        padding: var(--spacing-xs) var(--spacing-sm) !important;
+        font-size: var(--font-size-xs);
+    }
+    
+    /* 侧边栏调整 */
+    .sidebar {
+        position: fixed;
+        top: var(--navbar-height);
+        left: 0;
+        width: var(--sidebar-width);
+        height: calc(100vh - var(--navbar-height));
+        z-index: var(--z-modal);
+        transform: translateX(-100%);
+        transition: transform var(--transition-normal) var(--transition-timing-ease-in-out);
+        border-right: 1px solid var(--border-color);
+    }
+    
+    .sidebar.sidebar-open {
+        transform: translateX(0);
+        box-shadow: var(--shadow-lg);
+    }
+    
+    .sidebar .nav-link span {
+        display: inline;
+    }
+    
+    .sidebar-submenu {
+        display: block !important;
+    }
+    
+    /* 主内容区调整 */
+    .main-content {
+        margin-left: 0;
+        margin-top: var(--navbar-height);
+        padding: var(--spacing-md);
+    }
+    
+    .main-content.main-content-expanded {
+        margin-left: 0;
+    }
+    
+    /* 隐藏搜索框 */
+    .navbar-search {
+        display: none;
+    }
+    
+    /* 显示切换按钮 */
+    .sidebar-toggle {
+        display: flex;
+    }
+}
+
+/* ========== 手机设备 (≤576px) ========== */
+
+@media (max-width: 576px) {
+    /* 导航栏调整 */
+    .navbar {
+        padding: 0 var(--spacing-sm);
+        height: 56px;
+    }
+    
+    .navbar-brand {
+        font-size: var(--font-size-sm);
+    }
+    
+    .navbar-nav {
+        gap: var(--spacing-xs) !important;
+    }
+    
+    .navbar-nav .nav-link {
+        padding: var(--spacing-xs) var(--spacing-xs) !important;
+        font-size: var(--font-size-xs);
+    }
+    
+    .navbar-nav .nav-link i {
+        margin-right: 0 !important;
+    }
+    
+    /* 侧边栏调整 */
+    .sidebar {
+        width: 100%;
+        max-width: 280px;
+    }
+    
+    /* 主内容区调整 */
+    .main-content {
+        padding: var(--spacing-sm);
+        margin-top: 56px;
+    }
+    
+    /* 表格响应式 */
+    table {
+        font-size: var(--font-size-xs);
+    }
+    
+    th, td {
+        padding: var(--spacing-sm);
+    }
+    
+    /* 表单响应式 */
+    .form-group {
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .form-control {
+        font-size: 16px; /* 防止 iOS 自动缩放 */
+    }
+    
+    /* 按钮响应式 */
+    .btn {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: var(--font-size-sm);
+    }
+    
+    /* 卡片响应式 */
+    .card {
+        margin-bottom: var(--spacing-md);
+    }
+}
+
+/* ========== 超小屏幕 (≤480px) ========== */
+
+@media (max-width: 480px) {
+    /* 导航栏调整 */
+    .navbar {
+        height: 52px;
+    }
+    
+    .navbar-brand {
+        font-size: var(--font-size-xs);
+    }
+    
+    /* 主内容区调整 */
+    .main-content {
+        padding: var(--spacing-xs);
+        margin-top: 52px;
+    }
+    
+    /* 标题调整 */
+    h1 { font-size: var(--font-size-2xl); }
+    h2 { font-size: var(--font-size-xl); }
+    h3 { font-size: var(--font-size-lg); }
+    h4 { font-size: var(--font-size-base); }
+    h5 { font-size: var(--font-size-sm); }
+    h6 { font-size: var(--font-size-xs); }
+    
+    /* 间距调整 */
+    .row {
+        margin-left: calc(-1 * var(--spacing-xs));
+        margin-right: calc(-1 * var(--spacing-xs));
+    }
+    
+    .col {
+        padding-left: var(--spacing-xs);
+        padding-right: var(--spacing-xs);
+    }
+}
+
+/* ========== 打印样式 ========== */
+
+@media print {
+    .navbar,
+    .sidebar,
+    .sidebar-toggle,
+    .btn-print,
+    .no-print {
+        display: none !important;
+    }
+    
+    .main-content {
+        margin-left: 0;
+        margin-top: 0;
+        padding: 0;
+        background-color: white;
+    }
+    
+    body {
+        padding-top: 0;
+        background-color: white;
+    }
+}
+
+/* ========== 触摸设备优化 ========== */
+
+@media (hover: none) and (pointer: coarse) {
+    /* 增加触摸目标大小 */
+    .btn,
+    .nav-link,
+    a {
+        min-height: 44px;
+        min-width: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* 移除悬停效果 */
+    .btn:hover,
+    .nav-link:hover,
+    a:hover {
+        background-color: transparent;
+    }
+    
+    /* 添加活跃状态 */
+    .btn:active,
+    .nav-link:active,
+    a:active {
+        opacity: 0.7;
+    }
+}
+
+/* ========== 高分辨率屏幕 ========== */
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    /* 优化字体渲染 */
+    body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+/* ========== 深色模式 ========== */
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-primary: #1f2937;
+        --bg-secondary: #111827;
+        --bg-tertiary: #374151;
+        
+        --text-primary: #f9fafb;
+        --text-secondary: #d1d5db;
+        --text-tertiary: #9ca3af;
+        
+        --border-color: #374151;
+        --border-light: #4b5563;
+        --border-dark: #1f2937;
+    }
+    
+    body {
+        background-color: var(--bg-secondary);
+        color: var(--text-primary);
+    }
+}
+
+/* ========== 减少动画 ========== */
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

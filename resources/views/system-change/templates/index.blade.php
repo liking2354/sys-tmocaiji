@@ -203,13 +203,3 @@
 </div>
 @endsection
 
-@push('styles')
-<style>
-.table th {
-    white-space: nowrap;
-}
-.btn-group-sm > .btn {
-    margin-right: 2px;
-}
-</style>
-@endpush

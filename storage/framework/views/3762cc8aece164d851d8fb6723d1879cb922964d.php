@@ -108,11 +108,14 @@
     </div>
 </div>
 
-
-
 <?php $__env->stopSection(); ?>
 
-<?php $__env->startSection('scripts'); ?>
+<?php $__env->startPush('scripts'); ?>
+<script>
+    // 设置全局变量供 server-groups.js 使用
+    window.systemChangeTasksCreateRoute = '<?php echo e(route("system-change.tasks.create")); ?>';
+</script>
+<script src="<?php echo e(asset('assets/js/modules/server-groups.js')); ?>"></script>
 <script>
     $(document).ready(function() {
         // 初始化时检查按钮状态
@@ -174,5 +177,6 @@
         window.location.href = url.toString();
     }
 </script>
-<?php $__env->stopSection(); ?>
+<?php $__env->stopPush(); ?>
+
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/tanli/Documents/php-code/sys-tmocaiji/resources/views/server-groups/index.blade.php ENDPATH**/ ?>

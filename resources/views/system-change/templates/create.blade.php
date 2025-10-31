@@ -167,40 +167,6 @@
 @endsection
 
 @push('styles')
-<style>
-.required::after {
-    content: " *";
-    color: red;
-}
-pre {
-    background-color: #f8f9fa;
-    border: 1px solid #e9ecef;
-    border-radius: 0.25rem;
-    padding: 1rem;
-    font-size: 0.875rem;
-}
-#config-preview {
-    max-height: 400px;
-    overflow-y: auto;
-}
-.config-item {
-    border: 1px solid #dee2e6;
-    border-radius: 0.25rem;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    background-color: white;
-}
-.config-item h6 {
-    color: #495057;
-    margin-bottom: 0.5rem;
-}
-.modification-item {
-    background-color: #f8f9fa;
-    border-radius: 0.25rem;
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
-}
-</style>
 @endpush
 
 @push('scripts')

@@ -1,0 +1,329 @@
+/**
+ * 任务管理模块样式
+ * 功能：采集任务、系统变更任务等页面的样式
+ */
+
+/* 任务表格 */
+.task-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.task-table th {
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    border-bottom: 2px solid #dee2e6;
+    color: #495057;
+    font-weight: 600;
+    padding: 0.75rem;
+    vertical-align: middle;
+    text-align: left;
+}
+
+.task-table td {
+    vertical-align: middle;
+    padding: 0.75rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.task-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* 任务状态 */
+.task-status {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.task-status.pending {
+    background-color: #e2e3e5;
+    color: #383d41;
+}
+
+.task-status.running {
+    background-color: #cfe2ff;
+    color: #084298;
+}
+
+.task-status.success {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.task-status.failed {
+    background-color: #f8d7da;
+    color: #842029;
+}
+
+.task-status.cancelled {
+    background-color: #fff3cd;
+    color: #664d03;
+}
+
+/* 任务操作 */
+.task-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.task-action-btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    border-radius: 0.25rem;
+    border: 1px solid #dee2e6;
+    background-color: #fff;
+    color: #495057;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.task-action-btn:hover {
+    background-color: #f8f9fa;
+    border-color: #adb5bd;
+}
+
+.task-action-btn.danger {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
+.task-action-btn.danger:hover {
+    background-color: #f8d7da;
+}
+
+.task-action-btn.success {
+    color: #198754;
+    border-color: #198754;
+}
+
+.task-action-btn.success:hover {
+    background-color: #d1e7dd;
+}
+
+/* 任务详情 */
+.task-detail {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.task-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.task-detail-header h4 {
+    margin: 0;
+    color: #212529;
+    font-weight: 600;
+}
+
+.task-detail-body {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.task-detail-item {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 0.75rem;
+}
+
+.task-detail-item-label {
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+}
+
+.task-detail-item-value {
+    color: #212529;
+    font-size: 0.875rem;
+}
+
+/* 任务进度 */
+.task-progress {
+    margin-top: 1rem;
+}
+
+.task-progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.task-progress-label {
+    font-weight: 600;
+    color: #495057;
+}
+
+.task-progress-value {
+    color: #212529;
+    font-weight: 600;
+}
+
+.task-progress-bar {
+    height: 25px;
+    background-color: #e9ecef;
+    border-radius: 0.25rem;
+    overflow: hidden;
+}
+
+.task-progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #0d6efd, #0b5ed7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    transition: width 0.3s ease;
+}
+
+/* 任务日志 */
+.task-log {
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.875rem;
+    max-height: 400px;
+    overflow-y: auto;
+    line-height: 1.5;
+    margin-top: 1rem;
+}
+
+.task-log-line {
+    margin-bottom: 0.25rem;
+}
+
+.task-log-error {
+    color: #f48771;
+}
+
+.task-log-success {
+    color: #89d185;
+}
+
+.task-log-warning {
+    color: #dcdcaa;
+}
+
+.task-log-info {
+    color: #9cdcfe;
+}
+
+/* 任务操作按钮 */
+.task-operation-btn {
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    border-radius: 0.25rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-right: 0.5rem;
+}
+
+.task-operation-btn.primary {
+    background-color: #0d6efd;
+    color: white;
+}
+
+.task-operation-btn.primary:hover {
+    background-color: #0b5ed7;
+}
+
+.task-operation-btn.danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.task-operation-btn.danger:hover {
+    background-color: #bb2d3b;
+}
+
+.task-operation-btn.success {
+    background-color: #198754;
+    color: white;
+}
+
+.task-operation-btn.success:hover {
+    background-color: #157347;
+}
+
+.task-operation-btn.warning {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.task-operation-btn.warning:hover {
+    background-color: #ffb800;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .task-table {
+        font-size: 0.875rem;
+    }
+    
+    .task-table th,
+    .task-table td {
+        padding: 0.5rem;
+    }
+    
+    .task-actions {
+        flex-direction: column;
+    }
+    
+    .task-action-btn {
+        width: 100%;
+    }
+    
+    .task-detail-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .task-detail-header h4 {
+        margin-bottom: 0.5rem;
+    }
+    
+    .task-detail-body {
+        grid-template-columns: 1fr;
+    }
+    
+    .task-progress-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .task-progress-value {
+        margin-top: 0.25rem;
+    }
+    
+    .task-log {
+        max-height: 300px;
+        font-size: 0.75rem;
+    }
+    
+    .task-operation-btn {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
+}

@@ -1,0 +1,246 @@
+/**
+ * 认证模块样式
+ * 功能：登录、注册、密码重置等认证页面的样式
+ */
+
+/* 登录页面 */
+.login-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #3498db, #2c3e50);
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+/* 登录卡片 */
+.login-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* 登录卡片头部 */
+.login-header {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    padding: 25px;
+    text-align: center;
+    border-bottom: none;
+}
+
+.login-header h3 {
+    margin: 0;
+    color: white;
+    font-weight: 600;
+    font-size: 1.3rem;
+}
+
+/* 登录卡片主体 */
+.login-body {
+    padding: 40px;
+}
+
+/* 登录标志 */
+.login-logo {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-logo i {
+    font-size: 48px;
+    color: #3498db;
+}
+
+/* 表单组 */
+.form-group {
+    margin-bottom: 25px;
+}
+
+/* 表单控制 */
+.form-control {
+    height: 50px;
+    border-radius: 10px;
+    padding-left: 20px;
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s;
+}
+
+.form-control:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+/* 输入组文本 */
+.input-group-text {
+    background-color: transparent;
+    border-right: none;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    color: #3498db;
+}
+
+.input-group .form-control {
+    border-left: none;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* 登录按钮 */
+.btn-login {
+    height: 50px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 16px;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    border: none;
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+    transition: all 0.3s;
+    width: 100%;
+}
+
+.btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 20px rgba(52, 152, 219, 0.4);
+    color: white;
+    text-decoration: none;
+}
+
+/* 记住我 */
+.remember-me {
+    display: flex;
+    align-items: center;
+}
+
+.remember-me input {
+    margin-right: 10px;
+}
+
+/* 登录链接 */
+.login-links {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.login-links a {
+    color: #3498db;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.login-links a:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
+
+/* 登录错误 */
+.login-error {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    color: #721c24;
+}
+
+.login-error strong {
+    font-weight: 600;
+}
+
+/* 登录成功 */
+.login-success {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    color: #155724;
+}
+
+.login-success strong {
+    font-weight: 600;
+}
+
+/* 响应式设计 */
+@media (max-width: 767px) {
+    .login-page {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    
+    .login-body {
+        padding: 25px;
+    }
+    
+    .login-header h3 {
+        font-size: 1.2rem;
+    }
+    
+    .login-logo i {
+        font-size: 36px;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-control {
+        height: 45px;
+        font-size: 16px;
+    }
+    
+    .btn-login {
+        height: 45px;
+        font-size: 14px;
+    }
+    
+    .login-links {
+        margin-top: 15px;
+    }
+    
+    .login-links a {
+        font-size: 12px;
+    }
+}
+
+/* 超小屏幕 */
+@media (max-width: 480px) {
+    .login-page {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    
+    .login-body {
+        padding: 15px;
+    }
+    
+    .login-header {
+        padding: 15px;
+    }
+    
+    .login-header h3 {
+        font-size: 1rem;
+    }
+    
+    .login-logo {
+        margin-bottom: 20px;
+    }
+    
+    .login-logo i {
+        font-size: 32px;
+    }
+    
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    .form-control {
+        height: 40px;
+        font-size: 14px;
+        padding-left: 15px;
+    }
+    
+    .btn-login {
+        height: 40px;
+        font-size: 13px;
+    }
+}

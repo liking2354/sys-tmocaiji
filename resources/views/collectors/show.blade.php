@@ -224,11 +224,8 @@
 </div>
 @endsection
 
-@section('styles')
-<style>
-    pre code {
-        white-space: pre-wrap;
-        word-break: break-word;
-    }
-</style>
-@endsection
+
+
+@push('scripts')
+<script src="{{ asset('assets/js/modules/collectors-show.js') }}"></script>
+@endpush

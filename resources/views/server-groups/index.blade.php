@@ -109,11 +109,14 @@
     </div>
 </div>
 
-
-
 @endsection
 
-@section('scripts')
+@push('scripts')
+<script>
+    // 设置全局变量供 server-groups.js 使用
+    window.systemChangeTasksCreateRoute = '{{ route("system-change.tasks.create") }}';
+</script>
+<script src="{{ asset('assets/js/modules/server-groups.js') }}"></script>
 <script>
     $(document).ready(function() {
         // 初始化时检查按钮状态
@@ -175,4 +178,4 @@
         window.location.href = url.toString();
     }
 </script>
-@endsection
+@endpush

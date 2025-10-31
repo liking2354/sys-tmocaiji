@@ -1,0 +1,293 @@
+/**
+ * 系统变更模块样式
+ * 功能：系统变更任务、模板、规则等页面的样式
+ */
+
+/* 规则显示 */
+.rule-display {
+    background-color: #f8f9fa;
+}
+
+.rule-display h6 {
+    color: #495057;
+    margin-bottom: 1rem;
+}
+
+/* 信息框 */
+.info-box {
+    margin-bottom: 1rem;
+}
+
+/* 代码块 */
+pre code {
+    font-size: 0.875rem;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+/* 必填字段标记 */
+.required::after {
+    content: ' *';
+    color: #dc3545;
+    font-weight: bold;
+}
+
+/* 表格样式 */
+.table th {
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    border-bottom: 2px solid #dee2e6;
+    color: #495057;
+    font-weight: 600;
+    padding: 0.75rem;
+    vertical-align: middle;
+}
+
+.table td {
+    vertical-align: middle;
+    padding: 0.75rem;
+}
+
+.table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* 任务状态标签 */
+.task-status {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.task-status.pending {
+    background-color: #e2e3e5;
+    color: #383d41;
+}
+
+.task-status.running {
+    background-color: #cfe2ff;
+    color: #084298;
+}
+
+.task-status.success {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.task-status.failed {
+    background-color: #f8d7da;
+    color: #842029;
+}
+
+.task-status.cancelled {
+    background-color: #fff3cd;
+    color: #664d03;
+}
+
+/* 模板卡片 */
+.template-card {
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    margin-bottom: 1rem;
+    background-color: #fff;
+    transition: all 0.3s ease;
+}
+
+.template-card:hover {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.template-card-header {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.template-card-header h5 {
+    margin: 0;
+    color: #212529;
+    font-weight: 600;
+}
+
+.template-card-body {
+    padding: 1rem;
+}
+
+.template-card-footer {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-top: 1px solid #dee2e6;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+/* 变量管理 */
+.variable-item {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.variable-item-name {
+    font-weight: 600;
+    color: #212529;
+}
+
+.variable-item-value {
+    color: #6c757d;
+    font-family: monospace;
+    font-size: 0.875rem;
+}
+
+.variable-item-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* 规则管理 */
+.rule-item {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.rule-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.rule-item-title {
+    font-weight: 600;
+    color: #212529;
+}
+
+.rule-item-type {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    background-color: #e7f3ff;
+    color: #0066cc;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.rule-item-content {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 0.75rem;
+    font-family: monospace;
+    font-size: 0.875rem;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+/* 进度条 */
+.progress-bar-animated {
+    animation: progress-bar-stripes 1s linear infinite;
+}
+
+@keyframes progress-bar-stripes {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 2rem 0;
+    }
+}
+
+/* 执行日志 */
+.execution-log {
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.875rem;
+    max-height: 400px;
+    overflow-y: auto;
+    line-height: 1.5;
+}
+
+.execution-log-line {
+    margin-bottom: 0.25rem;
+}
+
+.execution-log-error {
+    color: #f48771;
+}
+
+.execution-log-success {
+    color: #89d185;
+}
+
+.execution-log-warning {
+    color: #dcdcaa;
+}
+
+.execution-log-info {
+    color: #9cdcfe;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .template-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .template-card-header h5 {
+        margin-bottom: 0.5rem;
+    }
+    
+    .template-card-footer {
+        flex-direction: column;
+    }
+    
+    .template-card-footer button {
+        width: 100%;
+    }
+    
+    .variable-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .variable-item-name {
+        margin-bottom: 0.5rem;
+    }
+    
+    .variable-item-actions {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+    
+    .rule-item-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .rule-item-type {
+        margin-top: 0.5rem;
+    }
+    
+    .execution-log {
+        max-height: 300px;
+        font-size: 0.75rem;
+    }
+}

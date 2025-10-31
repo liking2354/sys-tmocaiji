@@ -222,20 +222,7 @@
 <!-- 引入执行进度组件 -->
 @include('components.execution-progress')
 
-@push('styles')
-<style>
-.table th {
-    white-space: nowrap;
-}
-.btn-group-vertical .btn {
-    border-radius: 0.25rem !important;
-    margin-bottom: 2px;
-}
-.progress {
-    background-color: #e9ecef;
-}
-</style>
-@endpush
+
 
 @section('scripts')
 <script>
@@ -688,3 +675,7 @@ function pollTaskStatusInList(taskId, progressManager) {
 }
 </script>
 @endsection
+
+@push('scripts')
+<script src="{{ asset('assets/js/modules/system-change-tasks.js') }}"></script>
+@endpush
