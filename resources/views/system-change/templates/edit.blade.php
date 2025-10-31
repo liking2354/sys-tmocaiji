@@ -4,19 +4,23 @@
 
 @section('content')
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1 class="h3 mb-0">编辑配置模板</h1>
-                <div>
-                    <a href="{{ route('system-change.templates.show', $template) }}" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left"></i> 返回详情
-                    </a>
-                    <a href="{{ route('system-change.templates.index') }}" class="btn btn-outline-secondary">
-                        <i class="fas fa-list"></i> 模板列表
-                    </a>
-                </div>
-            </div>
+    <!-- 页面标题 -->
+    <div class="mb-4">
+        <h1 class="mb-1">
+            <i class="fas fa-edit text-primary"></i> 编辑配置模板
+        </h1>
+        <p class="text-muted">修改系统变更模板的配置和规则</p>
+    </div>
+    
+    <!-- 操作按钮 -->
+    <div class="mb-4">
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="{{ route('system-change.templates.show', $template) }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> 返回详情
+            </a>
+            <a href="{{ route('system-change.templates.index') }}" class="btn btn-secondary">
+                <i class="fas fa-list"></i> 模板列表
+            </a>
         </div>
     </div>
 
@@ -27,9 +31,11 @@
         <div class="row">
             <!-- 基本信息 -->
             <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">基本信息</h5>
+                <div class="card card-primary shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-info-circle"></i> 基本信息
+                        </h5>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">

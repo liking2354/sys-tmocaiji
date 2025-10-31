@@ -4,16 +4,30 @@
 
 @section('content')
 <div class="container-fluid">
+    <!-- 页面标题 -->
+    <div class="mb-4">
+        <h1 class="mb-1">
+            <i class="fas fa-edit text-primary"></i> 编辑配置任务
+        </h1>
+        <p class="text-muted">修改系统变更任务的配置和参数</p>
+    </div>
+    
+    <!-- 操作按钮 -->
+    <div class="mb-4">
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="{{ route('system-change.tasks.index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> 返回列表
+            </a>
+        </div>
+    </div>
+    
     <div class="row">
         <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">编辑配置任务</h3>
-                    <div class="card-tools">
-                        <a href="{{ route('system-change.tasks.index') }}" class="btn btn-secondary">
-                            <i class="fas fa-arrow-left"></i> 返回列表
-                        </a>
-                    </div>
+            <div class="card card-primary shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-edit"></i> 编辑表单
+                    </h5>
                 </div>
                 <form action="{{ route('system-change.tasks.update', $task->id) }}" method="POST" id="taskForm">
                     @csrf

@@ -4,50 +4,59 @@
 
 @section('content')
 <div class="container-fluid">
+    <!-- 页面标题 -->
+    <div class="mb-4">
+        <h1 class="mb-1">
+            <i class="fas fa-file-code text-primary"></i> 配置模板管理
+        </h1>
+        <p class="text-muted">管理和配置系统变更模板</p>
+    </div>
+    
+    <!-- 操作按钮 -->
+    <div class="mb-4">
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="{{ route('system-change.templates.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> 新增模板
+            </a>
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#importModal">
+                <i class="fas fa-upload"></i> 导入模板
+            </button>
+        </div>
+    </div>
+    
     <div class="row">
         <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="fas fa-file-code mr-2"></i>
-                        配置模板管理
-                    </h3>
-                    <div class="card-tools">
-                        <a href="{{ route('system-change.templates.create') }}" class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus mr-1"></i>
-                            新增模板
-                        </a>
-                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#importModal">
-                            <i class="fas fa-upload mr-1"></i>
-                            导入模板
-                        </button>
-                    </div>
+            <!-- 搜索筛选卡片 -->
+            <div class="card card-warning shadow-sm mb-4">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">
+                        <i class="fas fa-filter"></i> 搜索和筛选
+                    </h5>
                 </div>
-
                 <div class="card-body">
-                    <!-- 搜索筛选 -->
-                    <form method="GET" class="mb-3">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="input-group">
-                                    <input type="text" name="search" class="form-control" placeholder="搜索模板名称或描述..." 
-                                           value="{{ request('search') }}">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary" type="submit">
-                                            <i class="fas fa-search"></i>
-                                        </button>
-                                    </div>
+                    <form method="GET" class="form-row align-items-end">
+                        <div class="col-md-4 mb-2">
+                            <label for="search">搜索</label>
+                            <div class="input-group">
+                                <input type="text" name="search" class="form-control" placeholder="搜索模板名称或描述..." 
+                                       value="{{ request('search') }}">
+                                <div class="input-group-append">
+                                    <button class="btn btn-warning" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <select name="status" class="form-control" onchange="this.form.submit();">
-                                    <option value="">全部状态</option>
-                                    <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>启用</option>
-                                    <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>禁用</option>
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <a href="{{ route('system-change.templates.index') }}" class="btn btn-default">
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <label for="status">状态</label>
+                            <select name="status" class="form-control" onchange="this.form.submit();">
+                                <option value="">全部状态</option>
+                                <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>启用</option>
+                                <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>禁用</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <a href="{{ route('system-change.templates.index') }}" class="btn btn-secondary btn-block">
                                     <i class="fas fa-undo mr-1"></i>
                                     重置
                                 </a>
@@ -55,9 +64,17 @@
                         </div>
                     </form>
 
+            <!-- 模板列表卡片 -->
+            <div class="card card-primary shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-list"></i> 模板列表
+                    </h5>
+                </div>
+                <div class="card-body p-0">
                     <!-- 模板列表 -->
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped">
+                        <table class="table table-striped table-light table-hover mb-0">
                             <thead>
                                 <tr>
                                     <th width="5%">ID</th>

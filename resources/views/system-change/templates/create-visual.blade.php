@@ -4,20 +4,30 @@
 
 @section('content')
 <div class="container-fluid">
+    <!-- 页面标题 -->
+    <div class="mb-4">
+        <h1 class="mb-1">
+            <i class="fas fa-plus text-primary"></i> 创建配置模板 - 可视化配置
+        </h1>
+        <p class="text-muted">使用可视化界面创建系统变更模板</p>
+    </div>
+    
+    <!-- 操作按钮 -->
+    <div class="mb-4">
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="{{ route('system-change.templates.index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> 返回列表
+            </a>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="fas fa-plus mr-2"></i>
-                        创建配置模板 - 可视化配置
-                    </h3>
-                    <div class="card-tools">
-                        <a href="{{ route('system-change.templates.index') }}" class="btn btn-default btn-sm">
-                            <i class="fas fa-arrow-left mr-1"></i>
-                            返回列表
-                        </a>
-                    </div>
+            <div class="card card-primary shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-edit"></i> 创建表单
+                    </h5>
                 </div>
 
                 <form method="POST" action="{{ route('system-change.templates.store') }}" id="template-form">
@@ -27,7 +37,7 @@
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="name" class="required">模板名称</label>
+                                    <label for="name" class="font-weight-bold">模板名称 <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control @error('name') is-invalid @enderror" 
                                            id="name" name="name" value="{{ old('name') }}" required>
                                     @error('name')
@@ -37,7 +47,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="template_type">模板类型</label>
+                                    <label for="template_type" class="font-weight-bold">模板类型</label>
                                     <select class="form-control" id="template_type" name="template_type">
                                         <option value="mixed">混合模式</option>
                                         <option value="directory">目录批量处理</option>
