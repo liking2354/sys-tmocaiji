@@ -5,15 +5,20 @@
 @section('content')
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>采集任务管理</h1>
         <div>
-            <a href="{{ route('servers.index') }}" class="btn btn-primary mr-2">
-                <i class="fas fa-plus"></i> 去服务器页面创建批量任务
+            <h1 class="mb-0">
+                <i class="fas fa-tasks text-warning"></i> 采集任务管理
+            </h1>
+            <small class="text-muted">管理和监控数据采集任务</small>
+        </div>
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="{{ route('servers.index') }}" class="btn btn-primary btn-sm">
+                <i class="fas fa-plus"></i> 创建批量任务
             </a>
-            <button type="button" class="btn btn-success mr-2" id="batchExecuteBtn">
-                <i class="fas fa-play"></i> 立即执行批量任务
+            <button type="button" class="btn btn-success btn-sm" id="batchExecuteBtn">
+                <i class="fas fa-play"></i> 立即执行
             </button>
-            <button type="button" class="btn btn-danger" id="batchDeleteBtn" disabled>
+            <button type="button" class="btn btn-danger btn-sm" id="batchDeleteBtn" disabled>
                 <i class="fas fa-trash"></i> 批量删除
             </button>
         </div>
@@ -40,12 +45,17 @@
     </script>
     
     <!-- 筛选条件 -->
-    <div class="card mb-4">
+    <div class="card card-warning mb-4 shadow-sm">
+        <div class="card-header bg-warning text-white">
+            <h5 class="mb-0">
+                <i class="fas fa-filter"></i> 搜索和筛选
+            </h5>
+        </div>
         <div class="card-body">
-            <form action="{{ route('collection-tasks.index') }}" method="GET" class="form-row align-items-center">
+            <form action="{{ route('collection-tasks.index') }}" method="GET" class="form-row align-items-end">
                 <div class="col-md-3 mb-2">
-                    <label for="status">任务状态</label>
-                    <select class="form-control" id="status" name="status">
+                    <label for="status" class="font-weight-bold">任务状态</label>
+                    <select class="form-control form-control-sm" id="status" name="status">
                         <option value="">所有状态</option>
                         <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>未开始</option>
                         <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>进行中</option>
@@ -54,24 +64,24 @@
                     </select>
                 </div>
                 <div class="col-md-3 mb-2">
-                    <label for="type">任务类型</label>
-                    <select class="form-control" id="type" name="type">
+                    <label for="type" class="font-weight-bold">任务类型</label>
+                    <select class="form-control form-control-sm" id="type" name="type">
                         <option value="">所有类型</option>
                         <option value="single" {{ request('type') == 'single' ? 'selected' : '' }}>单服务器</option>
                         <option value="batch" {{ request('type') == 'batch' ? 'selected' : '' }}>批量服务器</option>
                     </select>
                 </div>
                 <div class="col-md-3 mb-2">
-                    <label for="search">搜索</label>
-                    <input type="text" class="form-control" id="search" name="search" placeholder="任务名称" value="{{ request('search') }}">
+                    <label for="search" class="font-weight-bold">搜索</label>
+                    <input type="text" class="form-control form-control-sm" id="search" name="search" placeholder="任务名称" value="{{ request('search') }}">
                 </div>
-                <div class="col-md-2 mb-2 align-self-end">
-                    <button type="submit" class="btn btn-primary btn-block">
+                <div class="col-md-2 mb-2">
+                    <button type="submit" class="btn btn-warning btn-sm btn-block">
                         <i class="fas fa-search"></i> 筛选
                     </button>
                 </div>
-                <div class="col-md-1 mb-2 align-self-end">
-                    <a href="{{ route('collection-tasks.index') }}" class="btn btn-secondary btn-block">
+                <div class="col-md-1 mb-2">
+                    <a href="{{ route('collection-tasks.index') }}" class="btn btn-secondary btn-sm btn-block">
                         <i class="fas fa-sync"></i> 重置
                     </a>
                 </div>
@@ -80,27 +90,32 @@
     </div>
     
     <!-- 任务列表 -->
-    <div class="card">
-        <div class="card-body">
+    <div class="card card-warning shadow-sm">
+        <div class="card-header bg-warning text-white">
+            <h5 class="mb-0">
+                <i class="fas fa-list"></i> 采集任务列表
+            </h5>
+        </div>
+        <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
+                <table class="table table-hover table-striped mb-0">
+                    <thead class="table-light">
                         <tr>
-                            <th>
+                            <th style="width: 40px;">
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" id="selectAllTasks">
                                     <label class="custom-control-label" for="selectAllTasks"></label>
                                 </div>
                             </th>
-                            <th>ID</th>
+                            <th style="width: 60px;">ID</th>
                             <th>任务名称</th>
-                            <th>类型</th>
-                            <th>状态</th>
+                            <th style="width: 80px;">类型</th>
+                            <th style="width: 80px;">状态</th>
                             <th>进度</th>
-                            <th>服务器数量</th>
+                            <th style="width: 80px;">服务器数</th>
                             <th>创建人</th>
                             <th>创建时间</th>
-                            <th>操作</th>
+                            <th style="width: 120px;">操作</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -112,9 +127,9 @@
                                         <label class="custom-control-label" for="task_{{ $task->id }}"></label>
                                     </div>
                                 </td>
-                                <td>{{ $task->id }}</td>
+                                <td><span class="badge badge-light">{{ $task->id }}</span></td>
                                 <td>
-                                    <a href="{{ route('collection-tasks.show', $task) }}" class="text-decoration-none">
+                                    <a href="{{ route('collection-tasks.show', $task) }}" class="text-decoration-none font-weight-bold">
                                         {{ $task->name }}
                                     </a>
                                     @if ($task->description)
@@ -169,35 +184,35 @@
                                         <span class="text-muted">-</span>
                                     @endif
                                 </td>
-                                <td>{{ $task->total_servers }}</td>
-                                <td>{{ $task->creator->username ?? '未知' }}</td>
-                                <td>{{ $task->created_at->format('Y-m-d H:i') }}</td>
+                                <td><small class="text-muted">{{ $task->total_servers }}</small></td>
+                                <td><small class="text-muted">{{ $task->creator->username ?? '未知' }}</small></td>
+                                <td><small class="text-muted">{{ $task->created_at->format('Y-m-d H:i') }}</small></td>
                                 <td>
-                                    <div class="btn-group" role="group">
-                                        <a href="{{ route('collection-tasks.show', $task) }}" class="btn btn-sm btn-info">
-                                            <i class="fas fa-eye"></i> 查看
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a href="{{ route('collection-tasks.show', $task) }}" class="btn btn-info" title="查看详情">
+                                            <i class="fas fa-eye"></i>
                                         </a>
                                         @if ($task->status === 2 && $task->error_count > 0)
-                                            <button type="button" class="btn btn-sm btn-warning" onclick="retryTask('{{ $task->id }}')">
-                                                <i class="fas fa-redo"></i> 重试
+                                            <button type="button" class="btn btn-warning" onclick="retryTask('{{ $task->id }}')" title="重试">
+                                                <i class="fas fa-redo"></i>
                                             </button>
                                         @endif
                                         @if ($task->status === 0 && $task->type !== 'single')
-                                            <button type="button" class="btn btn-sm btn-primary" onclick="triggerBatchTask('{{ $task->id }}')">
-                                                <i class="fas fa-play"></i> 执行
+                                            <button type="button" class="btn btn-primary" onclick="triggerBatchTask('{{ $task->id }}')" title="执行">
+                                                <i class="fas fa-play"></i>
                                             </button>
                                         @endif
                                         @if ($task->isRunning())
-                                            <button type="button" class="btn btn-sm btn-danger" onclick="cancelTask('{{ $task->id }}')">
-                                                <i class="fas fa-stop"></i> 取消
+                                            <button type="button" class="btn btn-danger" onclick="cancelTask('{{ $task->id }}')" title="取消">
+                                                <i class="fas fa-stop"></i>
                                             </button>
                                         @endif
                                         @if (!$task->isRunning())
                                             <form action="{{ route('collection-tasks.destroy', $task) }}" method="POST" class="d-inline" onsubmit="return confirm('确定要删除该任务吗？')">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger">
-                                                    <i class="fas fa-trash"></i> 删除
+                                                <button type="submit" class="btn btn-danger" title="删除">
+                                                    <i class="fas fa-trash"></i>
                                                 </button>
                                             </form>
                                         @endif
@@ -206,14 +221,17 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="10" class="text-center py-3">暂无采集任务</td>
+                                <td colspan="10" class="text-center py-4">
+                                    <i class="fas fa-inbox text-muted" style="font-size: 2rem;"></i>
+                                    <p class="text-muted mt-2">暂无采集任务</p>
+                                </td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
             
-            <div class="d-flex justify-content-center mt-3">
+            <div class="d-flex justify-content-center mt-3 pb-3">
                 {{ $tasks->appends(request()->query())->links() }}
             </div>
         </div>
