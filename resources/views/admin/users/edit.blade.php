@@ -1,15 +1,29 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
+<div class="container-fluid">
+    <!-- 页面标题 -->
+    <div class="mb-4">
+        <h1 class="mb-1">
+            <i class="fas fa-user-edit text-primary"></i> 编辑用户
+        </h1>
+        <p class="text-muted">修改用户账户信息</p>
+    </div>
+    
+    <!-- 操作按钮 -->
+    <div class="mb-4">
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">返回列表</a>
+        </div>
+    </div>
+    
+    <div class="row">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span>编辑用户</span>
-                        <a href="{{ route('admin.users.index') }}" class="btn btn-secondary btn-sm">返回列表</a>
-                    </div>
+            <div class="card card-primary shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-edit"></i> 用户表单
+                    </h5>
                 </div>
 
                 <div class="card-body">

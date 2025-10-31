@@ -2,96 +2,92 @@
 
 @section('content')
 <div class="container-fluid">
+    <!-- 页面标题 -->
+    <div class="mb-4">
+        <h1 class="mb-1">
+            <i class="fas fa-history text-primary"></i> 操作日志管理
+        </h1>
+        <p class="text-muted">查看和管理系统操作日志</p>
+    </div>
+    
+    <!-- 操作按钮 -->
+    <div class="mb-4">
+        <div class="d-flex gap-2 flex-wrap">
+            <button type="button" class="btn btn-success" onclick="showExportModal()">
+                <i class="fas fa-download"></i> 导出日志
+            </button>
+            <button type="button" class="btn btn-warning" onclick="showCleanupModal()">
+                <i class="fas fa-trash-alt"></i> 清理日志
+            </button>
+            <button type="button" class="btn btn-danger" onclick="batchDelete()" id="batchDeleteBtn" style="display: none;">
+                <i class="fas fa-trash"></i> 批量删除
+            </button>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1 class="h3 mb-0">操作日志管理</h1>
-                <div>
-                    <button type="button" class="btn btn-success" onclick="showExportModal()">
-                        <i class="fas fa-download"></i> 导出日志
-                    </button>
-                    <button type="button" class="btn btn-warning" onclick="showCleanupModal()">
-                        <i class="fas fa-trash-alt"></i> 清理日志
-                    </button>
-                    <button type="button" class="btn btn-danger" onclick="batchDelete()" id="batchDeleteBtn" style="display: none;">
-                        <i class="fas fa-trash"></i> 批量删除
-                    </button>
-                </div>
-            </div>
-
             <!-- 统计卡片 -->
             <div class="row mb-4">
                 <div class="col-md-3">
-                    <div class="card bg-primary text-white">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h4>{{ number_format($stats['total']) }}</h4>
-                                    <p class="mb-0">总记录数</p>
-                                </div>
-                                <div class="align-self-center">
-                                    <i class="fas fa-list fa-2x"></i>
-                                </div>
-                            </div>
+                    <div class="card card-primary shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-list"></i> 总记录数
+                            </h5>
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 class="text-primary">{{ number_format($stats['total']) }}</h3>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="card bg-success text-white">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h4>{{ number_format($stats['today']) }}</h4>
-                                    <p class="mb-0">今日记录</p>
-                                </div>
-                                <div class="align-self-center">
-                                    <i class="fas fa-calendar-day fa-2x"></i>
-                                </div>
-                            </div>
+                    <div class="card card-success shadow-sm">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-calendar-day"></i> 今日记录
+                            </h5>
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 class="text-success">{{ number_format($stats['today']) }}</h3>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="card bg-info text-white">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h4>{{ number_format($stats['this_week']) }}</h4>
-                                    <p class="mb-0">本周记录</p>
-                                </div>
-                                <div class="align-self-center">
-                                    <i class="fas fa-calendar-week fa-2x"></i>
-                                </div>
-                            </div>
+                    <div class="card card-info shadow-sm">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-calendar-week"></i> 本周记录
+                            </h5>
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 class="text-info">{{ number_format($stats['this_week']) }}</h3>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="card bg-warning text-white">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h4>{{ number_format($stats['this_month']) }}</h4>
-                                    <p class="mb-0">本月记录</p>
-                                </div>
-                                <div class="align-self-center">
-                                    <i class="fas fa-calendar-alt fa-2x"></i>
-                                </div>
-                            </div>
+                    <div class="card card-warning shadow-sm">
+                        <div class="card-header bg-warning text-dark">
+                            <h5 class="mb-0">
+                                <i class="fas fa-calendar-alt"></i> 本月记录
+                            </h5>
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 class="text-warning">{{ number_format($stats['this_month']) }}</h3>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- 搜索过滤表单 -->
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h6 class="mb-0">
+            <div class="card card-warning shadow-sm mb-4">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">
                         <i class="fas fa-search"></i> 搜索过滤
                         <button class="btn btn-sm btn-outline-secondary float-right" type="button" data-toggle="collapse" data-target="#searchForm" aria-expanded="{{ request()->hasAny(['start_date', 'end_date', 'action', 'user_id', 'ip', 'content']) ? 'true' : 'false' }}" aria-controls="searchForm" id="searchToggleBtn">
                             <i class="fas fa-chevron-{{ request()->hasAny(['start_date', 'end_date', 'action', 'user_id', 'ip', 'content']) ? 'up' : 'down' }}" id="searchToggleIcon"></i>
                         </button>
-                    </h6>
+                    </h5>
                 </div>
                 <div class="collapse {{ request()->hasAny(['start_date', 'end_date', 'action', 'user_id', 'ip', 'content']) ? 'show' : '' }}" id="searchForm">
                     <div class="card-body">

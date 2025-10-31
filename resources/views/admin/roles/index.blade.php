@@ -1,55 +1,82 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span>角色管理</span>
-                        <a href="{{ route('admin.roles.create') }}" class="btn btn-primary btn-sm">添加角色</a>
-                    </div>
+<div class="container-fluid">
+    <!-- 页面标题 -->
+    <div class="mb-4">
+        <h1 class="mb-1">
+            <i class="fas fa-shield-alt text-primary"></i> 角色管理
+        </h1>
+        <p class="text-muted">管理系统角色和权限</p>
+    </div>
+    
+    <!-- 操作按钮 -->
+    <div class="mb-4">
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="{{ route('admin.roles.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> 添加角色
+            </a>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-primary shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-list"></i> 角色列表
+                    </h5>
                 </div>
 
-                <div class="card-body">
+                <div class="card-body p-0">
                     @if (session('success'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('success') }}
+                        <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
+                            <i class="fas fa-check-circle"></i> {{ session('success') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                     @endif
 
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>名称</th>
-                                <th>标识</th>
-                                <th>描述</th>
-                                <th>操作</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($roles as $role)
+                    <div class="table-responsive">
+                        <table class="table table-striped table-light table-hover mb-0">
+                            <thead>
                                 <tr>
-                                    <td>{{ $role->id }}</td>
-                                    <td>{{ $role->name }}</td>
-                                    <td>{{ $role->slug }}</td>
-                                    <td>{{ $role->description }}</td>
-                                    <td>
-                                        <a href="{{ route('admin.roles.edit', $role->id) }}" class="btn btn-sm btn-info">编辑</a>
-                                        <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST" style="display: inline-block;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('确定要删除该角色吗？')">删除</button>
-                                        </form>
-                                    </td>
+                                    <th>ID</th>
+                                    <th>名称</th>
+                                    <th>标识</th>
+                                    <th>描述</th>
+                                    <th>操作</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach ($roles as $role)
+                                    <tr>
+                                        <td><span class="badge badge-light">{{ $role->id }}</span></td>
+                                        <td><strong>{{ $role->name }}</strong></td>
+                                        <td><code>{{ $role->slug }}</code></td>
+                                        <td>{{ $role->description ?: '-' }}</td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm" role="group">
+                                                <a href="{{ route('admin.roles.edit', $role->id) }}" class="btn btn-warning" title="编辑">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST" class="d-inline" onsubmit="return confirm('确定要删除该角色吗？')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger" title="删除">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
 
-                    <div class="d-flex justify-content-center">
+                    <div class="d-flex justify-content-center mt-3 pb-3">
                         {{ $roles->links() }}
                     </div>
                 </div>
