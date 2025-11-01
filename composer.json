@@ -12,10 +12,10 @@
         "laravel/ui": "^3.4",
         "maatwebsite/excel": "^3.1",
         "phpseclib/phpseclib": "^3.0",
-        "predis/predis": "^3.2"
+        "predis/predis": "^3.2",
+        "spatie/laravel-ignition": "^1.0"
     },
     "require-dev": {
-        "spatie/laravel-ignition": "^1.0",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
