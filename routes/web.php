@@ -57,6 +57,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('servers/export', [ServerController::class, 'export'])->name('servers.export');
     Route::post('servers/export-selected', [ServerController::class, 'exportSelected'])->name('servers.export-selected');
     Route::get('servers/{server}/console', [ServerController::class, 'console'])->name('servers.console');
+    Route::get('servers/{server}/console-xterm', [ServerController::class, 'console'])->name('servers.console-xterm');
+    Route::get('servers/{server}/console-classic', [ServerController::class, 'consoleClassic'])->name('servers.console-classic');
     Route::post('servers/{server}/execute', [ServerController::class, 'executeCommand'])->name('servers.execute');
     Route::get('servers/{server}/check', [ServerController::class, 'checkStatus'])->name('servers.check');
     Route::post('servers/batch-check', [ServerController::class, 'batchCheckStatus'])->name('servers.batch-check');

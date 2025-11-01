@@ -128,6 +128,9 @@
                                             <a href="<?php echo e(route('servers.show', $server)); ?>" class="btn btn-primary" title="查看详情">
                                                 <i class="fas fa-eye"></i>
                                             </a>
+                                            <a href="<?php echo e(route('servers.console-xterm', $server)); ?>" class="btn btn-primary" title="控制台">
+                                                <i class="fas fa-terminal"></i>
+                                            </a>
                                             <a href="<?php echo e(route('servers.edit', $server)); ?>" class="btn btn-primary" title="编辑">
                                                 <i class="fas fa-edit"></i>
                                             </a>

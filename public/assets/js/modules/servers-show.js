@@ -189,27 +189,8 @@ $(document).ready(function() {
         }
     });
 
-    // 系统信息展开/收起按钮点击事件
-    $('#toggleSystemInfoBtn').click(function() {
-        var systemInfo = $('#system-info');
-        var btn = $(this);
-        
-        // 检查是否已经有数据
-        var hasData = $('#os-info').text() !== '-';
-        
-        if (!hasData) {
-            alert('请先点击"测试连接"按钮获取系统信息');
-            return;
-        }
-        
-        if (systemInfo.hasClass('show')) {
-            systemInfo.removeClass('show');
-            btn.html('<i class="fas fa-chevron-down"></i> 展开详情');
-        } else {
-            systemInfo.addClass('show');
-            btn.html('<i class="fas fa-chevron-up"></i> 收起详情');
-        }
-    });
+    // 页面加载时自动获取系统信息
+    getSystemInfo();
     
     // 测试连接按钮点击事件
     $('#testConnectionBtn').click(function() {
@@ -330,10 +311,9 @@ function getSystemInfo() {
         },
         success: function(response) {
             if (response.success) {
-                // 显示系统信息区域并展开
-                $('#system-info').addClass('show');
-                // 更新展开按钮图标和文字
-                $('#toggleSystemInfoBtn').html('<i class="fas fa-chevron-up"></i> 收起详情');
+                // 隐藏加载指示器，显示系统信息
+                $('#system-info-loading').hide();
+                $('#system-info').show();
                 
                 // 填充系统信息
                 $('#os-info').text(response.data.os_info);
@@ -344,10 +324,12 @@ function getSystemInfo() {
                 $('#disk-info').text(response.data.disk_info);
             } else {
                 console.error('获取系统信息失败:', response.message);
+                $('#system-info-loading').html('<div class="alert alert-danger mb-0"><i class="fas fa-exclamation-circle"></i> 获取系统信息失败: ' + response.message + '</div>');
             }
         },
         error: function(xhr) {
             console.error('请求系统信息失败:', xhr.responseText);
+            $('#system-info-loading').html('<div class="alert alert-danger mb-0"><i class="fas fa-exclamation-circle"></i> 请求系统信息失败，请检查服务器连接</div>');
         }
     });
 }

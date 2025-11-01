@@ -25,3 +25,229 @@
     font-weight: bold;
     color: #007bff;
 }
+
+/* 采集状态信息 */
+.collection-status-info {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border: 1px solid #b8c5d6;
+}
+
+.collection-status-info .gap-3 {
+    gap: 2rem !important;
+}
+
+/* 采集结果容器优化 */
+.collection-result-container {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 15px;
+}
+
+.result-toolbar {
+    background-color: white;
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px solid #e9ecef;
+}
+
+.result-toolbar .btn-group {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.result-toolbar .btn {
+    flex: 1;
+    min-width: 100px;
+    white-space: nowrap;
+}
+
+/* JSON 树形结构 */
+.json-object {
+    margin-left: 10px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.json-item {
+    margin: 2px 0;
+}
+
+.json-line {
+    display: flex;
+    align-items: center;
+}
+
+.json-key {
+    color: #881391;
+    font-weight: 500;
+}
+
+.json-value {
+    color: #0b7500;
+}
+
+.json-value.json-string {
+    color: #c41a16;
+}
+
+.json-value.json-number {
+    color: #1c00cf;
+}
+
+.json-value.json-boolean {
+    color: #d73a49;
+    font-weight: bold;
+}
+
+.json-value.json-null {
+    color: #6f42c1;
+    font-style: italic;
+}
+
+.json-bracket {
+    color: #333;
+    font-weight: bold;
+}
+
+.json-toggle {
+    cursor: pointer;
+    user-select: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.json-toggle:hover {
+    background-color: #f0f0f0;
+    border-radius: 3px;
+    padding: 2px 4px;
+}
+
+.toggle-icon {
+    transition: transform 0.2s ease;
+    display: inline-block;
+    width: 16px;
+    text-align: center;
+}
+
+.json-toggle.collapsed .toggle-icon {
+    transform: rotate(-90deg);
+}
+
+.json-type-info {
+    color: #999;
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.json-preview {
+    color: #666;
+    font-size: 12px;
+    margin-left: 5px;
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.data-stats-panel {
+    background-color: white;
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px solid #e9ecef;
+    margin-top: 10px;
+}
+
+.data-stats-panel .alert {
+    margin-bottom: 0;
+}
+
+/* 搜索输入框 */
+.result-toolbar .input-group-sm .form-control {
+    font-size: 13px;
+    height: 32px;
+}
+
+.result-toolbar .input-group-sm .btn {
+    padding: 6px 12px;
+    font-size: 13px;
+}
+
+/* JSON 查看器容器 */
+.json-viewer-container {
+    background-color: #ffffff;
+    max-height: 600px;
+    overflow-y: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.json-viewer {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* 原始输出显示 */
+.raw-output-display {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-x: auto;
+    font-size: 0.85em;
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #3e3e42;
+    max-height: 500px;
+    overflow-y: auto;
+    font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+    line-height: 1.5;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 原始输出所在的 alert */
+.alert-info .raw-output-display {
+    margin-top: 10px;
+}
+
+.alert-info h6 {
+    margin-bottom: 10px;
+    color: #004085;
+}
+
+/* 原始输出容器居中 */
+.alert-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .result-toolbar .row {
+        flex-direction: column;
+    }
+    
+    .result-toolbar .col-md-7,
+    .result-toolbar .col-md-5 {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .result-toolbar .btn-group {
+        width: 100%;
+    }
+    
+    .result-toolbar .btn {
+        flex: 1;
+        min-width: auto;
+    }
+}

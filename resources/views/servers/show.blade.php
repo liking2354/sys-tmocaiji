@@ -182,100 +182,142 @@ function getArrayPreview($array, $maxItems = 3) {
 
 @section('content')
 <div class="container-fluid">
-    <!-- 页面标题 -->
-    <div class="mb-4">
-        <h1 class="mb-1">
-            <i class="fas fa-server text-primary"></i> {{ $server->name }}
-        </h1>
-        <p class="text-muted">查看和管理服务器详情信息</p>
-    </div>
-    
-    <!-- 操作按钮 -->
-    <div class="mb-4">
-        <div class="d-flex gap-2 flex-wrap">
-            <a href="{{ route('servers.edit', $server) }}" class="btn btn-primary">
+    <!-- 页面标题和操作按钮 -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="mb-1">
+                <i class="fas fa-server text-primary"></i> {{ $server->name }}
+            </h1>
+            <p class="text-muted">查看和管理服务器详情信息</p>
+        </div>
+        <div class="d-flex gap-2 flex-wrap" style="align-items: flex-start;">
+            <a href="{{ route('servers.edit', $server) }}" class="btn btn-primary btn-sm">
                 <i class="fas fa-edit"></i> 编辑服务器
             </a>
-            <a href="{{ route('servers.index') }}" class="btn btn-secondary">
-                <i class="fas fa-arrow-left"></i> 返回服务器列表
+            <a href="{{ route('servers.index') }}" class="btn btn-secondary btn-sm">
+                <i class="fas fa-arrow-left"></i> 返回列表
             </a>
         </div>
     </div>
     
-    <!-- 第一层：服务器基本信息 -->
+    <!-- 服务器信息卡片（整合基本信息和系统信息） -->
     <div class="card card-light-blue shadow-sm mb-4">
         <div class="card-header">
             <h5 class="mb-0">
-                <i class="fas fa-info-circle"></i> 基本信息
+                <i class="fas fa-info-circle"></i> 服务器信息
             </h5>
         </div>
         <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <table class="table table-borderless">
-                        <tr>
-                            <th style="width: 30%">ID:</th>
-                            <td>{{ $server->id }}</td>
-                        </tr>
-                        <tr>
-                            <th>服务器名称:</th>
-                            <td>{{ $server->name }}</td>
-                        </tr>
-                        <tr>
-                            <th>所属分组:</th>
-                            <td>
-                                @if ($server->group)
-                                    <a href="{{ route('server-groups.show', $server->group) }}">
-                                        {{ $server->group->name }}
-                                    </a>
-                                @else
-                                    无分组
-                                @endif
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>IP地址:</th>
-                            <td>{{ $server->ip }}</td>
-                        </tr>
-                        <tr>
-                            <th>SSH端口:</th>
-                            <td>{{ $server->port }}</td>
-                        </tr>
-                    </table>
+            <!-- 基本信息 -->
+            <div class="mb-4">
+                <h6 class="text-primary font-weight-bold mb-3">基本信息</h6>
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table table-borderless table-sm">
+                            <tr>
+                                <th style="width: 30%">ID:</th>
+                                <td>{{ $server->id }}</td>
+                            </tr>
+                            <tr>
+                                <th>服务器名称:</th>
+                                <td>{{ $server->name }}</td>
+                            </tr>
+                            <tr>
+                                <th>所属分组:</th>
+                                <td>
+                                    @if ($server->group)
+                                        <a href="{{ route('server-groups.show', $server->group) }}">
+                                            {{ $server->group->name }}
+                                        </a>
+                                    @else
+                                        无分组
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>IP地址:</th>
+                                <td>{{ $server->ip }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table table-borderless table-sm">
+                            <tr>
+                                <th style="width: 30%">SSH端口:</th>
+                                <td>{{ $server->port }}</td>
+                            </tr>
+                            <tr>
+                                <th>用户名:</th>
+                                <td>{{ $server->username }}</td>
+                            </tr>
+                            <tr>
+                                <th>状态:</th>
+                                <td>
+                                    @if ($server->status == 1)
+                                        <span class="badge badge-success server-status">
+                                            <i class="fas fa-check-circle"></i> 在线
+                                        </span>
+                                    @else
+                                        <span class="badge badge-danger server-status">
+                                            <i class="fas fa-times-circle"></i> 离线
+                                        </span>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>最后检查:</th>
+                                <td class="last-check-time">{{ $server->last_check_time ? $server->last_check_time->format('Y-m-d H:i') : '未检查' }}</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <table class="table table-borderless">
-                        <tr>
-                            <th style="width: 30%">用户名:</th>
-                            <td>{{ $server->username }}</td>
-                        </tr>
-                        <tr>
-                            <th>状态:</th>
-                            <td>
-                                @if ($server->status == 1)
-                                    <span class="badge badge-success server-status">
-                                        <i class="fas fa-check-circle"></i> 在线
-                                    </span>
-                                @else
-                                    <span class="badge badge-danger server-status">
-                                        <i class="fas fa-times-circle"></i> 离线
-                                    </span>
-                                @endif
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>最后检查时间:</th>
-                            <td class="last-check-time">{{ $server->last_check_time ? $server->last_check_time->format('Y-m-d H:i:s') : '未检查' }}</td>
-                        </tr>
-                        <tr>
-                            <th>创建时间:</th>
-                            <td>{{ $server->created_at->format('Y-m-d H:i:s') }}</td>
-                        </tr>
-                        <tr>
-                            <th>更新时间:</th>
-                            <td>{{ $server->updated_at->format('Y-m-d H:i:s') }}</td>
-                        </tr>
-                    </table>
+            </div>
+
+            <hr>
+
+            <!-- 系统信息 -->
+            <div>
+                <h6 class="text-primary font-weight-bold mb-3">系统信息</h6>
+                <div id="system-info-loading" class="text-center text-muted py-3">
+                    <i class="fas fa-spinner fa-spin"></i> 正在获取系统信息...
+                </div>
+                <div id="system-info" style="display: none;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="small text-muted mb-2">基本信息</h6>
+                            <table class="table table-borderless table-sm">
+                                <tr>
+                                    <th style="width: 30%">操作系统</th>
+                                    <td id="os-info">-</td>
+                                </tr>
+                                <tr>
+                                    <th>内核版本</th>
+                                    <td id="kernel-info">-</td>
+                                </tr>
+                                <tr>
+                                    <th>运行时间</th>
+                                    <td id="uptime-info">-</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="small text-muted mb-2">资源使用</h6>
+                            <table class="table table-borderless table-sm">
+                                <tr>
+                                    <th style="width: 30%">CPU使用率</th>
+                                    <td id="cpu-info">-</td>
+                                </tr>
+                                <tr>
+                                    <th>内存使用</th>
+                                    <td id="memory-info">-</td>
+                                </tr>
+                                <tr>
+                                    <th>磁盘使用</th>
+                                    <td id="disk-info">-</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -289,79 +331,22 @@ function getArrayPreview($array, $maxItems = 3) {
         </div>
     </div>
     
-    <!-- 系统信息 -->
-    <div class="card card-light-blue mt-4">
-        <div class="card-header">
-            <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">系统信息</h5>
-                <div>
-                    <button type="button" class="btn btn-primary btn-sm" id="toggleSystemInfoBtn">
-                        <i class="fas fa-chevron-down"></i> 展开详情
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="card-body">
-            <div id="system-info-prompt" class="alert alert-info">
-                <i class="fas fa-info-circle"></i> 点击"测试连接"按钮获取服务器系统信息
-            </div>
-            <div id="system-info" class="collapse">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h6>基本信息</h6>
-                        <table class="table table-sm">
-                            <tr>
-                                <th>操作系统</th>
-                                <td id="os-info">-</td>
-                            </tr>
-                            <tr>
-                                <th>内核版本</th>
-                                <td id="kernel-info">-</td>
-                            </tr>
-                            <tr>
-                                <th>运行时间</th>
-                                <td id="uptime-info">-</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="col-md-6">
-                        <h6>资源使用</h6>
-                        <table class="table table-sm">
-                            <tr>
-                                <th>CPU使用率</th>
-                                <td id="cpu-info">-</td>
-                            </tr>
-                            <tr>
-                                <th>内存使用</th>
-                                <td id="memory-info">-</td>
-                            </tr>
-                            <tr>
-                                <th>磁盘使用</th>
-                                <td id="disk-info">-</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
     <!-- 第二层：采集组件信息（选项卡） -->
     <div class="card card-light-blue mt-4">
-        <div class="card-header">
-            <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">采集信息</h5>
-                <div>
-                    <button type="button" class="btn btn-primary btn-sm" id="executeAllCollectorsBtn">
-                        <i class="fas fa-play"></i> 执行所有采集组件
-                    </button>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#collectionHistoryModal">
-                        <i class="fas fa-history"></i> 查看采集历史
-                    </button>
-                    <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#installCollectorModal">
-                        <i class="fas fa-plus"></i> 安装采集组件
-                    </button>
-                </div>
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+                <i class="fas fa-database"></i> 采集信息
+            </h5>
+            <div class="d-flex gap-2">
+                <button type="button" class="btn btn-primary btn-sm" id="executeAllCollectorsBtn">
+                    <i class="fas fa-play"></i> 执行采集
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#collectionHistoryModal">
+                    <i class="fas fa-history"></i> 采集历史
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#installCollectorModal">
+                    <i class="fas fa-plus"></i> 安装组件
+                </button>
             </div>
         </div>
         <div class="card-body">
@@ -432,12 +417,6 @@ function getArrayPreview($array, $maxItems = 3) {
                                     <button type="button" class="btn btn-primary btn-sm" onclick="executeSingleCollector({{ $collector->id }})">
                                         <i class="fas fa-play"></i> 执行采集
                                     </button>
-                                    
-                                    @if (isset($collectorResults[$collector->id]))
-                                        <span class="text-muted ml-3">
-                                            最后采集时间: {{ $collectorResults[$collector->id]->completed_at ? $collectorResults[$collector->id]->completed_at->format('Y-m-d H:i:s') : $collectorResults[$collector->id]->created_at->format('Y-m-d H:i:s') }}
-                                        </span>
-                                    @endif
                                 </div>
                             </div>
                             
@@ -448,17 +427,19 @@ function getArrayPreview($array, $maxItems = 3) {
                                 @endphp
                                 
                                 <!-- 显示采集状态信息 -->
-                                <div class="mb-3 p-3 bg-light rounded">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <small class="text-muted">
-                                                <i class="fas fa-clock"></i> 采集时间: {{ $historyRecord->created_at ? $historyRecord->created_at->format('Y-m-d H:i:s') : '未知' }}
+                                <div class="mb-3 p-3 bg-light rounded collection-status-info">
+                                    <div class="d-flex justify-content-center align-items-center flex-wrap gap-3">
+                                        <div class="text-center">
+                                            <small class="text-muted d-block">
+                                                <i class="fas fa-clock"></i> 采集时间
                                             </small>
+                                            <small class="font-weight-bold">{{ $historyRecord->created_at ? $historyRecord->created_at->format('Y-m-d H:i:s') : '未知' }}</small>
                                         </div>
-                                        <div class="col-md-6 text-right">
-                                            <small class="text-muted">
-                                                <i class="fas fa-stopwatch"></i> 执行时间: {{ $historyRecord->execution_time ? number_format($historyRecord->execution_time, 2) . 's' : '未知' }}
+                                        <div class="text-center">
+                                            <small class="text-muted d-block">
+                                                <i class="fas fa-stopwatch"></i> 执行时间
                                             </small>
+                                            <small class="font-weight-bold">{{ $historyRecord->execution_time ? number_format($historyRecord->execution_time, 2) . 's' : '未知' }}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -474,7 +455,7 @@ function getArrayPreview($array, $maxItems = 3) {
                                             @elseif (isset($result['raw_output']) && !isset($result['error']))
                                                 <div class="alert alert-info">
                                                     <h6><i class="fas fa-terminal"></i> 采集输出:</h6>
-                                                    <pre class="mb-0" style="white-space: pre-wrap; font-size: 0.9em;">{{ $result['raw_output'] }}</pre>
+                                                    <pre class="mb-0 raw-output-display">{{ $result['raw_output'] }}</pre>
                                                 </div>
                                             @else
                                                 <div class="collection-result-container">
@@ -485,13 +466,13 @@ function getArrayPreview($array, $maxItems = 3) {
                                                                     <button type="button" class="btn btn-primary" onclick="expandAllResults('{{ $collector->id }}')">
                                                                         <i class="fas fa-expand-alt"></i> 全部展开
                                                                     </button>
-                                                                    <button type="button" class="btn btn-secondarysecondary" onclick="collapseAllResults('{{ $collector->id }}')">
+                                                                    <button type="button" class="btn btn-secondary" onclick="collapseAllResults('{{ $collector->id }}')">
                                                                         <i class="fas fa-compress-alt"></i> 全部折叠
                                                                     </button>
-                                                                    <button type="button" class="btn btn-secondarysuccess" onclick="copyResultData('{{ $collector->id }}')">
+                                                                    <button type="button" class="btn btn-secondary" onclick="copyResultData('{{ $collector->id }}')">
                                                                         <i class="fas fa-copy"></i> 复制JSON
                                                                     </button>
-                                                                    <button type="button" class="btn btn-secondaryinfo" onclick="showDataStats('{{ $collector->id }}')">
+                                                                    <button type="button" class="btn btn-secondary" onclick="showDataStats('{{ $collector->id }}')">
                                                                         <i class="fas fa-chart-bar"></i> 数据统计
                                                                     </button>
                                                                 </div>
@@ -500,7 +481,7 @@ function getArrayPreview($array, $maxItems = 3) {
                                                                 <div class="input-group input-group-sm">
                                                                     <input type="text" class="form-control" placeholder="搜索字段或值..." onkeyup="filterResults('{{ $collector->id }}', this.value)" id="search-{{ $collector->id }}">
                                                                     <div class="input-group-append">
-                                                                        <button class="btn btn-secondarysecondary" type="button" onclick="clearSearch('{{ $collector->id }}')">
+                                                                        <button class="btn btn-secondary" type="button" onclick="clearSearch('{{ $collector->id }}')">
                                                                             <i class="fas fa-times"></i>
                                                                         </button>
                                                                         <span class="input-group-text"><i class="fas fa-search"></i></span>
@@ -570,9 +551,12 @@ function getArrayPreview($array, $maxItems = 3) {
                                     </div>
                                 @endif
                             @else
-                                <div class="alert alert-secondary">
-                                    <i class="fas fa-info-circle"></i> 暂无成功的采集结果
-                                    <p class="mb-0 mt-2"><small class="text-muted">点击上方"执行采集"按钮开始采集数据</small></p>
+                                <div class="alert alert-secondary text-center d-flex flex-column align-items-center justify-content-center" style="min-height: 150px;">
+                                    <div>
+                                        <i class="fas fa-info-circle fa-2x mb-3"></i>
+                                        <p class="mb-2"><strong>暂无成功的采集结果</strong></p>
+                                        <small class="text-muted">点击上方"执行采集"按钮开始采集数据</small>
+                                    </div>
                                 </div>
                             @endif
                         </div>

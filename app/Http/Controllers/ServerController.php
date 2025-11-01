@@ -545,6 +545,24 @@ class ServerController extends Controller
      */
     public function console(Server $server)
     {
+        // 使用新的 xterm 控制台
+        $websocketConfig = [
+            'host' => config('websocket.terminal.host', '0.0.0.0'),
+            'port' => config('websocket.terminal.port', 9000),
+            'protocol' => config('websocket.terminal.protocol', 'ws'),
+        ];
+        
+        return view('servers.console-xterm', compact('server', 'websocketConfig'));
+    }
+    
+    /**
+     * 显示服务器控制台（旧版本）
+     *
+     * @param  \\App\\Models\\Server  $server
+     * @return \\Illuminate\\Http\\Response
+     */
+    public function consoleClassic(Server $server)
+    {
         return view('servers.console', compact('server'));
     }
     
