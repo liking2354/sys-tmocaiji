@@ -167,7 +167,7 @@
         let currentLineInput = '';
 
         function connectWebSocket() {
-            const wsUrl = `${config.wsProtocol}//${config.wsHost}:${config.wsPort}`;
+            const wsUrl = `${config.wsProtocol}://${config.wsHost}:${config.wsPort}`;
             
             term.writeln('正在连接到 WebSocket 服务器...');
             term.writeln(`地址: ${wsUrl}`);
