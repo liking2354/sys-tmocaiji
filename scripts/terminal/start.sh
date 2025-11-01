@@ -2,9 +2,10 @@
 
 # 启动 WebSocket 终端服务器脚本
 
-# 获取脚本所在目录
+# 获取脚本所在目录（scripts/terminal/）
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-PROJECT_DIR="$( dirname "$SCRIPT_DIR" )"
+# 项目根目录（向上两级：scripts/terminal/ -> scripts/ -> 项目根目录）
+PROJECT_DIR="$( cd "$SCRIPT_DIR/../.." && pwd )"
 
 # 进入项目目录
 cd "$PROJECT_DIR"
