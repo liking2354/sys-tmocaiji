@@ -71,7 +71,7 @@
                             <div class="navbar-user">
                                 <div class="navbar-user-avatar">
                                     <?php if(Auth::user()->avatar): ?>
-                                        <img src="<?php echo e(asset('storage/' . Auth::user()->avatar)); ?>" alt="头像" class="avatar-img">
+                                        <img src="<?php echo e(url('storage/' . Auth::user()->avatar)); ?>" alt="头像" class="avatar-img">
                                     <?php else: ?>
                                         <?php echo e(substr(Auth::user()->username, 0, 1)); ?>
 

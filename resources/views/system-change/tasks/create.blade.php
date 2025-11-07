@@ -79,7 +79,7 @@
                                             <div class="checkbox-container">
                                                 <div class="row">
                                                     @foreach($serverGroups as $group)
-                                                    <div class="col-md-6 mb-2">
+                                                    <div class="col-md-12 col-lg-6 mb-2">
                                                         <div class="form-check">
                                                             <input class="form-check-input server-group-checkbox" 
                                                                    type="checkbox" 
@@ -89,7 +89,7 @@
                                                                    {{ (isset($selectedServerGroupId) && $selectedServerGroupId == $group->id) || in_array($group->id, old('server_group_ids', [])) ? 'checked' : '' }}>
                                                             <label class="form-check-label" for="group_{{ $group->id }}">
                                                                 <strong>{{ $group->name }}</strong>
-                                                                <br><small class="text-muted">({{ $group->servers_count ?? $group->servers->count() }} 台)</small>
+                                                                <small class="text-muted d-block">服务器数量: {{ $group->servers_count ?? $group->servers->count() }} 台</small>
                                                             </label>
                                                         </div>
                                                     </div>
@@ -138,7 +138,7 @@
                                     <div class="template-container">
                                         <div class="row">
                                             @foreach($templates as $template)
-                                            <div class="col-md-6 mb-2">
+                                            <div class="col-md-12 col-lg-6 mb-2">
                                                 <div class="form-check template-item">
                                                     <input class="form-check-input template-checkbox" 
                                                            type="checkbox" 
@@ -147,12 +147,13 @@
                                                            value="{{ $template->id }}"
                                                            data-template-id="{{ $template->id }}"
                                                            {{ in_array($template->id, old('template_ids', [])) ? 'checked' : '' }}>
-                                                    <label class="form-check-label w-100" for="template_{{ $template->id }}">
+                                                    <label class="form-check-label" for="template_{{ $template->id }}">
                                                         <strong>{{ $template->name }}</strong>
                                                         @if($template->description)
-                                                            <br><small class="text-muted">{{ Str::limit($template->description, 50) }}</small>
+                                                            <small class="text-muted d-block">{{ Str::limit($template->description, 50) }}</small>
                                                         @endif
-                                                        <br><small class="text-info">
+                                                        <small class="text-info d-block">
+                                                            <i class="fas fa-cog mr-1"></i>
                                                             @if(isset($template->template_variables) && is_array($template->template_variables))
                                                                 {{ count($template->template_variables) }} 个变量
                                                             @elseif(isset($template->config_items_count))
@@ -204,6 +205,118 @@
 @endsection
 
 @push('styles')
+<style>
+/* 服务器分组和模板选择样式优化 */
+.checkbox-container .form-check,
+.template-container .form-check {
+    padding: 12px;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    transition: all 0.3s ease;
+    min-height: 80px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.checkbox-container .form-check:hover,
+.template-container .form-check:hover {
+    background-color: rgba(var(--primary-color-rgb), 0.05);
+    border-color: var(--primary-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+/* 选中状态 */
+.checkbox-container .form-check:has(input:checked),
+.template-container .form-check:has(input:checked) {
+    background-color: rgba(var(--primary-color-rgb), 0.1);
+    border-color: var(--primary-color);
+    border-width: 2px;
+}
+
+/* 复选框样式 */
+.checkbox-container .form-check-input,
+.template-container .form-check-input {
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    margin-right: 12px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+/* 标签样式 */
+.checkbox-container .form-check-label,
+.template-container .form-check-label {
+    cursor: pointer;
+    margin-bottom: 0;
+    line-height: 1.5;
+    padding-left: 0;
+    flex: 1;
+    display: block;
+}
+
+.checkbox-container .form-check-label strong,
+.template-container .form-check-label strong {
+    color: var(--text-primary);
+    font-size: 14px;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.checkbox-container .form-check-label small,
+.template-container .form-check-label small {
+    display: block;
+    margin-top: 4px;
+    line-height: 1.4;
+}
+
+/* 卡片样式优化 */
+.checkbox-container,
+.template-container {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 8px;
+}
+
+.checkbox-container::-webkit-scrollbar,
+.template-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.checkbox-container::-webkit-scrollbar-track,
+.template-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.checkbox-container::-webkit-scrollbar-thumb,
+.template-container::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+
+.checkbox-container::-webkit-scrollbar-thumb:hover,
+.template-container::-webkit-scrollbar-thumb:hover {
+    background: #999;
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+    .checkbox-container .form-check,
+    .template-container .form-check {
+        min-height: 60px;
+        padding: 8px;
+    }
+    
+    .checkbox-container .form-check-input,
+    .template-container .form-check-input {
+        width: 18px;
+        height: 18px;
+    }
+}
+</style>
 @endpush
 
 @push('scripts')

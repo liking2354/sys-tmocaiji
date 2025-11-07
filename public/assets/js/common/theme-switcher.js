@@ -99,15 +99,29 @@ const ThemeSwitcher = (function() {
             return;
         }
 
-        fetch(themeConfigUrl.getAttribute('content'))
-            .then(response => response.json())
+        // 添加超时控制
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3000); // 3秒超时
+
+        fetch(themeConfigUrl.getAttribute('content'), {
+            signal: controller.signal
+        })
+            .then(response => {
+                clearTimeout(timeoutId);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
                 const theme = data.theme || 'blue';
                 applyTheme(theme);
                 localStorage.setItem('userTheme', theme);
             })
             .catch(error => {
+                clearTimeout(timeoutId);
                 console.error('Failed to load theme config:', error);
+                // 出错时使用默认主题
                 applyTheme('blue');
             });
     }

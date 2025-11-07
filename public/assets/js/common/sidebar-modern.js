@@ -19,6 +19,7 @@ const SidebarModern = (function() {
         
         initToggle();
         initSubmenu();
+        initCollapsedHover();
         restoreState();
     }
     
@@ -95,12 +96,10 @@ const SidebarModern = (function() {
             if (hasActiveChild) {
                 // 展开菜单
                 submenu.classList.remove('collapsed');
-                toggle.classList.add('active');
                 updateToggleIcon(toggle, true);
             } else {
                 // 收起菜单
                 submenu.classList.add('collapsed');
-                toggle.classList.remove('active');
                 updateToggleIcon(toggle, false);
             }
             
@@ -109,7 +108,12 @@ const SidebarModern = (function() {
                 e.preventDefault();
                 e.stopPropagation();
                 
-                toggleSubmenu(this);
+                const sidebar = document.getElementById('sidebar');
+                // 如果侧边栏是展开状态，执行切换
+                // 如果是收缩状态，不执行切换（改为悬停显示）
+                if (!sidebar || !sidebar.classList.contains('sidebar-collapsed')) {
+                    toggleSubmenu(this);
+                }
             });
         });
     }
@@ -144,18 +148,124 @@ const SidebarModern = (function() {
         if (!icon) return;
         
         if (isOpen) {
-            toggle.classList.add('active');
             icon.classList.remove('fa-chevron-down');
             icon.classList.add('fa-chevron-up');
         } else {
-            toggle.classList.remove('active');
             icon.classList.remove('fa-chevron-up');
             icon.classList.add('fa-chevron-down');
         }
     }
     
     /**
-     * 恢复侧边栏状态
+     * 初始化收缩状态下的悬停效果
+     */
+    function initCollapsedHover() {
+        const sidebar = document.getElementById('sidebar');
+        if (!sidebar) return;
+        
+        const submenuToggles = document.querySelectorAll('.sidebar-submenu-toggle');
+        
+        submenuToggles.forEach(toggle => {
+            const parentLi = toggle.closest('.nav-item');
+            const submenu = toggle.nextElementSibling;
+            
+            if (!submenu || !submenu.classList.contains('sidebar-submenu')) {
+                return;
+            }
+            
+            let hideTimeout;
+            
+            // 鼠标移入父菜单项
+            parentLi.addEventListener('mouseenter', function() {
+                if (!sidebar.classList.contains('sidebar-collapsed')) {
+                    return;
+                }
+                
+                clearTimeout(hideTimeout);
+                showCollapsedSubmenu(this, submenu);
+            });
+            
+            // 鼠标移出父菜单项
+            parentLi.addEventListener('mouseleave', function() {
+                if (!sidebar.classList.contains('sidebar-collapsed')) {
+                    return;
+                }
+                
+                hideTimeout = setTimeout(() => {
+                    hideCollapsedSubmenu(submenu);
+                }, 200);
+            });
+            
+            // 鼠标移入浮动子菜单时保持显示
+            submenu.addEventListener('mouseenter', function() {
+                if (!sidebar.classList.contains('sidebar-collapsed')) {
+                    return;
+                }
+                clearTimeout(hideTimeout);
+            });
+            
+            // 鼠标移出浮动子菜单时隐藏
+            submenu.addEventListener('mouseleave', function() {
+                if (!sidebar.classList.contains('sidebar-collapsed')) {
+                    return;
+                }
+                
+                hideTimeout = setTimeout(() => {
+                    hideCollapsedSubmenu(submenu);
+                }, 200);
+            });
+        });
+    }
+    
+    /**
+     * 显示收缩状态下的子菜单
+     */
+    function showCollapsedSubmenu(parentItem, submenu) {
+        // 隐藏其他悬浮菜单
+        const allFloatingMenus = document.querySelectorAll('.sidebar-submenu-floating');
+        allFloatingMenus.forEach(menu => {
+            if (menu !== submenu) {
+                menu.classList.remove('show');
+            }
+        });
+        
+        // 添加浮动菜单类
+        submenu.classList.add('sidebar-submenu-floating');
+        
+        // 计算位置
+        const rect = parentItem.getBoundingClientRect();
+        const sidebar = document.getElementById('sidebar');
+        const sidebarRect = sidebar.getBoundingClientRect();
+        
+        submenu.style.position = 'fixed';
+        submenu.style.left = sidebarRect.right + 'px';
+        submenu.style.top = rect.top + 'px';
+        submenu.style.width = '200px';
+        submenu.style.zIndex = '1000';
+        
+        // 显示菜单
+        setTimeout(() => {
+            submenu.classList.add('show');
+        }, 10);
+    }
+    
+    /**
+     * 隐藏收缩状态下的子菜单
+     */
+    function hideCollapsedSubmenu(submenu) {
+        submenu.classList.remove('show');
+        setTimeout(() => {
+            submenu.classList.remove('sidebar-submenu-floating');
+            submenu.style.position = '';
+            submenu.style.left = '';
+            submenu.style.top = '';
+            submenu.style.width = '';
+            submenu.style.zIndex = '';
+        }, 300);
+    }
+    
+    /**
+     * 恢复侧边栏状态（立即执行，避免闪烁）
      */
     function restoreState() {
         const isCollapsed = localStorage.getItem(STORAGE_KEY) === 'true';
@@ -166,10 +276,20 @@ const SidebarModern = (function() {
             const toggleIcon = document.getElementById('toggle-icon-navbar');
             
             if (sidebar) {
+                // 立即应用，不使用过渡动画
+                sidebar.style.transition = 'none';
                 sidebar.classList.add('sidebar-collapsed');
+                // 强制重排后恢复过渡
+                setTimeout(() => {
+                    sidebar.style.transition = '';
+                }, 0);
             }
             if (mainContent) {
+                mainContent.style.transition = 'none';
                 mainContent.classList.add('main-content-expanded');
+                setTimeout(() => {
+                    mainContent.style.transition = '';
+                }, 0);
             }
             if (toggleIcon) {
                 toggleIcon.classList.remove('fa-bars');
@@ -180,13 +300,48 @@ const SidebarModern = (function() {
     }
     
     /**
+     * 预加载状态（在DOM加载前执行，防止闪烁）
+     */
+    function preloadState() {
+        const isCollapsed = localStorage.getItem(STORAGE_KEY) === 'true';
+        
+        if (isCollapsed) {
+            // 添加样式标签立即应用收缩状态
+            const style = document.createElement('style');
+            style.id = 'sidebar-preload-style';
+            style.textContent = `
+                .sidebar { width: var(--sidebar-collapsed-width) !important; }
+                .main-content { margin-left: var(--sidebar-collapsed-width) !important; }
+                .sidebar .nav-link span { display: none !important; }
+                .sidebar .submenu-icon { display: none !important; }
+                .sidebar .sidebar-submenu { display: none !important; }
+            `;
+            document.head.appendChild(style);
+            
+            // DOM加载完成后移除预加载样式
+            document.addEventListener('DOMContentLoaded', function() {
+                setTimeout(() => {
+                    const preloadStyle = document.getElementById('sidebar-preload-style');
+                    if (preloadStyle) {
+                        preloadStyle.remove();
+                    }
+                }, 100);
+            });
+        }
+    }
+    
+    /**
      * 公开 API
      */
     return {
         init: init,
-        toggle: toggleSidebar
+        toggle: toggleSidebar,
+        preloadState: preloadState
     };
 })();
+
+// 立即执行预加载（在DOM加载前）
+SidebarModern.preloadState();
 
 // 页面加载时初始化
 document.addEventListener('DOMContentLoaded', function() {

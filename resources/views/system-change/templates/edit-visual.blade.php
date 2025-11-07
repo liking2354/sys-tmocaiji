@@ -2,6 +2,38 @@
 
 @section('title', '编辑配置模板')
 
+@section('styles')
+<style>
+/* 添加规则模态框样式 */
+#addRuleModal .list-group-item {
+    border: none;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+#addRuleModal .list-group-item:hover {
+    background-color: rgba(var(--primary-color-rgb), 0.08);
+    transform: translateX(4px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#addRuleModal .list-group-item h6 {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+#addRuleModal .modal-body {
+    padding: 20px;
+}
+
+#addRuleModal .list-group {
+    margin: -5px;
+}
+</style>
+@endsection
+
 @section('content')
 <div class="container-fluid">
     <!-- 页面标题 -->
@@ -155,26 +187,10 @@
                                     配置规则
                                 </h5>
                                 <div class="card-tools">
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
-                                            <i class="fas fa-plus mr-1"></i>
-                                            添加规则
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="#" onclick="addRule('directory')">
-                                                <i class="fas fa-folder mr-2"></i>
-                                                目录批量处理
-                                            </a>
-                                            <a class="dropdown-item" href="#" onclick="addRule('file')">
-                                                <i class="fas fa-file mr-2"></i>
-                                                文件精确处理
-                                            </a>
-                                            <a class="dropdown-item" href="#" onclick="addRule('string')">
-                                                <i class="fas fa-search mr-2"></i>
-                                                字符串替换
-                                            </a>
-                                        </div>
-                                    </div>
+                                    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addRuleModal">
+                                        <i class="fas fa-plus mr-1"></i>
+                                        添加规则
+                                    </button>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -250,7 +266,76 @@
 
 <!-- 使用相同的模板 -->
 @include('system-change.templates.partials.rule-templates')
-@endsection
+
+<!-- 添加规则模态框 -->
+<div class="modal fade" id="addRuleModal" tabindex="-1" role="dialog" aria-labelledby="addRuleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="addRuleModalLabel">
+                    <i class="fas fa-plus-circle mr-2"></i>
+                    选择规则类型
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="list-group list-group-flush">
+                    <a href="#" class="list-group-item list-group-item-action" onclick="addRule('directory'); $('#addRuleModal').modal('hide'); return false;">
+                        <div class="d-flex align-items-center">
+                            <div class="mr-3">
+                                <i class="fas fa-folder fa-2x text-warning"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">目录批量处理</h6>
+                                <p class="mb-0 text-muted small">批量处理指定目录下的多个文件</p>
+                            </div>
+                            <div>
+                                <i class="fas fa-chevron-right text-muted"></i>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="addRule('file'); $('#addRuleModal').modal('hide'); return false;">
+                        <div class="d-flex align-items-center">
+                            <div class="mr-3">
+                                <i class="fas fa-file fa-2x text-info"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">文件精确处理</h6>
+                                <p class="mb-0 text-muted small">精确处理单个配置文件</p>
+                            </div>
+                            <div>
+                                <i class="fas fa-chevron-right text-muted"></i>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action" onclick="addRule('string'); $('#addRuleModal').modal('hide'); return false;">
+                        <div class="d-flex align-items-center">
+                            <div class="mr-3">
+                                <i class="fas fa-search fa-2x text-success"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">字符串替换</h6>
+                                <p class="mb-0 text-muted small">在文件中查找并替换指定字符串</p>
+                            </div>
+                            <div>
+                                <i class="fas fa-chevron-right text-muted"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <i class="fas fa-times mr-1"></i>
+                    取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 
@@ -261,3 +346,4 @@
 </script>
 <script src="{{ asset('assets/js/modules/system-change-templates-edit.js') }}"></script>
 @endpush
+

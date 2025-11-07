@@ -257,7 +257,96 @@
 </div>
 @endsection
 
+@push('styles')
+<style>
+    /* 美化复选框样式 */
+    .form-check {
+        padding: 12px;
+        margin-bottom: 8px;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        background: #fff;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .form-check:hover {
+        border-color: #007bff;
+        background: #f8f9fa;
+        box-shadow: 0 2px 8px rgba(0, 123, 255, 0.1);
+    }
+    
+    .form-check-input {
+        width: 20px;
+        height: 20px;
+        margin: 0;
+        flex-shrink: 0;
+        cursor: pointer;
+        margin-top: 2px;
+    }
+    
+    .form-check-label {
+        flex: 1;
+        cursor: pointer;
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+        line-height: 1.5;
+    }
+    
+    .form-check-input:checked ~ .form-check-label {
+        font-weight: 500;
+        color: #007bff;
+    }
+    
+    .form-check .badge {
+        font-size: 0.75rem;
+        padding: 3px 8px;
+        font-weight: normal;
+    }
+    
+    .form-check small {
+        display: inline-block;
+    }
+    
+    /* 卡片头部的全选复选框 */
+    .card-header .form-check {
+        padding: 0;
+        margin: 0;
+        border: none;
+        background: transparent;
+        gap: 8px;
+    }
+    
+    .card-header .form-check:hover {
+        border: none;
+        background: transparent;
+        box-shadow: none;
+    }
+    
+    .card-header .form-check-input {
+        margin-top: 0;
+    }
+    
+    /* 服务器分组样式 */
+    .server-group h6 {
+        padding: 8px 12px;
+        background: #f8f9fa;
+        border-radius: 6px;
+        margin-bottom: 8px;
+    }
+    
+    .group-servers-container {
+        padding-left: 8px;
+    }
+</style>
+@endpush
+
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+<script src="{{ asset('assets/js/vendor/Chart.min.js') }}"></script>
 <script src="{{ asset('assets/js/modules/data-cleanup.js') }}"></script>
 @endpush

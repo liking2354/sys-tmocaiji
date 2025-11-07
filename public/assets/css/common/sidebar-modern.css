@@ -28,8 +28,62 @@
     display: none;
 }
 
+.sidebar.sidebar-collapsed .submenu-icon {
+    display: none;
+}
+
 .sidebar.sidebar-collapsed .sidebar-submenu {
     display: none !important;
+}
+
+.sidebar.sidebar-collapsed .sidebar-submenu.sidebar-submenu-floating {
+    display: block !important;
+}
+
+/* 收缩状态下的悬浮子菜单 */
+.sidebar-submenu-floating {
+    position: fixed !important;
+    background: var(--bg-primary, #ffffff) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    padding: 8px 0 !important;
+    margin: 0 !important;
+    border: 1px solid var(--border-color);
+    border-left: 3px solid var(--primary-color) !important;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    max-height: none !important;
+    visibility: visible !important;
+    z-index: 1050 !important;
+    backdrop-filter: blur(10px);
+}
+
+.sidebar-submenu-floating.show {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: all;
+}
+
+.sidebar-submenu-floating .nav-link {
+    padding-left: 20px !important;
+    margin: 2px 8px !important;
+    border-radius: 6px;
+    background-color: transparent !important;
+}
+
+.sidebar-submenu-floating .nav-link:hover {
+    background-color: rgba(var(--primary-color-rgb), 0.12) !important;
+}
+
+.sidebar-submenu-floating .nav-link.active {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%) !important;
+    color: #ffffff !important;
+}
+
+.sidebar-submenu-floating .nav-link span {
+    display: inline !important;
 }
 
 /* 导航栏侧边栏切换按钮 */
@@ -127,42 +181,21 @@
     transform: scale(1.1);
 }
 
-.sidebar .nav-link.active {
+/* 主菜单项的选中状态 */
+.sidebar > .sidebar-nav > .nav > .nav-item > .nav-link.active {
     color: #ffffff;
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
     font-weight: 600;
     box-shadow: 0 2px 8px rgba(var(--primary-color-rgb), 0.25);
-    position: relative;
-    border-left: 4px solid var(--primary-color);
-    padding-left: calc(var(--spacing-lg) - 4px) !important;
 }
 
-.sidebar .nav-link.active i {
+.sidebar > .sidebar-nav > .nav > .nav-item > .nav-link.active i {
     color: #ffffff;
 }
 
-.sidebar .nav-link.active::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background: linear-gradient(180deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-    border-radius: 0 2px 2px 0;
-    animation: slideInLeft 0.3s ease-out;
-}
-
-.sidebar .nav-link.active::after {
-    content: '';
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 6px;
-    height: 6px;
-    background-color: var(--primary-color);
-    border-radius: 50%;
+/* 有子菜单的菜单项选中状态（不显示深蓝背景，只高亮图标）*/
+.sidebar .sidebar-submenu-toggle.active i:not(.submenu-icon) {
+    color: var(--primary-color);
 }
 
 /* 子菜单 */
@@ -213,38 +246,56 @@
     transform: translateX(2px);
 }
 
+/* 子菜单项选中状态 */
 .sidebar-submenu .nav-link.active {
-    background-color: var(--primary-color);
-    color: #ffffff;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: #ffffff !important;
     font-weight: 600;
-    border-right: 3px solid var(--primary-color);
+    box-shadow: 0 2px 6px rgba(var(--primary-color-rgb), 0.2);
+    border-radius: 6px;
     position: relative;
 }
 
 .sidebar-submenu .nav-link.active i {
-    color: #ffffff;
+    color: #ffffff !important;
 }
 
 .sidebar-submenu .nav-link.active::before {
-    display: none;
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 4px;
+    background-color: #ffffff;
+    border-radius: 50%;
 }
 
 .sidebar-submenu .nav-link.active::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 3px;
-    height: 3px;
-    background-color: var(--primary-color);
-    border-radius: 50%;
+    display: none;
 }
 
 /* 子菜单切换图标 */
 .sidebar-submenu-toggle {
     cursor: pointer;
     position: relative;
+}
+
+/* 移除默认的 active 深蓝背景，只在收缩状态下需要 */
+.sidebar-submenu-toggle.active {
+    color: var(--text-secondary);
+    background: transparent;
+}
+
+.sidebar-submenu-toggle.active i:not(.submenu-icon) {
+    color: var(--primary-color);
+}
+
+/* 收缩状态下，悬停时才显示高亮 */
+.sidebar.sidebar-collapsed .sidebar-submenu-toggle:hover {
+    color: var(--primary-color);
+    background-color: rgba(var(--primary-color-rgb), 0.08);
 }
 
 .submenu-icon {

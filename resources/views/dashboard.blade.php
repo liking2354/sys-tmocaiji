@@ -300,7 +300,7 @@
     </style>
     
     @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    <script src="{{ asset('assets/js/vendor/Chart.min.js') }}"></script>
     <script>
     $(document).ready(function() {
         // 检查 Canvas 元素是否存在
