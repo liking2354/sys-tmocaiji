@@ -32,7 +32,7 @@
                     <div class="avatar-upload-container">
                         <div class="avatar-preview-wrapper mb-3">
                             @if($user->avatar)
-                                <img src="{{ asset('storage/' . $user->avatar) }}" alt="头像" class="avatar-preview" id="avatarPreview">
+                                <img src="{{ url('storage/' . $user->avatar) }}" alt="头像" class="avatar-preview" id="avatarPreview">
                             @else
                                 <div class="avatar-placeholder" id="avatarPlaceholder">
                                     <span class="avatar-initials">{{ substr($user->username, 0, 1) }}</span>

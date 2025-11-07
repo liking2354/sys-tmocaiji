@@ -54,8 +54,24 @@ echo "Web 服务器用户: $WEB_USER"
 chown -R "$WEB_USER:$WEB_USER" storage/app/public/avatars
 chown -R "$WEB_USER:$WEB_USER" public/storage
 
-# 7. 清除缓存
-echo "7. 清除缓存..."
+# 7. 检查并更新 .env 配置
+echo "7. 检查 .env 配置..."
+if [ -f .env ]; then
+    # 检查 APP_URL 是否配置
+    if ! grep -q "^APP_URL=" .env; then
+        echo "APP_URL=http://81.71.102.213" >> .env
+        echo "已添加 APP_URL 配置"
+    else
+        # 检查是否是 localhost
+        if grep -q "^APP_URL=http://localhost" .env; then
+            echo "警告: APP_URL 当前配置为 localhost"
+            echo "建议修改为: APP_URL=http://81.71.102.213"
+        fi
+    fi
+fi
+
+# 8. 清除缓存
+echo "8. 清除缓存..."
 php artisan cache:clear
 php artisan config:clear
 php artisan view:clear

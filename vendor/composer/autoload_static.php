@@ -647,6 +647,7 @@ class ComposerStaticInitea04d8e22e90860199ac7e5187d08285
     public static $classMap = array (
         'App\\Console\\Commands\\CollectorUpdateCommand' => __DIR__ . '/../..' . '/app/Console/Commands/CollectorUpdateCommand.php',
         'App\\Console\\Commands\\DetectTimeoutTasks' => __DIR__ . '/../..' . '/app/Console/Commands/DetectTimeoutTasks.php',
+        'App\\Console\\Commands\\StartTerminalServer' => __DIR__ . '/../..' . '/app/Console/Commands/StartTerminalServer.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Exports\\ServersExport' => __DIR__ . '/../..' . '/app/Exports/ServersExport.php',
@@ -708,6 +709,7 @@ class ComposerStaticInitea04d8e22e90860199ac7e5187d08285
         'App\\Services\\SystemChangeService' => __DIR__ . '/../..' . '/app/Services/SystemChangeService.php',
         'App\\Services\\TaskExecutionService' => __DIR__ . '/../..' . '/app/Services/TaskExecutionService.php',
         'App\\Services\\TaskTimeoutService' => __DIR__ . '/../..' . '/app/Services/TaskTimeoutService.php',
+        'App\\WebSocket\\TerminalServer' => __DIR__ . '/../..' . '/app/WebSocket/TerminalServer.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Brick\\Math\\BigDecimal' => __DIR__ . '/..' . '/brick/math/src/BigDecimal.php',
         'Brick\\Math\\BigInteger' => __DIR__ . '/..' . '/brick/math/src/BigInteger.php',

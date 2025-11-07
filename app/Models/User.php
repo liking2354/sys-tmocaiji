@@ -95,4 +95,32 @@ class User extends Authenticatable
     {
         return $this->hasMany(OperationLog::class);
     }
+    
+    /**
+     * 获取用户头像URL
+     *
+     * @return string|null
+     */
+    public function getAvatarUrlAttribute()
+    {
+        if (!$this->avatar) {
+            return null;
+        }
+        
+        return url('storage/' . $this->avatar);
+    }
+    
+    /**
+     * 获取用户头像或默认首字母
+     *
+     * @return string
+     */
+    public function getAvatarOrInitialAttribute()
+    {
+        if ($this->avatar) {
+            return $this->avatar_url;
+        }
+        
+        return substr($this->username, 0, 1);
+    }
 }

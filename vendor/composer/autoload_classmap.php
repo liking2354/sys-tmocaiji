@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'App\\Console\\Commands\\CollectorUpdateCommand' => $baseDir . '/app/Console/Commands/CollectorUpdateCommand.php',
     'App\\Console\\Commands\\DetectTimeoutTasks' => $baseDir . '/app/Console/Commands/DetectTimeoutTasks.php',
+    'App\\Console\\Commands\\StartTerminalServer' => $baseDir . '/app/Console/Commands/StartTerminalServer.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Exports\\ServersExport' => $baseDir . '/app/Exports/ServersExport.php',
@@ -69,6 +70,7 @@ return array(
     'App\\Services\\SystemChangeService' => $baseDir . '/app/Services/SystemChangeService.php',
     'App\\Services\\TaskExecutionService' => $baseDir . '/app/Services/TaskExecutionService.php',
     'App\\Services\\TaskTimeoutService' => $baseDir . '/app/Services/TaskTimeoutService.php',
+    'App\\WebSocket\\TerminalServer' => $baseDir . '/app/WebSocket/TerminalServer.php',
     'Attribute' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
     'Brick\\Math\\BigDecimal' => $vendorDir . '/brick/math/src/BigDecimal.php',
     'Brick\\Math\\BigInteger' => $vendorDir . '/brick/math/src/BigInteger.php',

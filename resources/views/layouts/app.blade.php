@@ -71,7 +71,7 @@
                             <div class="navbar-user">
                                 <div class="navbar-user-avatar">
                                     @if(Auth::user()->avatar)
-                                        <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="头像" class="avatar-img">
+                                        <img src="{{ url('storage/' . Auth::user()->avatar) }}" alt="头像" class="avatar-img">
                                     @else
                                         {{ substr(Auth::user()->username, 0, 1) }}
                                     @endif

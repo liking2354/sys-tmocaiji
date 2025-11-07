@@ -70,15 +70,19 @@
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             <div class="navbar-user">
                                 <div class="navbar-user-avatar">
-                                    <?php echo e(substr(Auth::user()->username, 0, 1)); ?>
+                                    <?php if(Auth::user()->avatar): ?>
+                                        <img src="<?php echo e(asset('storage/' . Auth::user()->avatar)); ?>" alt="头像" class="avatar-img">
+                                    <?php else: ?>
+                                        <?php echo e(substr(Auth::user()->username, 0, 1)); ?>
 
+                                    <?php endif; ?>
                                 </div>
                                 <span class="navbar-user-name d-none d-md-inline"><?php echo e(Auth::user()->username); ?></span>
                             </div>
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="javascript:void(0);">
+                            <a class="dropdown-item" href="<?php echo e(route('profile.index')); ?>">
                                 <i class="fas fa-user-circle"></i>
                                 <span>个人资料</span>
                             </a>

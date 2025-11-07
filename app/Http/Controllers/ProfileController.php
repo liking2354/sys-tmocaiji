@@ -113,7 +113,7 @@ class ProfileController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => '头像上传成功',
-                'avatar_url' => Storage::url($path),
+                'avatar_url' => url('storage/' . $path),
             ]);
         } catch (\Exception $e) {
             return response()->json([
