@@ -13,6 +13,7 @@ use App\Http\Controllers\DataController;
 use App\Http\Controllers\ConfigTemplateController;
 use App\Http\Controllers\SystemChangeTaskController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
     Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
     Route::get('api/theme-config', [SettingController::class, 'getThemeConfig'])->name('api.theme-config');
+    
+    // 个人资料
+    Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('profile/avatar', [ProfileController::class, 'uploadAvatar'])->name('profile.upload-avatar');
+    Route::delete('profile/avatar', [ProfileController::class, 'deleteAvatar'])->name('profile.delete-avatar');
     
     // 服务器分组管理
     Route::post('server-groups/batch-delete', [ServerGroupController::class, 'batchDelete'])->name('server-groups.batch-delete');

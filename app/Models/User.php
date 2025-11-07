@@ -19,6 +19,7 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
+        'avatar',
         'status',
         'last_login_time',
         'theme_color',
